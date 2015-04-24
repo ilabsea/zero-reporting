@@ -13,3 +13,6 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap-sprockets
+
+//= require shared/alert-animate
+//= require shared/hidden-content

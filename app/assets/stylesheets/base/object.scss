@@ -1,0 +1,116 @@
+.alert-animate {
+  position: relative;
+  z-index: 9999;
+  .alert-body{
+    position: relative;
+    min-width: 300px;
+    padding: 10px;
+    font-weight: 600;
+    @include border-radius(5px);
+  }
+}
+
+label.required abbr{
+  color: red;
+  font-weight: bold;
+}
+
+form {
+  max-width: 600px;
+  label {
+    font-weight: 500
+  }
+}
+
+.input-row {
+  margin-bottom: 15px;
+}
+
+label.inline {
+  display: inline;
+  width: auto !important
+}
+
+.inline-short {
+  width: 6em !important;
+}
+
+.form {
+  @include form-inline(10em);
+}
+
+.typeahead {
+  z-index: 1051;
+}
+
+.empty-message{
+  padding: 0 15px;
+  color: red;
+}
+
+.input-row-close{
+  margin-top: -15px;
+  margin-bottom: 15px;
+}
+.keyword-highlight {
+  background: none repeat scroll 0 0 activecaption;
+  margin: 0 3px;
+  padding: 0 6px;
+  white-space: nowrap;
+  @include border-radius(3px);
+}
+
+.param-link {
+  font-size: 90%;
+  font-style: italic;
+  color: gray;
+}
+.header-title {
+  font-size: 120%;
+  font-weight: bold;
+}
+.color-danger {
+  color: $color-danger;
+}
+.color-primary {
+  color: $color-primary;
+}
+.btn-icon {
+  padding: 5px;
+  &:hover{
+    text-decoration: none;
+  }
+}
+.td-last {
+  width: 80px;
+}
+
+em.highlight {
+  background: yellow;
+}
+
+.feed-title {
+  font-size: 18px;
+  margin-top: 30px;
+}
+
+.page-viewer-border {
+  background: #fafafa;
+}
+
+.form-box{
+  margin: 0 auto;
+  width: 500px;
+}
+
+.left{
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
+td:last-child{
+  text-align: right;
+}

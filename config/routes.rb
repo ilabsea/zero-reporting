@@ -12,6 +12,22 @@ Rails.application.routes.draw do
 
   resources :sessions, only: [:index, :create, :destroy]
 
+  resources :users do
+    member do
+      put 'reset'
+    end
+  end
+
+  resources :phds do
+    resources :ods
+  end
+
+  resources :ods do
+    resources :members, shallow: true
+  end
+
+  resources :members
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

@@ -1,0 +1,30 @@
+<%= paginate_for(@ods) %>
+<%= page_header "Operational District" do %>
+  <%= link_new 'New OD', new_od_path() %>
+<% end %>
+
+<table class='table'>
+  <thead>
+    <tr>
+      <td>Name</td>
+      <td>Code</td>
+      <td>PHD</td>
+      <td class='td-last'></td>
+    </tr>
+  </thead>
+  <tbody>
+    <% @ods.each do |od| %>
+      <tr>
+        <td><%= link_to od.name, edit_od_path(od) %></td>
+        <td><%=od.code %></td>
+        <td><%=od.phd.name %></td>
+        <td class='td-last'>
+           <%= link_edit " ", edit_od_path(od)  %>
+           <%= link_destroy " ", od_path(od), method: :delete, data: { confirm: 'Are you sure to delete ?' } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate_for(@ods) %>

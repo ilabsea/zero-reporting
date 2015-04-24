@@ -1,0 +1,7 @@
+<%= page_header "Reset password user" %>
+
+<p style='color:gray;font-size: 14px;'>
+   <b> <%= @user.username %> </b>'s password has been reset to : 
+   <b> <input id='pwd-hidden' type='password' value='<%= @random_password %>' class='pwd-label'/> </b>
+   <a class='btn btn-hidden-content' data-ref-id='pwd-hidden' > Show </a>
+</p>

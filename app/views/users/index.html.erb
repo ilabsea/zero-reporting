@@ -1,0 +1,35 @@
+<%= paginate_for(@users) %>
+<%= page_header "System users" do %>
+  <%= link_new 'New User', new_user_path() %>
+<% end %>
+
+<table class='table'>
+  <thead>
+    <tr>
+      <td>Login</td>
+      <td>Name</td>
+      <td>Email</td>
+      <td>Number</td>
+      <td>Role</td>
+      <td class='td-last'></td>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= link_to user.username, edit_user_path(user) %></td>
+        <td><%=user.name %></td>
+        <td><%=user.email%></td>
+        <td><%=user.phone %></td>
+        <td><%=user.role%></td>
+        <td class='td-last'>
+          <% if !user.is_admin? %>
+           <%= link_edit " ", edit_user_path(user)  %>
+           <%= link_destroy " ", user_path(user), method: :delete, data: { confirm: 'Are you sure to delete' } %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= paginate_for(@users) %>
