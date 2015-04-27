@@ -36,8 +36,13 @@ class PhdsController < ApplicationController
     if @phd.destroy
       redirect_to phds_path, notice: 'PHD has been deleted'
     else
-      redirect_to phds_path, alert: 'Failed to remove phd'
+      redirect_to phds_path, alert: 'Failed to remove PHD'
     end
+  end
+
+  def od_list
+    list = Od.order("name DESC").where(phd_id: params[:id]).pluck(:name, :id)
+    render json: list
   end
 
 

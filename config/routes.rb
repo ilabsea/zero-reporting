@@ -19,13 +19,12 @@ Rails.application.routes.draw do
   end
 
   resources :phds do
-    resources :ods
+    member do
+      get 'od_list'
+    end
   end
 
-  resources :ods do
-    resources :members, shallow: true
-  end
-
+  resources :ods
   resources :members
 
   # Example of regular route:

@@ -11,7 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150424075818) do
+ActiveRecord::Schema.define(version: 20150427025023) do
+
+  create_table "members", force: :cascade do |t|
+    t.string   "name",       limit: 255
+    t.string   "phone",      limit: 255
+    t.integer  "od_id",      limit: 4
+    t.integer  "phd_id",     limit: 4
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "members", ["od_id"], name: "index_members_on_od_id", using: :btree
+  add_index "members", ["phd_id"], name: "index_members_on_phd_id", using: :btree
 
   create_table "ods", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -41,5 +53,7 @@ ActiveRecord::Schema.define(version: 20150424075818) do
     t.string   "role",            limit: 255
   end
 
+  add_foreign_key "members", "ods"
+  add_foreign_key "members", "phds"
   add_foreign_key "ods", "phds"
 end

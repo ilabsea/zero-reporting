@@ -36,7 +36,7 @@ class OdsController < ApplicationController
     if @od.destroy
       redirect_to ods_path, notice: 'OD has been deleted'
     else
-      redirect_to ods_path, alert: 'Failed to remove phd'
+      redirect_to ods_path, alert: 'Failed to remove OD'
     end
   end
 
