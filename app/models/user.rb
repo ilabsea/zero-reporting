@@ -18,6 +18,8 @@ class User < ActiveRecord::Base
 
   before_save :clean_user_name
 
+  attr_accessor :old_password
+
   def clean_user_name
     self.username.downcase!
   end
@@ -35,6 +37,18 @@ class User < ActiveRecord::Base
 
   def is_admin?
     role == User::ROLE_ADMIN
+  end
+
+  def change_password old_password, new_password, confirm
+    if self.authenticate(old_password)
+      self.password = new_password
+      self.password_confirmation = confirm
+
+      save
+    else
+      errors.add(:old_password, 'does not matched')
+      false
+    end
   end
 
 end

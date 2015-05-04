@@ -53,6 +53,23 @@ class UsersController < ApplicationController
     end
   end
 
+  def change_profile
+    @old_password = params[:user][:old_password]
+    @password = params[:user][:password]
+    @password_confirmation = params[:user][:password_confirmation]
+
+    if current_user.change_password(@old_password, @password, @password_confirmation)
+      flash.now.notice = 'Your password has been changed successfully'
+
+      @old_password = ''
+      @password = ''
+      @password_confirmation = ''
+    else
+      flash.now.alert =  current_user.errors.full_messages.first
+    end
+    render :profile
+  end
+
   private
 
   def filter_params

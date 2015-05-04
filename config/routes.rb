@@ -13,6 +13,11 @@ Rails.application.routes.draw do
   resources :sessions, only: [:index, :create, :destroy]
 
   resources :users do
+    collection do
+      get 'profile'
+      put 'change_profile'
+    end
+
     member do
       put 'reset'
     end

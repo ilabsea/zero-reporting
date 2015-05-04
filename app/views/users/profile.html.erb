@@ -1,0 +1,18 @@
+<%= simple_form_for :user, { url: change_profile_users_path, method: :put, html: { class: 'form-inline form'} } do |f| %>
+
+  <%=f.input :old_password, required: true, label: 'Old Password', 
+             input_html: {class: 'form-control', value: @old_password, autocomplete: :off } %>
+
+  <%=f.input :password, required: true,
+             input_html: {class: 'form-control', value: @password, autocomplete: :off } %>
+
+  <%=f.input :password_confirmation, required: true, label: 'Confirm',
+             input_html: {class: 'form-control', value: @password_confirmation, autocomplete: :off } %>
+
+
+  <div class='form-group form-action-group'>
+    <label class='control-label'></label>
+    <%=f.submit 'Change Password', class: 'btn btn-primary btn-app' %>
+  </div>
+
+<% end %>

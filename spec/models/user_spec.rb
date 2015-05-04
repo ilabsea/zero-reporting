@@ -22,4 +22,28 @@ RSpec.describe User, :type => :model do
     end
   end
 
+  describe User, '#change_password' do
+    let(:user) { create(:user, username: 'vicheka', password: 'password')}
+    context 'with valid passsword' do
+      it "return true" do
+        result = user.change_password('password', 'new_password', 'new_password')
+        expect(result).to eq true
+      end
+    end
+
+    context 'with invalid password' do
+      it 'return false with Old password does not matched error message' do
+        result = user.change_password('incorrect', 'new_password', 'new_password')
+        expect(result).to eq false
+        expect(user.errors.full_messages).to eq ["Old password does not matched"]
+      end
+
+      it 'return false with password does not matched' do
+        result = user.change_password('password', 'missmatch', 'password')
+        expect(user.errors.full_messages).to eq ["Password confirmation doesn't match Password"]
+        expect(result).to eq false
+      end
+    end
+  end
+
 end
