@@ -12,6 +12,10 @@ Rails.application.routes.draw do
 
   resources :sessions, only: [:index, :create, :destroy]
 
+  resources :places do
+    
+  end
+
   resources :users do
     collection do
       get 'profile'

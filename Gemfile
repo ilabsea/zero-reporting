@@ -27,6 +27,7 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'bootstrap-sass'
 gem 'email_validator'
 gem 'kaminari'
+gem 'ancestry'
 
 # Use Unicorn as the app server
 # gem 'unicorn'

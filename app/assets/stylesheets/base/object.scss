@@ -114,3 +114,45 @@ em.highlight {
 td:last-child{
   text-align: right;
 }
+
+#myTree {
+  margin: 0;
+  padding: 0;
+  li {
+    list-style-type: none;
+    padding: 5px;
+  }
+  ul {
+    margin: 0px;
+    padding-left: 20px;
+
+  }
+}
+
+.opener {
+  border: 1px solid #337ab7;
+  margin-right: 5px;
+  span {
+    padding: 0px 2px;
+    color: #337ab7;
+  }
+}
+
+.opened {
+  .tree-icon-closed {
+    display: none;
+  }
+  .tree-icon-opened {
+    display: inline;
+  }
+}
+
+.closed {
+  .tree-icon-closed {
+    display: inline;
+  }
+  .tree-icon-opened {
+    display: none;
+  }
+}
+

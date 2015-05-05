@@ -1,0 +1,33 @@
+<%= page_header "Places" do %>
+  <%= link_new 'New Place', new_place_path() %>
+<% end %>
+
+
+<table class='table'>
+  <thead>
+    <tr>
+      <td>Name</td>
+      <td>Code</td>
+      <td>Type</td>
+      <td></td>
+    </tr>
+  </thead>
+  <tbody>
+    <% @places.each do |place| %>
+      <tr>
+        <td><%= link_to place.name, edit_place_path(place) %></td>
+        <td><%=place.code %></td>
+        <td><%=place.kind_of %></td>
+        <td>
+          <% if !place.is_kind_of_hc? %>
+           <%= link_to "New", new_place_path(parent_id: place.id)  %>
+          <% end %>
+           <%= link_to "Edit", edit_place_path(place)  %>
+           <%= link_to "Delete", place_path(place), method: :delete, data: { confirm: 'Are you sure to delete' } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= render 'tree' %>

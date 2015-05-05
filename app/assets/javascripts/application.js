@@ -14,8 +14,11 @@
 //= require jquery_ujs
 //= require bootstrap-sprockets
 
+//= require bootstrap-treenav
+
 //= require shared/alert-animate
 //= require shared/hidden-content
 //= require shared/od_by_phd
+//= require shared/tree-init
 
 //= require member/action

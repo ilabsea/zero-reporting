@@ -1,0 +1,19 @@
+<% if @place.parent %>
+  Name <%= @place.parent.name %>,
+  Code <%= @place.parent.code %>,
+  Type <%= @place.parent.my_type %>,
+  Current Type <%= @place.my_type %>,
+<% end %>
+
+
+<%=simple_form_for(@place, html: { class: 'form-inline form'}) do |f| %>
+  <%=f.input :parent_id, as: :hidden %>
+  <%=f.input :name, label: 'Name', input_html: {class: 'form-control'} %>
+  <%=f.input :code, input_html: {class: 'form-control'} %>
+
+  <div class='form-group form-action-group'>
+    <label class='control-label'></label>
+    <%=f.submit 'Save', class: 'btn btn-primary' %>
+  </div>
+
+<% end %>

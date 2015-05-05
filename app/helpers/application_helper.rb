@@ -4,17 +4,17 @@ module ApplicationHelper
     offset_page = page > 1 ? page - 1 : 0
     index + Kaminari.config.default_per_page * offset_page
   end
-  
+
   def page_title(title)
     content_for(:title) { title + " - " + ENV['APP_NAME'] }
   end
-  
+
   def paginate_for(records)
     content_tag :div, paginate(records), class: 'paginate-nav'
   end
 
   def errors_for(record)
-    content_tag :ul, class: 'record-error' do 
+    content_tag :ul, class: 'record-error' do
       result = ""
       record.errors.full_messages.each do |message|
         result += content_tag('li', message, class: 'record-error-field')
@@ -49,22 +49,22 @@ module ApplicationHelper
           if value
           items << content_tag(:li) do
             link_to(key, value) + content_tag(:span, char_sep, :class => "divider")
-          end 
+          end
           else
-            items << content_tag(:li, key, :class =>"active") 
+            items << content_tag(:li, key, :class =>"active")
           end
         end
-      end 
+      end
     else
       icon = content_tag "i", " ", :class => "icon-user  icon-home"
-      items << content_tag(:li, icon + "Home", :class => "active")  
+      items << content_tag(:li, icon + "Home", :class => "active")
     end
     items.join("").html_safe
   end
 
   def page_header title, options={},  &block
      content_tag :div,:class => "list-header clearfix" do
-        if block_given? 
+        if block_given?
             content_title = content_tag :div, :class => "left" do
               content_tag(:h3, title, :class => "header-title")
             end
@@ -73,10 +73,10 @@ module ApplicationHelper
             content_link = content_tag(:div, output, {:class => " right"})
             content_title + content_link
         else
-            content_tag :div , :class => "" do 
+            content_tag :div , :class => "" do
                content_tag(:h3, title, :class => "header-title")
             end
-        end 
+        end
      end
   end
 
@@ -128,6 +128,22 @@ module ApplicationHelper
     icon = content_tag :i, ' ',  class: "#{icon} glyphicon"
     text = content_tag :span, " #{value}"
     link_to icon+text, url, options, &block
+  end
+
+  def children_tree_for places
+    places.map do |place, children|
+      item = link_to("#{place.name} - #{place.code}", "#")
+      item += content_tag(:ul, children_tree_for(children)) if children.size > 0
+
+      expanded_class = place.parent ? '' : 'active'
+      content_tag(:li, item, class: "tree-node #{expanded_class}", data: {id: place.id})
+    end.join('').html_safe
+  end
+
+  def tree_for places
+     content_tag(:li, class: 'tree-node active', id: 'tree-root', data: {id: ''}) do
+       link_to("Root", '#') + content_tag(:ul, children_tree_for(places))
+     end
   end
 
 end
