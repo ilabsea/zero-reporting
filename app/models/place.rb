@@ -1,13 +1,13 @@
 class Place < ActiveRecord::Base
-  has_ancestry
+  has_ancestry(orphan_strategy: :destroy)
 
   validates :name, :code, presence: true
   validates :code, uniqueness: true
 
 
-  PLACE_TYPE_PHD = 'Provincial Health Department'
-  PLACE_TYPE_OD  = 'Operational District'
-  PLACE_TYPE_HC  = 'Health Center'
+  PLACE_TYPE_PHD = 'PHD'
+  PLACE_TYPE_OD  = 'OD'
+  PLACE_TYPE_HC  = 'HC'
 
   before_save :set_my_type
 

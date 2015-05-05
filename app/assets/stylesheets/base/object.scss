@@ -125,13 +125,17 @@ td:last-child{
   ul {
     margin: 0px;
     padding-left: 20px;
-
+  }
+  a {
+    padding: 5px;
+    &.selected {
+      background: #ccc;
+      @include border-radius(3px);
+    }
   }
 }
 
 .opener {
-  border: 1px solid #337ab7;
-  margin-right: 5px;
   span {
     padding: 0px 2px;
     color: #337ab7;
@@ -153,6 +157,54 @@ td:last-child{
   }
   .tree-icon-opened {
     display: none;
+  }
+}
+
+.tree-wrapper {
+  background: #eee;
+  padding: 10px;
+  min-height: 500px;
+  max-height: 800px;
+  position: relative;
+  overflow: scroll;
+}
+.tree-action {
+  background: #ddd;
+  padding: 10px;
+}
+
+#notification {
+  background: #eee;
+  right: 25px;
+  top: 65px;
+  border: 1px solid #fff;
+  position: fixed;
+  display: block;
+  z-index: 99999;
+  min-width: 320px;
+  padding: 5px 10px;
+  @include border-radius(3px);
+  .bs-callout-danger {
+    color: red;
+  }
+  .bs-callout-info {
+    color: green;
+  }
+
+  .bs-callout {
+
+    h4 {
+      border-bottom: 1px solid #fff;
+      font-size: 16px;
+      margin: 0 -10px;
+      padding-bottom: 10px;
+      padding-left: 15px;
+      padding-top: 5px;
+    }
+    p {
+      padding-top: 10px;
+      margin-left: 10px;
+    }
   }
 }
 

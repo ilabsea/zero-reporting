@@ -1,33 +1,26 @@
-<%= page_header "Places" do %>
-  <%= link_new 'New Place', new_place_path() %>
-<% end %>
+<%= page_header "Places" %>
+<hr />
 
+<div class='row'>
+  <div class='col-lg-4'>
+    <div class='tree-wrapper' ><%= render 'shared/tree' %></div>
+    <div class='tree-action' >
+      <%= link_to '#', class: 'new-tree' do %>
+        <i class='glyphicon glyphicon-plus'> </i>
+      <% end %>
+      <%= link_edit '', '#', class: 'edit-tree' %>
+      <%= link_destroy '', '#', class: 'destroy-tree', method: :delete %>
+    </div>
+  </div>
 
-<table class='table'>
-  <thead>
-    <tr>
-      <td>Name</td>
-      <td>Code</td>
-      <td>Type</td>
-      <td></td>
-    </tr>
-  </thead>
-  <tbody>
-    <% @places.each do |place| %>
-      <tr>
-        <td><%= link_to place.name, edit_place_path(place) %></td>
-        <td><%=place.code %></td>
-        <td><%=place.kind_of %></td>
-        <td>
-          <% if !place.is_kind_of_hc? %>
-           <%= link_to "New", new_place_path(parent_id: place.id)  %>
-          <% end %>
-           <%= link_to "Edit", edit_place_path(place)  %>
-           <%= link_to "Delete", place_path(place), method: :delete, data: { confirm: 'Are you sure to delete' } %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+  <div class="col-lg-8">
+    <div class='tree-content-wrapper'>
+      <div>
+        <span> Selected  </span>
+        <i class='glyphicon glyphicon-chevron-right'> </i>
+        <span id='selected-tree'> </span>
+      </div>
+    </div>
+  </div>
 
-<%= render 'tree' %>
+</div>

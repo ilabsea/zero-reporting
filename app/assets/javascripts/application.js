@@ -15,10 +15,12 @@
 //= require bootstrap-sprockets
 
 //= require bootstrap-treenav
+//= require tmpl
 
 //= require shared/alert-animate
 //= require shared/hidden-content
 //= require shared/od_by_phd
 //= require shared/tree-init
+//= require shared/notification
 
 //= require member/action

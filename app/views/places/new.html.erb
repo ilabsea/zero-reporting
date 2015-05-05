@@ -1,4 +1,4 @@
-<% content_for(:title) { "New Place"} %>
-<%= page_header "Create a new Place" %>
+<% content_for(:title) { "New #{@place.my_type}"} %>
+<%= page_header "Create #{@place.my_type}" %>
 
 <%= render 'form' %>

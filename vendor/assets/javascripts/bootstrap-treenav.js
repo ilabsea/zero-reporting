@@ -24,8 +24,8 @@
   $.fn.navTree = function(options) {
 
     var defaults = {
-      navTreeExpanded: 'glyphicon glyphicon-minus',
-      navTreeCollapsed: 'glyphicon glyphicon-plus'
+      navTreeExpanded: 'glyphicon glyphicon-triangle-bottom',
+      navTreeCollapsed: 'glyphicon glyphicon-triangle-right'
     };
     
     options = $.extend(defaults, options);

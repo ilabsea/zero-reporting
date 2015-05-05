@@ -10,7 +10,7 @@ class PlacesController < ApplicationController
   def create
     @place = Place.new(filter_params)
     if @place.save
-      redirect_to places_path, notice: 'Place has been created'
+      redirect_to places_path(place_id: @place.id), notice: 'Place has been created'
     else
       flash.now[:alert] = "Failed to create place"
       render :new
@@ -24,7 +24,7 @@ class PlacesController < ApplicationController
   def update
     @place = Place.find(params[:id])
     if @place.update_attributes(filter_params)
-      redirect_to places_path, notice: 'Place has been updated'
+      redirect_to places_path(place_id: @place.id), notice: 'Place has been updated'
     else
       flash.now[:alert] = "Failed to update place"
       render :edit
@@ -33,10 +33,11 @@ class PlacesController < ApplicationController
 
   def destroy
     @place = Place.find(params[:id])
+    place_id = @place.parent ? @place.parent.id : ''
     if @place.destroy
-      redirect_to places_path, notice: 'Place has removed'
+      redirect_to places_path(place_id: place_id ), notice: 'Place has removed'
     else
-      redirect_to places_path, alert: 'Failed to remove place'
+      redirect_to places_path(place_id: place_id), alert: 'Failed to remove place'
     end
   end
 

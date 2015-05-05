@@ -23,6 +23,15 @@ module ApplicationHelper
     end
   end
 
+  def flash_config
+    config = {key: '', value: ''}
+    flash.map do |key, value|
+      config[:key] = key
+      config[:value] = value
+    end
+    config
+  end
+
   def flash_messages
     trans = { 'alert' => 'alert-danger', 'notice' => 'alert alert-success' }
 
@@ -132,18 +141,46 @@ module ApplicationHelper
 
   def children_tree_for places
     places.map do |place, children|
-      item = link_to("#{place.name} - #{place.code}", "#")
+      selected_class = (place.id == params["place_id"].to_i ? 'selected' : '')
+      item = link_to("#{place.my_type} - #{place.name} (#{place.code})", "#", class: "tree-node #{selected_class}", data: {id: place.id})
       item += content_tag(:ul, children_tree_for(children)) if children.size > 0
 
-      expanded_class = place.parent ? '' : 'active'
-      content_tag(:li, item, class: "tree-node #{expanded_class}", data: {id: place.id})
+      if !place.parent || place.id == params[:place_id].to_i
+        expanded_class = 'active'
+      else
+        expanded_class = ''
+      end
+
+      content_tag(:li, item, class: "tree-node-wrapper #{expanded_class}")
+
     end.join('').html_safe
   end
 
   def tree_for places
-     content_tag(:li, class: 'tree-node active', id: 'tree-root', data: {id: ''}) do
-       link_to("Root", '#') + content_tag(:ul, children_tree_for(places))
-     end
+    if !params[:place_id].present?
+      active_root = 'active'
+      selected_class = 'selected'
+    else
+      active_root = ''
+      selected_class = ''
+    end
+
+    content_tag(:li, class: "tree-node-wrapper #{active_root}", id: 'tree-root') do
+      link_to("Root", '#', class: "tree-node #{selected_class}", data: {id: ''}) + content_tag(:ul, children_tree_for(places))
+    end
   end
 
+  def display_parent_for place
+    parent_for(place).reverse.join("<br/>").html_safe
+  end
+
+  def parent_for place
+    result = []
+    if place.parent
+      text = "#{place.parent.my_type} - #{place.parent.name} ( #{place.parent.code} )"
+      result << text
+      result += parent_for(place.parent)
+    end
+    result
+  end
 end

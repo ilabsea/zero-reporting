@@ -1,9 +1,6 @@
-<% if @place.parent %>
-  Name <%= @place.parent.name %>,
-  Code <%= @place.parent.code %>,
-  Type <%= @place.parent.my_type %>,
-  Current Type <%= @place.my_type %>,
-<% end %>
+<p style="margin-bottom: 30px;">
+  <%= display_parent_for @place %>
+</p>
 
 
 <%=simple_form_for(@place, html: { class: 'form-inline form'}) do |f| %>

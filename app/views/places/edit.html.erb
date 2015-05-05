@@ -1,4 +1,4 @@
-<% content_for(:title) { "Edit Place"} %>
-<%= page_header "Edit Place" %>
+<% content_for(:title) { "Edit #{@place.my_type}"} %>
+<%= page_header "Edit #{@place.my_type}" %>
 
 <%= render 'form' %>
