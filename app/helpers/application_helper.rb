@@ -51,7 +51,7 @@ module ApplicationHelper
     char_sep = "&raquo;".html_safe
     if( !options.nil?  && options.size != 0)
       items <<  content_tag(:li , :class => "active") do
-        link_to_home("Home", root_path) + content_tag(:span, char_sep, :class => "divider")
+        link_home("Home", root_path) + content_tag(:span, char_sep, :class => "divider")
       end
       options.each do |option|
         option.each do |key, value|
@@ -131,6 +131,11 @@ module ApplicationHelper
     link_icon "glyphicon-plus", value, url, options, &block
   end
 
+  def link_home value, url, options={}, &block
+    link_icon "glyphicon glyphicon-home", value, url, options, &block
+
+  end
+
   def link_icon icon, value, url, options={}, &block
     options ||= {}
     options[:class] = "btn-icon #{options[:class]}"
@@ -166,12 +171,12 @@ module ApplicationHelper
     end
 
     content_tag(:li, class: "tree-node-wrapper #{active_root}", id: 'tree-root') do
-      link_to("Root", '#', class: "tree-node #{selected_class}", data: {id: ''}) + content_tag(:ul, children_tree_for(places))
+      link_to("Cambodia", '#', class: "tree-node #{selected_class}", data: {id: ''}) + content_tag(:ul, children_tree_for(places))
     end
   end
 
   def display_parent_for place
-    parent_for(place).reverse.join("<br/>").html_safe
+    content_tag :p, parent_for(place).reverse.join("<br/>").html_safe, class: 'p-desc'
   end
 
   def parent_for place
@@ -185,7 +190,7 @@ module ApplicationHelper
   end
 
   def display_hierachy_for place
-    hierachy_for(place).reverse.join("<br />").html_safe
+    content_tag :p, hierachy_for(place).reverse.join("<br />").html_safe, class: 'p-desc'
   end
 
   def hierachy_for place
@@ -193,7 +198,7 @@ module ApplicationHelper
     if place
       text = "#{place.my_type} - #{place.name} ( #{place.code} )"
       result << text
-      result += display_hierachy_for(place.parent)
+      result += hierachy_for(place.parent)
     end
     result
   end

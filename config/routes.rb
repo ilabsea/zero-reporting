@@ -20,6 +20,7 @@ Rails.application.routes.draw do
     collection do
       get 'profile'
       put 'change_profile'
+      get 'by_place'
     end
 
     member do
