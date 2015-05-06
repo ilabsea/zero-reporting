@@ -4,6 +4,7 @@ class UsersController < ApplicationController
   end
 
   def new
+    @place = Place.find(params[:place_id])
     @user = User.new
   end
 

@@ -4,7 +4,22 @@ $(function(){
   editTree()
   destroyTree()
   newTree()
+
+  newUser()
 })
+
+function newUser(){
+  $(".new-user").on('click', function(){
+    var placeId = selectedNode().data().id
+    if(!placeId) {
+      setNotification("alert", "Please select place to for this user");
+      return false
+    }
+    var url = "users/new?place_id=" + placeId
+    window.location.href = url
+    return false
+  })
+}
 
 
 function nodeClick(){
@@ -69,3 +84,14 @@ function newTree(){
     window.location.href = url
   })
 }
+
+
+
+
+
+
+
+
+
+
+

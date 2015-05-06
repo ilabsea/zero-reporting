@@ -183,4 +183,18 @@ module ApplicationHelper
     end
     result
   end
+
+  def display_hierachy_for place
+    hierachy_for(place).reverse.join("<br />").html_safe
+  end
+
+  def hierachy_for place
+    result = []
+    if place
+      text = "#{place.my_type} - #{place.name} ( #{place.code} )"
+      result << text
+      result += display_hierachy_for(place.parent)
+    end
+    result
+  end
 end
