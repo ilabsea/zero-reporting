@@ -1,7 +1,4 @@
-<p style="margin-bottom: 30px;">
-  <%= display_parent_for @place %>
-</p>
-
+<%= display_parent_for @place %>
 
 <%=simple_form_for(@place, html: { class: 'form-inline form'}) do |f| %>
   <%=f.input :parent_id, as: :hidden %>

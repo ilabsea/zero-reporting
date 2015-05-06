@@ -5,11 +5,11 @@ $(function(){
 
     if($elmRef.attr('type') == 'password') {
       $elmRef.attr('type', 'text')
-      $elm.text('value', 'Show')
+      $elm.text('Hide')
     }
     else {
       $elmRef.attr('type', 'password');
-      $elm.text('value', 'Hide')
+      $elm.text('Show')
     }
     return false;
   })

@@ -30,6 +30,20 @@ function nodeClick(){
 
     updateSelected($this)
     console.log($this.data())
+    var placeId = $this.data().id
+    showLoading("#user-list")
+
+    $.ajax({
+      url: 'users/by_place',
+      data: {place_id: placeId},
+      success: function(response){
+        $("#user-list").html(response)
+      },
+      error: function(){
+        setNotification("alert", "Failed to fetch users")
+        $("#user-list").html("Failed to fetch users")
+      }
+    })
     return false
   })
 }

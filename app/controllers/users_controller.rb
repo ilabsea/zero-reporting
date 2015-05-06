@@ -1,11 +1,16 @@
 class UsersController < ApplicationController
   def index
-    @users = User.page(params[:page]).per(20)
+    @users = User.by_place(params[:place_id])
+  end
+
+  def by_place
+    @users = User.by_place(params[:place_id])
+    render layout: false
   end
 
   def new
     @place = Place.find(params[:place_id])
-    @user = User.new
+    @user = User.new(place: @place)
   end
 
   def create
@@ -14,7 +19,7 @@ class UsersController < ApplicationController
     @user.password_confirmation = params[:user][:password_confirmation]
 
     if(@user.save)
-      redirect_to  users_path, notice: 'User has been created successfully'
+      redirect_to  users_path(place_id: @user.place_id), notice: 'User has been created successfully'
     else
       flash.now[:alert] = 'Failed to save user'
       render :new
@@ -28,7 +33,7 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     if @user.update_attributes(filter_params)
-      redirect_to users_path, notice: 'User has been updated successfully'
+      redirect_to users_path(place_id: @user.place_id), notice: 'User has been updated successfully'
     else
       flash.now[:alert] = 'Failed to update user'
       render :edit
@@ -37,10 +42,12 @@ class UsersController < ApplicationController
 
   def destroy
     @user = User.find(params[:id])
-    if current_user.is_admin? && @user.destroy
-      redirect_to users_path, notice: 'User has been deleted'
+    place_id = @user.place_id
+
+    if @user.destroy
+      redirect_to users_path(place_id: place_id), notice: 'User has been deleted'
     else
-      redirect_to users_path, alert: 'Failed to remove users'
+      redirect_to users_path(place_id: place_id), alert: 'Failed to remove users'
     end
   end
 
@@ -74,6 +81,6 @@ class UsersController < ApplicationController
   private
 
   def filter_params
-    params.require(:user).permit(:username, :name, :email, :phone, :role)
+    params.require(:user).permit(:username, :name, :email, :phone, :place_id  )
   end
 end

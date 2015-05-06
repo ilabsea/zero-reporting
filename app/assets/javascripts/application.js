@@ -19,8 +19,9 @@
 
 //= require shared/alert-animate
 //= require shared/hidden-content
-//= require shared/od_by_phd
+
 //= require shared/tree-init
 //= require shared/notification
+//= require shared/loading
 
 //= require member/action

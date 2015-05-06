@@ -1,4 +1,7 @@
 <% content_for(:title) { "New #{@place.my_type}"} %>
-<%= page_header "Create #{@place.my_type}" %>
+<%= breadcrumb [ {"Health Structure" => users_path(place_id: @place.parent_id)}, {"#{@place.my_type} Creation" => nil}] %>
+
+
+<%= page_header "#{@place.my_type} Creation" %>
 
 <%= render 'form' %>

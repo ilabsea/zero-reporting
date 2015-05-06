@@ -1,6 +1,7 @@
 class PlacesController < ApplicationController
   def index
     @places = Place.all
+    @users = User.by_place(params[:place_id]).page(params[:page])
   end
 
   def new
@@ -34,11 +35,14 @@ class PlacesController < ApplicationController
   def destroy
     @place = Place.find(params[:id])
     place_id = @place.parent ? @place.parent.id : ''
-    if @place.destroy
+
+    begin
+      @place.destroy
       redirect_to places_path(place_id: place_id ), notice: 'Place has removed'
-    else
-      redirect_to places_path(place_id: place_id), alert: 'Failed to remove place'
+    rescue ActiveRecord::StatementInvalid => error
+      redirect_to places_path(place_id: @place.id), alert: 'Failed to remove place. Make sure there are no users associate to this place'
     end
+
   end
 
   private

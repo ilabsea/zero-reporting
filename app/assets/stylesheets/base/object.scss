@@ -38,6 +38,10 @@ label.inline {
 .form {
   @include form-inline(10em);
 }
+.pwd-label {
+  border: none;
+  margin-left: 30px;
+}
 
 .typeahead {
   z-index: 1051;
@@ -164,6 +168,12 @@ td:last-child{
   margin-bottom: 15px;
 }
 
+.p-desc {
+  margin-bottom: 30px;
+  margin-left: 10px;
+  color: gray;
+}
+
 .tree-wrapper {
   background: #eee;
   padding: 10px;
@@ -176,6 +186,8 @@ td:last-child{
   background: #ddd;
   padding: 10px;
 }
+
+
 
 #notification {
   background: #eee;
@@ -212,3 +224,12 @@ td:last-child{
   }
 }
 
+.breadcrumb {
+  .divider {
+    margin: auto 10px;
+  }
+}
+
+.breadcrumb > li + li::before {
+  content: unset;
+}

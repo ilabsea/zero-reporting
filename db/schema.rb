@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150506024017) do
+ActiveRecord::Schema.define(version: 20150506042730) do
 
   create_table "places", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -33,6 +33,10 @@ ActiveRecord::Schema.define(version: 20150506024017) do
     t.string   "email",           limit: 255
     t.string   "phone",           limit: 255
     t.string   "role",            limit: 255
+    t.integer  "place_id",        limit: 4
   end
 
+  add_index "users", ["place_id"], name: "index_users_on_place_id", using: :btree
+
+  add_foreign_key "users", "places"
 end

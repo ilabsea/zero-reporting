@@ -1,4 +1,6 @@
-<% content_for(:title) { "Edit User"} %>
-<%= page_header "Edit user" %>
+<% content_for(:title) { "User Modification"} %>
+<%= breadcrumb [ {"Health Structure" => users_path(place_id: @user.place_id)}, {"User Modification" => nil}] %>
+
+<%= page_header "User Modification" %>
 
 <%= render 'form' %>

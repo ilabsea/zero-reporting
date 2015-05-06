@@ -1,5 +1,6 @@
 class Place < ActiveRecord::Base
   has_ancestry(orphan_strategy: :destroy)
+  has_many :users
 
   validates :name, :code, presence: true
   validates :code, uniqueness: true
@@ -22,7 +23,6 @@ class Place < ActiveRecord::Base
       Place::PLACE_TYPE_PHD
     end
   end
-
 
   def is_kind_of_phd?
     self.kind_of == Place::PLACE_TYPE_PHD
