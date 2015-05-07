@@ -54,6 +54,9 @@ group :development, :test do
 end
 
 group :test do
+  gem 'rake'
+  gem "codeclimate-test-reporter", require: nil
+  
   gem 'database_cleaner'
   gem 'shoulda-matchers'
   gem 'faker'

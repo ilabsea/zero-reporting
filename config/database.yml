@@ -51,4 +51,4 @@ production:
   <<: *default
   database: cdc_call_production
   username: root
-  password: <%= ENV['REMINDERS_AGENT_DATABASE_PASSWORD'] %>
+  password: <%= ENV['CDC_DATABASE_PASSWORD'] %>
