@@ -1,0 +1,19 @@
+language: ruby
+cache: bundler
+
+addons:
+  code_climate:
+    repo_token: 'b2207aa683bedabf3e9cddc692141d0df7ce871f54f8ca8bc2774c7fd4e2bb8a'
+rvm:
+  - "2.2.1"
+
+# uncomment this line if your project needs to run something other than `rake`:
+script:
+  - RAILS_ENV=test bundle exec rake db:migrate --trace
+  - bundle exec rake db:test:prepare
+  - bundle exec rspec spec
+
+before_script:
+# - rm Gemfile.lock
+  - cp config/application.travis.yml config/application.yml
+  - mysql -e 'create database cdc_call_test'
