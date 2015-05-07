@@ -22,8 +22,6 @@ class User < ActiveRecord::Base
   validates :username, presence: true
   validates :username, uniqueness: true
 
-  # validate :validate_phone_for_hc_user
-
   ROLE_ADMIN  = 'Admin'
   ROLE_NORMAL = 'Normal'
 
@@ -36,6 +34,12 @@ class User < ActiveRecord::Base
     if self.place.is_kind_of_hc? && !self.phone.present?
       errors.add(:phone, "Health Center user must has a phone number")
     end
+  end
+
+  def self.search phone
+    @users = where("1=1")
+    @users = where(["phone LIKE ?", "%#{phone}%"]) unless phone.blank?
+    @users
   end
 
   def self.by_place place_id
