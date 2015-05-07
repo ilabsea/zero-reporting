@@ -24,7 +24,7 @@ class UsersController < ApplicationController
     @user.password_confirmation = params[:user][:password_confirmation]
 
     if(@user.save)
-      redirect_to  users_path(place_id: @user.place_id), notice: 'User has been created successfully'
+      redirect_to  users_with_ref_path(@user.place_id), notice: 'User has been created successfully'
     else
       flash.now[:alert] = 'Failed to save user'
       render :new
@@ -38,7 +38,7 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     if @user.update_attributes(filter_params)
-      redirect_to users_path(place_id: @user.place_id), notice: 'User has been updated successfully'
+      redirect_to users_with_ref_path(@user.place_id), notice: 'User has been updated successfully'
     else
       flash.now[:alert] = 'Failed to update user'
       render :edit
@@ -50,9 +50,9 @@ class UsersController < ApplicationController
     place_id = @user.place_id
 
     if @user.destroy
-      redirect_to users_path(place_id: place_id), notice: 'User has been deleted'
+      redirect_to users_with_ref_path(place_id), notice: 'User has been deleted'
     else
-      redirect_to users_path(place_id: place_id), alert: 'Failed to remove users'
+      redirect_to users_with_ref_path(place_id), alert: 'Failed to remove users'
     end
   end
 
@@ -84,6 +84,10 @@ class UsersController < ApplicationController
   end
 
   private
+
+  def users_with_ref_path(place_id)
+    users_path(place_id: place_id)
+  end
 
   def filter_params
     params.require(:user).permit(:username, :name, :email, :phone, :place_id  )

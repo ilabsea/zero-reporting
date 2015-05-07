@@ -48,21 +48,10 @@ module ApplicationHelper
 
   def breadcrumb_str options
     items = []
-    char_sep = "&raquo;".html_safe
-    if( !options.nil?  && options.size != 0)
-      items <<  content_tag(:li , :class => "active") do
-        link_home("Home", root_path) + content_tag(:span, char_sep, :class => "divider")
-      end
+    if(!options.blank?)
+      items <<  content_tag(:li, link_home("Home", root_path) , :class => "active")
       options.each do |option|
-        option.each do |key, value|
-          if value
-          items << content_tag(:li) do
-            link_to(key, value) + content_tag(:span, char_sep, :class => "divider")
-          end
-          else
-            items << content_tag(:li, key, :class =>"active")
-          end
-        end
+        items << breadcrumb_node(option.first)
       end
     else
       icon = content_tag "i", " ", :class => "icon-user  icon-home"
@@ -71,22 +60,28 @@ module ApplicationHelper
     items.join("").html_safe
   end
 
-  def page_header title, options={},  &block
-     content_tag :div,:class => "list-header clearfix" do
-        if block_given?
-            content_title = content_tag :div, :class => "left" do
-              content_tag(:h3, title, :class => "header-title")
-            end
+  def breadcrumb_node option
+    key = option[0]
+    value = option[1]
+    value ? content_tag(:li){ link_to(key, value)} : content_tag(:li, key, :class =>"active")
+  end
 
-            output = with_output_buffer(&block)
-            content_link = content_tag(:div, output, {:class => " right"})
-            content_title + content_link
-        else
-            content_tag :div , :class => "" do
-               content_tag(:h3, title, :class => "header-title")
-            end
+  def page_header title, options={},  &block
+    content_tag :div,:class => "list-header clearfix" do
+      if block_given?
+        content_title = content_tag :div, :class => "left" do
+          content_tag(:h3, title, :class => "header-title")
         end
-     end
+
+        output = with_output_buffer(&block)
+        content_link = content_tag(:div, output, {:class => " right"})
+        content_title + content_link
+      else
+        content_tag :div , :class => "" do
+          content_tag(:h3, title, :class => "header-title")
+        end
+      end
+    end
   end
 
   def email_template_params_for selector
@@ -150,14 +145,9 @@ module ApplicationHelper
       item = link_to("#{place.my_type} - #{place.name} (#{place.code})", "#", class: "tree-node #{selected_class}", data: {id: place.id})
       item += content_tag(:ul, children_tree_for(children)) if children.size > 0
 
-      if !place.parent || place.id == params[:place_id].to_i
-        expanded_class = 'active'
-      else
-        expanded_class = ''
-      end
-
+      expanded_class = (!place.parent || place.id == params[:place_id].to_i) ? 'active' : ''
       content_tag(:li, item, class: "tree-node-wrapper #{expanded_class}")
-
+      
     end.join('').html_safe
   end
 
