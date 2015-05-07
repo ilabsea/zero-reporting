@@ -21,6 +21,7 @@ Rails.application.routes.draw do
       get 'profile'
       put 'change_profile'
       get 'by_place'
+      get 'search'
     end
 
     member do

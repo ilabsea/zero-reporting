@@ -15,12 +15,11 @@ function newUser(){
       setNotification("alert", "Please select place to for this user");
       return false
     }
-    var url = "users/new?place_id=" + placeId
+    var url = "/users/new?place_id=" + placeId
     window.location.href = url
     return false
   })
 }
-
 
 function nodeClick(){
   $(".tree-node").on('click', function(){
@@ -29,12 +28,11 @@ function nodeClick(){
     $this.addClass("selected")
 
     updateSelected($this)
-    console.log($this.data())
     var placeId = $this.data().id
     showLoading("#user-list")
 
     $.ajax({
-      url: 'users/by_place',
+      url: '/users/by_place',
       data: {place_id: placeId},
       success: function(response){
         $("#user-list").html(response)
@@ -68,7 +66,7 @@ function editTree() {
       setNotification("alert", "Please select place to edit");
       return false
     }
-    var url = "places/" + placeId + "/edit"
+    var url = "/places/" + placeId + "/edit"
     window.location.href = url
   })
 }
@@ -85,7 +83,7 @@ function destroyTree(){
       return false;
     }
 
-    var url = "places/" + placeId
+    var url = "/places/" + placeId
     $this = $(this)
     $this.attr("href", url)
   })
@@ -94,18 +92,7 @@ function destroyTree(){
 function newTree(){
   $(".new-tree").on('click', function(){
     var placeId = selectedNode().data().id
-    var url = "places/new?parent_id=" + placeId
+    var url = "/places/new?parent_id=" + placeId
     window.location.href = url
   })
 }
-
-
-
-
-
-
-
-
-
-
-

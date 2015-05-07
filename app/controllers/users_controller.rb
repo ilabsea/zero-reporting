@@ -3,6 +3,11 @@ class UsersController < ApplicationController
     @users = User.by_place(params[:place_id])
   end
 
+  def search
+    @users = User.search(params[:phone])
+    render :index
+  end
+
   def by_place
     @users = User.by_place(params[:place_id])
     render layout: false
