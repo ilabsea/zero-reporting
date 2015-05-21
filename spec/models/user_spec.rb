@@ -46,4 +46,31 @@ RSpec.describe User, :type => :model do
     end
   end
 
+  describe User, '.hc_worker?' do
+    context 'User from HC match phone_number' do
+      it "return true" do
+        hc = create(:hc)
+        user = create(:user, phone: '0975553553', place: hc)
+        expect(User.hc_worker?('855975553553')).to eq(true)
+      end
+    end
+
+    context 'User not from HC not match phone_number' do
+      it "return false" do
+        hc = create(:hc)
+        user = create(:user, phone: '0975555555', place: hc)
+        expect(User.hc_worker?('855975553553')).to eq(false)
+      end
+    end
+
+    context 'User not from HC match phone_number' do
+      it "return false" do
+        phd = create(:phd)
+        user = create(:user, phone: '0975555555', place: phd)
+        expect(User.hc_worker?('855975555555')).to eq(false)
+      end
+    end
+
+  end
+
 end

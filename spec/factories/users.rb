@@ -4,7 +4,7 @@ FactoryGirl.define do
     password "1234567"
     name "Reminder"
     sequence(:phone) {|n| "012012345#{n}"}
-    place { create(:place, )}
+    place { create(:phd)}
   end
 
 end

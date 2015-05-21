@@ -16,6 +16,9 @@
 
 //= require bootstrap-treenav
 //= require tmpl
+//= require jquery.control-key-.1.0
+
+//= require setting/form
 
 //= require shared/alert-animate
 //= require shared/hidden-content
@@ -23,5 +26,7 @@
 //= require shared/tree-init
 //= require shared/notification
 //= require shared/loading
+//= require shared/collasable-link
+//= require shared/key-input
 
 //= require member/action

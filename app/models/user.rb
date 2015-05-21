@@ -2,6 +2,7 @@ class User < ActiveRecord::Base
   has_secure_password(validations: false)
 
   belongs_to :place
+  has_many :reports
 
   # password must be present within 6..72
   validates :place_id, presence: true
@@ -15,6 +16,7 @@ class User < ActiveRecord::Base
   validates :email, uniqueness: true, if: ->(u) { u.email.present? }
 
   validates :phone, uniqueness: true, if: ->(u) { u.phone.present? }
+
   validates :phone, presence: {message: "Health Center user must has a phone number"}, if: ->(u) { u.place && u.place.is_kind_of_hc?}
 
   validates :name, presence: true
@@ -25,16 +27,9 @@ class User < ActiveRecord::Base
   ROLE_ADMIN  = 'Admin'
   ROLE_NORMAL = 'Normal'
 
-  before_save :clean_user_name
+  before_save :normalize_attrs
 
   attr_accessor :old_password
-
-
-  def validate_phone_for_hc_user
-    if self.place.is_kind_of_hc? && !self.phone.present?
-      errors.add(:phone, "Health Center user must has a phone number")
-    end
-  end
 
   def self.search phone
     @users = where("1=1")
@@ -50,9 +45,11 @@ class User < ActiveRecord::Base
     users
   end
 
-  def clean_user_name
+  def normalize_attrs
     self.role = User::ROLE_NORMAL unless self.role.present?
     self.username.downcase!
+
+    self.phone_without_prefix = Tel.new(self.phone).without_prefix if self.phone.present?
   end
 
   def self.authenticate(username, password)
@@ -79,6 +76,12 @@ class User < ActiveRecord::Base
       errors.add(:old_password, 'does not matched')
       false
     end
+  end
+
+  def self.hc_worker? phone_number
+    phone_without_prefix = Tel.new(phone_number).without_prefix
+    user = User.find_by(phone_without_prefix: phone_without_prefix)
+    !user.nil? && user.place && user.place.is_kind_of_hc?
   end
 
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150506042730) do
+ActiveRecord::Schema.define(version: 20150521091126) do
 
   create_table "places", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -24,19 +24,45 @@ ActiveRecord::Schema.define(version: 20150506042730) do
 
   add_index "places", ["ancestry"], name: "index_places_on_ancestry", using: :btree
 
+  create_table "reports", force: :cascade do |t|
+    t.string   "phone_number", limit: 255
+    t.integer  "user_id",      limit: 4
+    t.string   "audio",        limit: 255
+    t.boolean  "listened",     limit: 1
+    t.datetime "called_at"
+    t.integer  "call_log_id",  limit: 4
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  add_index "reports", ["user_id"], name: "index_reports_on_user_id", using: :btree
+
+  create_table "settings", force: :cascade do |t|
+    t.string   "var",        limit: 255,   null: false
+    t.text     "value",      limit: 65535
+    t.integer  "thing_id",   limit: 4
+    t.string   "thing_type", limit: 30
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "settings", ["thing_type", "thing_id", "var"], name: "index_settings_on_thing_type_and_thing_id_and_var", unique: true, using: :btree
+
   create_table "users", force: :cascade do |t|
-    t.string   "username",        limit: 255
-    t.string   "name",            limit: 255
-    t.string   "password_digest", limit: 255
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
-    t.string   "email",           limit: 255
-    t.string   "phone",           limit: 255
-    t.string   "role",            limit: 255
-    t.integer  "place_id",        limit: 4
+    t.string   "username",             limit: 255
+    t.string   "name",                 limit: 255
+    t.string   "password_digest",      limit: 255
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+    t.string   "email",                limit: 255
+    t.string   "phone",                limit: 255
+    t.string   "role",                 limit: 255
+    t.integer  "place_id",             limit: 4
+    t.string   "phone_without_prefix", limit: 255
   end
 
   add_index "users", ["place_id"], name: "index_users_on_place_id", using: :btree
 
+  add_foreign_key "reports", "users"
   add_foreign_key "users", "places"
 end

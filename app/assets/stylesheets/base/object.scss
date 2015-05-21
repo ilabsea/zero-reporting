@@ -256,3 +256,34 @@ td:last-child{
       width: 200px;
     }
 }
+
+
+.vb{
+  border-radius: 50%;
+  display: inline-block;
+  height: 18px;
+  width: 18px;
+}
+
+.vb-green {
+  background: green none repeat scroll 0 0;
+}
+
+.vb-red {
+  background: red none repeat scroll 0 0;
+}
+
+.color-green {
+  color: green;
+}
+.color-red {
+  color: red;
+}
+.connection {
+  font-size: 18px;
+  display:block;
+  text-decoration: none;
+  &:hover, &:active, &:visited {
+    text-decoration: none !important;
+  }
+}

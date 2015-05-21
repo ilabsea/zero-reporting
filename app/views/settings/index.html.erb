@@ -1,0 +1,19 @@
+<%= breadcrumb [ {"Settings" => nil} ] %>
+<div>
+  <div style='padding: 15px 0px;'>
+
+    <a href='#' class='collasable-link connection'>
+      <% if Setting[:verboice_token].blank? %>
+        <span class='vb-status vb-red'> </span> <span class='color-red'> Not Connected </span>
+      <% else %>
+        <span class='vb vb-green'> </span> <span class='color-green'> Connected </span>
+      <% end %>
+    </a>
+
+    <div class='collasable-container' style='margin-top: 20px;'>
+      <%= render 'connection' %>
+    </div>
+
+  </div>
+
+</div>
