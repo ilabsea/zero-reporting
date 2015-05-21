@@ -1,0 +1,18 @@
+<%= form_tag verboice_path, class: 'form form-inline', method: :put do %>
+  <div class='input-row'>
+    <%= label_tag :email %>
+    <%= text_field_tag :email, Setting[:verboice_email], class: 'form-control', autocomplete: :off %>
+  </div>
+
+  <div class='input-row'>
+    <%= label_tag :password %>
+    <%= password_field_tag :password, '', class: 'form-control', autocomplete: :off %>
+  </div>
+
+  <div class='input-row'>
+    <label></label>
+    <%=button_tag 'Connect', class: 'btn btn-primary' %>
+  </div>
+<% end %>
+
+

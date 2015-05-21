@@ -29,14 +29,17 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :phds do
-    member do
-      get 'od_list'
-    end
-  end
+  resources :settings, only: [:index]
+  put 'update_settings' => 'settings#update_settings'
 
-  resources :ods
-  resources :members
+  put 'verboice' => 'settings#verboice'
+  get 'schedules' => 'settings#schedules'
+  get 'external' => 'settings#external'
+
+  get '/steps/manifest' => 'steps#manifest', defaults: { format: :xml }
+  get '/steps/validate_hc_worker' => 'steps#validate_hc_worker'
+
+
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

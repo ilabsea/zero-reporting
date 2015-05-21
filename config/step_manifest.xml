@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<verboice-service>
+  <name>Insurance Reminder</name>
+  <global-settings>
+    <variable name="service_domain" display-name="Service Domain" type="string"/>
+  </global-settings>
+  <steps>
+    <step name="validate_hc_worker"
+      display-name="HC Worker"
+      icon="medicalkit"
+      type="callback"
+      callback-url="http://{service_domain}/steps/validate_hc_worker">
+      <settings/>
+
+      <response type="variables">
+        <variable name="result" display-name="Result" type="string"/>
+      </response>
+
+    </step>
+  </steps>
+</verboice-service>
