@@ -13,7 +13,9 @@ Rails.application.routes.draw do
   resources :sessions, only: [:index, :create, :destroy]
 
   resources :places do
-    
+    collection do
+      get 'ods_list'
+    end
   end
 
   resources :users do
@@ -38,6 +40,8 @@ Rails.application.routes.draw do
 
   get '/steps/manifest' => 'steps#manifest', defaults: { format: :xml }
   get '/steps/validate_hc_worker' => 'steps#validate_hc_worker'
+
+  resources :reports, only: [:index]
 
 
 

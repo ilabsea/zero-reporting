@@ -45,6 +45,10 @@ class PlacesController < ApplicationController
 
   end
 
+  def ods_list
+    render json: Place.ods_list(params[:phd_id])
+  end
+
   private
 
   def places_with_ref_path place_id

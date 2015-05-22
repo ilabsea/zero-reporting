@@ -35,4 +35,18 @@ class Place < ActiveRecord::Base
   def is_kind_of_hc?
     self.kind_of == Place::PLACE_TYPE_HC
   end
+
+  def self.phds
+    where([ "kind_of = ? AND ancestry is NULL ", Place::PLACE_TYPE_PHD ] )
+  end
+
+  def self.phds_list
+    self.phds.pluck(:name, :id)
+  end
+
+  def self.ods_list(phd_id=nil)
+    ods = where(["kind_of = ?", Place::PLACE_TYPE_OD])
+    ods = ods.where(["ancestry = ?", phd_id]) if phd_id.present?
+    ods.pluck(:name, :id)
+  end
 end
