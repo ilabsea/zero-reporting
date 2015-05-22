@@ -17,6 +17,7 @@
 //= require bootstrap-treenav
 //= require tmpl
 //= require jquery.control-key-.1.0
+//= require bootstrap-datepicker
 
 //= require setting/form
 
@@ -28,5 +29,7 @@
 //= require shared/loading
 //= require shared/collasable-link
 //= require shared/key-input
+//= require shared/datepicker
 
 //= require member/action
+//= require report/filter-form
