@@ -10,7 +10,10 @@
       icon="medicalkit"
       type="callback"
       callback-url="http://{service_domain}/steps/validate_hc_worker">
-      <settings/>
+
+      <settings>
+        <variable name="value" display-name="Variable" type="numeric"/>
+      </settings>
 
       <response type="variables">
         <variable name="result" display-name="Result" type="string"/>

@@ -199,11 +199,17 @@ td:last-child{
   min-width: 320px;
   padding: 5px 10px;
   @include border-radius(3px);
+
   .bs-callout-danger {
-    color: red;
+    .glyphicon {
+      color: red;
+    }
   }
+
   .bs-callout-info {
-    color: green;
+    .glyphicon{
+      color: green;
+    }
   }
 
   .bs-callout {
