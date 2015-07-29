@@ -1,3 +1,4 @@
+<%= breadcrumb [ {"Profile" => nil}] %>
 <%= simple_form_for :user, { url: change_profile_users_path, method: :put, html: { class: 'form-inline form'} } do |f| %>
 
   <%=f.input :old_password, required: true, label: 'Old Password', 

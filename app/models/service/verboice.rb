@@ -27,8 +27,38 @@ class Service::Verboice
     get('/call_flows')
   end
 
+  def call_log(id)
+    get("/call_logs/#{id}")
+  end
+
+  def call_log_audio(report)
+    url = build_url("/call_logs/#{report.call_log_id}/play_audio?key=#{report.audio_key}")
+
+    audio_file = File.open report.audio_data_path, 'wb'
+    request = Typhoeus::Request.new(url, method: :get, params: auth_params )
+
+    request.on_headers do |response|
+      if response.code != 200
+        raise "Request failed"
+      end
+    end
+
+    request.on_body do |chunk|
+      audio_file.write(chunk)
+    end
+
+    request.on_complete do |response|
+      audio_file.close
+    end
+    request.run
+  end
+
   def schedules(project_id)
     get("/projects/#{project_id}/schedules")
+  end
+
+  def project_variables(project_id)
+    get("/project_variables?project_id=#{project_id}")
   end
 
   private

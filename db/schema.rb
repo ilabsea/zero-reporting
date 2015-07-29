@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150521091126) do
+ActiveRecord::Schema.define(version: 20150729034845) do
 
   create_table "places", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -25,14 +25,24 @@ ActiveRecord::Schema.define(version: 20150521091126) do
   add_index "places", ["ancestry"], name: "index_places_on_ancestry", using: :btree
 
   create_table "reports", force: :cascade do |t|
-    t.string   "phone_number", limit: 255
-    t.integer  "user_id",      limit: 4
-    t.string   "audio",        limit: 255
-    t.boolean  "listened",     limit: 1
+    t.string   "phone",                limit: 255
+    t.integer  "user_id",              limit: 4
+    t.string   "audio_key",            limit: 255
+    t.boolean  "listened",             limit: 1
     t.datetime "called_at"
-    t.integer  "call_log_id",  limit: 4
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.integer  "call_log_id",          limit: 4
+    t.datetime "created_at",                                         null: false
+    t.datetime "updated_at",                                         null: false
+    t.string   "phone_without_prefix", limit: 255
+    t.integer  "phd_id",               limit: 4
+    t.integer  "od_id",                limit: 4
+    t.string   "status",               limit: 255
+    t.float    "duration",             limit: 24
+    t.datetime "started_at"
+    t.integer  "call_flow_id",         limit: 4
+    t.text     "recorded_audios",      limit: 65535
+    t.boolean  "has_audio",            limit: 1,     default: false
+    t.boolean  "delete_status",        limit: 1,     default: false
   end
 
   add_index "reports", ["user_id"], name: "index_reports_on_user_id", using: :btree

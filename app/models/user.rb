@@ -1,3 +1,24 @@
+# == Schema Information
+#
+# Table name: users
+#
+#  id                   :integer          not null, primary key
+#  username             :string(255)
+#  name                 :string(255)
+#  password_digest      :string(255)
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  email                :string(255)
+#  phone                :string(255)
+#  role                 :string(255)
+#  place_id             :integer
+#  phone_without_prefix :string(255)
+#
+# Indexes
+#
+#  index_users_on_place_id  (place_id)
+#
+
 class User < ActiveRecord::Base
   has_secure_password(validations: false)
 
@@ -48,7 +69,6 @@ class User < ActiveRecord::Base
   def normalize_attrs
     self.role = User::ROLE_NORMAL unless self.role.present?
     self.username.downcase!
-
     self.phone_without_prefix = Tel.new(self.phone).without_prefix if self.phone.present?
   end
 

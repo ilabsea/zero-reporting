@@ -6,7 +6,7 @@ class SettingsController < ApplicationController
   end
 
   def update_settings
-    [:project, :channel, :call_flow].each do |key|
+    [:project, :project_variable].each do |key|
       Setting[key] = params[key]
     end
     redirect_to settings_path, notice: 'Setting has been saved'
@@ -26,22 +26,20 @@ class SettingsController < ApplicationController
     end
   end
 
-  def schedules
-    render json: get_schedules(params[:project])
+  def project_variables
+    render json: get_project_variables(params[:project])
   end
 
-  def get_schedules(project_id)
-    Service::Verboice.connect(Setting).schedules(project_id)
+  def get_project_variables(project_id)
+    project_id.present? ? Service::Verboice.connect(Setting).project_variables(project_id) : []
   end
 
   def verboice_parameters
-    result = { channels: [], projects: [], call_flows: [], schedules: [] }
+    result = {projects: [], project_variables: [] }
 
     begin
-      result[:channels]   = Service::Verboice.connect(Setting).channels
       result[:projects]   = Service::Verboice.connect(Setting).projects
-      result[:call_flows] = Service::Verboice.connect(Setting).call_flows
-      result[:schedules]  = get_schedules(Setting[:project]) unless Setting[:project].blank?
+      result[:project_variables]  = get_project_variables(Setting[:project])
     rescue JSON::ParserError
       flash.now.alert = " Failed to fetch some data from verboice"
     end

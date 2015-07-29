@@ -2,14 +2,14 @@
 
 <div class='form-box' style='margin-top: 100px;'>
   <%= form_tag sessions_path, role: 'form', class: '' do %>
+    <h3><%=ENV['APP_NAME']%> </h3>
+    <br />
     <div class='input-row'>
-      <%= label_tag :username %>
-      <%= text_field_tag :username, params[:username], class: 'form-control', placeholder: '' %>
+      <%= text_field_tag :username, params[:username], class: 'form-control', placeholder: 'Username' %>
     </div>
     
     <div class='input-row'>
-      <%= label_tag :password %>
-      <%= password_field_tag :password, '', class: 'form-control', placeholder: '' %>
+      <%= password_field_tag :password, '', class: 'form-control', placeholder: 'Password' %>
     </div>
     
 

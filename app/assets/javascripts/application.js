@@ -18,6 +18,7 @@
 //= require tmpl
 //= require jquery.control-key-.1.0
 //= require bootstrap-datepicker
+//= require audiojs
 
 //= require setting/form
 
@@ -30,6 +31,7 @@
 //= require shared/collasable-link
 //= require shared/key-input
 //= require shared/datepicker
+//= require shared/audio-init
 
 //= require member/action
 //= require report/filter-form

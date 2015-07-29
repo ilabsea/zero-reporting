@@ -3,14 +3,13 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'sessions#new'
+  root 'reports#index'
 
   get 'sign_in' => 'sessions#new'
   delete 'sign_out' => 'sessions#destroy'
 
-  get 'home' => 'home#index'
-
   resources :sessions, only: [:index, :create, :destroy]
+  resources :verboice_callbacks, only: [:index]
 
   resources :places do
     collection do
@@ -35,13 +34,18 @@ Rails.application.routes.draw do
   put 'update_settings' => 'settings#update_settings'
 
   put 'verboice' => 'settings#verboice'
-  get 'schedules' => 'settings#schedules'
+  get 'project_variables' => 'settings#project_variables'
   get 'external' => 'settings#external'
 
   get '/steps/manifest' => 'steps#manifest', defaults: { format: :xml }
   get '/steps/validate_hc_worker' => 'steps#validate_hc_worker'
 
-  resources :reports, only: [:index]
+  resources :reports, only: [:index, :destroy] do
+    member do
+      get :play_audio
+      put :toggle_status
+    end
+  end
 
 
 

@@ -10,7 +10,7 @@ module ApplicationHelper
   end
 
   def paginate_for(records)
-    content_tag :div, paginate(records), class: 'paginate-nav'
+    content_tag :div, paginate(records, theme: 'twitter-bootstrap-3'), class: 'paginate-nav'
   end
 
   def errors_for(record)
@@ -139,20 +139,20 @@ module ApplicationHelper
     link_to icon+text, url, options, &block
   end
 
-  def children_tree_for places
+  def children_tree_for places, active_place_id=nil
     places.map do |place, children|
-      selected_class = (place.id == params["place_id"].to_i ? 'selected' : '')
+      selected_class = (place.id == active_place_id.to_i ? 'selected' : '')
       item = link_to("#{place.my_type} - #{place.name} (#{place.code})", "#", class: "tree-node #{selected_class}", data: {id: place.id})
-      item += content_tag(:ul, children_tree_for(children)) if children.size > 0
+      item += content_tag(:ul, children_tree_for(children, active_place_id)) if children.size > 0
 
-      expanded_class = (!place.parent || place.id == params[:place_id].to_i) ? 'active' : ''
+      expanded_class = (!place.parent || place.id == active_place_id.to_i) ? 'active' : ''
       content_tag(:li, item, class: "tree-node-wrapper #{expanded_class}")
       
     end.join('').html_safe
   end
 
-  def tree_for places
-    if !params[:place_id].present?
+  def tree_for places, active_place_id=nil
+    if !active_place_id.present?
       active_root = 'active'
       selected_class = 'selected'
     else
@@ -161,7 +161,7 @@ module ApplicationHelper
     end
 
     content_tag(:li, class: "tree-node-wrapper #{active_root}", id: 'tree-root') do
-      link_to("Cambodia", '#', class: "tree-node #{selected_class}", data: {id: ''}) + content_tag(:ul, children_tree_for(places))
+      link_to("Cambodia", '#', class: "tree-node #{selected_class}", data: {id: ''}) + content_tag(:ul, children_tree_for(places, active_place_id))
     end
   end
 

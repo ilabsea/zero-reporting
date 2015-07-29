@@ -27,6 +27,7 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'bootstrap-sass'
 gem 'email_validator'
 gem 'kaminari'
+gem 'bootstrap-kaminari-views'
 gem 'ancestry'
 
 # Use Unicorn as the app server
@@ -37,6 +38,7 @@ gem 'ancestry'
 gem 'simple_form'
 gem 'rails-settings-cached'
 gem 'typhoeus'
+gem 'audiojs-rails'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -52,6 +54,7 @@ group :development, :test do
   
   gem 'rspec-rails', '~> 3.0'
   gem 'spring-commands-rspec'
+  gem 'annotate'
 
 end
 

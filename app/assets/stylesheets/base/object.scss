@@ -22,7 +22,7 @@ form {
 }
 
 .input-row {
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 label.inline {
@@ -52,8 +52,8 @@ label.inline {
 }
 
 .input-row-close{
-  margin-top: -15px;
-  margin-bottom: 15px;
+  margin-top: -10px;
+  margin-bottom: 10px;
 }
 .keyword-highlight {
   background: none repeat scroll 0 0 activecaption;
@@ -292,4 +292,8 @@ td:last-child{
   &:hover, &:active, &:visited {
     text-decoration: none !important;
   }
+}
+.report-status {
+  width: 24px;
+  height: 24px;
 }

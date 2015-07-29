@@ -1,7 +1,27 @@
 $(function(){
   initFilterForm()
+  updateReportStatus()
 })
 
+
+function updateReportStatus() {
+  $('.report-status').on('change', function(){
+    var _self = this
+    var report_id = _self.value
+    var url = "/reports/" + report_id + "/toggle_status"
+    $.ajax({
+      method: 'PUT',
+      url: url,
+      success: function(){
+        setNotification('notice', "Status updated")
+      },
+      error: function(){
+        _self.checked = !_self.checked
+        setNotification('alert', "Failed to update")
+      }
+    })
+  })
+}
 
 function initFilterForm(){
   $("#phd").on('change', function(){
