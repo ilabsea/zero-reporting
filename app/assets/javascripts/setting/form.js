@@ -35,28 +35,19 @@ function handleProjectChange(){
   $("#project").on('change', function(){
     $this = $(this);
     var project_id = $this.val()
-
-    var project_call_flows = $.grep(call_flows, function(call_flow, index){
-        if( call_flow.project_id == project_id)
-          return call_flow
-    })
-
-    update_select('#call_flow', project_call_flows)
     setNotification("Info", "Connecting to server")
 
     $.ajax({
       method: 'GET',
       dataType: 'json',
-      url: '/schedules',
+      url: '/project_variables',
       data: {project: project_id},
       success: function(response){
-        window.schedules = response
-        update_select('#schedule', schedules)
-        setNotification("notice", "Retrieved schedule successfully")
+        update_select('#project_variable', response)
+        setNotification("notice", "Retrieved project variable successfully")
       },
       error: function(){
-        window.schedules = []
-        update_select('#schedule', schedules)
+        update_select('#project_variable', [])
         setNotification("alert", "Failed to retrieved schedules, make sure you are able to connect to Verboice")
       }
     })

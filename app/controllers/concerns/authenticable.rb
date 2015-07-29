@@ -6,9 +6,7 @@ module Authenticable
   end
 
   def current_user
-    if user_signed_in?
-      @current_user ||= User.find(session[:user_id])
-    end
+    @current_user ||= User.find(session[:user_id]) if session[:user_id].present?
   end
 
   def authenticate_user!
@@ -18,7 +16,7 @@ module Authenticable
   end
 
   def after_signed_in_path_for(user=nil)
-    return home_path
+    return root_path
   end
 
   def after_signed_out_path_for(user=nil)
@@ -26,7 +24,7 @@ module Authenticable
   end
 
   def user_signed_in?
-    session[:user_id].present?
+    current_user
   end
 
   def sign_in(user)

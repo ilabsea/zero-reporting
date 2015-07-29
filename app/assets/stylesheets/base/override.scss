@@ -1,0 +1,17 @@
+.audiojs {
+  width: 24px !important;
+  @include border-radius(5px);
+
+  .play {
+    background-position: -8px -1px !important;
+  }
+  .pause{
+    background-position: -8px -91px !important;
+  }
+  .error {
+    background-position: -8px -61px !important;
+  }
+  .loading {
+    background-position: -8px -31px !important;
+  }
+}

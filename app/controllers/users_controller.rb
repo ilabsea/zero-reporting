@@ -1,10 +1,12 @@
 class UsersController < ApplicationController
   def index
-    @users = User.by_place(params[:place_id])
+    @place_id = params[:place_id]
+    @users = User.by_place(@place_id)
   end
 
   def search
     @users = User.search(params[:phone])
+    @place_id = @users.first.place_id if @users.length == 1
     render :index
   end
 

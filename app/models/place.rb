@@ -1,3 +1,20 @@
+# == Schema Information
+#
+# Table name: places
+#
+#  id         :integer          not null, primary key
+#  name       :string(255)
+#  code       :string(255)
+#  kind_of    :string(255)
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  ancestry   :string(255)
+#
+# Indexes
+#
+#  index_places_on_ancestry  (ancestry)
+#
+
 class Place < ActiveRecord::Base
   has_ancestry(orphan_strategy: :destroy)
   has_many :users
@@ -34,6 +51,24 @@ class Place < ActiveRecord::Base
 
   def is_kind_of_hc?
     self.kind_of == Place::PLACE_TYPE_HC
+  end
+
+
+  def od
+    return nil if is_kind_of_phd?
+    return self if is_kind_of_od?
+    return self.parent if is_kind_of_hc?
+  end
+
+  def phd
+    return self if is_kind_of_phd?
+    return self.parent if is_kind_of_od?
+    return self.parent.parent if is_kind_of_hc?
+  end
+
+  def hc
+    return self if is_kind_of_hc?
+    nil
   end
 
   def self.phds

@@ -29,8 +29,8 @@
       </div>
 
       <div class='input-row col-lg-2'>
-        <%= label_tag :status, 'Status' %>
-        <%= select_tag :status, options_for_select(Report::STATUSES, params[:status]),
+        <%= label_tag :listened, 'Status' %>
+        <%= select_tag :listened, options_for_select([[ "Listened", 1], ["New", 0]], params[:listened]),
                        class: 'form-control', include_blank: "All" %>
       </div>
 

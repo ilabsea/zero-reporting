@@ -1,32 +1,42 @@
 <%= page_title "Call list" %>
 <%= render 'filter' %>
+
 <table class="table table-strip">
   <thead>
     <tr>
       <td>Date</td>
       <td>PHD</td>
       <td>OD</td>
-      <td>Number</td>
+      <td>Phone</td>
       <td>Name</td>
-      <td>Report Voice</td>
+      <td align="center">Report Voice</td>
       <td>Listened</td>
       <td>Action</td>
     </tr>
   </thead>
 
   <tbody>
-    <% @reports.each do |report| %>
+    <% @reports.each_with_index do |report, index| %>
       <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td> <%= report.called_at %></td>
+        <td> <%= link_to report.phd.send(:name), users_path(place_id: report.phd.send(:id)) %> </td>
+        <td> <%= link_to report.od.send(:name), users_path(place_id: report.od.send(:id)) %> </td>
+        <td> <%= report.phone %></td>
+        <td> <%= report.user.send(:name)%> </td>
+        <td align="center">
+          <%=content_tag :audio, nil, src: play_audio_report_path(report), preload: :none if report.audio_key.present? %>
+        </td>
+        <td> 
+          <%=check_box_tag(:listened, report.id, report.listened, class: 'report-status') if report.audio_key.present? %></td>
+        <td>
+          <%= link_to report_path(report), method: :delete, data: {confirm: 'Are you sure to delete ?'} do %>
+              <i class='glyphicon glyphicon-trash'> </i> Delete
+          <% end %>
+
+        </td>
       </tr>
     <% end %>
   </tbody>
-
 </table>
+
+<%= paginate_for(@reports) %>
