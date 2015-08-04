@@ -1,0 +1,34 @@
+<%= page_title "Dashboard" %>
+<%
+   labels = [false, :today, :this_week, :last_week, :last_2_weeks, :this_month, :this_year]
+   statuses = [0, 1, nil]
+%>
+
+<table class="table table-strip table-dashboard" >
+  <thead>
+    <tr>
+      <td> Report Period</td>
+      <td>Today</td>
+      <td>This Week</td>
+      <td>Last Week</td>
+      <td>Last 2 Weeks</td>
+      <td>This Month</td>
+      <td>This Year</td>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @dashboard.get_tabular.each_with_index do |row, index| %>
+    <tr>
+      <td> <%=row[0] %> </td>
+      <td> <%= dashboard_cell(row[1], :today, statuses[index]) %></td>
+      <td> <%= dashboard_cell(row[2], :this_week, statuses[index]) %> </td>
+      <td> <%= dashboard_cell(row[3], :last_week, statuses[index]) %> </td>
+      <td> <%= dashboard_cell(row[4], :last_2_weeks, statuses[index]) %> </td>
+      <td> <%= dashboard_cell(row[5], :this_month, statuses[index]) %> </td>
+      <td> <%= dashboard_cell(row[6], :this_year, statuses[index]) %> </td>
+    </tr>
+    <% end %>
+  </tbody>
+
+</table>
