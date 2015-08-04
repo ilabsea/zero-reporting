@@ -297,3 +297,22 @@ td:last-child{
   width: 24px;
   height: 24px;
 }
+
+.report-legend {
+  display: block;
+  @include border-radius(5px);
+  padding: 5px 10px;
+  background: #eee;
+  margin: 10px;
+  width: 100px;
+}
+.report-new {
+  // background: blue;
+  font-weight: bold;
+}
+.report-listened {
+  // background: #fef;
+}
+.report-total {
+  // background: green;
+}

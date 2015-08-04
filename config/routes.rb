@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
   resources :sessions, only: [:index, :create, :destroy]
   resources :verboice_callbacks, only: [:index]
+  resources :dashboards, only: [:index]
 
   resources :places do
     collection do
