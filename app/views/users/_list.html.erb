@@ -31,3 +31,4 @@
 <% else %>
   <p style='margin: 30px 0px;'> There is no user for this place </p>
 <% end %>
+<%= link_to 'New User', new_user_path(), class: 'new-user btn btn-primary btn-app' if params[:place_id].present? %>
