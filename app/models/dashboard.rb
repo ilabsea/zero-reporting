@@ -4,8 +4,8 @@ class Dashboard
     [
       {label: :today, from: Time.zone.now.beginning_of_day, to: Time.zone.now.end_of_day},
       {label: :this_week, from: Time.zone.now.beginning_of_week, to: Time.zone.now.end_of_week},
-      {label: :last_week, from: Time.zone.now.beginning_of_week - 7.days, to: Time.zone.now.end_of_week - 7.days},
-      {label: :last_2_weeks, from: Time.zone.now.beginning_of_week - 14.days, to: Time.zone.now.end_of_week - 14.days},
+      {label: :last_week, from: Time.zone.now.beginning_of_week - 1.week, to: Time.zone.now.end_of_week - 1.week },
+      {label: :last_2_weeks, from: Time.zone.now.beginning_of_week - 2.weeks, to: Time.zone.now.end_of_week - 1.weeks},
       {label: :this_month, from: Time.zone.now.beginning_of_month, to: Time.zone.now.end_of_month},
       {label: :this_year, from: Time.zone.now.beginning_of_year, to: Time.zone.now.end_of_year}
     ]
