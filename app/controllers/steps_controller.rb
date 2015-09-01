@@ -7,8 +7,9 @@ class StepsController < ApplicationController
   end
 
   def validate_hc_worker
-    result = User.hc_worker?(params[:CallSid]) ? 1 : 0
-    render text: "#{{result: result }.to_json}"
+    result = User.hc_worker?(params[:address]) ? 1 : 0
+    content = "{\"result\": \"#{result}\" }"
+    render text: content
   end
 
 end

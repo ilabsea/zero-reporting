@@ -39,7 +39,7 @@ Rails.application.routes.draw do
   get 'external' => 'settings#external'
 
   get '/steps/manifest' => 'steps#manifest', defaults: { format: :xml }
-  get '/steps/validate_hc_worker' => 'steps#validate_hc_worker'
+  post '/steps/validate_hc_worker' => 'steps#validate_hc_worker'
 
   resources :reports, only: [:index, :destroy] do
     member do
