@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150729034845) do
+ActiveRecord::Schema.define(version: 20150902091250) do
 
   create_table "places", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(version: 20150729034845) do
     t.text     "recorded_audios",      limit: 65535
     t.boolean  "has_audio",            limit: 1,     default: false
     t.boolean  "delete_status",        limit: 1,     default: false
+    t.text     "call_log_answers",     limit: 65535
   end
 
   add_index "reports", ["user_id"], name: "index_reports_on_user_id", using: :btree

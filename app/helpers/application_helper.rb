@@ -142,7 +142,7 @@ module ApplicationHelper
   def children_tree_for places, active_place_id=nil
     places.map do |place, children|
       selected_class = (place.id == active_place_id.to_i ? 'selected' : '')
-      item = link_to("#{place.my_type} - #{place.name} (#{place.code})", "#", class: "tree-node #{selected_class}", data: {id: place.id})
+      item = link_to("#{place.my_type} - #{place.name} (#{place.code})", users_path(place_id: place.id ), class: "tree-node #{selected_class}", data: {id: place.id})
       item += content_tag(:ul, children_tree_for(children, active_place_id)) if children.size > 0
 
       expanded_class = (!place.parent || place.id == active_place_id.to_i) ? 'active' : ''
@@ -161,7 +161,7 @@ module ApplicationHelper
     end
 
     content_tag(:li, class: "tree-node-wrapper #{active_root}", id: 'tree-root') do
-      link_to("Cambodia", '#', class: "tree-node #{selected_class}", data: {id: ''}) + content_tag(:ul, children_tree_for(places, active_place_id))
+      link_to("Cambodia", users_path, class: "tree-node #{selected_class}", data: {id: ''}) + content_tag(:ul, children_tree_for(places, active_place_id))
     end
   end
 
