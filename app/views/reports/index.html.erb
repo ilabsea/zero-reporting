@@ -19,10 +19,10 @@
     <% @reports.each_with_index do |report, index| %>
       <tr>
         <td> <%= report.called_at %></td>
-        <td> <%= link_to report.phd.send(:name), users_path(place_id: report.phd.send(:id)) %> </td>
-        <td> <%= link_to report.od.send(:name), users_path(place_id: report.od.send(:id)) %> </td>
+        <td> <%= link_to(report.phd.name, users_path(place_id: report.phd.try(:id))) %> </td>
+        <td> <%= link_to(report.od.name, users_path(place_id: report.od.try(:id))) %> </td>
         <td> <%= report.phone %></td>
-        <td> <%= report.user.send(:name)%> </td>
+        <td> <%= report.user.try(:name)%> </td>
         <td align="center">
           <%=content_tag :audio, nil, src: play_audio_report_path(report), preload: :none if report.audio_key.present? %>
         </td>
@@ -39,4 +39,6 @@
   </tbody>
 </table>
 
-<%= paginate_for(@reports) %>
+<div class="clearfix">
+  <%= paginate_for(@reports) %>
+</div>

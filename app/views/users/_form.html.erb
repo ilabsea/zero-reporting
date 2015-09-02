@@ -5,7 +5,7 @@
 
   <%=f.input :place_id, as: :hidden %>
   <%=f.input :username, label: 'Login', input_html: {class: 'form-control'} %>
-  <%=f.input :phone, label: 'Number', required: @user.place.is_kind_of_hc? ,input_html: {class: 'form-control'} %>
+  <%=f.input :phone, label: 'Phone Number', required: @user.place.is_kind_of_hc? ,input_html: {class: 'form-control'} %>
   <%=f.input :name, label: 'Full Name', input_html: {class: 'form-control'} %>
   <%=f.input :email, input_html: {class: 'form-control'} %>
 

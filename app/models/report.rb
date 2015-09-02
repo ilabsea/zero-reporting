@@ -21,14 +21,21 @@
 #  recorded_audios      :text(65535)
 #  has_audio            :boolean          default(FALSE)
 #  delete_status        :boolean          default(FALSE)
+#  call_log_answers     :text(65535)
 #
 # Indexes
 #
 #  index_reports_on_user_id  (user_id)
 #
+# Foreign Keys
+#
+#  fk_rails_34949b32e4  (user_id => users.id)
+#
 
 class Report < ActiveRecord::Base
   serialize :recorded_audios, Array
+  serialize :call_log_answers, Array
+
   belongs_to :user
 
   belongs_to :phd, class_name: 'Place', foreign_key: 'phd_id'
@@ -94,6 +101,7 @@ class Report < ActiveRecord::Base
       call_log_id: verboice_attrs[:id],
       call_flow_id: verboice_attrs[:call_flow_id],
       recorded_audios: verboice_attrs[:call_log_recorded_audios],
+      call_log_answers: verboice_attrs[:call_log_answers],
       listened: false
     }
 
@@ -101,6 +109,7 @@ class Report < ActiveRecord::Base
       if recorded_audio[:project_variable_id] == Setting[:project_variable].to_i
         attrs[:audio_key] = recorded_audio[:key]
         break
+      else
       end
     end
 

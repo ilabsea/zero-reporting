@@ -31,4 +31,9 @@
 <% else %>
   <p style='margin: 30px 0px;'> There is no user for this place </p>
 <% end %>
-<%= link_to 'New User', new_user_path(), class: 'new-user btn btn-primary btn-app' if params[:place_id].present? %>
+
+<%= link_to 'New User', new_user_path(place_id: params[:place_id]), class: 'new-user btn btn-primary btn-app' if params[:place_id].present? %>
+
+<div class='tree-content-paginate' >
+  <%= paginate_for(@users)%>
+</div>

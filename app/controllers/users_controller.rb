@@ -1,17 +1,20 @@
 class UsersController < ApplicationController
   def index
     @place_id = params[:place_id]
-    @users = User.by_place(@place_id)
+    @users = User.by_place(@place_id).page(params[:page])
+    p "ajax" if request.xhr?
+    render :by_place, layout: false if request.xhr?
+
   end
 
   def search
-    @users = User.search(params[:phone])
+    @users = User.search(params[:phone]).page(params[:page])
     @place_id = @users.first.place_id if @users.length == 1
     render :index
   end
 
   def by_place
-    @users = User.by_place(params[:place_id])
+    @users = User.by_place(params[:place_id]).page(params[:page])
     render layout: false
   end
 

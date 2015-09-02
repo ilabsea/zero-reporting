@@ -21,10 +21,15 @@
 #  recorded_audios      :text(65535)
 #  has_audio            :boolean          default(FALSE)
 #  delete_status        :boolean          default(FALSE)
+#  call_log_answers     :text(65535)
 #
 # Indexes
 #
 #  index_reports_on_user_id  (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_34949b32e4  (user_id => users.id)
 #
 
 FactoryGirl.define do

@@ -18,6 +18,10 @@
 #
 #  index_users_on_place_id  (place_id)
 #
+# Foreign Keys
+#
+#  fk_rails_8d340219ff  (place_id => places.id)
+#
 
 FactoryGirl.define do
   factory :user do
