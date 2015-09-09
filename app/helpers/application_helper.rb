@@ -192,4 +192,13 @@ module ApplicationHelper
     end
     result
   end
+
+  def mapping_variables(variables, project_variable)
+    variables.each do |variable|
+      return variable if variable.verboice_id == project_variable['id'] && variable.verboice_name == project_variable['name']
+    end
+    nil
+  end
+
+
 end

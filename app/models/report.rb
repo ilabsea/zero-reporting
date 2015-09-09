@@ -22,14 +22,11 @@
 #  has_audio            :boolean          default(FALSE)
 #  delete_status        :boolean          default(FALSE)
 #  call_log_answers     :text(65535)
+#  verboice_project_id  :integer
 #
 # Indexes
 #
 #  index_reports_on_user_id  (user_id)
-#
-# Foreign Keys
-#
-#  fk_rails_34949b32e4  (user_id => users.id)
 #
 
 class Report < ActiveRecord::Base
@@ -41,6 +38,10 @@ class Report < ActiveRecord::Base
   belongs_to :phd, class_name: 'Place', foreign_key: 'phd_id'
   belongs_to :od, class_name: 'Place', foreign_key: 'od_id'
 
+  has_many :report_variables
+  has_many :report_variable_audios
+  has_many :report_variable_values
+
 
   VERBOICE_CALL_STATUS_FAILED = 'failed'
   VERBOICE_CALL_STATUS_COMPLETE = 'complete'
@@ -51,7 +52,7 @@ class Report < ActiveRecord::Base
 
   def normalize_attrs
     self.phone_without_prefix = Tel.new(self.phone).without_prefix if self.phone.present?
-    if self.user
+    if self.user && self.user.place
       self.phd = self.user.place.phd
       self.od  = self.user.place.od
     end
@@ -94,6 +95,7 @@ class Report < ActiveRecord::Base
 
   def self.create_from_verboice_attrs verboice_attrs
     attrs = {
+      verboice_project_id: verboice_attrs[:project][:id],
       phone: verboice_attrs[:address],
       duration: verboice_attrs[:duration],
       called_at: verboice_attrs[:called_at],
@@ -113,9 +115,23 @@ class Report < ActiveRecord::Base
       end
     end
 
+    variables = Variable.where(verboice_project_id: verboice_attrs[:project][:id])
+
     attrs[:user] = User.find_by(phone_without_prefix: Tel.new(verboice_attrs[:address]).without_prefix)
     report = Report.where(call_log_id: attrs[:call_log_id]).first_or_initialize
+
+    verboice_attrs[:call_log_recorded_audios].each do |recorded_audio|
+      variable = variables.select{|variable| variable.verboice_id == recorded_audio[:project_variable_id]}.first
+      report.report_variable_audios.build( value: recorded_audio[:key], variable_id: variable.id) if variable
+    end
+
+    verboice_attrs[:call_log_answers].each do |call_log_answer|
+      variable = variables.select{|variable| variable.verboice_id == call_log_answer[:project_variable_id]}.first
+      report.report_variable_values.build(value: call_log_answer[:value], variable_id: variable.id) if variable
+    end
+
     report.update_attributes(attrs)
+    report
   end
 
   def audio_data_path

@@ -13,14 +13,18 @@
   </div>
 
 
-  <div class='input-row'>
+  <div class='input-row hidden'>
     <%= label_tag :project_variable %>
+
     <%= select_tag :project_variable,
                    options_for_select( @parameters[:project_variables].map{|p| [ p['name'], p['id'] ] }, Setting[:project_variable]),
                    include_blank: 'Select variable',
                    class: 'form-control s-width' %>
   </div>
 
+ <div id='setting-variables'>
+  <%= render 'variables', project_variables: @parameters[:project_variables], variables: @variables %>
+  </div>
 
   <div class='input-row'>
     <label> </label>

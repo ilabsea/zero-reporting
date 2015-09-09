@@ -3,6 +3,7 @@ $(function() {
   allowKeyInput($(".time"), /[0-9:]/);
   connectToVerboice();
   handleProjectChange()
+  handleProjectVariableChange()
 });
 
 function connectToVerboice() {
@@ -31,6 +32,15 @@ function connectToVerboice() {
   })
 }
 
+function handleProjectVariableChange(){
+  $(document.body).delegate('.project_variable', 'change', function(){
+    var $this = $(this)
+    var variable_name = this.options[this.selectedIndex].text
+    var $project_variable_name = $this.parent().find(".project_variable_name")
+    $project_variable_name.val(variable_name)
+  })
+}
+
 function handleProjectChange(){
   $("#project").on('change', function(){
     $this = $(this);
@@ -39,11 +49,11 @@ function handleProjectChange(){
 
     $.ajax({
       method: 'GET',
-      dataType: 'json',
       url: '/project_variables',
       data: {project: project_id},
       success: function(response){
-        update_select('#project_variable', response)
+        console.log(response)
+        $('#setting-variables').html(response)
         setNotification("notice", "Retrieved project variable successfully")
       },
       error: function(){

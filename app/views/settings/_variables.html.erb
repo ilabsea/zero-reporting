@@ -1,0 +1,17 @@
+<div class="input-row" style='padding: 10px 0px;'>
+  <label style='width: 18em !important;'> Local Variable Name </label>
+  <span> Verboice Veriable Name</span>
+</div>
+
+<% project_variables.each_with_index do |project_variable, index|%>
+  <div class='input-row'>
+    <%  variable = mapping_variables(variables, project_variable) %>
+
+    <%= text_field_tag "variable[#{index}]", variable.try(:name), class: 'form-control' %>
+    <%= select_tag "project_variable_id[#{index}]",
+                   options_for_select(project_variables.map{|p| [ p['name'], p['id'] ] }, variable.try(:verboice_id)),
+                   include_blank: '',
+                   class: 'form-control s-width project_variable' %>
+    <%= hidden_field_tag "project_variable_name[#{index}]", variable.try(:verboice_name), class: 'project_variable_name' %>
+  </div>
+<% end %>
