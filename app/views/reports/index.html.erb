@@ -9,6 +9,7 @@
       <td>OD</td>
       <td>Phone</td>
       <td>Name</td>
+      <td>Duration</td>
       <td align="center">Report Voice</td>
       <td>Listened</td>
       <td>Action</td>
@@ -19,10 +20,11 @@
     <% @reports.each_with_index do |report, index| %>
       <tr>
         <td> <%= report.called_at %></td>
-        <td> <%= link_to(report.phd.name, users_path(place_id: report.phd.try(:id))) %> </td>
-        <td> <%= link_to(report.od.name, users_path(place_id: report.od.try(:id))) %> </td>
+        <td> <%= link_to(report.phd.name, users_path(place_id: report.phd.try(:id))) if report.phd %> </td>
+        <td> <%= link_to(report.od.name, users_path(place_id: report.od.try(:id))) if report.od %> </td>
         <td> <%= report.phone %></td>
         <td> <%= report.user.try(:name)%> </td>
+        <td> <%= report.duration%> </td>
         <td align="center">
           <%=content_tag :audio, nil, src: play_audio_report_path(report), preload: :none if report.audio_key.present? %>
         </td>
