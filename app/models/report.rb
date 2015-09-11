@@ -42,6 +42,8 @@ class Report < ActiveRecord::Base
   has_many :report_variable_audios
   has_many :report_variable_values
 
+  has_many :variables, through: :report_variables
+
 
   VERBOICE_CALL_STATUS_FAILED = 'failed'
   VERBOICE_CALL_STATUS_COMPLETE = 'complete'

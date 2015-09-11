@@ -5,6 +5,8 @@ class ReportsController < ApplicationController
                      .includes(:phd, :od)
                      .order('id DESC')
                      .page(params[:page])
+
+    @variables = Variable.applied(Setting[:project])
   end
 
   def play_audio

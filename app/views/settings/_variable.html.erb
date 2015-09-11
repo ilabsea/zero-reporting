@@ -1,0 +1,55 @@
+<div class="panel panel-default" style="width: 600px;">
+
+  <div class="panel-head" style="padding: 10px; background: #d0d0d0;">
+    <a href='' class="clearfix variable-collapsable" style="display:block;" >
+      
+        <% if variable.new_record? %>
+           <div class="pull-left"> Add new variable mapping </div>
+           <div class="pull-right"> <i class='icon glyphicon glyphicon-plus'> </i> </div>
+        <% else %>
+           <div class="pull-left"> 
+              <%= variable.name %> 
+              <i class='glyphicon glyphicon-link'> </i>
+              <%= variable.verboice_name %>
+           </div>
+
+           <div class="pull-right">
+             <i class='icon glyphicon glyphicon-pencil'> </i>  
+             <i class='icon glyphicon glyphicon-trash'> </i>
+           </div>
+
+        <% end %>
+      
+    </a>
+  </div>
+
+
+  <div class="panel-body" style='border-top: 1px solid #eee; border-bottom: 1px solid #eee;'>
+    <%= form_for variable do |f| %>
+      <div class="clearfix">
+          <div class="pull-left" style='width: 45%; padding: 10px;'>
+            <%= f.label :name, 'Variable name' %> <br />
+            <%= f.text_field :name, class: 'form-control s-width' %>
+          </div>
+
+          <div class="pull-left" style='width: 10%; padding: 20px; padding-left: 30px; margin-top: 20px;' >
+            <i class='glyphicon glyphicon-link'> </i>
+          </div>
+
+          <div style='width: 45%; padding: 10px;' class="pull-left">
+            <%= f.label :verboice_id, 'Verboice variable' %> <br />
+            <%= f.select :verboice_id,
+                       project_variables.map{|p| [ p['name'], p['id'] ] },
+                       {include_blank: 'Select variable'}, {class: 'form-control s-width', id: 'sss'} %>
+          </div>
+      </div>
+
+      <div class="form-action" style="text-align: right; margin-top: 15px;">
+        <a href='#' class="btn btn-default"> Cancel </a>
+        <button type="button" class="btn btn-primary"> Save </button>
+      </div>
+
+    <% end %>
+  </div>
+
+</div>
