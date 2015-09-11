@@ -14,7 +14,13 @@
 
 class Variable < ActiveRecord::Base
   validates :verboice_id, uniqueness: {scope: :verboice_project_id }
-  
+
+  has_many :report_variables
+  has_many :reports, through: :report_variables
+
+  def self.applied(project_id)
+    where(verboice_project_id: project_id)
+  end
 
   def self.save_from_params params
     project_id = params[:project]
@@ -24,9 +30,15 @@ class Variable < ActiveRecord::Base
     verboice_names = params[:project_variable_name]
 
     variables.each do |index, name|
-      next if name.blank? or verboice_ids[index].blank?
+
       variable = Variable.where( verboice_id: verboice_ids[index],
                                  verboice_project_id: project_id).first_or_initialize
+
+      if variable.persisted? && (name.blank? or verboice_ids[index].blank?)
+        variable.destroy
+        next
+      end
+
       attrs = {
         name: name,
         description: name,

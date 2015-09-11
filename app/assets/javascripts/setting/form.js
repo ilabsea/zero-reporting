@@ -4,7 +4,20 @@ $(function() {
   connectToVerboice();
   handleProjectChange()
   handleProjectVariableChange()
+
+
+  variableCollapsable()
 });
+
+function variableCollapsable(){
+  $(".variable-collapsable").on('click', function(){
+    var $this = $(this)
+    $this.parent().parent().find(".panel-body").toggle()
+    return false
+  })
+}
+
+
 
 function connectToVerboice() {
   $("#btn-verboice-connect").on('click', function(){

@@ -316,3 +316,17 @@ td:last-child{
 .report-total {
   // background: green;
 }
+.gray {
+  color: gray;
+}
+
+.callout {
+  font-style: italic;
+}
+
+.icon {
+  background: cornflowerblue none repeat scroll 0 0;
+  @include border-radius(5px);
+  color: #fff;
+  padding: 7px;
+}

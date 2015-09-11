@@ -3,9 +3,9 @@
   <span> Verboice Veriable Name</span>
 </div>
 
-<% project_variables.each_with_index do |project_variable, index|%>
+<% project_variables.length.times.each do |index|%>
   <div class='input-row'>
-    <%  variable = mapping_variables(variables, project_variable) %>
+    <%  variable = mapping_variables(variables, project_variables[index]) %>
 
     <%= text_field_tag "variable[#{index}]", variable.try(:name), class: 'form-control' %>
     <%= select_tag "project_variable_id[#{index}]",

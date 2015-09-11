@@ -1,6 +1,8 @@
 <%= page_title "Call list" %>
 <%= render 'filter' %>
 
+<%= debug(@variables) %>
+
 <table class="table table-strip">
   <thead>
     <tr>
@@ -12,6 +14,10 @@
       <td>Duration</td>
       <td align="center">Report Voice</td>
       <td>Listened</td>
+
+      <% @variables.each do |variable| %>
+        <td style='color: gray;'> <%= variable.name %> </td>
+      <% end %>
       <td>Action</td>
     </tr>
   </thead>
@@ -31,6 +37,20 @@
         <td> 
           <%=check_box_tag(:listened, report.id, report.listened, class: 'report-status') if report.audio_key.present? %></td>
         <td>
+
+        <% @variables.each do |variable| %>
+          <td style='color: gray;'>
+            <% report_variable = report.report_variables.select{|report_variable| report_variable.variable_id == variable.id}.first %>
+            <% if report_variable %>
+                <%= report_variable.value %>
+            <% else %>
+               <span class='gray'> no value </span>
+            <% end %>
+          </td>
+        <% end %>
+
+
+
           <%= link_to report_path(report), method: :delete, data: {confirm: 'Are you sure to delete ?'} do %>
               <i class='glyphicon glyphicon-trash'> </i> Delete
           <% end %>
