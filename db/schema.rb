@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150909072829) do
+ActiveRecord::Schema.define(version: 20150914082708) do
 
   create_table "places", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -29,8 +29,10 @@ ActiveRecord::Schema.define(version: 20150909072829) do
     t.integer  "variable_id", limit: 4
     t.string   "type",        limit: 255
     t.string   "value",       limit: 255
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
+    t.boolean  "has_audio",   limit: 1,   default: false
+    t.boolean  "listened",    limit: 1,   default: false
   end
 
   add_index "report_variables", ["report_id"], name: "index_report_variables_on_report_id", using: :btree

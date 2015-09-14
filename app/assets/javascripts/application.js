@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require bootstrap-sprockets
 
+//= require rails-timeago
 //= require bootstrap-treenav
 //= require tmpl
 //= require jquery.control-key-.1.0
@@ -32,6 +33,7 @@
 //= require shared/key-input
 //= require shared/datepicker
 //= require shared/audio-init
+//= require shared/redirect-to
 
 //= require member/action
 //= require report/filter-form

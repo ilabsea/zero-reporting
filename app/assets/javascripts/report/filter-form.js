@@ -8,7 +8,7 @@ function updateReportStatus() {
   $('.report-status').on('change', function(){
     var _self = this
     var report_id = _self.value
-    var url = "/reports/" + report_id + "/toggle_status"
+    var url = "/report_variables/" + report_id + "/toggle_status"
     $.ajax({
       method: 'PUT',
       url: url,

@@ -13,7 +13,7 @@
 #
 
 class Variable < ActiveRecord::Base
-  validates :verboice_id, uniqueness: {scope: :verboice_project_id }
+  validates :verboice_id, uniqueness: {scope: :verboice_project_id, message: 'variable has already been taken' }
 
   has_many :report_variables
   has_many :reports, through: :report_variables
@@ -22,29 +22,4 @@ class Variable < ActiveRecord::Base
     where(verboice_project_id: project_id)
   end
 
-  def self.save_from_params params
-    project_id = params[:project]
-
-    variables = params[:variable]
-    verboice_ids = params[:project_variable_id]
-    verboice_names = params[:project_variable_name]
-
-    variables.each do |index, name|
-
-      variable = Variable.where( verboice_id: verboice_ids[index],
-                                 verboice_project_id: project_id).first_or_initialize
-
-      if variable.persisted? && (name.blank? or verboice_ids[index].blank?)
-        variable.destroy
-        next
-      end
-
-      attrs = {
-        name: name,
-        description: name,
-        verboice_name: verboice_names[index]
-      }
-      variable.update_attributes(attrs)
-    end
-  end
 end

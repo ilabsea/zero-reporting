@@ -1,26 +1,71 @@
 $(function() {
-  allowKeyInput($(".numeric"), /[0-9]/);
-  allowKeyInput($(".time"), /[0-9:]/);
   connectToVerboice();
   handleProjectChange()
-  handleProjectVariableChange()
+  handleVerboiceVariableChange()
+  handleSaveVariable()
 
 
   variableCollapsable()
+  cancelVariableForm()
 });
 
-function variableCollapsable(){
-  $(".variable-collapsable").on('click', function(){
+function handleSaveVariable() {
+  $(".save-varialble").on('click', function(){
     var $this = $(this)
-    $this.parent().parent().find(".panel-body").toggle()
-    return false
+    var $form = $(this.form)
+    var $errorContainer = $form.find(".error-message")
+    $errorContainer.hide()
+
+    var url = $form.attr('action')
+
+    var name = $form.find("#variable_name").val()
+    var verboice_name = $form.find("#variable_verboice_name").val()
+    var verboice_id   = $form.find("#variable_verboice_id").val()
+    var method = $form.find("input[name=_method]").val()
+
+    if(name == "" || verboice_id == "") {
+      setNotification("alert", "Please enter variable name and verboice variable")
+      return
+    }
+
+    var data = { name: name, verboice_name: verboice_name, verboice_id: verboice_id, _method: method}
+    console.log(data)
+
+    $.ajax({
+      method: 'POST',
+      data: data,
+      url: url,
+      success: function(response){
+        redirectTo("/settings")
+      },
+      error: function(response){
+        $errorContainer.html(response.responseJSON[0])
+        $errorContainer.fadeIn(1500)
+        setNotification("alert", "Failed to save variable")
+      }
+    })
   })
 }
 
 
+function cancelVariableForm(){
+  $(document.body).delegate(".hide-variable-form", 'click', function(){
+    var $this = $(this)
+    $this.parent().parent().parent().parent().find('.panel-body').hide()
+  })
+}
+
+function variableCollapsable(){
+  $(document.body).delegate(".variable-collapsable", 'click', function(){
+    $(".panel-variable > .panel-body").hide()
+    var $this = $(this)
+    $this.parent().parent().parent().find('.panel-body').show()
+    return false
+  })
+}
 
 function connectToVerboice() {
-  $("#btn-verboice-connect").on('click', function(){
+  $(document.body).delegate("#btn-verboice-connect", 'click', function(){
     $this = $(this)
     var url = $this.attr("href")
     var email = $("#email").val()
@@ -45,35 +90,27 @@ function connectToVerboice() {
   })
 }
 
-function handleProjectVariableChange(){
-  $(document.body).delegate('.project_variable', 'change', function(){
+function handleVerboiceVariableChange(){
+  $(document.body).delegate('.verboice-variable-id', 'change', function(){
     var $this = $(this)
     var variable_name = this.options[this.selectedIndex].text
-    var $project_variable_name = $this.parent().find(".project_variable_name")
+    var $project_variable_name = $this.parent().find(".verboice-variable-name")
     $project_variable_name.val(variable_name)
   })
 }
 
 function handleProjectChange(){
-  $("#project").on('change', function(){
+  $(document.body).delegate("#project", 'change', function(){
     $this = $(this);
     var project_id = $this.val()
-    setNotification("Info", "Connecting to server")
-
-    $.ajax({
-      method: 'GET',
-      url: '/project_variables',
-      data: {project: project_id},
-      success: function(response){
-        console.log(response)
-        $('#setting-variables').html(response)
-        setNotification("notice", "Retrieved project variable successfully")
-      },
-      error: function(){
-        update_select('#project_variable', [])
-        setNotification("alert", "Failed to retrieved schedules, make sure you are able to connect to Verboice")
-      }
-    })
+    if(project_id) {
+      window.location.href = '/settings?project=' + project_id
+      return false;
+    }
+    else {
+      setNotification("Info", "Please select a project")
+      return false;
+    }
   })
 }
 

@@ -200,5 +200,14 @@ module ApplicationHelper
     nil
   end
 
+  def display_report_variable(report_variable)
+    if report_variable.type == "ReportVariableAudio"
+      content_tag(:audio, nil, src: play_audio_report_variable_path(report_variable), preload: :none) + 
+      check_box_tag(:listened, report_variable.id, report_variable.listened, class: 'report-status')
+    else
+      content_tag :span, report_variable.value, class: 'gray'
+    end
+  end
+
 
 end
