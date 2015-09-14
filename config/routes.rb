@@ -41,7 +41,9 @@ Rails.application.routes.draw do
   get '/steps/manifest' => 'steps#manifest', defaults: { format: :xml }
   post '/steps/validate_hc_worker' => 'steps#validate_hc_worker'
 
-  resources :reports, only: [:index, :destroy] do
+  resources :reports, only: [:index, :destroy]
+
+  resources :report_variables, only: [] do
     member do
       get :play_audio
       put :toggle_status

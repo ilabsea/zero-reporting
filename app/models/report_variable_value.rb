@@ -9,6 +9,8 @@
 #  value       :string(255)
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  has_audio   :boolean          default(FALSE)
+#  listened    :boolean          default(FALSE)
 #
 # Indexes
 #

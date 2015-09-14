@@ -1,10 +1,10 @@
 class SettingsController < ApplicationController
   def index
     # to get all items for render list
+    Setting[:project] = params[:project] if params[:project]
     @settings   = Setting.unscoped
     @parameters = verboice_parameters
     @variables  = Variable.where(verboice_project_id: Setting[:project])
-
   end
 
   def update_settings
@@ -32,13 +32,6 @@ class SettingsController < ApplicationController
       flash.now[:alert] = 'Could not connect to verboice'
       render :index
     end
-  end
-
-  def project_variables
-    @project_variables = get_project_variables(params[:project])
-    @variables  = Variable.where(verboice_project_id: params[:project])
-
-    render layout:false
   end
 
   def get_project_variables(project_id)

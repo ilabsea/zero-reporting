@@ -1,12 +1,16 @@
 .audiojs {
   width: 24px !important;
+  height: 20px;
   @include border-radius(5px);
+  display: inline-block;
 
   .play {
     background-position: -8px -1px !important;
+    margin-top: -8px;
   }
   .pause{
     background-position: -8px -91px !important;
+    margin-top: -8px;
   }
   .error {
     background-position: -8px -61px !important;
@@ -14,4 +18,8 @@
   .loading {
     background-position: -8px -31px !important;
   }
+}
+
+.panel {
+  margin-bottom: 10px;
 }

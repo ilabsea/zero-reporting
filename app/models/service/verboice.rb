@@ -31,10 +31,11 @@ class Service::Verboice
     get("/call_logs/#{id}")
   end
 
-  def call_log_audio(report)
-    url = build_url("/call_logs/#{report.call_log_id}/play_audio?key=#{report.audio_key}")
+  def call_log_audio(report_variable)
+    url = build_url("/call_logs/#{report_variable.report.call_log_id}/play_audio?key=#{report_variable.value}")
+    Rails.logger.debug("fetching resource from: #{url}")
 
-    audio_file = File.open report.audio_data_path, 'wb'
+    audio_file = File.open report_variable.audio_data_path, 'wb'
     request = Typhoeus::Request.new(url, method: :get, params: auth_params )
 
     request.on_headers do |response|

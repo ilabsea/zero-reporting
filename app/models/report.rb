@@ -60,11 +60,6 @@ class Report < ActiveRecord::Base
     end
   end
 
-  def toggle_status
-    self.listened = !self.listened
-    self.save
-  end
-
   def self.effective
     where(delete_status: false)
   end
@@ -135,11 +130,4 @@ class Report < ActiveRecord::Base
     report.update_attributes(attrs)
     report
   end
-
-  def audio_data_path
-    dir_name = "#{Rails.root}/public/audios/#{self.call_log_id}"
-    FileUtils.mkdir_p(dir_name) unless File.directory?(dir_name)
-    "#{dir_name}/#{self.audio_key}.wav"
-  end
-
 end

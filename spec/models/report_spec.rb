@@ -1,19 +1,32 @@
 # == Schema Information
 #
-# Table name: report_variables
+# Table name: reports
 #
-#  id          :integer          not null, primary key
-#  report_id   :integer
-#  variable_id :integer
-#  type        :string(255)
-#  value       :string(255)
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
+#  id                   :integer          not null, primary key
+#  phone                :string(255)
+#  user_id              :integer
+#  audio_key            :string(255)
+#  listened             :boolean
+#  called_at            :datetime
+#  call_log_id          :integer
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  phone_without_prefix :string(255)
+#  phd_id               :integer
+#  od_id                :integer
+#  status               :string(255)
+#  duration             :float(24)
+#  started_at           :datetime
+#  call_flow_id         :integer
+#  recorded_audios      :text(65535)
+#  has_audio            :boolean          default(FALSE)
+#  delete_status        :boolean          default(FALSE)
+#  call_log_answers     :text(65535)
+#  verboice_project_id  :integer
 #
 # Indexes
 #
-#  index_report_variables_on_report_id    (report_id)
-#  index_report_variables_on_variable_id  (variable_id)
+#  index_reports_on_user_id  (user_id)
 #
 
 require 'rails_helper'

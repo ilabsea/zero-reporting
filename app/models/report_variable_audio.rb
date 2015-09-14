@@ -9,6 +9,8 @@
 #  value       :string(255)
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  has_audio   :boolean          default(FALSE)
+#  listened    :boolean          default(FALSE)
 #
 # Indexes
 #
@@ -17,4 +19,14 @@
 #
 
 class ReportVariableAudio < ReportVariable
+  def audio_data_path
+    dir_name = "#{Rails.root}/public/audios/#{self.report.call_log_id}"
+    FileUtils.mkdir_p(dir_name) unless File.directory?(dir_name)
+    "#{dir_name}/#{self.value}.wav"
+  end
+
+  def toggle_status
+    self.listened = !self.listened
+    self.save
+  end
 end

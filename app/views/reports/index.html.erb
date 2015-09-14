@@ -1,8 +1,6 @@
 <%= page_title "Call list" %>
 <%= render 'filter' %>
 
-<%= debug(@variables) %>
-
 <table class="table table-strip">
   <thead>
     <tr>
@@ -10,14 +8,13 @@
       <td>PHD</td>
       <td>OD</td>
       <td>Phone</td>
-      <td>Name</td>
+      <td>Username</td>
       <td>Duration</td>
-      <td align="center">Report Voice</td>
-      <td>Listened</td>
 
       <% @variables.each do |variable| %>
-        <td style='color: gray;'> <%= variable.name %> </td>
+        <td style='color: gray;' > <%= variable.name %> </td>
       <% end %>
+
       <td>Action</td>
     </tr>
   </thead>
@@ -25,34 +22,28 @@
   <tbody>
     <% @reports.each_with_index do |report, index| %>
       <tr>
-        <td> <%= report.called_at %></td>
+        <td> <%= timeago_tag(report.called_at) %></td>
         <td> <%= link_to(report.phd.name, users_path(place_id: report.phd.try(:id))) if report.phd %> </td>
         <td> <%= link_to(report.od.name, users_path(place_id: report.od.try(:id))) if report.od %> </td>
         <td> <%= report.phone %></td>
         <td> <%= report.user.try(:name)%> </td>
         <td> <%= report.duration%> </td>
-        <td align="center">
-          <%=content_tag :audio, nil, src: play_audio_report_path(report), preload: :none if report.audio_key.present? %>
-        </td>
-        <td> 
-          <%=check_box_tag(:listened, report.id, report.listened, class: 'report-status') if report.audio_key.present? %></td>
-        <td>
 
         <% @variables.each do |variable| %>
           <td style='color: gray;'>
             <% report_variable = report.report_variables.select{|report_variable| report_variable.variable_id == variable.id}.first %>
             <% if report_variable %>
-                <%= report_variable.value %>
+                <%= display_report_variable(report_variable) %>
             <% else %>
-               <span class='gray'> no value </span>
+               <span class='gray'> </span>
             <% end %>
           </td>
         <% end %>
 
 
-
+        <td>
           <%= link_to report_path(report), method: :delete, data: {confirm: 'Are you sure to delete ?'} do %>
-              <i class='glyphicon glyphicon-trash'> </i> Delete
+              <i class='glyphicon glyphicon-trash'> </i>
           <% end %>
 
         </td>

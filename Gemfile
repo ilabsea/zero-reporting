@@ -39,6 +39,7 @@ gem 'simple_form'
 gem 'rails-settings-cached'
 gem 'typhoeus'
 gem 'audiojs-rails'
+gem 'rails-timeago', '~> 2.0'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
