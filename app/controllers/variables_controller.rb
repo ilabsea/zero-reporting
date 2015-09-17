@@ -1,5 +1,4 @@
 class VariablesController < ApplicationController
-
   def create
     variable = Variable.new(filter_params)
     variable.verboice_project_id = Settings[:project]

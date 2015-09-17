@@ -8,29 +8,29 @@
 
       <div class='input-row col-lg-2'>
         <%= label_tag :from %>
-        <%= text_field_tag :from, params[:from], class: 'form-control date-picker' %>
+        <%= text_field_tag :from, params[:from], class: 'form-control date-picker', autocomplete: :off %>
       </div>
 
       <div class='input-row col-lg-2'>
         <%= label_tag :to %>
-        <%= text_field_tag :to, params[:to], class: 'form-control date-picker' %>
+        <%= text_field_tag :to, params[:to], class: 'form-control date-picker', autocomplete: :off %>
       </div>
 
       <div class='input-row col-lg-2'>
         <%= label_tag :phd, 'PHD' %>
-        <%= select_tag :phd, options_for_select(Place.phds_list, params[:phd]),
+        <%= select_tag :phd, options_for_select(UserContext.new(current_user).phds_list, params[:phd]),
                        class: 'form-control', include_blank: 'All' %>
       </div>
 
       <div class='input-row col-lg-2'>
         <%= label_tag :od, 'OD' %>
-        <%= select_tag :od, options_for_select(Place.ods_list, params[:od]),
+        <%= select_tag :od, options_for_select(UserContext.new(current_user).ods_list(params[:phd]), params[:od]),
                        class: 'form-control', prompt: "All" %>
       </div>
 
       <div class='input-row col-lg-2'>
-        <%= label_tag :listened, 'Status' %>
-        <%= select_tag :listened, options_for_select([[ "Listened", 1], ["New", 0]], params[:listened]),
+        <%= label_tag :reviewed, 'Reviewed Status' %>
+        <%= select_tag :reviewed, options_for_select([[ "Reviewed", 1], ["New", 0]], params[:reviewed]),
                        class: 'form-control', include_blank: "All" %>
       </div>
 

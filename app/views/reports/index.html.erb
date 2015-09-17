@@ -1,6 +1,17 @@
 <%= page_title "Call list" %>
 <%= render 'filter' %>
 
+<div class="clearfix">
+  <div class="pull-left">
+    <h2 class="header-title">List of report</h2>
+  </div>
+  <div class="pull-right" style='margin-top: 10px;'>
+    <%=link_to export_as_csv_reports_path(request.query_parameters), class: 'btn btn-primary' do %>
+     <i class="glyphicon glyphicon-upload"> </i> Export as CSV
+    <% end %>
+  </div>
+</div>
+
 <table class="table table-strip">
   <thead>
     <tr>
@@ -14,7 +25,7 @@
       <% @variables.each do |variable| %>
         <td style='color: gray;' > <%= variable.name %> </td>
       <% end %>
-
+      <td>Reviewed</td>
       <td>Action</td>
     </tr>
   </thead>
@@ -23,8 +34,17 @@
     <% @reports.each_with_index do |report, index| %>
       <tr>
         <td> <%= timeago_tag(report.called_at) %></td>
-        <td> <%= link_to(report.phd.name, users_path(place_id: report.phd.try(:id))) if report.phd %> </td>
-        <td> <%= link_to(report.od.name, users_path(place_id: report.od.try(:id))) if report.od %> </td>
+
+        <td> 
+            <%= link_to(report.phd.name, users_path(place_id: report.phd.try(:id))) if current_user.is_admin? && report.phd %>
+            <%= report.phd.try(:name) if current_user.is_normal? %>
+        </td>
+
+        <td> 
+           <%= link_to(report.od.name, users_path(place_id: report.od.try(:id))) if current_user.is_admin? && report.od %> 
+           <%= report.od.try(:name) if current_user.is_normal? %>
+        </td>
+
         <td> <%= report.phone %></td>
         <td> <%= report.user.try(:name)%> </td>
         <td> <%= report.duration%> </td>
@@ -32,14 +52,13 @@
         <% @variables.each do |variable| %>
           <td style='color: gray;'>
             <% report_variable = report.report_variables.select{|report_variable| report_variable.variable_id == variable.id}.first %>
-            <% if report_variable %>
-                <%= display_report_variable(report_variable) %>
-            <% else %>
-               <span class='gray'> </span>
-            <% end %>
+             <%= display_report_variable(report_variable) %>
           </td>
         <% end %>
 
+        <td>
+          <%=check_box_tag(:reviewed, report.id, report.reviewed, class: 'report-status') %>
+        </td>
 
         <td>
           <%= link_to report_path(report), method: :delete, data: {confirm: 'Are you sure to delete ?'} do %>

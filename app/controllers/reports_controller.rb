@@ -1,18 +1,48 @@
 class ReportsController < ApplicationController
+
+  authorize_resource
+
+  def required_admin_role!
+
+  end
+
   def index
-    @reports = Report.effective
+
+    @reports = UserContext.new(current_user)
+                     .reports
+                     .includes(:report_variables, :user, :phd, :od)
+                     .effective
                      .filter(params)
                      .includes(:phd, :od)
                      .order('id DESC')
                      .page(params[:page])
 
+
     @variables = Variable.applied(Setting[:project])
   end
 
-  def destroy
+  def export_as_csv
+    file = ReportCsv.start(params)
+    send_file file, type: "text/csv"
+  end
+
+  def toggle_status
     report = Report.find(params[:id])
-    report.delete_status = true
-    if report.save
+    authorize! :update, report
+
+    if report.toggle_status
+      head :ok
+    else
+      render nothing: true, status: 400
+    end
+  end
+
+  def destroy
+    @report = Report.find(params[:id])
+    authorize! :destroy, @report
+
+    @report.delete_status = true
+    if @report.save
       redirect_to reports_path, notice: 'Report has been deleted successfully'
     else
       redirect_to reports_path, alert: 'Failed to delete report'

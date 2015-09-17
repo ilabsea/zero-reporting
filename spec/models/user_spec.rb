@@ -13,10 +13,14 @@
 #  role                 :string(255)
 #  place_id             :integer
 #  phone_without_prefix :string(255)
+#  phd_id_id            :integer
+#  phd_id               :integer
+#  od_id                :integer
 #
 # Indexes
 #
-#  index_users_on_place_id  (place_id)
+#  index_users_on_phd_id_id  (phd_id_id)
+#  index_users_on_place_id   (place_id)
 #
 
 require 'rails_helper'
@@ -27,6 +31,35 @@ RSpec.describe User, :type => :model do
     it { should validate_presence_of(:password).on(:create) }
     it { should have_secure_password }
 
+  end
+
+  describe '#normalize_attrs' do
+    it 'set role, downcase username and add phone_without_prefix' do
+      user = create(:user, username: 'CDC0Reporting', phone: '8550975553553')
+      expect(user.username).to eq 'cdc0reporting'
+      expect(user.is_normal?).to eq true
+      expect(user.phone_without_prefix).to eq '975553553'
+    end
+  end
+
+  describe '#set_place_tree' do
+    it 'set phd to user place and od to nil' do
+      phd = create(:phd)
+      user = build(:user, place: phd)
+      user.save
+      expect(user.phd).to eq phd
+      expect(user.od).to be_nil
+    end
+
+    it 'set phd to od_phd and od to user place' do
+      phd = create(:phd)
+      od  = create(:od, parent: phd)
+
+      user = build(:user, place: od)
+      user.save
+      expect(user.phd).to eq phd
+      expect(user.od).to eq od
+    end
   end
 
   describe User, '.authenticate' do

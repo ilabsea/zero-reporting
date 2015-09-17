@@ -142,7 +142,11 @@ module ApplicationHelper
   def children_tree_for places, active_place_id=nil
     places.map do |place, children|
       selected_class = (place.id == active_place_id.to_i ? 'selected' : '')
-      item = link_to("#{place.my_type} - #{place.name} (#{place.code})", users_path(place_id: place.id ), class: "tree-node #{selected_class}", data: {id: place.id})
+
+      item = link_to("#{place.my_type} - #{place.name} (#{place.code})", users_path(place_id: place.id ),
+                     class: "tree-node #{selected_class}",
+                     data: {id: place.id})
+
       item += content_tag(:ul, children_tree_for(children, active_place_id)) if children.size > 0
 
       expanded_class = (!place.parent || place.id == active_place_id.to_i) ? 'active' : ''
@@ -201,13 +205,33 @@ module ApplicationHelper
   end
 
   def display_report_variable(report_variable)
+    return content_tag(:span, '',  class: 'gray') unless report_variable
+
     if report_variable.type == "ReportVariableAudio"
-      content_tag(:audio, nil, src: play_audio_report_variable_path(report_variable), preload: :none) + 
-      check_box_tag(:listened, report_variable.id, report_variable.listened, class: 'report-status')
+      content_tag(:audio, nil, src: play_audio_report_variable_path(report_variable.token), preload: :none)
     else
       content_tag :span, report_variable.value, class: 'gray'
     end
   end
+
+  def current_url url, options = {}, format="csv"
+     url_components = url.split("?")
+     uri = url_components[0]
+     url_params = []
+
+     if url_components.size >1
+        url_params << url_components[1]
+     end 
+
+     options.each do |key, value|
+         url_params << URI::escape(key)+ "=" + URI::escape(value)
+     end
+     query_string = url_params.join("&")
+     return uri + "." + format if query_string.blank?
+     return uri + "." + format + "?" + query_string
+  end
+
+
 
 
 end
