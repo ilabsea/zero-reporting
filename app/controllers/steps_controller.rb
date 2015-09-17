@@ -1,5 +1,6 @@
 class StepsController < ApplicationController
   skip_before_action :authenticate_user!
+  skip_before_action :required_admin_role!
   skip_before_action :verify_authenticity_token
 
   def manifest

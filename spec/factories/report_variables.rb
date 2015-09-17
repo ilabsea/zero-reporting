@@ -11,6 +11,7 @@
 #  updated_at  :datetime         not null
 #  has_audio   :boolean          default(FALSE)
 #  listened    :boolean          default(FALSE)
+#  token       :string(255)
 #
 # Indexes
 #

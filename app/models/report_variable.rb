@@ -11,6 +11,7 @@
 #  updated_at  :datetime         not null
 #  has_audio   :boolean          default(FALSE)
 #  listened    :boolean          default(FALSE)
+#  token       :string(255)
 #
 # Indexes
 #
@@ -19,6 +20,8 @@
 #
 
 class ReportVariable < ActiveRecord::Base
+  has_secure_token
+
   belongs_to :report
   belongs_to :variable
 end

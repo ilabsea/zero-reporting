@@ -14,13 +14,19 @@
 
       <% if current_user %>
       <ul class="nav navbar-nav navbar-right">
-        <li><%= link_to "Dashboards", dashboards_path %> </li>
-        <li><%= link_to "Reports", reports_path %> </li>
-        <li><%= link_to "Health Structers", users_path %> </li>
-        <li><%= link_to "Settings", settings_path %> </li>
+        <% if current_user.is_admin? %>
+          <li><%= link_to "Dashboards", dashboards_path %> </li>
+          <li><%= link_to "Reports", reports_path %> </li>
+          <li><%= link_to "Health Structers", users_path %> </li>
+          <li><%= link_to "Settings", settings_path %> </li>
+        <% else %>
+          <li><%= link_to "Reports", reports_path %> </li>
+        <% end %>
+
+
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-            <%= current_user.name %> <span class="caret"> </span>
+            <i class=''> </i> <%= current_user.name %> <span class="caret"> </span>
           </a>
 
           <ul class="dropdown-menu" role="menu">

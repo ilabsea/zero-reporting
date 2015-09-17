@@ -79,9 +79,10 @@ class Place < ActiveRecord::Base
     self.phds.pluck(:name, :id)
   end
 
-  def self.ods_list(phd_id=nil)
+  def self.ods_list(phd_id)
+    return [] unless phd_id.present?
     ods = where(["kind_of = ?", Place::PLACE_TYPE_OD])
-    ods = ods.where(["ancestry = ?", phd_id]) if phd_id.present?
+    ods = ods.where(["ancestry = ?", phd_id])
     ods.pluck(:name, :id)
   end
 end

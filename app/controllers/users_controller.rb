@@ -1,8 +1,8 @@
 class UsersController < ApplicationController
+
   def index
     @place_id = params[:place_id]
     @users = User.by_place(@place_id).page(params[:page])
-    p "ajax" if request.xhr?
     render :by_place, layout: false if request.xhr?
 
   end

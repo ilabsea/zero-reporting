@@ -6,7 +6,6 @@
 #  phone                :string(255)
 #  user_id              :integer
 #  audio_key            :string(255)
-#  listened             :boolean
 #  called_at            :datetime
 #  call_log_id          :integer
 #  created_at           :datetime         not null
@@ -23,6 +22,7 @@
 #  delete_status        :boolean          default(FALSE)
 #  call_log_answers     :text(65535)
 #  verboice_project_id  :integer
+#  reviewed             :boolean          default(FALSE)
 #
 # Indexes
 #
@@ -32,6 +32,8 @@
 class Report < ActiveRecord::Base
   serialize :recorded_audios, Array
   serialize :call_log_answers, Array
+
+  audited
 
   belongs_to :user
 
@@ -48,7 +50,6 @@ class Report < ActiveRecord::Base
   VERBOICE_CALL_STATUS_FAILED = 'failed'
   VERBOICE_CALL_STATUS_COMPLETE = 'complete'
   VERBOICE_CALL_STATUS_IN_PROGRESS = 'in-progress'
-
 
   before_save :normalize_attrs
 
@@ -81,7 +82,7 @@ class Report < ActiveRecord::Base
 
     reports = reports.where(phd_id: options[:phd]) if options[:phd].present?
     reports = reports.where(od_id: options[:od]) if options[:od].present?
-    reports = reports.where(listened: options[:listened]) if options[:listened].present?
+    reports = reports.where(reviewed: options[:reviewed]) if options[:reviewed].present?
     reports
   end
 
@@ -101,7 +102,7 @@ class Report < ActiveRecord::Base
       call_flow_id: verboice_attrs[:call_flow_id],
       recorded_audios: verboice_attrs[:call_log_recorded_audios],
       call_log_answers: verboice_attrs[:call_log_answers],
-      listened: false
+      reviewed: false
     }
 
     verboice_attrs[:call_log_recorded_audios].each do |recorded_audio|
@@ -129,5 +130,10 @@ class Report < ActiveRecord::Base
 
     report.update_attributes(attrs)
     report
+  end
+
+  def toggle_status
+    self.reviewed = !self.reviewed
+    self.save
   end
 end

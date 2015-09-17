@@ -30,31 +30,31 @@ class Dashboard
 
   def get_tabular
     reports = get
-    results = [['New'],['Listened'],['Total']]
+    results = [['New'],['Reviewed'],['Total']]
     reports.each do |result|
       results[0] << result[:new_report]
-      results[1] << result[:listened_report]
+      results[1] << result[:reviewed_report]
       results[2] << result[:total]
     end
     results
   end
 
   def report_for time_line
-    reports = Report.select('count(*) as number_of_report, listened')
+    reports = Report.select('count(*) as number_of_report, reviewed')
                     .effective
                     .where(['called_at BETWEEN ? AND ? ', time_line[:from], time_line[:to]])
-                    .group('listened')
+                    .group('reviewed')
 
     result = { label: time_line[:label],
                total: 0,
-               listened_report: 0,
+               reviewed_report: 0,
                new_report: 0,
                from: time_line[:from],
                to: time_line[:to]}
 
     reports.each do |report|
-      if report.listened
-        result[:listened_report] = report.number_of_report
+      if report.reviewed
+        result[:reviewed_report] = report.number_of_report
       else
         result[:new_report] = report.number_of_report
       end

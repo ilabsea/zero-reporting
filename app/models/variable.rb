@@ -15,7 +15,7 @@
 class Variable < ActiveRecord::Base
   validates :verboice_id, uniqueness: {scope: :verboice_project_id, message: 'variable has already been taken' }
 
-  has_many :report_variables
+  has_many :report_variables, dependent: :nullify
   has_many :reports, through: :report_variables
 
   def self.applied(project_id)
