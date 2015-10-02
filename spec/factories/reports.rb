@@ -6,7 +6,6 @@
 #  phone                :string(255)
 #  user_id              :integer
 #  audio_key            :string(255)
-#  listened             :boolean
 #  called_at            :datetime
 #  call_log_id          :integer
 #  created_at           :datetime         not null
@@ -21,6 +20,9 @@
 #  recorded_audios      :text(65535)
 #  has_audio            :boolean          default(FALSE)
 #  delete_status        :boolean          default(FALSE)
+#  call_log_answers     :text(65535)
+#  verboice_project_id  :integer
+#  reviewed             :boolean          default(FALSE)
 #
 # Indexes
 #

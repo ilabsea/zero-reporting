@@ -35,3 +35,4 @@
 
 //= require member/action
 //= require report/filter-form
+//= require locations/import_location

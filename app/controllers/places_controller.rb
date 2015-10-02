@@ -22,6 +22,10 @@ class PlacesController < ApplicationController
     @place = Place.find(params[:id])
   end
 
+  def import
+
+  end
+
   def update
     @place = Place.find(params[:id])
     if @place.update_attributes(filter_params)
@@ -47,6 +51,23 @@ class PlacesController < ApplicationController
 
   def ods_list
     render json: Place.ods_list(params[:phd_id])
+  end
+
+  def download_location_template
+    respond_to do |format|
+      format.json  { render :json => result }
+      format.csv {
+        content = "code,parent_code,name"
+        render :text => content
+      }
+    end
+  end
+
+  def upload_location
+    csv_string = File.read(params[:place].path, :encoding => 'utf-8')
+    @hierarchy = Place.decode_hierarchy_csv(csv_string)
+    @hierarchy_errors = Place.generate_error_description_list(@hierarchy)
+    render :json => {:error => @hierarchy_errors, :data => @hierarchy}, :root => false
   end
 
   private
