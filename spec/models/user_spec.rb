@@ -33,6 +33,35 @@ RSpec.describe User, :type => :model do
 
   end
 
+  describe '#normalize_attrs' do
+    it 'set role, downcase username and add phone_without_prefix' do
+      user = create(:user, username: 'CDC0Reporting', phone: '8550975553553')
+      expect(user.username).to eq 'cdc0reporting'
+      expect(user.is_normal?).to eq true
+      expect(user.phone_without_prefix).to eq '975553553'
+    end
+  end
+
+  describe '#set_place_tree' do
+    it 'set phd to user place and od to nil' do
+      phd = create(:phd)
+      user = build(:user, place: phd)
+      user.save
+      expect(user.phd).to eq phd
+      expect(user.od).to be_nil
+    end
+
+    it 'set phd to od_phd and od to user place' do
+      phd = create(:phd)
+      od  = create(:od, parent: phd)
+
+      user = build(:user, place: od)
+      user.save
+      expect(user.phd).to eq phd
+      expect(user.od).to eq od
+    end
+  end
+
   describe User, '.authenticate' do
     it "authenticates username and password" do
       user = create(:user, username: 'User@example.com', password: 'secret123')

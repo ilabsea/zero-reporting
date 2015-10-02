@@ -1,5 +1,6 @@
 class VerboiceCallbacksController < ApplicationController
   skip_before_action :authenticate_user!
+  skip_before_action :required_admin_role!
 
   http_basic_authenticate_with name: ENV['VERBOICE_NOTIFY_STATUS_USER'] , password: ENV['VERBOICE_NOTIFY_STATUS_PWD']
 

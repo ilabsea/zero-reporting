@@ -22,18 +22,23 @@ function newUser(){
 }
 
 function nodeClick(){
-  $(".tree-node").on('click', function(){
+  $(document.body).delegate(".tree-node, .tree-content-paginate li a", 'click', function(){
     var $this = $(this)
-    $("ul[data-toggle=nav-tree] a").removeClass("selected")
-    $this.addClass("selected")
 
-    updateSelected($this)
+    if($this.hasClass("tree-node")){
+      $("ul[data-toggle=nav-tree] a").removeClass("selected")
+      $this.addClass("selected")
+      updateSelected($(".tree-node.selected"))
+    }
+
+    
+
     var placeId = $this.data().id
     showLoading("#user-list")
 
+    var url = $this.attr('href')
     $.ajax({
-      url: '/users/by_place',
-      data: {place_id: placeId},
+      url: url,
       success: function(response){
         $("#user-list").html(response)
       },

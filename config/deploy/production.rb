@@ -18,11 +18,11 @@
 # Don't use `:all`, it's a meta role.
 
 deploy_user = 'ilab'
-server_address = '192.168.1.121'
+server_address = '192.168.1.117'
 
-role :app, %w{deploy_user@server_address}, my_property: :my_value
-role :web, %w{deploy_user@server_address}, other_property: :other_value
-role :db,  %w{deploy_user@server_address}
+role :app, "#{deploy_user}@#{server_address}", my_property: :my_value
+role :web, "#{deploy_user}@#{server_address}", other_property: :other_value
+role :db, "#{deploy_user}@#{server_address}"
 
 
 

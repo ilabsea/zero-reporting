@@ -1,0 +1,64 @@
+<div class="panel panel-default panel-variable" style="width: 600px;">
+
+  <div class="panel-head clearfix" style="padding: 10px; background: #d0d0d0;">
+
+    <% if variable.new_record? %>
+       <div class="pull-left"> Add new variable mapping </div>
+       <div class="pull-right"> 
+         <%= link_to '#', class:'variable-collapsable' do %>
+           <i class='icon glyphicon glyphicon-plus'> </i>
+         <% end %>
+       </div>
+
+    <% else %>
+       <div class="pull-left">
+          <%= variable.name %>
+          <i class='glyphicon glyphicon-link'> </i>
+          <%= variable.verboice_name %>
+       </div>
+       <div class="pull-right">
+         <%= link_to '#', class: 'variable-collapsable' do %> 
+           <i class='icon glyphicon glyphicon-pencil'> </i>
+         <% end %>
+
+         <%= link_to variable_path(variable), method: :delete, data: {confirm: 'Are you sure you want to delete this variable'} do %>
+           <i class='icon glyphicon glyphicon-trash'> </i>
+         <% end %>
+       </div>
+    <% end %>
+  </div>
+
+
+  <div class="panel-body variable-form" style='border-top: 1px solid #eee; border-bottom: 1px solid #eee; display:none;'>
+    <%= form_for variable do |f| %>
+      <div class='alert alert-danger error-message' style="display:none;"> ffff</div>
+      <div class="clearfix">
+          <div class="pull-left" style='width: 45%; padding: 10px;'>
+            <%= f.label :name, 'Variable name' %> <br />
+            <%= f.text_field :name, class: 'form-control s-width' %>
+          </div>
+
+          <div class="pull-left" style='width: 10%; padding: 20px; padding-left: 30px; margin-top: 20px;' >
+            <i class='glyphicon glyphicon-link'> </i>
+          </div>
+
+
+          <div style='width: 45%; padding: 10px;' class="pull-left">
+            <%= f.hidden_field :verboice_name, class: 'verboice-variable-name' %>
+            <%= f.label :verboice_id, 'Verboice variable' %> <br />
+            <%= f.select :verboice_id,
+                       project_variables.map{|p| [ p['name'], p['id'] ] },
+                       {include_blank: 'Select variable'},
+                       {class: 'form-control s-width verboice-variable-id' } %>
+          </div>
+      </div>
+
+      <div class="form-action" style="text-align: right; margin-top: 15px;">
+        <button type='reset' class="btn btn-default hide-variable-form" > Cancel </button>
+        <button type="button" class="btn btn-primary save-varialble"> Save </button>
+      </div>
+
+    <% end %>
+  </div>
+
+</div>

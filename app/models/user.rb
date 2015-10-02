@@ -25,12 +25,16 @@
 
 class User < ActiveRecord::Base
   has_secure_password(validations: false)
+  audited
 
   belongs_to :place
-  has_many :reports
+  belongs_to :phd, class_name: 'Place', foreign_key: 'phd_id'
+  belongs_to :od, class_name: 'Place', foreign_key: 'od_id'
+
+  has_many :reports, dependent: :nullify
 
   # password must be present within 6..72
-  validates :place_id, presence: true
+  validates :place_id, presence: true, if: ->(u) { !u.is_admin? }
 
   validates :password, presence: true, on: :create
   validates :password, length: { in: 6..72}, on: :create
@@ -53,6 +57,7 @@ class User < ActiveRecord::Base
   ROLE_NORMAL = 'Normal'
 
   before_save :normalize_attrs
+  before_save :set_place_tree
 
   attr_accessor :old_password
 
@@ -68,6 +73,13 @@ class User < ActiveRecord::Base
       users = users.where(place_id: place_id)
     end
     users
+  end
+
+  def set_place_tree
+    if self.place
+      self.phd = self.place.phd
+      self.od  = self.place.od
+    end
   end
 
   def normalize_attrs
@@ -89,6 +101,10 @@ class User < ActiveRecord::Base
 
   def is_admin?
     role == User::ROLE_ADMIN
+  end
+
+  def is_normal?
+    role == User::ROLE_NORMAL
   end
 
   def change_password old_password, new_password, confirm

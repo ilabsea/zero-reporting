@@ -1,7 +1,7 @@
 class SessionsController < ApplicationController
   layout "sign_in"
-
-  skip_before_action :authenticate_user!, except: [:destroy]
+  skip_before_action :authenticate_user!, only: [:new, :create]
+  skip_before_action :required_admin_role!, only: [:new, :create]
 
   def new
     if user_signed_in?

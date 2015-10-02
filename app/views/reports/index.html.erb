@@ -1,6 +1,17 @@
 <%= page_title "Call list" %>
 <%= render 'filter' %>
 
+<div class="clearfix">
+  <div class="pull-left">
+    <h2 class="header-title">List of report</h2>
+  </div>
+  <div class="pull-right" style='margin-top: 10px;'>
+    <%=link_to export_as_csv_reports_path(request.query_parameters), class: 'btn btn-primary' do %>
+     <i class="glyphicon glyphicon-upload"> </i> Export as CSV
+    <% end %>
+  </div>
+</div>
+
 <table class="table table-strip">
   <thead>
     <tr>
@@ -8,9 +19,13 @@
       <td>PHD</td>
       <td>OD</td>
       <td>Phone</td>
-      <td>Name</td>
-      <td align="center">Report Voice</td>
-      <td>Listened</td>
+      <td>Username</td>
+      <td>Duration</td>
+
+      <% @variables.each do |variable| %>
+        <td style='color: gray;' > <%= variable.name %> </td>
+      <% end %>
+      <td>Reviewed</td>
       <td>Action</td>
     </tr>
   </thead>
@@ -18,19 +33,36 @@
   <tbody>
     <% @reports.each_with_index do |report, index| %>
       <tr>
-        <td> <%= report.called_at %></td>
-        <td> <%= link_to report.phd.send(:name), users_path(place_id: report.phd.send(:id)) %> </td>
-        <td> <%= link_to report.od.send(:name), users_path(place_id: report.od.send(:id)) %> </td>
-        <td> <%= report.phone %></td>
-        <td> <%= report.user.send(:name)%> </td>
-        <td align="center">
-          <%=content_tag :audio, nil, src: play_audio_report_path(report), preload: :none if report.audio_key.present? %>
-        </td>
+        <td> <%= timeago_tag(report.called_at) %></td>
+
         <td> 
-          <%=check_box_tag(:listened, report.id, report.listened, class: 'report-status') if report.audio_key.present? %></td>
+            <%= link_to(report.phd.name, users_path(place_id: report.phd.try(:id))) if current_user.is_admin? && report.phd %>
+            <%= report.phd.try(:name) if current_user.is_normal? %>
+        </td>
+
+        <td> 
+           <%= link_to(report.od.name, users_path(place_id: report.od.try(:id))) if current_user.is_admin? && report.od %> 
+           <%= report.od.try(:name) if current_user.is_normal? %>
+        </td>
+
+        <td> <%= report.phone %></td>
+        <td> <%= report.user.try(:name)%> </td>
+        <td> <%= report.duration%> </td>
+
+        <% @variables.each do |variable| %>
+          <td style='color: gray;'>
+            <% report_variable = report.report_variables.select{|report_variable| report_variable.variable_id == variable.id}.first %>
+             <%= display_report_variable(report_variable) %>
+          </td>
+        <% end %>
+
+        <td>
+          <%=check_box_tag(:reviewed, report.id, report.reviewed, class: 'report-status') %>
+        </td>
+
         <td>
           <%= link_to report_path(report), method: :delete, data: {confirm: 'Are you sure to delete ?'} do %>
-              <i class='glyphicon glyphicon-trash'> </i> Delete
+              <i class='glyphicon glyphicon-trash'> </i>
           <% end %>
 
         </td>
@@ -39,4 +71,6 @@
   </tbody>
 </table>
 
-<%= paginate_for(@reports) %>
+<div class="clearfix">
+  <%= paginate_for(@reports) %>
+</div>
