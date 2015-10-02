@@ -15,6 +15,9 @@ Rails.application.routes.draw do
   resources :places do
     collection do
       get 'ods_list'
+      get 'download_location_template'
+      post 'upload_location'
+      get 'import'
     end
   end
 

@@ -176,17 +176,25 @@ td:last-child{
 .tree-wrapper {
   background: #eee;
   padding: 10px;
-  min-height: 500px;
+  min-height: 350px;
   max-height: 800px;
   position: relative;
   overflow: scroll;
 }
+
+.import-wrapper {
+  background: #eee;
+  padding: 10px;
+  min-height: 150px;
+  max-height: 820px;
+  position: relative;
+  overflow: scroll;
+}
+
 .tree-action {
   background: #ddd;
   padding: 10px;
 }
-
-
 
 #notification {
   background: #eee;
