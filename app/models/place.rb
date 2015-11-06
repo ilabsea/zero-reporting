@@ -159,7 +159,7 @@ class Place < ActiveRecord::Base
         i = i+1
         item[:order] = i
 
-        if row.length != 3
+        if row.length != 4
           item[:error] = "Wrong format."
           item[:error_description] = "Invalid column number"
         else
@@ -192,6 +192,7 @@ class Place < ActiveRecord::Base
             item[:id] = id
             item[:parent] = row[1].strip if row[1].present?
             item[:name] = name
+            item[:level] = row[3].strip
           end
         end
 
@@ -199,5 +200,18 @@ class Place < ActiveRecord::Base
       end
     end
     items
+  end
+
+  def self.generate_ancestry(code)
+    parent = Place.find_by_code code
+    if parent 
+      if parent.ancestry
+        return parent.ancestry + "/" +parent.id.to_s 
+      else
+        return parent.id.to_s
+      end
+    else
+      nil
+    end
   end
 end

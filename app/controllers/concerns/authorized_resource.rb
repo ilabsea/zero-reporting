@@ -2,7 +2,7 @@ module AuthorizedResource
   extend ActiveSupport::Concern
 
   included do
-    before_action :required_admin_role!
+    # before_action :required_admin_role!
 
     rescue_from CanCan::AccessDenied do |exception|
       no_permission exception.message

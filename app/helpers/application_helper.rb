@@ -112,29 +112,29 @@ module ApplicationHelper
   end
 
   def link_destroy value , url, options={}, &block
-    link_icon "glyphicon-trash", value, url, options, &block
+    link_icon "glyphicon-trash", value, url, "red", options, &block
   end
 
   def link_edit value , url, options={}, &block
-    link_icon "glyphicon-pencil", value, url, options, &block
+    link_icon "glyphicon-pencil", value, url, 'green', options, &block
   end
 
   def link_new value , url, options={}, &block
     options ||= {}
     options[:class] = "btn-icon btn btn-primary #{options[:class]}"
 
-    link_icon "glyphicon-plus", value, url, options, &block
+    link_icon "glyphicon-plus",  value, url, 'blue', options, &block
   end
 
   def link_home value, url, options={}, &block
-    link_icon "glyphicon glyphicon-home", value, url, options, &block
+    link_icon "glyphicon glyphicon-home", value, url, 'blue', options, &block
 
   end
 
-  def link_icon icon, value, url, options={}, &block
+  def link_icon icon, value, url, color='blue', options={}, &block
     options ||= {}
     options[:class] = "btn-icon #{options[:class]}"
-    icon = content_tag :i, ' ',  class: "#{icon} glyphicon"
+    icon = content_tag :i, ' ',  class: "#{icon} glyphicon #{color}"
     text = content_tag :span, " #{value}"
     link_to icon+text, url, options, &block
   end

@@ -1,0 +1,95 @@
+<%= breadcrumb [ {"Health Structure" => places_path()}, {"Import user" => nil}] %>
+<div class="fuelux-wizard-container">
+  <!-- #section:plugins/fuelux.wizard.steps -->
+  <ul class="steps">
+    <li data-step="1">
+      <span class="step"><%= link_to "1", import_places_path() %></span>
+      <span class="title">Import Place</span>
+    </li>
+
+    <li data-step="2" class="active">
+      <span class="step">
+        <%= link_to "2", import_users_path() %>
+      </span>
+      <span class="title">Import User</span>
+    </li>
+  </ul>
+
+  <hr>
+
+  <div class="col-sm-12 widget-container-col ui-sortable">
+    <!-- #section:custom/widget-box.options.transparent -->
+    <div class="widget-box transparent ui-sortable-handle">
+      <div class="widget-header">
+        <h4 class="widget-title strong">Import user</h4>
+
+        <div class="widget-toolbar no-border">
+          <a data-action="settings" href="#">
+            <i class="ace-icon fa fa-cog"></i>
+          </a>
+
+          <a data-action="reload" href="#">
+            <i class="ace-icon fa fa-refresh"></i>
+          </a>
+
+          <a data-action="collapse" href="#">
+            <i class="ace-icon fa fa-chevron-up"></i>
+          </a>
+
+          <a data-action="close" href="#">
+            <i class="ace-icon fa fa-times"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="widget-body">
+        <div class="widget-main padding-10 no-padding-left no-padding-right">
+          <p> This tool allows you to import a bunch of users to your system by using a <%= link_to raw("user form"), download_template_users_path + ".csv", :method => :get, :class => 'bold_link', :format => :csv %> as a template. </p>
+        </div>
+      </div>
+      <div class="widget-main">
+        <div class="form-group">
+          <div class="col-xs-6">
+            <!-- #section:custom/file-input -->
+            <label class="ace-file-input">
+              <form id="file-form" method="POST">
+                <input type="file" class="file-input" id="file-select" onchange="return handleUploadUserForm();" name="files[]" >
+              </form>
+            </label>
+          </div>
+        </div>
+
+        <!-- /section:custom/file-input.filter -->
+      </div>
+      <div class='tmp-wrapper' id="myTmpTree" style="display:none;">
+        <br />
+        <div class="table-header">
+          Preview for "Latest Uploaded User"
+        </div>
+        <div id="dynamic-table_wrapper" class="dataTables_wrapper form-inline no-footer">
+          <table class="table table-striped table-bordered table-hover" id="errors-table">
+            <thead>
+              <tr>
+                <th>Login</th>
+                <th>Full Name</th>
+                <th class="hidden-480">Email</th>
+
+                <th>
+                  <i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>
+                  Phone Number
+                </th>
+                <th class="hidden-480">Place</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="tbody">
+            </tbody>
+          </table>
+        </div>
+        <button class="btn btn-success" id="btn-import" onclick="handleConfirmImportUser()"> Confirm Import</button>
+      </div>
+        <!-- /section:custom/widget-box.options.transparent -->
+    </div>
+  </div>
+</div>
+

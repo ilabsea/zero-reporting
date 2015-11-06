@@ -7,27 +7,29 @@ function flashNotification(){
 }
 
 function setNotification(key, value) {
-  $notification = $("#notification")
+  // $notification = $("#notification")
 
   if(key && value){
-    var templateData = {body: value}
+    // var templateData = {body: value}
 
     if(key == 'notice'){
-      templateData.title = "Success"
-      templateData.type = 'info'
-      templateData.icon = 'ok'
+      showNotice(value, 1000);
+      // templateData.title = "Success"
+      // templateData.type = 'info'
+      // templateData.icon = 'ok'
     }
     else{
-      templateData.title = "Failure"
-      templateData.type = 'danger'
-      templateData.icon = 'remove'
+      showError(value, 1000);
+      // templateData.title = "Failure"
+      // templateData.type = 'danger'
+      // templateData.icon = 'remove'
     }
-    $notification.show()
-    var notificationHtml = tmpl('tmpl-notification', templateData)
-    $notification.html(notificationHtml)
-    $notification.fadeOut(4000)
+    // $notification.show()
+    // var notificationHtml = tmpl('tmpl-notification', templateData)
+    // $notification.html(notificationHtml)
+    // $notification.fadeOut(4000)
   }
   else{
-    $notification.hide();
+    // $notification.hide();
   }
 }

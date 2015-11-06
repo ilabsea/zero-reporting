@@ -15,7 +15,8 @@ Rails.application.routes.draw do
   resources :places do
     collection do
       get 'ods_list'
-      get 'download_location_template'
+      get 'download_template'
+      post 'confirm_upload_location'
       post 'upload_location'
       get 'import'
     end
@@ -25,8 +26,12 @@ Rails.application.routes.draw do
     collection do
       get 'profile'
       put 'change_profile'
+      get 'download_template'
+      post 'confirmed_upload_users'
+      post 'upload_users'
       get 'by_place'
       get 'search'
+      get 'import'
     end
 
     member do
@@ -51,6 +56,7 @@ Rails.application.routes.draw do
 
     collection do
       get :export_as_csv
+      get :query_piechart
     end
   end
 

@@ -5,20 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title><%= content_for?(:title) ? yield(:title) : ENV['APP_NAME'] %></title>
-
+    <%= stylesheet_link_tag    "ace", media: "all", "data-turbolinks-track" => true %>
     <%= stylesheet_link_tag    "application" %>
     <%= csrf_meta_tags %>
+    
   </head>
 
   <body>
     <%= render "layouts/nav_bar" %>
     <div class='container'>
+      <div class="flash" data-hide-timeout="1000"></div>
+      <div id="toolbar"></div>
+      <div id="header"></div>
       <%#= flash_messages %>
       <%= yield %>
     </div>
 
     <%= javascript_include_tag "application" %>
     <%= render "layouts/shared/config" %>
-    <%= render "layouts/shared/notification" %>
+    <!--  <%= render "layouts/shared/notification" %> -->
   </body>
 </html>
