@@ -1,4 +1,7 @@
 class PlacesController < ApplicationController
+
+  # load_and_authorize_resource
+
   def index
     @places = Place.all
     @users = User.by_place(params[:place_id]).page(params[:page])
@@ -53,11 +56,14 @@ class PlacesController < ApplicationController
     render json: UserContext.new(current_user).ods_list(params[:phd_id])
   end
 
-  def download_location_template
+  def download_template
     respond_to do |format|
       format.json  { render :json => result }
       format.csv {
-        content = "code,parent_code,name"
+        content = "code,parent_code,name,level \n" + 
+        "100,,Phnom Penh, PHD \n" +
+        "101,100,Rousey Keo, OD \n" +
+        "102,101,Toul Sangke, HC"
         render :text => content
       }
     end
@@ -68,6 +74,24 @@ class PlacesController < ApplicationController
     @hierarchy = Place.decode_hierarchy_csv(csv_string)
     @hierarchy_errors = Place.generate_error_description_list(@hierarchy)
     render :json => {:error => @hierarchy_errors, :data => @hierarchy}, :root => false
+  end
+
+  def confirm_upload_location
+    csv_string = File.read(params[:place].path, :encoding => 'utf-8')
+    csv = CSV.parse(csv_string)
+    num_rows = 0
+    csv.each do |col|
+      unless col[1].present?
+        parent = nil
+      else
+        parent = Place.generate_ancestry(col[1].strip)
+      end
+      Place.create!(:name => col[2].strip, :code => col[0].strip, :kind_of => col[3], :ancestry => parent)
+      num_rows = num_rows + 1
+    end
+
+    render :json => {:data => csv_string, :row_imported => num_rows}, :root => false
+
   end
 
   private

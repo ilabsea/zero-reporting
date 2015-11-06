@@ -1,14 +1,71 @@
 <%= breadcrumb [ {"Health Structure" => places_path()}, {"Import place" => nil}] %>
-<div class='import-wrapper' >
-  <%= link_to "Import Place", "" %>
-  <p> This tool allows you to import a bunch of locations to your system by using a <%= link_to raw("location form"), download_location_template_places_path + ".csv", :method => :get, :class => 'bold_link', :format => :csv %> as a template. </p>
-  <form id="file-form" action="#" method="POST">
-    <input type="file" id="file-select" name="photos[]"/>
-    <button type="submit" id="upload-button">Upload</button>
-  </form>
-  <div class='tmp-wrapper' id="myTmpTree">
-		
-	</div>
-	<button class="btn success" id="btn-import"> Confirm Import</button>
+<div class="fuelux-wizard-container">
+  <!-- #section:plugins/fuelux.wizard.steps -->
+  <ul class="steps">
+    <li data-step="1" class="active">
+      <span class="step">1</span>
+      <span class="title">Import Place</span>
+    </li>
+
+    <li data-step="2">
+      <span class="step"><%= link_to "2", import_users_path() %></span>
+      <span class="title">Import User</span>
+    </li>
+  </ul>
+
+  <hr>
+
+  <div class="col-sm-12 widget-container-col ui-sortable">
+    <!-- #section:custom/widget-box.options.transparent -->
+    <div class="widget-box transparent ui-sortable-handle">
+      <div class="widget-header">
+        <h4 class="widget-title strong">Import place</h4>
+
+        <div class="widget-toolbar no-border">
+          <a data-action="settings" href="#">
+            <i class="ace-icon fa fa-cog"></i>
+          </a>
+
+          <a data-action="reload" href="#">
+            <i class="ace-icon fa fa-refresh"></i>
+          </a>
+
+          <a data-action="collapse" href="#">
+            <i class="ace-icon fa fa-chevron-up"></i>
+          </a>
+
+          <a data-action="close" href="#">
+            <i class="ace-icon fa fa-times"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="widget-body">
+        <div class="widget-main padding-6 no-padding-left no-padding-right">
+          <p> This tool allows you to import a bunch of locations to your system by using a <%= link_to raw("location form"), download_template_places_path + ".csv", :method => :get, :class => 'bold_link', :format => :csv %> as a template. </p>
+        </div>
+      </div>
+      <div class="widget-main">
+        <div class="form-group">
+          <div class="col-xs-6">
+            <!-- #section:custom/file-input -->
+            <label class="ace-file-input">
+              <form id="file-form" method="POST">
+                <input type="file" class="file-input" id="file-select" onchange="return handleUploadForm();" name="files[]" >
+              </form>
+            </label>
+          </div>
+        </div>
+
+        <!-- /section:custom/file-input.filter -->
+      </div>
+      <div class='tmp-wrapper' id="myTmpTree">
+        
+      </div>
+      <br />
+      <button class="btn btn-success" id="btn-import" onclick="handleConfirmImport()" style="display:none;"> Confirm Import</button>
+        <!-- /section:custom/widget-box.options.transparent -->
+      </div>
+  </div>
 </div>
 

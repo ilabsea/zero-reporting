@@ -7,6 +7,7 @@
     <title><%= content_for?(:title) ? yield(:title) : ENV['APP_NAME'] %></title>
 
     <!-- Bootstrap -->
+      <%= stylesheet_link_tag    "ace", media: "all", "data-turbolinks-track" => true %>
       <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
       <%= csrf_meta_tags %>
 
@@ -18,12 +19,15 @@
     <![endif]-->
   </head>
   <body>
+    <div class="flash" data-hide-timeout="1000"></div>
+    <div id="toolbar"></div>
+    <div id="header"></div>
     <div class='container'>
       <%= yield %>
     </div>
 
     <%= javascript_include_tag "application" %>
     <%= render "layouts/shared/config" %>
-    <%= render "layouts/shared/notification" %>
+    <!-- <%= render "layouts/shared/notification" %> -->
   </body>
 </html>

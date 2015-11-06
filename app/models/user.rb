@@ -124,4 +124,153 @@ class User < ActiveRecord::Base
     !user.nil? && user.place && user.place.is_kind_of_hc?
   end
 
+  def self.decode_and_validate_user_csv(string)
+    csv = CSV.parse(string)
+    errors = []
+    datas = []
+    index = 0
+    csv.slice!(0)
+    csv.each do |row|
+      valid = validate_row(index, row, csv)
+      unless valid[:status]
+        row.push(valid[:errors])
+      end
+      datas.push row
+      index = index + 1
+    end
+    return {:data => datas}
+  end
+
+  def self.validate_row(index, row, csv)
+    if row[4].strip.present? and row[5].strip.present? and row[4] != row[5]
+      errors.push({:type => 'not_match', :field => 'password'})
+    elsif row[4].strip.empty? or row[5].strip.empty?
+      errors.push({:type => 'missing', :field => 'password'})
+    end
+    if row[6].strip.present?
+      place = Place.find_by_code(row[6])
+      unless place
+        errors.push({:type => 'unknown', :field => 'place'})
+      else
+        row[6] = "#{place.name}(#{place.code}) - #{place.kind_of}"  
+      end
+    elsif row[4].strip.empty? or row[5].strip.empty?
+      errors.push({:type => 'missing', :field => 'place'})
+    end
+    errors = calculateError(csv, row, index)
+    
+    list_errors = generateErrorText(errors)
+    
+    if list_errors.size > 0
+      return {:status => false, errors: list_errors}
+    else
+      return {:status => true}
+    end
+  end
+
+  def self.calculateError(csv, row, index)
+    errors = []
+    i = 0
+    errors.push({:type => 'duplicate', :field => 'login', :index => nil}) if User.find_by_username(row[0])
+    errors.push({:type => 'duplicate', :field => 'email', :index => nil}) if User.find_by_email(row[2])
+    errors.push({:type => 'duplicate', :field => 'phone', :index => nil}) if User.find_by_phone(row[3])
+    csv.each do |value|
+      if i < index.to_i
+        if row[0] == value[0]
+          errors.push({:type => 'duplicate', :field => 'login', :index => (i+1)})
+        elsif row[0].strip.empty?
+          errors.push({:type => 'missing', :field => 'login'})
+        end
+        if row[2] == value[2]
+          errors.push({:type => 'duplicate', :field => 'email', :index => (i+1)})
+        elsif row[2].strip.empty?
+          errors.push({:type => 'missing', :field => 'email'})
+        end
+        if row[3] == value[3]
+          errors.push({:type => 'duplicate', :field => 'phone', :index => (i+1)})
+        elsif row[3].strip.empty?
+          errors.push({:type => 'missing', :field => 'phone'})
+        end
+      end
+      i = i + 1
+    end
+    return errors;
+  end
+
+  def self.generateErrorText(errors)
+    list_errors = []
+    errors.each do |error|
+      case error[:field]
+      when 'login'
+        if error[:type] == 'duplicate'
+          list_errors.push(generateDuplicateErrrorText(error[:index], "login"))
+        elsif error[:type] == 'missing'
+          list_errors.push(generateMissingErrrorText("login"))
+        end
+      when 'email'
+        if error[:type] == 'duplicate'
+          list_errors.push(generateDuplicateErrrorText(error[:index], "email"))
+        elsif error[:type] == 'dupmissinglicate'
+          list_errors.push(generateMissingErrrorText("email"))
+        end
+      when 'phone'
+        if error[:type] == 'duplicate'
+          list_errors.push(generateDuplicateErrrorText(error[:index], "phone number"))
+        elsif error[:type] == 'missing'
+          list_errors.push(generateMissingErrrorText("phone number"))
+        end
+      when 'password'
+        if error[:type] == 'not_match'
+          list_errors.push("Password not match on row #{index}")
+        elsif error[:type] == 'missing'
+          list_errors.push("Password or confirmation password is missing")
+        end
+      when 'place'
+        if error[:type] == 'missing'
+          list_errors.push("Place is missing")
+        elsif error[:type] == 'unknown'
+          list_errors.push("Place is unknown")
+        end
+      end
+    end
+    return list_errors
+  end
+
+  def self.generateDuplicateErrrorText(index, field)
+    if index
+      return "Duplicated #{field} value on row #{index}."
+    else
+      return "Duplicated #{field} with existing user #{field}."
+    end
+  end
+
+  def self.generateMissingErrrorText(field)
+    return "Missing #{field} value."
+  end
+
+  def self.decode_and_save_user_csv(string)
+    csv = CSV.parse(string)
+    datas = []
+    csv.slice!(0)
+    csv.each do |row|
+      datas.push row
+      place = Place.find_by_code(row[6].strip)
+      phd_id = place.phd.id
+      od_id = nil
+      od_id = place.od.id if place.od
+      User.create!(
+          username: row[0],
+          name: row[1],
+          email: row[2],
+          phone: row[3],
+          role: "Normal",
+          place_id: place.id,
+          password: row[4],
+          password_confirmation: row[5],
+          phd_id: phd_id,
+          od_id: od_id
+      )
+    end
+    return {:data => datas}
+  end
 end

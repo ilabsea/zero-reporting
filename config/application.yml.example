@@ -1,0 +1,19 @@
+default: &default
+  TIME_ZONE: 'Bangkok'
+  APP_NAME: "CDC Zero Reporting System"
+  LOCAL_TZ: "Asia/Phnom_Penh"
+
+  VERBOICE_URL: ''
+
+  CODECLIMATE_REPO_TOKEN: ""
+  CDC_DATABASE_PASSWORD: ""
+  SECRET_KEY_BASE: ""
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default

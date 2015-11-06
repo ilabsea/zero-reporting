@@ -1,5 +1,7 @@
 class UsersController < ApplicationController
 
+  # load_and_authorize_resource
+
   def index
     @place_id = params[:place_id]
     @users = User.by_place(@place_id).page(params[:page])
@@ -86,6 +88,36 @@ class UsersController < ApplicationController
       flash.now.alert =  current_user.errors.full_messages.first
     end
     render :profile
+  end
+
+  def profile
+  end
+
+  def import
+  end
+
+  def download_template
+    respond_to do |format|
+      format.json  { render :json => result }
+      format.csv {
+        content = "login,full_name,email,phone_number,password,password_confirmation,location_code \n" + 
+        "example,example user,example@sampledomain.org.kh,8551234432233,samplepassword,samplepassword,100 \n" +
+        "example1,example user1,example1@sampledomain.org.kh,855123443332,samplepassword,samplepassword,100"
+        render :text => content
+      }
+    end
+  end
+
+  def upload_users
+    csv_string = File.read(params[:users].path, :encoding => 'utf-8')
+    users = User.decode_and_validate_user_csv(csv_string)
+    render :json => users, :root => false
+  end
+
+  def confirmed_upload_users
+    csv_string = File.read(params[:users].path, :encoding => 'utf-8')
+    users = User.decode_and_save_user_csv(csv_string)
+    render :json => users, :root => false
   end
 
   private

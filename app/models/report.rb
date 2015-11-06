@@ -136,4 +136,41 @@ class Report < ActiveRecord::Base
     self.reviewed = !self.reviewed
     self.save
   end
+
+  def self.to_piechart_reviewed(reports)
+    not_reviewed = reports.where("reviewed = ?", false).size
+    reviewed = reports.where("reviewed = ?", true).size
+    percentage_reviewed = sprintf( "%0.02f", (100 * reviewed.to_f / reports.size.to_f))
+    percentage_not_reviewed = sprintf( "%0.02f", (100 * not_reviewed.to_f / reports.size))
+    return [{ label: "Report Reviewed(#{percentage_reviewed}%)",  data: percentage_reviewed, color: "#68BC31"}, { label: "Report Not Reviewed(#{percentage_not_reviewed}%)",  data: percentage_not_reviewed, color: "#2091CF"}]
+  end
+
+  def self.to_piechart_phd(reports)
+    summary = reports.group(:phd_id).size
+    list = []
+    summary.each do |key, value|
+      colour = generate_color
+      p colour
+      name = "Unknown PHD"
+      if key
+        percentage = sprintf( "%0.02f", (100 * value.to_f / reports.size.to_f))
+        place = Place.find_by_id(key)
+        name = place.name
+      else
+        percentage = sprintf( "%0.02f", (100 * value.to_f / reports.size.to_f))
+      end
+      list.push({ label: "#{name}(#{percentage}%)",  data: percentage, color: "##{colour}"})
+    end
+    return list
+  end
+
+  def self.generate_color
+    r = rand(255).to_s(16)
+    g = rand(255).to_s(16)
+    b = rand(255).to_s(16)
+
+    r, g, b = [r, g, b].map { |s| if s.size == 1 then '0' + s else s end }
+
+    color = r + g + b 
+  end
 end

@@ -1,3 +1,4 @@
+<%= breadcrumb [ {"Reports" => nil}] %>
 <%= page_title "Call list" %>
 <%= render 'filter' %>
 
@@ -11,8 +12,27 @@
     <% end %>
   </div>
 </div>
+<!-- <div class="col-sm-2" style="padding: 0px"></div>
+<div class="col-sm-4" style="padding: 0px">
+  
+      <h5 class="widget-title">
+        <i class="ace-icon fa fa-signal"></i>
+        Report reviewed status
+      </h5>
+      <div id="piechart-review"></div>
+      <br /><br />
+</div>
+<div class="col-sm-4" style="padding: 0px">
 
-<table class="table table-strip">
+  <h5 class="widget-title">
+    <i class="ace-icon fa fa-signal"></i>
+    Report reported by PHD
+  </h5>
+  <div id="piechart-phd"></div>
+  <br /><br />
+</div> -->
+<div class="col-sm-2" style="padding: 0px"></div>
+<table class="table table-striped table-bordered table-hover">
   <thead>
     <tr>
       <td>Date</td>
@@ -31,42 +51,51 @@
   </thead>
 
   <tbody>
-    <% @reports.each_with_index do |report, index| %>
-      <tr>
-        <td> <%= timeago_tag(report.called_at) %></td>
+    <% if @reports.size > 0 %>
+      <% @reports.each_with_index do |report, index| %>
+        <tr>
+          <td> <%= timeago_tag(report.called_at) %></td>
 
-        <td> 
-            <%= link_to(report.phd.name, users_path(place_id: report.phd.try(:id))) if current_user.is_admin? && report.phd %>
-            <%= report.phd.try(:name) if current_user.is_normal? %>
-        </td>
-
-        <td> 
-           <%= link_to(report.od.name, users_path(place_id: report.od.try(:id))) if current_user.is_admin? && report.od %> 
-           <%= report.od.try(:name) if current_user.is_normal? %>
-        </td>
-
-        <td> <%= report.phone %></td>
-        <td> <%= report.user.try(:name)%> </td>
-        <td> <%= report.duration%> </td>
-
-        <% @variables.each do |variable| %>
-          <td style='color: gray;'>
-            <% report_variable = report.report_variables.select{|report_variable| report_variable.variable_id == variable.id}.first %>
-             <%= display_report_variable(report_variable) %>
+          <td> 
+              <%= link_to(report.phd.name, users_path(place_id: report.phd.try(:id))) if current_user.is_admin? && report.phd %>
+              <%= report.phd.try(:name) if current_user.is_normal? %>
           </td>
-        <% end %>
 
-        <td>
-          <%=check_box_tag(:reviewed, report.id, report.reviewed, class: 'report-status') %>
-        </td>
+          <td> 
+             <%= link_to(report.od.name, users_path(place_id: report.od.try(:id))) if current_user.is_admin? && report.od %> 
+             <%= report.od.try(:name) if current_user.is_normal? %>
+          </td>
 
-        <td>
-          <%= link_to report_path(report), method: :delete, data: {confirm: 'Are you sure to delete ?'} do %>
-              <i class='glyphicon glyphicon-trash'> </i>
+          <td> <%= report.phone %></td>
+          <td> <%= report.user.try(:name)%> </td>
+          <td> <%= report.duration%> </td>
+
+          <% @variables.each do |variable| %>
+            <td style='color: gray;'>
+              <% report_variable = report.report_variables.select{|report_variable| report_variable.variable_id == variable.id}.first %>
+               <%= display_report_variable(report_variable) %>
+            </td>
           <% end %>
 
-        </td>
-      </tr>
+          <td>
+            <%=check_box_tag(:reviewed, report.id, report.reviewed, class: 'report-status') %>
+          </td>
+
+          <td>
+            <%= link_to report_path(report), method: :delete, data: {confirm: 'Are you sure to delete ?'} do %>
+                <i class='glyphicon glyphicon-trash red'> </i>
+            <% end %>
+
+          </td>
+        </tr>
+      <% end %>
+    <% else %>
+      <td colspan="11">
+        <div class="alert alert-danger center" style="margin-bottom: 0px">
+          There is no record.
+          <br>
+        </div>
+      </td>
     <% end %>
   </tbody>
 </table>

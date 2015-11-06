@@ -21,12 +21,21 @@
 //= require bootstrap-datepicker
 //= require audiojs
 
+//= require ace
+//= require shared/jquery.flot
+//= require shared/jquery.flot.pie
+//= require shared/jquery.flot.resize
+//= require shared/elements.fileinput
+//= require shared/jquery.easypiechart
+//= require shared/piechart
+
 //= require setting/form
 
 //= require shared/alert-animate
 //= require shared/hidden-content
 
 //= require shared/tree-init
+//= require shared/file-input
 //= require shared/notification
 //= require shared/loading
 //= require shared/collasable-link
@@ -38,3 +47,5 @@
 //= require member/action
 //= require report/filter-form
 //= require locations/import_location
+
+

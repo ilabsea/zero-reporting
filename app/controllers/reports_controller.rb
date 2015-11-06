@@ -16,9 +16,20 @@ class ReportsController < ApplicationController
                      .includes(:phd, :od)
                      .order('id DESC')
                      .page(params[:page])
-
-
     @variables = Variable.applied(Setting[:project])
+  end
+
+  def query_piechart
+    @reports = UserContext.new(current_user)
+                     .reports
+                     .includes(:report_variables, :user, :phd, :od)
+                     .effective
+                     .filter(params)
+                     .includes(:phd, :od)
+                     .order('id DESC')
+    data_review = Report.to_piechart_reviewed(@reports)
+    data_phd = Report.to_piechart_phd(@reports)
+    render :json => {:review => data_review, :phd => data_phd}
   end
 
   def export_as_csv
