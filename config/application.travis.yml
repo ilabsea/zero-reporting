@@ -3,7 +3,11 @@ default: &default
   APP_NAME: "CDC Zero Reporting System"
   LOCAL_TZ: "Asia/Phnom_Penh"
 
-  VERBOICE_URL: 'http://192.168.1.116:3000/api2'
+  VERBOICE_URL: 'http://192.168.1.118:3000/api2'
+  
+  VERBOICE_NOTIFY_STATUS_USER: 'test'
+  VERBOICE_NOTIFY_STATUS_PWD: '123456'
+  HOST: 'http://192.168.1.114:3000'
 
   CODECLIMATE_REPO_TOKEN: "b2207aa683bedabf3e9cddc692141d0df7ce871f54f8ca8bc2774c7fd4e2bb8a"
   CDC_DATABASE_PASSWORD: ""
