@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 
-  # load_and_authorize_resource
+  authorize_resource :except => [:change_profile]
 
   def index
     @place_id = params[:place_id]
