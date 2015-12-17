@@ -88,7 +88,10 @@ class Report < ActiveRecord::Base
 
   def self.create_from_call_log_id(call_log_id)
     verboice_attrs = Service::Verboice.connect(Setting).call_log(call_log_id)
-    create_from_verboice_attrs(verboice_attrs.with_indifferent_access)
+    user = User.find_by(phone_without_prefix: Tel.new(verboice_attrs[:address]).without_prefix)
+    if user
+      create_from_verboice_attrs(verboice_attrs.with_indifferent_access)
+    end
   end
 
   def self.create_from_verboice_attrs verboice_attrs
