@@ -172,7 +172,7 @@ class User < ActiveRecord::Base
     errors = []
     i = 0
     errors.push({:type => 'duplicate', :field => 'login', :index => nil}) if User.find_by_username(row[0])
-    errors.push({:type => 'duplicate', :field => 'email', :index => nil}) if User.find_by_email(row[2])
+    # errors.push({:type => 'duplicate', :field => 'email', :index => nil}) if User.find_by_email(row[2])
     errors.push({:type => 'duplicate', :field => 'phone', :index => nil}) if User.find_by_phone(row[3])
     csv.each do |value|
       if i < index.to_i
@@ -181,11 +181,11 @@ class User < ActiveRecord::Base
         elsif row[0].strip.empty?
           errors.push({:type => 'missing', :field => 'login'})
         end
-        if row[2] == value[2]
-          errors.push({:type => 'duplicate', :field => 'email', :index => (i+1)})
-        elsif row[2].strip.empty?
-          errors.push({:type => 'missing', :field => 'email'})
-        end
+        # if row[2] == value[2]
+        #   errors.push({:type => 'duplicate', :field => 'email', :index => (i+1)})
+        # elsif row[2].strip.empty?
+        #   errors.push({:type => 'missing', :field => 'email'})
+        # end
         if row[3] == value[3]
           errors.push({:type => 'duplicate', :field => 'phone', :index => (i+1)})
         elsif row[3].strip.empty?
