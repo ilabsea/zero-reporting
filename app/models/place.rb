@@ -166,11 +166,11 @@ class Place < ActiveRecord::Base
 
           #Check unique name
           name = row[2].strip
-          if items.any?{|item| item.second[:name] == name}
-            item[:error] = "Invalid name."
-            item[:error_description] = "Hierarchy name should be unique"
-            error = true
-          end
+          # if items.any?{|item| item.second[:name] == name}
+          #   item[:error] = "Invalid name."
+          #   item[:error_description] = "Hierarchy name should be unique"
+          #   error = true
+          # end
           
           #Check unique id
           id = row[0].strip
