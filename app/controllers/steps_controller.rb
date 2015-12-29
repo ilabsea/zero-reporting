@@ -12,9 +12,9 @@ class StepsController < ApplicationController
     if result == 1
       phone_without_prefix = Tel.new(params[:address]).without_prefix
       user = User.find_by(phone_without_prefix: phone_without_prefix)
-      if user.od.code == '9'
+      if user.od.code == '810'
         result = 1
-      elsif user.od.code == '13'
+      elsif user.od.code == '801'
         result = 2
       end
     end
