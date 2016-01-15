@@ -5,7 +5,6 @@ class SettingsController < ApplicationController
     Setting[:project] = params[:project] if params[:project]
     @settings   = Setting.unscoped
     @parameters = verboice_parameters
-    p @parameters
     @variables  = Variable.where(verboice_project_id: Setting[:project])
   end
 
