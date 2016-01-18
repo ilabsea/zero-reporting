@@ -3,7 +3,6 @@ $(function(){
   updateReportStatus()
 })
 
-
 function updateReportStatus() {
   $('.report-status').on('change', function(){
     var _self = this

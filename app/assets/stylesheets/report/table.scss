@@ -1,0 +1,18 @@
+.report td .current {
+  padding-right: 12px;
+  background-repeat: no-repeat;
+  background-position: right center;
+}
+
+.report td a {
+  color: gray;
+  text-decoration: none;
+}
+
+.report td .asc {
+  background-image: asset-url('arrow-up.png');
+}
+
+.report td .desc {
+  background-image: asset-url('arrow-down.png');
+}
