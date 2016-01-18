@@ -10,6 +10,8 @@
 #  verboice_project_id :integer
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
+#  background_color    :string(255)
+#  text_color          :string(255)
 #
 
 class Variable < ActiveRecord::Base

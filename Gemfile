@@ -29,6 +29,7 @@ gem 'email_validator'
 gem 'kaminari'
 gem 'bootstrap-kaminari-views'
 gem 'ancestry'
+gem 'jquery-minicolors-rails'
 
 # Use Unicorn as the app server
 # gem 'unicorn'

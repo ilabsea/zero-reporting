@@ -32,7 +32,7 @@ class VariablesController < ApplicationController
 
 
   def filter_params
-    params.permit(:name, :verboice_name, :verboice_id)
+    params.permit(:name, :verboice_name, :verboice_id, :background_color, :text_color)
   end
 
 end

@@ -45,6 +45,8 @@
 //= require shared/redirect-to
 
 //= require member/action
+//= require jquery.minicolors
+//= require jquery.minicolors.simple_form
 
 //= require report/filter-form
 

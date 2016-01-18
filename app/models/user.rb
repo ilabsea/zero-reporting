@@ -13,12 +13,14 @@
 #  role                 :string(255)
 #  place_id             :integer
 #  phone_without_prefix :string(255)
+#  phd_id_id            :integer
 #  phd_id               :integer
 #  od_id                :integer
 #
 # Indexes
 #
-#  index_users_on_place_id  (place_id)
+#  index_users_on_phd_id_id  (phd_id_id)
+#  index_users_on_place_id   (place_id)
 #
 
 class User < ActiveRecord::Base
