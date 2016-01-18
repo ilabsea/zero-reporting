@@ -21,6 +21,8 @@ function handleSaveVariable() {
     var name = $form.find("#variable_name").val()
     var verboice_name = $form.find("#variable_verboice_name").val()
     var verboice_id   = $form.find("#variable_verboice_id").val()
+    var background_color   = $form.find("#variable_background_color").val()
+    var text_color   = $form.find("#variable_text_color").val()
     var method = $form.find("input[name=_method]").val()
 
     if(name == "" || verboice_id == "") {
@@ -28,7 +30,7 @@ function handleSaveVariable() {
       return
     }
 
-    var data = { name: name, verboice_name: verboice_name, verboice_id: verboice_id, _method: method}
+    var data = { name: name, verboice_name: verboice_name, verboice_id: verboice_id, background_color: background_color, text_color: text_color, _method: method}
     console.log(data)
 
     $.ajax({

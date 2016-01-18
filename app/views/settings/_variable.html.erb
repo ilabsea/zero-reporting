@@ -30,12 +30,11 @@
 
 
   <div class="panel-body variable-form" style='border-top: 1px solid #eee; border-bottom: 1px solid #eee; display:none;'>
-    <%= form_for variable do |f| %>
+    <%= simple_form_for variable do |f| %>
       <div class='alert alert-danger error-message' style="display:none;"> ffff</div>
       <div class="clearfix">
           <div class="pull-left" style='width: 45%; padding: 10px;'>
-            <%= f.label :name, 'Variable name' %> <br />
-            <%= f.text_field :name, class: 'form-control s-width' %>
+            <%= f.input :name, label: 'Variable name', class: 'form-control s-width' %>
           </div>
 
           <div class="pull-left" style='width: 10%; padding: 20px; padding-left: 30px; margin-top: 20px;' >
@@ -45,12 +44,23 @@
 
           <div style='width: 45%; padding: 10px;' class="pull-left">
             <%= f.hidden_field :verboice_name, class: 'verboice-variable-name' %>
-            <%= f.label :verboice_id, 'Verboice variable' %> <br />
+            <%= f.label :verboice_id, 'Verboice variable' %>
             <%= f.select :verboice_id,
                        project_variables.map{|p| [ p['name'], p['id'] ] },
                        {include_blank: 'Select variable'},
                        {class: 'form-control s-width verboice-variable-id' } %>
           </div>
+      </div>
+
+      <div class="clearfix">
+        <div class="pull-left" style='width: 45%; padding: 10px;'>
+          <%= f.input :background_color, label: 'Header background color', as: :minicolors, input_html: {data: {
+        minicolors: {theme: :bootstrap,defaultValue: '#ffffff', position: :right}}} %>
+        </div>
+        <div class="pull-right" style='width: 45%; padding: 10px;'>
+          <%= f.input :text_color, label: 'Text column color', as: :minicolors, input_html: {data: {
+        minicolors: {theme: :bootstrap,defaultValue: '#000000', position: :right}}} %>
+        </div>
       </div>
 
       <div class="form-action" style="text-align: right; margin-top: 15px;">
