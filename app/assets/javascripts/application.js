@@ -47,6 +47,8 @@
 //= require member/action
 //= require jquery.minicolors
 //= require jquery.minicolors.simple_form
+//= require jquery.minicolors
+//= require jquery.minicolors.simple_form
 
 //= require report/form
 
