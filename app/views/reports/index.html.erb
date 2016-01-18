@@ -34,7 +34,7 @@
 <div class="table-responsive">
   <table class="report table table-striped table-bordered table-hover">
     <thead>
-      <tr>
+    <tr style="color: black">
         <td>Date</td>
         <td>PHD</td>
         <td>OD</td>
@@ -42,7 +42,7 @@
         <td><%= sortable "user_id", "Username" %></td>
         <td>Duration<br/>(second)</td>
         <% @variables.each do |variable| %>
-          <td style='color: gray;width:150px;'><%= variable.name %></td>
+        <td style="width:150px; background-color: <%= variable.background_color%>;" > <%= variable.name %> </td>
         <% end %>
         <td>Reviewed</td>
         <td>Action</td>
@@ -70,7 +70,7 @@
             <td> <%= report.duration%> </td>
 
             <% @variables.each do |variable| %>
-              <td style='color: gray;'>
+            <td style='color: <%= variable.text_color%>;'>
                 <% report_variable = report.report_variables.select{|report_variable| report_variable.variable_id == variable.id}.first %>
                  <%= display_report_variable(report_variable) %>
               </td>
