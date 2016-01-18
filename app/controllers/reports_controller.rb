@@ -1,21 +1,21 @@
 class ReportsController < ApplicationController
-
   authorize_resource
+
+  helper_method :sort_column, :sort_direction
 
   def required_admin_role!
 
   end
 
   def index
-
     @reports = UserContext.new(current_user)
                      .reports
                      .includes(:report_variables, :user, :phd, :od)
                      .effective
                      .filter(params)
                      .includes(:phd, :od)
-                     .order('id DESC')
-                     .page(params[:page])
+    @reports = sort_column ? @reports.order(sort_column + " " + sort_direction) : @reports.order('id DESC')
+    @reports = @reports.page(params[:page])
     @variables = Variable.applied(Setting[:project])
   end
 
@@ -59,4 +59,15 @@ class ReportsController < ApplicationController
       redirect_to reports_path, alert: 'Failed to delete report'
     end
   end
+
+  private
+
+  def sort_column
+    Report.column_names.include?(params[:sort]) ? params[:sort] : nil
+  end
+
+  def sort_direction
+    %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
+  end
+
 end
