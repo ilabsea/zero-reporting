@@ -66,6 +66,7 @@ ActiveRecord::Schema.define(version: 20150918043424) do
     t.string   "phone",                limit: 255
     t.integer  "user_id",              limit: 4
     t.string   "audio_key",            limit: 255
+    t.boolean  "listened",             limit: 1
     t.datetime "called_at"
     t.integer  "call_log_id",          limit: 4
     t.datetime "created_at",                                         null: false
@@ -109,12 +110,10 @@ ActiveRecord::Schema.define(version: 20150918043424) do
     t.string   "role",                 limit: 255
     t.integer  "place_id",             limit: 4
     t.string   "phone_without_prefix", limit: 255
-    t.integer  "phd_id_id",            limit: 4
     t.integer  "phd_id",               limit: 4
     t.integer  "od_id",                limit: 4
   end
 
-  add_index "users", ["phd_id_id"], name: "index_users_on_phd_id_id", using: :btree
   add_index "users", ["place_id"], name: "index_users_on_place_id", using: :btree
 
   create_table "variables", force: :cascade do |t|
