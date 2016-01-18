@@ -205,12 +205,12 @@ module ApplicationHelper
   end
 
   def display_report_variable(report_variable)
-    return content_tag(:span, '',  class: 'gray') unless report_variable
+    return content_tag(:span, '') unless report_variable
 
     if report_variable.type == "ReportVariableAudio"
       content_tag(:audio, nil, src: play_audio_report_variable_path(report_variable.token), preload: :none)
     else
-      content_tag :span, report_variable.value, class: 'gray'
+      content_tag :span, report_variable.value
     end
   end
 
