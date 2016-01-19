@@ -12,30 +12,12 @@
     <% end %>
   </div>
 </div>
-<!-- <div class="col-sm-2" style="padding: 0px"></div>
-<div class="col-sm-4" style="padding: 0px">
 
-      <h5 class="widget-title">
-        <i class="ace-icon fa fa-signal"></i>
-        Report reviewed status
-      </h5>
-      <div id="piechart-review"></div>
-      <br /><br />
-</div>
-<div class="col-sm-4" style="padding: 0px">
-
-  <h5 class="widget-title">
-    <i class="ace-icon fa fa-signal"></i>
-    Report reported by PHD
-  </h5>
-  <div id="piechart-phd"></div>
-  <br /><br />
-</div> -->
 <div class="table-responsive">
   <table class="report table table-striped table-bordered table-hover">
     <thead>
     <tr style="color: black">
-        <td>Date</td>
+        <td>Reported date</td>
         <td>PHD</td>
         <td>OD</td>
         <td>Phone</td>
@@ -44,7 +26,7 @@
         <% @variables.each do |variable| %>
         <td style="width:150px; background-color: <%= variable.background_color%>;" > <%= variable.name %> </td>
         <% end %>
-        <td>Reviewed</td>
+        <td>Reviewed and assigned</td>
         <td>Action</td>
       </tr>
     </thead>
@@ -90,7 +72,7 @@
             <% end %>
 
             <td>
-              <%=check_box_tag(:reviewed, report.id, report.reviewed, class: 'report-status') %>
+              <%= select_tag(report.id, options_for_select(Calendar.available_weeks(Time.now.year), "w#{report.week}-#{report.year}"), { include_blank: true, class: 'weekly-report' }) %>
             </td>
 
             <td>
