@@ -33,4 +33,12 @@ class Variable < ActiveRecord::Base
     end
   end
 
+  def total_report_value
+    if(!report_variables.empty? && report_variables.first.type == "ReportVariableValue")
+      report_variables.sum(:value).to_i
+    else
+      ""
+    end
+  end
+
 end
