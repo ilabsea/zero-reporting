@@ -51,6 +51,19 @@
 
     <tbody>
       <% if @reports.size > 0 %>
+      <tr style="font-weight: bold;">
+        <td>Total</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <% @variables.each do |variable| %>
+        <td style='color: <%= variable.text_color%>;'><%= variable.total_report_value %></td>
+        <% end -%>
+        <td></td>
+        <td></td>
+      </tr>
         <% @reports.each_with_index do |report, index| %>
           <tr>
             <td> <%= report.called_at %></td>
