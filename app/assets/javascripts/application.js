@@ -48,6 +48,6 @@
 //= require jquery.minicolors
 //= require jquery.minicolors.simple_form
 
-//= require report/filter-form
+//= require report/form
 
 //= require locations/import_location

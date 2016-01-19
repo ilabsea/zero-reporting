@@ -73,7 +73,7 @@ class Report < ActiveRecord::Base
   def self.filter options
 
     reports = self.where('1=1')
-    
+
     if options[:from].present?
       from = Date.strptime(options[:from], '%Y-%m-%d').to_time
       reports = reports.where(['called_at >= ?', from.beginning_of_day ])
@@ -144,6 +144,14 @@ class Report < ActiveRecord::Base
     self.save
   end
 
+  def reviewed_as! year, week
+    self.reviewed = true
+    self.reviewed_at = Time.now
+    self.year = year
+    self.week = week
+    self.save!
+  end
+
   def self.to_piechart_reviewed(reports)
     not_reviewed = reports.where("reviewed = ?", false).size
     reviewed = reports.where("reviewed = ?", true).size
@@ -178,6 +186,6 @@ class Report < ActiveRecord::Base
 
     r, g, b = [r, g, b].map { |s| if s.size == 1 then '0' + s else s end }
 
-    color = r + g + b 
+    color = r + g + b
   end
 end

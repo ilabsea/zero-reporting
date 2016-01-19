@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   resources :sessions, only: [:index, :create, :destroy]
   resources :verboice_callbacks, only: [:index]
   resources :dashboards, only: [:index]
+  resources :calendars, only: [:index]
 
   resources :places do
     collection do
@@ -53,6 +54,7 @@ Rails.application.routes.draw do
   resources :reports, only: [:index, :destroy] do
     member do
       put :toggle_status
+      put :update_week
     end
 
     collection do

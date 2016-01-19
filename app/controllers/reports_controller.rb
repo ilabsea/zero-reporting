@@ -47,6 +47,19 @@ class ReportsController < ApplicationController
     end
   end
 
+  def update_week
+    report = Report.find(params[:id])
+    authorize! :update, report
+
+    values = Calendar.year_week_from_string(params[:week])
+
+    if report.reviewed_as!(values[:year], values[:week])
+      head :ok
+    else
+      render nothing: true, status: :not_found
+    end
+  end
+
   def destroy
     @report = Report.find(params[:id])
     authorize! :destroy, @report
