@@ -1,5 +1,11 @@
 <%= breadcrumb [ {"Health Structure" => nil}] %>
-
+<div class="clearfix">
+    <div class="pull-right" style='margin-top: 10px;'>
+    <%=link_to export_as_csv_places_path, class: 'btn btn-primary' do %>
+     <i class="glyphicon glyphicon-upload"> </i> Export as CSV
+    <% end %>
+  </div>
+</div>
 <div class='row'>
   <div class='col-lg-4'>
     <%= render 'shared/search_user' %>

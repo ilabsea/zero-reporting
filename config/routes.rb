@@ -19,6 +19,7 @@ Rails.application.routes.draw do
       post 'confirm_upload_location'
       post 'upload_location'
       get 'import'
+      get 'export_as_csv'
     end
   end
 

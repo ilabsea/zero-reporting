@@ -29,6 +29,10 @@ class PlacesController < ApplicationController
 
   end
 
+  def export_as_csv
+    send_data Place.to_csv, type: 'text/csv'
+  end
+
   def update
     @place = Place.find(params[:id])
     if @place.update_attributes(filter_params)
