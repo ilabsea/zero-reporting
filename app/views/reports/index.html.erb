@@ -50,7 +50,7 @@
     </thead>
 
     <tbody>
-      <% if @reports.size > 0 %>
+    <% if @reports_by_page.size > 0 %>
       <tr style="font-weight: bold;">
         <td>Total</td>
         <td></td>
@@ -59,12 +59,12 @@
         <td></td>
         <td></td>
         <% @variables.each do |variable| %>
-        <td style='color: <%= variable.text_color%>;'><%= variable.total_report_value %></td>
+        <td style='color: <%= variable.text_color%>;'><%= variable.total_report_value(@report_ids) %></td>
         <% end -%>
         <td></td>
         <td></td>
       </tr>
-        <% @reports.each_with_index do |report, index| %>
+      <% @reports_by_page.each_with_index do |report, index| %>
           <tr>
             <td> <%= report.called_at %></td>
 
@@ -114,5 +114,5 @@
 </div>
 
 <div class="clearfix">
-  <%= paginate_for(@reports) %>
+  <%= paginate_for(@reports_by_page) %>
 </div>

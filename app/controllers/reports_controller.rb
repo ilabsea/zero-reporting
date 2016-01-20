@@ -8,14 +8,13 @@ class ReportsController < ApplicationController
   end
 
   def index
-    @reports = UserContext.new(current_user)
-                     .reports
-                     .includes(:report_variables, :user, :phd, :od)
+    reports = UserContext.new(current_user).reports.includes(:report_variables, :user, :phd, :od)
                      .effective
                      .filter(params)
                      .includes(:phd, :od)
     @reports = sort_column ? @reports.order(sort_column + " " + sort_direction) : @reports.order('id DESC')
-    @reports = @reports.page(params[:page])
+    @report_ids = reports.map(&:id)
+    @reports_by_page = reports.page(params[:page])
     @variables = Variable.applied(Setting[:project])
   end
 
