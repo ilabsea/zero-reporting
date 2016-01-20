@@ -72,7 +72,7 @@
             <% end %>
 
             <td>
-              <%= select_tag(report.id, options_for_select(Calendar.available_weeks(Time.now.year), "w#{report.week}-#{report.year}"), { include_blank: true, class: 'weekly-report' }) %>
+              <%= select_tag(report.id, options_for_select(Calendar::Year.new(Time.now.year).available_weeks, "w#{report.week}-#{report.year}"), { include_blank: true, class: 'weekly-report' }) %>
             </td>
 
             <td>

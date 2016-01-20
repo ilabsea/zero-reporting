@@ -51,9 +51,9 @@ class ReportsController < ApplicationController
     report = Report.find(params[:id])
     authorize! :update, report
 
-    values = Calendar.year_week_from_string(params[:week])
+    week = Calendar::Week.parse(params[:week])
 
-    if report.reviewed_as!(values[:year], values[:week])
+    if report.reviewed_as!(week.year.number, week.week_number)
       head :ok
     else
       render nothing: true, status: :not_found
