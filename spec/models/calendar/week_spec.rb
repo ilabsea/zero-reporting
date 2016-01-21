@@ -37,8 +37,19 @@ RSpec.describe Calendar::Week, type: :model do
   end
 
   describe "Display of week format" do
-    it { expect(Calendar::Year.new(2016).week(1).display).to eq("w1-2016") }
-    it { expect(Calendar::Year.new(2016).week(1).display("yyyy-ww")).to eq("2016-w1") }
+    context "Short format" do
+      it { expect(Calendar::Year.new(2016).week(1).display(Calendar::Week::DISPLAY_SHORT_MODE)).to eq("w1") }
+    end
+
+    context "Normal format" do
+      it { expect(Calendar::Year.new(2016).week(1).display).to eq("w1-2016") }
+      it { expect(Calendar::Year.new(2016).week(1).display(Calendar::Week::DISPLAY_NORMAL_MODE)).to eq("w1-2016") }
+      it { expect(Calendar::Year.new(2016).week(1).display(Calendar::Week::DISPLAY_NORMAL_MODE, "yyyy-ww")).to eq("2016-w1") }
+    end
+
+    context "Advanced format" do
+      it { expect(Calendar::Year.new(2016).week(1).display(Calendar::Week::DISPLAY_ADVANCED_MODE)).to eq("w1 30.12.2015 - 05.01.2016") }
+    end
   end
 
 end

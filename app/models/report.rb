@@ -50,10 +50,12 @@ class Report < ActiveRecord::Base
 
   has_many :variables, through: :report_variables
 
-
   VERBOICE_CALL_STATUS_FAILED = 'failed'
   VERBOICE_CALL_STATUS_COMPLETE = 'complete'
   VERBOICE_CALL_STATUS_IN_PROGRESS = 'in-progress'
+
+  STATUS_NEW = 0
+  STATUS_REVIEWED = 1
 
   before_save :normalize_attrs
 
@@ -71,7 +73,6 @@ class Report < ActiveRecord::Base
 
   # from=2015-06-29&to=2015-07-14&phd=27&od=30&status=Listened
   def self.filter options
-
     reports = self.where('1=1')
 
     if options[:from].present?
@@ -87,6 +88,8 @@ class Report < ActiveRecord::Base
     reports = reports.where(phd_id: options[:phd]) if options[:phd].present?
     reports = reports.where(od_id: options[:od]) if options[:od].present?
     reports = reports.where(reviewed: options[:reviewed]) if options[:reviewed].present?
+    reports = reports.where(year: options[:year]) if options[:year].present? && options[:reviewed].to_i != STATUS_NEW
+    reports = reports.where(week: options[:week]) if options[:week].present? && options[:reviewed].to_i != STATUS_NEW
     reports
   end
 

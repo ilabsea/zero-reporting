@@ -1,7 +1,11 @@
 class Calendar::Week
   DELEMETER = "-"
   DEFAULT_FORMAT = "ww-yyyy"
-  STARTING_DAY = :wednesday
+  DEFAULT_START_DAY = :wednesday
+
+  DISPLAY_SHORT_MODE = 1
+  DISPLAY_NORMAL_MODE = 2
+  DISPLAY_ADVANCED_MODE = 3
 
   attr_reader :year, :week_number
 
@@ -18,15 +22,18 @@ class Calendar::Week
     from_date + 6.days
   end
 
-  def display format = DEFAULT_FORMAT
+  # First priority is display format(short, normal, long), then format(ww-yyyy or yyyy-ww)
+  def display display_mode = DISPLAY_NORMAL_MODE, format = DEFAULT_FORMAT
     output = []
 
     format.split(DELEMETER).each do |abbr|
       output.push "w#{@week_number}" if abbr == 'ww'
-      output.push "#{@year.number}" if abbr == 'yyyy'
+      output.push "#{@year.number}" if abbr == 'yyyy' && [DISPLAY_NORMAL_MODE].include?(display_mode)
     end
 
-    output.join("-")
+    period = "#{from_date.strftime('%d.%m.%Y')} - #{to_date.strftime('%d.%m.%Y')}" if display_mode == DISPLAY_ADVANCED_MODE
+
+    period ? output.join("-") + ' ' + period : output.join("-")
   end
 
   # week_year format: w1-yyyy

@@ -10,7 +10,7 @@ class Calendar::Year
     Calendar::Week.new(self, number)
   end
 
-  def near_by number
+  def near_by number = 2
     years = []
     ((-number)..(number)).each do |i|
       years.push(@number + i)
@@ -21,7 +21,7 @@ class Calendar::Year
   def available_weeks
     weeks = []
     (1..total_weeks).each do |week_number|
-      weeks.push(week(week_number).display)
+      weeks.push(week(week_number))
     end
     weeks
   end
