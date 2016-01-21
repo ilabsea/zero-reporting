@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   resources :verboice_callbacks, only: [:index]
   resources :dashboards, only: [:index]
   resources :calendars, only: [:index]
+  resources :weeks, only: [:index]
 
   resources :places do
     collection do

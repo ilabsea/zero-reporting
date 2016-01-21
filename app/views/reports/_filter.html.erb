@@ -1,3 +1,5 @@
+<% year = params[:year].present? ? params[:year].to_i : Time.now.year %>
+
 <div class='panel panel-default'>
   <div class='panel-heading'>
     <h3 class='panel-title'>Filter</h3>
@@ -5,15 +7,15 @@
 
   <div class="panel-body" style='padding: 10px 0px;'>
     <%= form_tag reports_path, method: 'GET' do |f| %>
-
       <div class='input-row col-lg-2'>
-        <%= label_tag :from %>
-        <%= text_field_tag :from, params[:from], class: 'form-control date-picker', autocomplete: :off %>
+        <%= label_tag :year, 'Period' %>
+        <%= select_tag :year, options_for_select(Calendar::Year.new(Time.now.year).near_by(2), year),
+                       class: 'form-control' %>
       </div>
 
       <div class='input-row col-lg-2'>
-        <%= label_tag :to %>
-        <%= text_field_tag :to, params[:to], class: 'form-control date-picker', autocomplete: :off %>
+        <label>&nbsp;</label>
+        <%= select_tag :week, options_for_select(Calendar::Year.new(year).available_weeks.map { |w| [w.display(Calendar::Week::DISPLAY_ADVANCED_MODE), w.week_number]}, params[:week]), class: 'form-control', include_blank: 'All' %>
       </div>
 
       <div class='input-row col-lg-2'>
@@ -33,7 +35,6 @@
         <%= select_tag :reviewed, options_for_select([[ "Reviewed", 1], ["New", 0]], params[:reviewed]),
                        class: 'form-control', include_blank: "All" %>
       </div>
-
 
       <div class='input-row col-lg-2'>
         <button class='btn btn-primary' style='margin-top: 25px;'>

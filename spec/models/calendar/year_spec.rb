@@ -15,12 +15,12 @@ RSpec.describe Calendar::Year, type: :model do
 
   describe "Available weeks of year" do
     it { expect(Calendar::Year.new(2016).available_weeks.length).to eq(52) }
-    it { expect(Calendar::Year.new(2016).available_weeks.first).to eq("w1-2016") }
-    it { expect(Calendar::Year.new(2016).available_weeks.last).to eq("w52-2016") }
+    it { expect(Calendar::Year.new(2016).available_weeks.first).to be_a(Calendar::Week) }
+    it { expect(Calendar::Year.new(2016).available_weeks.last).to be_a(Calendar::Week) }
 
     it { expect(Calendar::Year.new(2018).available_weeks.length).to eq(53) }
-    it { expect(Calendar::Year.new(2018).available_weeks.first).to eq("w1-2018") }
-    it { expect(Calendar::Year.new(2018).available_weeks.last).to eq("w53-2018") }
+    it { expect(Calendar::Year.new(2018).available_weeks.first).to be_a(Calendar::Week) }
+    it { expect(Calendar::Year.new(2018).available_weeks.last).to be_a(Calendar::Week) }
   end
 
   describe "Week number" do
