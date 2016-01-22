@@ -47,6 +47,7 @@ gem 'has_secure_token'
 gem 'rack-attack'
 
 gem "audited-activerecord", "~> 4.0"
+gem 'nuntium_api', '~> 0.21'
 
 group :development do
   gem 'bullet'

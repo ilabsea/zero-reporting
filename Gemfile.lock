@@ -103,6 +103,8 @@ GEM
     debugger-linecache (1.2.0)
     diff-lcs (1.2.5)
     docile (1.1.5)
+    domain_name (0.5.24)
+      unf (>= 0.0.5, < 1.0.0)
     email_validator (1.5.0)
       activemodel
     erubis (2.7.0)
@@ -126,6 +128,8 @@ GEM
       activerecord (>= 3.0)
     highline (1.6.21)
     hike (1.2.3)
+    http-cookie (1.0.2)
+      domain_name (~> 0.5)
     i18n (0.7.0)
     jquery-minicolors-rails (2.2.2.0)
       jquery-rails
@@ -153,8 +157,12 @@ GEM
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (2.9.2)
+    netrc (0.10.3)
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
+    nuntium_api (0.21)
+      json
+      rest-client
     pry (0.10.1)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -198,6 +206,10 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
     rake (10.4.2)
+    rest-client (1.8.0)
+      http-cookie (>= 1.0.2, < 2.0)
+      mime-types (>= 1.16, < 3.0)
+      netrc (~> 0.7)
     rspec-core (3.2.3)
       rspec-support (~> 3.2.0)
     rspec-expectations (3.2.1)
@@ -266,6 +278,9 @@ GEM
     uglifier (2.7.0)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.7.1)
     uniform_notifier (1.9.0)
 
 PLATFORMS
@@ -299,6 +314,7 @@ DEPENDENCIES
   kaminari
   launchy
   mysql2
+  nuntium_api (~> 0.21)
   pry-rails
   rack-attack
   rails (= 4.2.0)

@@ -9,6 +9,11 @@ default: &default
   CDC_DATABASE_PASSWORD: ""
   SECRET_KEY_BASE: ""
 
+  NUNTIUM_HOST: ''
+  NUNTIUM_ACCOUNT: ''
+  NUNTIUM_APP: ''
+  NUNTIUM_APP_PWD: ''
+
 development:
   <<: *default
 
