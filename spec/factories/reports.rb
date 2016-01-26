@@ -23,10 +23,14 @@
 #  call_log_answers     :text(65535)
 #  verboice_project_id  :integer
 #  reviewed             :boolean          default(FALSE)
+#  year                 :integer
+#  week                 :integer
+#  reviewed_at          :datetime
 #
 # Indexes
 #
-#  index_reports_on_user_id  (user_id)
+#  index_reports_on_user_id        (user_id)
+#  index_reports_on_year_and_week  (year,week)
 #
 
 FactoryGirl.define do

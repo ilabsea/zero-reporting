@@ -12,7 +12,7 @@ class ReportsController < ApplicationController
                      .effective
                      .filter(params)
                      .includes(:phd, :od)
-    @reports = sort_column ? @reports.order(sort_column + " " + sort_direction) : @reports.order('id DESC')
+    reports = sort_column ? reports.order(sort_column + " " + sort_direction) : reports.order('id DESC')
     @report_ids = reports.map(&:id)
     @reports_by_page = reports.page(params[:page])
     @variables = Variable.applied(Setting[:project])

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160118071823) do
+ActiveRecord::Schema.define(version: 20160119014518) do
 
   create_table "audits", force: :cascade do |t|
     t.integer  "auditable_id",    limit: 4
@@ -83,9 +83,13 @@ ActiveRecord::Schema.define(version: 20160118071823) do
     t.text     "call_log_answers",     limit: 65535
     t.integer  "verboice_project_id",  limit: 4
     t.boolean  "reviewed",             limit: 1,     default: false
+    t.integer  "year",                 limit: 4
+    t.integer  "week",                 limit: 4
+    t.datetime "reviewed_at"
   end
 
   add_index "reports", ["user_id"], name: "index_reports_on_user_id", using: :btree
+  add_index "reports", ["year", "week"], name: "index_reports_on_year_and_week", using: :btree
 
   create_table "settings", force: :cascade do |t|
     t.string   "var",        limit: 255,   null: false
