@@ -58,4 +58,8 @@ class Channel < ActiveRecord::Base
     end
   end
 
+  def status
+    Sms.instance.nuntium.channel(self.name)[:connected]
+  end
+
 end

@@ -9,7 +9,14 @@
         <div> <span>Password : </span> <b> <%= channel.password %> </b> </div>
       </div>
     <% end %>
+  </td>
 
+  <td>
+    <% if channel.status %>
+      <div class="circle" style="border: 1px solid #f3f3f3; background-color: green"></div>
+    <% else %>
+      <div class="circle" style="border: 1px solid #f3f3f3; background-color: red"></div>
+    <% end -%>
   </td>
 
   <td width="120">
