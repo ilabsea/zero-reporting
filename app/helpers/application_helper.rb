@@ -231,7 +231,11 @@ module ApplicationHelper
      return uri + "." + format + "?" + query_string
   end
 
-
+  def error_for(resource, field)
+    content_tag :span, class: 'error-field' do
+      resource.errors[field].first
+    end
+  end
 
 
 end

@@ -1,0 +1,49 @@
+<div id="new-channel-wizard" class="channel-wizard">
+  <div class="box plain grey wizardSteps">
+    <div class="steps-line">
+      <div class="steps-container s4">
+        <span class="circle first green">
+          <span class="inner">
+            <span class="step-name">Choose</span>
+          </span>
+        </span>
+        <span class="line-fill"></span>
+        <span class="circle">
+          <span class="inner">
+            <span class="step-name">Install</span>
+          </span>
+        </span>
+        <span class="line-fill"></span>
+        <span class="circle">
+          <span class="inner">
+            <span class="step-name">Connect</span>
+          </span>
+        </span>
+        <span class="line-fill"></span>
+        <span class="circle last">
+          <span class="inner">
+            <span class="step-name">Finish</span>
+          </span>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="ChannelWizard">
+    <h1>Choose your type of mobile phone</h1>
+    <input class="left" id="androidLocalGateway" name="localGateway" type="radio" value="android" checked="checked">/</input>
+    <div class="left AndroidLogo"></div>
+    <%= label_tag :androidLocalGateway, "Android mobile phone" , :class => "left" %>
+    <p class="w30 clear description">If you have an Android powered mobile phone, you don't need a computer to set up your schedules. Just download the application, enter your text messages, and set your delivery schedule, Remindem handles the rest.</p>
+    <input class="left" id="desktopLocalGateway" name="localGateway" type="radio" value="desktop">/</input>
+    <div class="left DesktopLogo"></div>
+    <%= label_tag :desktopLocalGateway, "Other mobile phone", :class => "left" %>
+    <p class="w30 clear description">If you use another type of mobile phone all you need to do is plug your phone into your computer and bridge the gap between your text messages and the internet application that sends them out.</p>
+  </div>
+  <hr/>
+  <div class="ChannelWizardNavigation">
+    <%= link_to ('Back'), channels_path, :class => 'btn btn-default' %>
+    <%= link_to ('Next'), new_channel_path, remote: true,:class => 'btn btn-primary', :onclick => "channelWizardView('download-android-local-gateway-wizard');", :id => "next" %>
+  </div>
+  
+</div>

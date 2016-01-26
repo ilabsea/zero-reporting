@@ -16,6 +16,7 @@
 #  phd_id_id            :integer
 #  phd_id               :integer
 #  od_id                :integer
+#  channels_count       :integer
 #
 # Indexes
 #

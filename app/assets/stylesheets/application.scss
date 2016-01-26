@@ -1,6 +1,7 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 @import "bootstrap-treenav";
+@import "bootstrap-switch";
 
 @import "base/variable";
 @import "base/mix_in";
@@ -9,6 +10,7 @@
 @import "base/override";
 
 @import "report/table";
+@import "channel/form";
 
 @import "sign_in/layout";
 @import "application/layout";

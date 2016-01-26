@@ -16,6 +16,7 @@
 #  phd_id_id            :integer
 #  phd_id               :integer
 #  od_id                :integer
+#  channels_count       :integer
 #
 # Indexes
 #
@@ -32,7 +33,7 @@ class User < ActiveRecord::Base
   belongs_to :od, class_name: 'Place', foreign_key: 'od_id'
 
   has_many :reports, dependent: :nullify
-
+  has_many :channels
   # password must be present within 6..72
   validates :place_id, presence: true, if: ->(u) { !u.is_admin? }
 

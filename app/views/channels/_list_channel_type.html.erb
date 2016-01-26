@@ -1,0 +1,33 @@
+<div id="channel-types-list" class="channel-wizard">
+    <div class="panel panel-info" >
+      <div class='panel-heading setup-flow clearfix' style='cursor:pointer;' onclick="channelWizardView('download-android-local-gateway-wizard');">
+        <div class='pull-left' style='width: 60px; font-size: 40px; margin-top: 10px;' >
+          <i class='glyphicon glyphicon-phone' style='padding: 5px;'> </i>
+        </div>
+
+        <div style="margin-left: 45px;">
+           <h4> Android Phone SMS Gateway</h4>
+           <p class="sub-text">
+             Basic Setup (Recommended)
+           </p>
+        </div>
+      </div>
+    </div>
+
+  <% if current_user.is_admin? %>
+    <div class="panel panel-info">
+      <div class="panel-heading setup-flow clearfix" style='cursor:pointer;' onclick="channelWizardView('new-national-channel-wizard');">
+        <div class="pull-left" style='width: 60px; font-size: 40px; margin-top: 10px;'>
+          <i class='glyphicon glyphicon-cloud'></i>
+        </div>
+
+        <div style="margin-left: 60px">
+          <h4> Nuntium SMS Gateway</h4>
+          <p class="sub-text"> Advanced Setup - National Gateway(Only Some Country Supported)</p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+</div>
+

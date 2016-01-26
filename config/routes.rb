@@ -72,6 +72,12 @@ Rails.application.routes.draw do
 
   resources :variables
 
+  resources :channels do
+    member do
+      put 'state'
+    end
+  end
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

@@ -1,0 +1,56 @@
+<div id="download-android-local-gateway-wizard" class="channel-wizard">
+  <div class="box plain grey wizardSteps">
+    <div class="steps-line">
+      <div class="steps-container s3">
+        <span class="circle first green">
+          <span class="inner">
+            <span class="step-name">Install</span>
+          </span>
+        </span>
+        <span class="line-fill"></span>
+        <span class="circle">
+          <span class="inner">
+            <span class="step-name">Connect</span>
+          </span>
+        </span>
+        <span class="line-fill"></span>
+        <span class="circle last">
+          <span class="inner">
+            <span class="step-name">Finish</span>
+          </span>
+        </span>
+      </div>
+      <!-- #steps-container
+      -->
+    </div>
+    <!-- #steps-line
+    -->
+  </div>
+  <!-- #box plain grey
+  -->
+  <div class="ChannelWizard">
+
+    <div class="left AndroidLogo"></div>
+    <h1 class="orange">Android Local Gateway</h1>
+    <p class="w30 grey">If you have an Android powered mobile phone, just download the application, enter your text messages, and set your delivery schedule, Feed Alert handles the rest.</p>
+
+    <p style="color:#ff6600; font-size: 16px">Go to Google Play and install Nuntium Local Gateway</p>
+    <p class="w30 grey">
+      Use the following QR code to access the app or use the search engine with the keyword
+      <span class="box plain grey">Nuntium</span>
+    </p>
+    <br/>
+    <div class="AndroidQR"></div>
+    <br/>
+    <a href="https://play.google.com/store/apps/details?id=org.instedd.geochat.lgw" target="_blank">https://play.google.com/store/apps/details?id=org.instedd.geochat.lgw</a>
+    <br/>
+    <br/>
+  </div>
+  <hr/>
+  <div class="ChannelWizardNavigation">
+    <%= link_to ('Back'), new_channel_path, :class => 'btn btn-default' %>
+    <%= link_to ('Next'), new_channel_path, remote: true,:class => 'btn btn-primary', :onclick => "channelWizardView('new-android-channel-wizard');", :id => "next" %>
+  </div>
+  
+
+</div>

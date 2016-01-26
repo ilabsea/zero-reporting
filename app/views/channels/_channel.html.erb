@@ -1,0 +1,30 @@
+<tr>
+  <td>
+    <%= channel.name %> 
+
+    <% if !channel.global_setup? %>
+      <div class="sub-text">
+        <div> <span>Endpoint : </span> <b> <%= ChannelNuntium.end_point %> </b> </div>
+        <div> <span>User name : </span> <b> <%= channel.name %> </b> </div>
+        <div> <span>Password : </span> <b> <%= channel.password %> </b> </div>
+      </div>
+    <% end %>
+
+  </td>
+
+  <td width="120">
+    <%= check_box_tag "status",
+                      channel.id,
+                      channel.is_enable,
+                      { class: 'switchable channel-status',
+                        data: {url: state_channel_path(channel.id)} 
+                      }
+                  %>
+  </td>
+  
+  <td width='50'>
+        <%= link_destroy " ", channel_path(channel),
+                              method: :delete, data: { confirm: 'Are you sure to delete this channel ?' } %>
+  </td>
+  
+</tr>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160119014518) do
+ActiveRecord::Schema.define(version: 20160122071338) do
 
   create_table "audits", force: :cascade do |t|
     t.integer  "auditable_id",    limit: 4
@@ -35,6 +35,18 @@ ActiveRecord::Schema.define(version: 20160119014518) do
   add_index "audits", ["created_at"], name: "index_audits_on_created_at", using: :btree
   add_index "audits", ["request_uuid"], name: "index_audits_on_request_uuid", using: :btree
   add_index "audits", ["user_id", "user_type"], name: "user_index", using: :btree
+
+  create_table "channels", force: :cascade do |t|
+    t.string   "name",       limit: 255
+    t.integer  "user_id",    limit: 4
+    t.string   "password",   limit: 255
+    t.string   "setup_flow", limit: 255
+    t.boolean  "is_enable",  limit: 1,   default: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+  end
+
+  add_index "channels", ["user_id"], name: "index_channels_on_user_id", using: :btree
 
   create_table "places", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -116,6 +128,7 @@ ActiveRecord::Schema.define(version: 20160119014518) do
     t.integer  "phd_id_id",            limit: 4
     t.integer  "phd_id",               limit: 4
     t.integer  "od_id",                limit: 4
+    t.integer  "channels_count",       limit: 4
   end
 
   add_index "users", ["phd_id_id"], name: "index_users_on_phd_id_id", using: :btree
@@ -133,6 +146,7 @@ ActiveRecord::Schema.define(version: 20160119014518) do
     t.string   "text_color",          limit: 255
   end
 
+  add_foreign_key "channels", "users"
   add_foreign_key "report_variables", "reports"
   add_foreign_key "report_variables", "variables"
   add_foreign_key "reports", "users"

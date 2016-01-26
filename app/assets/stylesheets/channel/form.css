@@ -1,0 +1,330 @@
+.control-inline {
+  padding-bottom: 10px;
+  input, select {
+    display: inline-block !important;
+    min-width: 300px;
+    width: auto;
+  }
+  label {
+    display: inline-block !important;
+    width: 8em;
+  }
+  .field_with_errors {
+    display: inline-block !important;
+    color: red;
+  }
+}
+.setup-flow {
+  display: block;
+  width: 100%;
+}
+
+
+.box {
+  background: #FFFFFF;
+  padding: 10px;
+}
+
+/* line 1104, ../sass/_styles.scss */
+.sbox {
+  padding: 2px;
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+}
+
+/* line 1105, ../sass/_styles.scss */
+.box.plain {
+  padding: 6px;
+  margin: 4px 0;
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+/* line 1106, ../sass/_styles.scss */
+.box.plain.white {
+  border: 1px solid #D0D0D0;
+}
+
+/* line 1110, ../sass/_styles.scss */
+.box.grey, ul.box.TourNavigation, .sbox.grey, ul.sbox.TourNavigation {
+  background: #d0d0d0;
+  color: #555555;
+}
+
+/*.box { margin-bottom: 7px !important; }*/
+/* line 1113, ../sass/_styles.scss */
+.box.tab {
+  position: relative;
+  z-index: 10;
+}
+
+
+.steps-line {
+  background: #FFFFFF;
+  height: 6px;
+  width: 90%;
+  margin: 40px auto 30px auto;
+  -webkit-box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.3) inset;
+  -moz-box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.3) inset;
+  box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.3) inset;
+  position: relative;
+}
+
+/*.steps-line.dotted { background:transparent; height:6px; width:90%; margin:40px auto 30px auto; -webkit-box-shadow:none; -moz-box-shadow:none; box-shadow:none; position:relative } */
+/* line 350, ../sass/_styles.scss */
+.steps-container {
+  position: absolute;
+  top: -6px;
+  width: 100%;
+  white-space: nowrap;
+}
+
+/* line 352, ../sass/_styles.scss */
+.circle {
+  background: #FFFFFF;
+  z-index: 3;
+  display: inline-block;
+  vertical-align: middle;
+  width: 12px;
+  height: 12px;
+  margin: -1px 0 0 -3px;
+  position: relative;
+  -moz-border-radius: 20px;
+  -webkit-border-radius: 20px;
+  border-radius: 20px;
+  -webkit-box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.3) inset;
+  -moz-box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.3) inset;
+  box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.3) inset;
+}
+
+/* line 353, ../sass/_styles.scss */
+.circle.first {
+  float: left;
+  margin-top: 3px !important;
+}
+
+/* line 354, ../sass/_styles.scss */
+.circle.last {
+  right: 0px;
+  top: 0px;
+  margin-top: 3px !important;
+  position: absolute;
+}
+
+/* line 355, ../sass/_styles.scss */
+.steps-container.dotted .circle.first {
+  z-index: 10;
+}
+
+/* line 356, ../sass/_styles.scss */
+.steps-container.dotted .circle.last {
+  z-index: 10;
+}
+
+/* line 358, ../sass/_styles.scss */
+.inner {
+  background: #ffffff;
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  -moz-border-radius: 15px;
+  -webkit-border-radius: 15px;
+  border-radius: 15px;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  text-align: center;
+  z-index: 4;
+}
+
+/* line 360, ../sass/_styles.scss */
+.line-fill {
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  border-top: 2px solid #ffffff;
+  margin: 0 -5px 3px -7px;
+  z-index: 2;
+}
+
+/* line 361, ../sass/_styles.scss */
+.line-fill.dotted {
+  background: #D0D0D0;
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  border-top: 6px dotted #e4e4e4;
+  margin: 0 -5px 0 -7px;
+  z-index: 1;
+}
+
+/* line 363, ../sass/_styles.scss */
+.step-name {
+  font-size: 12px;
+  text-align: center;
+  width: 120px;
+  position: absolute;
+  top: -25px;
+  left: -60px;
+}
+
+/* line 365, ../sass/_styles.scss */
+.circle.green .inner {
+  background: #739524;
+}
+
+/* line 366, ../sass/_styles.scss */
+.line-fill.green {
+  border-top: 2px solid #739524 !important;
+  z-index: 5;
+}
+
+/* line 367, ../sass/_styles.scss */
+.circle.green .step-name {
+  color: #739524;
+}
+
+/* line 369, ../sass/_styles.scss */
+.steps-container.s3 .line-fill {
+  width: 49.5%;
+}
+
+/* line 370, ../sass/_styles.scss */
+.steps-container.s4 .line-fill {
+  width: 32.3%;
+}
+
+/* line 371, ../sass/_styles.scss */
+.steps-container.s5 .line-fill {
+  width: 24.75%;
+}
+
+/* line 372, ../sass/_styles.scss */
+.steps-container.s6 .line-fill {
+  width: 19.8%;
+}
+
+.ChannelWizard > h1 {
+  color: #ff6600;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.ChannelWizard > p , .ChannelWizard > div, .ChannelWizard > a {
+  font-size:12px;
+  color: #555555;
+}
+
+.ChannelWizard > p {
+  margin-top: 15px !important;
+}
+
+.ChannelWizard .description {
+  margin-left: 26px;
+  padding-top: 4px;
+}
+
+
+.ChannelWizard > a.fimport {
+  color: #000000;
+}
+
+.ChannelWizard > input {
+  left-margin: 0px;
+}
+
+.ChannelWizard > label {
+  font-size: 15px;
+}
+.ChannelWizard .AndroidLogo {
+    background: image-url('android.png');
+    background-repeat: no-repeat;
+    width: 37px;
+    height: 35px;
+  margin-left: 5px;
+  margin-top: -10px;
+}
+
+.ChannelWizard .DesktopLogo {
+    background: image-url('pc.png');
+    background-repeat: no-repeat;
+    width: 37px;
+    height: 30px;
+  margin-left: 5px;
+  margin-top: -4px;
+}
+
+.ChannelWizard {
+  margin-top: 27px;
+}
+
+.ChannelWizard .AndroidQR{
+    background: image-url('android_local_gateway.png');
+    background-repeat: no-repeat;
+    width: 270px;
+    height: 270px;
+}
+
+.ChannelWizard .box {
+  padding: 1px 2px;
+  color: black;
+}
+
+.ChannelWizard .AndroidScreen{
+    background: image-url('androidPreview.png');
+    background-repeat: no-repeat;
+    width: 254px;
+    height: 375px;
+}
+
+.ChannelWizard .GreyArrow{
+    background: image-url('arrow.png');
+    background-repeat: no-repeat;
+    width: 46px;
+    height: 17px;
+}
+
+.ChannelWizard .DesktopScreen{
+    background: image-url('pcPreview.png');
+    background-repeat: no-repeat;
+    width: 258px;
+    height: 374px;
+}
+
+.ChannelWizard .AndroidArrow {
+  margin-top: 115px;
+}
+
+.ChannelWizard .DesktopArrow {
+  margin-top: 254px;
+}
+
+.ChannelWizard .DesktopChannelCreation {
+  margin-top: 160px;
+  margin-left: 5px;
+}
+
+.ChannelWizard .AndroidChannelCreation {
+  margin-left: 5px;
+  margin-top: 21px;
+}
+.ChannelWizardNavigation {
+  margin-top: 16px;
+  margin-bottom: 7px;
+}
+
+.ChannelWizard .ChannelConfigured{
+  background: image-url('finish.png');
+  background-repeat: no-repeat;
+  width: 461px;
+  height: 302px;
+}
+
+.channel-wizard{
+  display: none;
+}

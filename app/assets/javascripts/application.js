@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap-sprockets
+//= require bootstrap-switch
 
 //= require rails-timeago
 //= require bootstrap-treenav
@@ -49,6 +50,7 @@
 //= require jquery.minicolors.simple_form
 //= require jquery.minicolors
 //= require jquery.minicolors.simple_form
+//= require channels/form
 
 //= require report/form
 
