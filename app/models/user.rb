@@ -85,7 +85,7 @@ class User < ActiveRecord::Base
   def normalize_attrs
     self.role = User::ROLE_NORMAL unless self.role.present?
     self.username.downcase!
-    self.phone_without_prefix = Tel.new(self.phone).without_prefix if self.phone.present?
+    self.phone_without_prefix = self.phone.present? ? Tel.new(self.phone).without_prefix : nil
   end
 
   def self.authenticate(username, password)
@@ -152,15 +152,15 @@ class User < ActiveRecord::Base
       unless place
         errors.push({:type => 'unknown', :field => 'place'})
       else
-        row[6] = "#{place.name}(#{place.code}) - #{place.kind_of}"  
+        row[6] = "#{place.name}(#{place.code}) - #{place.kind_of}"
       end
     elsif row[4].strip.empty? or row[5].strip.empty?
       errors.push({:type => 'missing', :field => 'place'})
     end
     errors = calculateError(csv, row, index)
-    
+
     list_errors = generateErrorText(errors)
-    
+
     if list_errors.size > 0
       return {:status => false, errors: list_errors}
     else
