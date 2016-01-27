@@ -30,7 +30,7 @@ gem 'kaminari'
 gem 'bootstrap-kaminari-views'
 gem 'ancestry'
 gem 'jquery-minicolors-rails'
-
+gem 'sinatra', :require => nil
 # Use Unicorn as the app server
 # gem 'unicorn'
 
@@ -47,7 +47,8 @@ gem 'has_secure_token'
 gem 'rack-attack'
 
 gem "audited-activerecord", "~> 4.0"
-gem 'nuntium_api', '~> 0.21'
+gem 'nuntium_api', github: 'channainfo/nuntium-api-ruby', branch: 'encode_uri'
+gem 'sidekiq', '~> 4.0', '>= 4.0.2'
 
 group :development do
   gem 'bullet'

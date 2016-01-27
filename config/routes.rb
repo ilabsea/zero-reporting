@@ -1,8 +1,12 @@
 Rails.application.routes.draw do
-  # The priority is based upon order of creation: first created -> highest priority.
-  # See how all your routes lay out with "rake routes".
+  require 'sidekiq/web'
 
-  # You can have the root of your site routed with "root"
+  Sidekiq::Web.use Rack::Auth::Basic do |username, password|
+    username == ENV["SIDEKIQ_USERNAME"] && password == ENV["SIDEKIQ_PASSWORD"]
+  end
+
+  mount Sidekiq::Web => '/sidekiq'
+  
   root 'reports#index'
 
   get 'sign_in' => 'sessions#new'

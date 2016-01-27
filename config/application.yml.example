@@ -14,6 +14,9 @@ default: &default
   NUNTIUM_APP: ''
   NUNTIUM_APP_PWD: ''
 
+  SIDEKIQ_USERNAME: ''
+  SIDEKIQ_PASSWORD: ''
+
 development:
   <<: *default
 

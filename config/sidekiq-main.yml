@@ -1,0 +1,11 @@
+:concurrency: 10
+development:
+  :pidfile: tmp/pids/sidekiq-main.pid
+
+production:
+  :pidfile: ../../shared/tmp/pids/sidekiq-main.pid
+  :logfile: ../../shared/log/sidekiq-main.log
+  :concurrency: 10
+
+:queues:
+  - default
