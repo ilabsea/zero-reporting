@@ -40,6 +40,17 @@ RSpec.describe User, :type => :model do
       expect(user.is_normal?).to eq true
       expect(user.phone_without_prefix).to eq '975553553'
     end
+
+    context 'reset phone number' do
+      let(:user) { create(:user, username: 'CDC0Reporting', phone: '8550975553553') }
+
+      it 'reset phone_without_prefix when phone number is empty' do
+        user.update_attributes(phone: '')
+        expect(user.username).to eq 'cdc0reporting'
+        expect(user.is_normal?).to eq true
+        expect(user.phone_without_prefix).to eq nil
+      end
+    end
   end
 
   describe '#set_place_tree' do
