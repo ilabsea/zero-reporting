@@ -13,7 +13,7 @@ class Sms
   # body: ej: simple text
   def send options
     # options[:country] = ENV['NUNTIUM_PWD_COUNTRY']
-    # options[:suggested_channel] = ENV['NUNTIUM_CHANNEL'] 
+    # options[:suggested_channel] = ENV['NUNTIUM_CHANNEL']
     nuntium.send_ao(options)
   end
 

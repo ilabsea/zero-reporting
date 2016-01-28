@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Variable, type: :model do
-  # describe "#new" do
 
   context "initialized" do
     let(:variable) { described_class.new(name: 'age', verboice_id: 91, verboice_name: 'age', verboice_project_id: 24, background_color: '#203de3', text_color: '#d4b91e') }
