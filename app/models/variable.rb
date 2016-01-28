@@ -27,9 +27,8 @@ class Variable < ActiveRecord::Base
 
   def total_report_value(report_ids)
     if !report_variable_values.empty?
-      report_variable_values.where(report_id: report_ids).sum(:value).to_i
-    else
-      ""
+      return report_variable_values.where(report_id: report_ids).sum(:value).to_i
     end
+    return
   end
 end
