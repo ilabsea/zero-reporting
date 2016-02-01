@@ -1,4 +1,5 @@
 class ChannelsController < ApplicationController
+  authorize_resource
   def index
     @my_channels = current_user.channels.page(params[:page])
   end

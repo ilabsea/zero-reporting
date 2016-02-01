@@ -24,7 +24,7 @@ class Channel < ActiveRecord::Base
   SETUP_FLOW_GLOBAL = 'National'
 
   validates :name, uniqueness: { scope: :user_id}
-  
+
   validates :password, presence: true, length: {minimum: 4, maximum: 6}, if: ->(u) { u.advanced_setup? }
 
   validates :ticket_code, :presence => {:on => :create},  if: ->(u) { u.basic_setup? }
@@ -58,7 +58,7 @@ class Channel < ActiveRecord::Base
     end
   end
 
-  def status
+  def is_connected?
     Sms.instance.nuntium.channel(self.name)[:connected]
   end
 

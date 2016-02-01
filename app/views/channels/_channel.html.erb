@@ -1,6 +1,6 @@
 <tr>
   <td>
-    <%= channel.name %> 
+    <%= channel.name %>
 
     <% if !channel.global_setup? %>
       <div class="sub-text">
@@ -12,7 +12,7 @@
   </td>
 
   <td>
-    <% if channel.status %>
+    <% if channel.is_connected? %>
       <div class="circle" style="border: 1px solid #f3f3f3; background-color: green"></div>
     <% else %>
       <div class="circle" style="border: 1px solid #f3f3f3; background-color: red"></div>
@@ -24,14 +24,14 @@
                       channel.id,
                       channel.is_enable,
                       { class: 'switchable channel-status',
-                        data: {url: state_channel_path(channel.id)} 
+                        data: {url: state_channel_path(channel.id)}
                       }
                   %>
   </td>
-  
+
   <td width='50'>
         <%= link_destroy " ", channel_path(channel),
                               method: :delete, data: { confirm: 'Are you sure to delete this channel ?' } %>
   </td>
-  
+
 </tr>
