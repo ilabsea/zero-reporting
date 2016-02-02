@@ -12,7 +12,7 @@ set :rbenv_roles, :all # default value
 
 set :application, 'cdc-zero-reporting-system'
 set :branch, :develop
-set :repo_url, 'git@bitbucket.org:channainfo/cdc-zero-reporting-system.git'
+set :repo_url, 'https://bitbucket.org/ilab/cdc-zero-reporting-system.git'
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
@@ -37,7 +37,7 @@ set :repo_url, 'git@bitbucket.org:channainfo/cdc-zero-reporting-system.git'
 set :linked_files, fetch(:linked_files, []).push('config/application.yml')
 
 # Default value for linked_dirs is []
-set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system')
+set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system', 'public/audios')
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
