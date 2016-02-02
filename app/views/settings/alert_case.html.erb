@@ -1,0 +1,92 @@
+<%= breadcrumb [ {"Settings" => nil} ] %>
+<div class="tabbable">
+	<ul id="myTab" class="nav nav-tabs">
+		<li>
+      <%= link_to 'Verboice', settings_path%>
+		</li>
+		<li class="active">
+			<%= link_to 'Alert', alert_path, id: 'alert', html: {'data-toggle'=> 'tab'}%>
+		</li>
+	</ul>
+
+	<div class="tab-content">
+		<div class="tab-pane fade in active" id="alert">
+      <div class="row">
+        <div class="col-xs-12">
+          <form class="form-horizontal" role="form">
+            <div class="form-group col-sm-12">
+              <label> Notification </label>
+              <div class="radio">
+                <label class="col-sm-3">
+                  <input name="form-field-radio" type="radio" class="ace" />
+                  <span class="lbl"> Do not send notifications</span>
+                </label>
+                <label class="col-sm-3">
+                  <input name="form-field-radio" type="radio" class="ace" />
+                  <span class="lbl"> Notifiy these people</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-sm-3">
+                <label> Send emails to </label>
+                <div class="checkbox">
+                  <label>
+                    <input name="form-field-checkbox" type="checkbox" class="ace" />
+                    <span class="lbl"> choice 1</span>
+                  </label>
+                </div>
+
+                <div class="checkbox">
+                  <label>
+                    <input name="form-field-checkbox" type="checkbox" class="ace" />
+                    <span class="lbl"> choice 2</span>
+                  </label>
+                </div>
+
+                <div class="checkbox">
+                  <label>
+                    <input name="form-field-checkbox" class="ace ace-checkbox-2" type="checkbox" />
+                    <span class="lbl"> choice 3</span>
+                  </label>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <label> Send text messages to </label>
+                <div class="checkbox">
+                  <label>
+                    <input name="form-field-checkbox" type="checkbox" class="ace" />
+                    <span class="lbl"> choice 1</span>
+                  </label>
+                </div>
+
+                <div class="checkbox">
+                  <label>
+                    <input name="form-field-checkbox" type="checkbox" class="ace" />
+                    <span class="lbl"> choice 2</span>
+                  </label>
+                </div>
+
+                <div class="checkbox">
+                  <label>
+                    <input name="form-field-checkbox" class="ace ace-checkbox-2" type="checkbox" />
+                    <span class="lbl"> choice 3</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group col-sm-12">
+              <label>Message</label>
+              <textarea class="form-control"></textarea>
+            </div>
+
+            <div class='form-group col-sm-12 form-action-group'>
+              <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+      </div>
+
+		</div>
+	</div>
+</div>

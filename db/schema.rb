@@ -11,7 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160122071338) do
+ActiveRecord::Schema.define(version: 20160202080817) do
+
+  create_table "alerts", force: :cascade do |t|
+    t.boolean "is_enable",        limit: 1
+    t.string  "message_template", limit: 255
+    t.integer "user_id",          limit: 4
+  end
 
   create_table "audits", force: :cascade do |t|
     t.integer  "auditable_id",    limit: 4

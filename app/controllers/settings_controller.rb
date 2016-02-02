@@ -21,6 +21,10 @@ class SettingsController < ApplicationController
     Variable.save_from_params(params)
   end
 
+  def alert_case
+
+  end
+
   def verboice
     response = Service::Verboice.auth(params[:email], params[:password])
     Setting[:verboice_email] = params[:email]

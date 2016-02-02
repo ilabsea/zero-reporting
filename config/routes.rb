@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   end
 
   mount Sidekiq::Web => '/sidekiq'
-  
+
   root 'reports#index'
 
   get 'sign_in' => 'sessions#new'
@@ -52,6 +52,7 @@ Rails.application.routes.draw do
   put 'verboice' => 'settings#verboice'
   get 'project_variables' => 'settings#project_variables'
   get 'external' => 'settings#external'
+  get 'alert' => 'settings#alert_case'
 
   get '/steps/manifest' => 'steps#manifest', defaults: { format: :xml }
   post '/steps/validate_hc_worker' => 'steps#validate_hc_worker'
