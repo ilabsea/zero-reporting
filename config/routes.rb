@@ -52,7 +52,6 @@ Rails.application.routes.draw do
   put 'verboice' => 'settings#verboice'
   get 'project_variables' => 'settings#project_variables'
   get 'external' => 'settings#external'
-  get 'alert' => 'settings#alert_case'
 
   get '/steps/manifest' => 'steps#manifest', defaults: { format: :xml }
   post '/steps/validate_hc_worker' => 'steps#validate_hc_worker'
@@ -82,7 +81,7 @@ Rails.application.routes.draw do
       put 'state'
     end
   end
-
+  resources :alerts
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

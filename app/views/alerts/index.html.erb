@@ -5,13 +5,13 @@
       <%= link_to 'Verboice', settings_path%>
 		</li>
 		<li class="active">
-			<%= link_to 'Alert', alert_path, id: 'alert', html: {'data-toggle'=> 'tab'}%>
+			<%= link_to 'Alert', alerts_path, id: 'alert', html: {'data-toggle'=> 'tab'}%>
 		</li>
 	</ul>
 
 	<div class="tab-content">
 		<div class="tab-pane fade in active" id="alert">
-      <%= render "alert" %>
+      <%= render "case" %>
 		</div>
 	</div>
 </div>

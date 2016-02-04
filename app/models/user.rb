@@ -34,6 +34,7 @@ class User < ActiveRecord::Base
 
   has_many :reports, dependent: :nullify
   has_many :channels
+  has_many :alerts
   # password must be present within 6..72
   validates :place_id, presence: true, if: ->(u) { !u.is_admin? }
 
@@ -159,9 +160,9 @@ class User < ActiveRecord::Base
       errors.push({:type => 'missing', :field => 'place'})
     end
     errors = calculateError(csv, row, index)
-    
+
     list_errors = generateErrorText(errors)
-    
+
     if list_errors.size > 0
       return {:status => false, errors: list_errors}
     else
