@@ -9,4 +9,9 @@ RSpec.describe Calendar, type: :model do
     it { expect(Calendar.beginning_date_of_week(Date.new(2018, 1, 1))).to eq(Date.new(2017, 12, 27)) }
   end
 
+  describe "Get week number of specific date" do
+    it { expect(Calendar.week_number(Date.new(2016, 2, 4)).year.number).to eq(2016) }
+    it { expect(Calendar.week_number(Date.new(2016, 2, 4)).week_number).to eq(5) }
+  end
+
 end
