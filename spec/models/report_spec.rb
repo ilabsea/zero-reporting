@@ -26,6 +26,7 @@
 #  year                 :integer
 #  week                 :integer
 #  reviewed_at          :datetime
+#  is_reached_threshold :boolean          default(FALSE)
 #
 # Indexes
 #

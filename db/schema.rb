@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160203025648) do
+ActiveRecord::Schema.define(version: 20160204071914) do
 
   create_table "alerts", force: :cascade do |t|
     t.boolean "is_enable",           limit: 1
@@ -105,6 +105,7 @@ ActiveRecord::Schema.define(version: 20160203025648) do
     t.integer  "year",                 limit: 4
     t.integer  "week",                 limit: 4
     t.datetime "reviewed_at"
+    t.boolean  "is_reached_threshold", limit: 1,     default: false
   end
 
   add_index "reports", ["user_id"], name: "index_reports_on_user_id", using: :btree
