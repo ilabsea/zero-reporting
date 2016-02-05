@@ -31,4 +31,19 @@ class Variable < ActiveRecord::Base
     end
     return
   end
+
+  def total_report_value_by_year_week(year, week)
+    reports = Report.filter({year: year, week: week})
+    total_report_value(reports.map(&:id))
+  end
+
+  def threshold_by_year_week(year, week)
+    alert = Alert.find_by(verboice_project_id: self.verboice_project_id)
+    threshold = 0
+    (1..3).each do |i|
+      threshold = threshold + self.total_report_value_by_year_week(year, week-i)
+    end
+    threshold
+  end
+
 end
