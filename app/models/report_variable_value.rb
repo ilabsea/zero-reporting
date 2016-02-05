@@ -2,16 +2,17 @@
 #
 # Table name: report_variables
 #
-#  id          :integer          not null, primary key
-#  report_id   :integer
-#  variable_id :integer
-#  type        :string(255)
-#  value       :string(255)
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  has_audio   :boolean          default(FALSE)
-#  listened    :boolean          default(FALSE)
-#  token       :string(255)
+#  id                   :integer          not null, primary key
+#  report_id            :integer
+#  variable_id          :integer
+#  type                 :string(255)
+#  value                :string(255)
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  has_audio            :boolean          default(FALSE)
+#  listened             :boolean          default(FALSE)
+#  token                :string(255)
+#  is_reached_threshold :boolean          default(FALSE)
 #
 # Indexes
 #
