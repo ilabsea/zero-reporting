@@ -60,14 +60,21 @@
                <%= report.od.try(:name) if current_user.is_normal? %>
             </td>
 
-            <td> <%= report.phone %></td>
+            <td><%= report.phone %></td>
             <td> <%= report.user.try(:name)%> </td>
             <td> <%= report.duration%> </td>
 
             <% @variables.each do |variable| %>
             <td style='color: <%= variable.text_color%>;'>
                 <% report_variable = report.report_variables.select{|report_variable| report_variable.variable_id == variable.id}.first %>
-                 <%= display_report_variable(report_variable) %>
+
+                <div style="position: relative">
+                  <% if report_variable && report_variable.is_reached_threshold %>
+                    <img src="/assets/warning.png" style="top:0; right: 0; position: absolute">
+                  <% end %>
+                  <img src="/assets/warning.png" style="top:0; right: 0; position: absolute">
+                  <%= display_report_variable(report_variable) %>
+                </div>
               </td>
             <% end %>
 

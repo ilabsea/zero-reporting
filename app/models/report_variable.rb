@@ -25,4 +25,15 @@ class ReportVariable < ActiveRecord::Base
 
   belongs_to :report
   belongs_to :variable
+
+  def mark_as_reaching_threshold
+    self.is_reached_threshold = true
+    self.save
+  end
+
+  def unmark_as_reaching_threshold
+    self.is_reached_threshold = false
+    self.save
+  end
+
 end

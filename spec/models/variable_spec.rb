@@ -55,9 +55,8 @@ RSpec.describe Variable, type: :model do
     @variable4 = create(:variable, name: 'feed_back', verboice_id: 73, verboice_name: 'feed_back', verboice_project_id: 24 )
     @variable5 = create(:variable, name: 'about', verboice_id: 93, verboice_name: 'about', verboice_project_id: 24 )
 
-    report = Report.create_from_verboice_attrs(verboice_attrs)
-    report.reviewed_as!(DateTime.now.year, week)
-    @report_ids = [report.id]
+    @report = Report.create_from_verboice_attrs(verboice_attrs)
+    @report_ids = [@report.id]
   end
 
   context "initialized" do
@@ -84,13 +83,22 @@ RSpec.describe Variable, type: :model do
   end
 
   describe "#threshold_by_week" do
-    it{
-      expect(@variable1.threshold_by_year_week(DateTime.now.year, week)).to eq(0)
-      expect(@variable1.threshold_by_year_week(DateTime.now.year, week+1)).to eq(2)
-      expect(@variable1.threshold_by_year_week(DateTime.now.year, week+2)).to eq(2)
-      expect(@variable1.threshold_by_year_week(DateTime.now.year, week+3)).to eq(2)
-      expect(@variable1.threshold_by_year_week(DateTime.now.year, week+4)).to eq(0)
-    }
+    context "when the report has not reviewed yet" do
+      it{
+        expect(@variable1.threshold_by_year_week(DateTime.now.year, week)).to eq(0)
+        expect(@variable1.threshold_by_year_week(DateTime.now.year, week+1)).to eq(0)
+      }
+    end
+    context "when the report has not reviewed yet" do
+      it{
+        @report.reviewed_as!(DateTime.now.year, week)
+        expect(@variable1.threshold_by_year_week(DateTime.now.year, week)).to eq(0)
+        expect(@variable1.threshold_by_year_week(DateTime.now.year, week+1)).to eq(2)
+        expect(@variable1.threshold_by_year_week(DateTime.now.year, week+2)).to eq(2)
+        expect(@variable1.threshold_by_year_week(DateTime.now.year, week+3)).to eq(2)
+        expect(@variable1.threshold_by_year_week(DateTime.now.year, week+4)).to eq(0)
+      }
+    end
   end
 
 end
