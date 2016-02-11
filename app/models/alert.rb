@@ -11,4 +11,5 @@
 
 class Alert < ActiveRecord::Base
   belongs_to :user
+  serialize :recipient_type, Array
 end

@@ -26,6 +26,6 @@ class AlertsController < ApplicationController
 
   private
   def filter_params
-    params.require(:alert).permit(:is_enable, :message_template)
+    params.require(:alert).permit(:is_enable_sms_alert, :is_enable_email_alert, :message_template, recipient_type: [])
   end
 end
