@@ -1,17 +1,29 @@
 <%= breadcrumb [ {"Settings" => nil} ] %>
-<div class="tabbable">
-	<ul id="myTab" class="nav nav-tabs">
-		<li class="active">
-			<a href="#verboice_setting" data-toggle="tab">Verboice</a>
-		</li>
-		<li>
-			<%= link_to 'Alert', alerts_path%>
-		</li>
-	</ul>
+<div>
+    <div>
+      <a href='#' class='collasable-link' style="padding: 20px 0px; display:block;">
+        <i class='glyphicon glyphicon-cog'> </i> Verboice Connection
+      </a>
+      <% style = Setting['verboice_token'].blank? ? '' : "style=display:none;" %>
 
-	<div class="tab-content">
-		<div class="tab-pane fade in active" id="verboice_setting">
-			<%= render "setting" %>
-		</div>
-	</div>
+      <div class='collasable-container' <%= style %> >
+        <p>
+          <% if Setting[:verboice_token].blank? %>
+            <span class='vb-status vb-red'> </span> <span class='color-red'> Not Connected </span>
+          <% else %>
+            <span class='vb vb-green'> </span> <span class='color-green'> Connected </span>
+          <% end %>
+        </p>
+
+        <%= render 'connection' %>
+        <hr />
+      </div>
+
+      <% if Setting[:verboice_token].present? %>
+        <div style='margin-top: 30px;'>
+          <p> <%= render 'verboice' %> </p>
+        </div>
+      <% end %>
+
+    </div>
 </div>

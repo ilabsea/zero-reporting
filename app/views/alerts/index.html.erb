@@ -1,16 +1,16 @@
-<%= breadcrumb [ {"Settings" => nil} ] %>
+<%= breadcrumb [ {"Alert Threshold" => nil} ] %>
 <div class="tabbable">
 	<ul id="myTab" class="nav nav-tabs">
-		<li>
-      <%= link_to 'Verboice', settings_path%>
-		</li>
 		<li class="active">
-			<%= link_to 'Alert', alerts_path, id: 'alert', html: {'data-toggle'=> 'tab'}%>
+			<%= link_to 'Setting', alerts_path, id: 'alert_setting', html: {'data-toggle'=> 'tab'}%>
+		</li>
+		<li>
+			<%= link_to 'Log', log_alerts_path%>
 		</li>
 	</ul>
 
 	<div class="tab-content">
-		<div class="tab-pane fade in active" id="alert">
+		<div class="tab-pane fade in active" id="alert_setting">
       <%= render "case" %>
 		</div>
 	</div>

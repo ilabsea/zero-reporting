@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160205080341) do
+ActiveRecord::Schema.define(version: 20160211024927) do
 
   create_table "alerts", force: :cascade do |t|
     t.boolean "is_enable",           limit: 1

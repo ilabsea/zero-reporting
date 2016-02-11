@@ -81,7 +81,11 @@ Rails.application.routes.draw do
       put 'state'
     end
   end
-  resources :alerts
+  resources :alerts do
+    collection do
+      get 'log'
+    end
+  end
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

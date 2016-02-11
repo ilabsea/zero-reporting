@@ -28,6 +28,8 @@ class Place < ActiveRecord::Base
   PLACE_TYPE_OD  = 'OD'
   PLACE_TYPE_HC  = 'HC'
 
+  TYPE = [PLACE_TYPE_PHD, PLACE_TYPE_OD, PLACE_TYPE_HC]
+
   before_save :set_my_type
 
   def set_my_type
@@ -171,7 +173,7 @@ class Place < ActiveRecord::Base
           #   item[:error_description] = "Hierarchy name should be unique"
           #   error = true
           # end
-          
+
           #Check unique id
           id = row[0].strip
           if items.any?{|item| item.second[:id] == id}
@@ -204,9 +206,9 @@ class Place < ActiveRecord::Base
 
   def self.generate_ancestry(code)
     parent = Place.find_by_code code
-    if parent 
+    if parent
       if parent.ancestry
-        return parent.ancestry + "/" +parent.id.to_s 
+        return parent.ancestry + "/" +parent.id.to_s
       else
         return parent.id.to_s
       end

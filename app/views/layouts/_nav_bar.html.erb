@@ -2,7 +2,7 @@
 <nav class="navbar navbar-default navbar-static-top">
   <div class="container">
     <div class="navbar-header">
-     
+
       <%=link_to root_path, class: 'navbar-brand' do %>
         <%= ENV['APP_NAME'] %>
       <% end %>
@@ -20,6 +20,15 @@
           <li><%= link_to "Reports", reports_path %> </li>
           <li><%= link_to "Health Structurs", users_path %> </li>
           <li><%= link_to "Settings", settings_path %> </li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+              <i class=''> </i>Alert<span class="caret"> </span>
+            </a>
+            <ul class="dropdown-menu" role="menu">
+              <li><%= link_to 'Setting', alerts_path() %></li>
+              <li><%= link_to 'Log', log_alerts_path() %></li>
+            </ul>
+          </li>
           <li><%= link_to "Channels", channels_path %> </li>
         <% else %>
           <li><%= link_to "Reports", reports_path %> </li>
