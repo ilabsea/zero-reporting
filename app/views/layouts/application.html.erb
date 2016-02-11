@@ -6,9 +6,10 @@
 
     <title><%= content_for?(:title) ? yield(:title) : ENV['APP_NAME'] %></title>
     <%= stylesheet_link_tag    "ace", media: "all", "data-turbolinks-track" => true %>
+    <%= stylesheet_link_tag    "font-awesome" %>
     <%= stylesheet_link_tag    "application" %>
     <%= csrf_meta_tags %>
-    
+
   </head>
 
   <body>
