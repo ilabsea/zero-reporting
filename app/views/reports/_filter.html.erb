@@ -1,3 +1,8 @@
+<script>
+  fromWeek = '<%= params[:from_week] %>';
+  toWeek = '<%= params[:to_week] %>';
+</script>
+
 <% year = params[:year].present? ? params[:year].to_i : Time.now.year %>
 
 <div class='panel panel-default'>
@@ -14,8 +19,18 @@
       </div>
 
       <div class='input-row col-lg-2'>
-        <label>&nbsp;</label>
-        <%= select_tag :week, options_for_select(Calendar::Year.new(year).available_weeks.map { |w| [w.display(Calendar::Week::DISPLAY_ADVANCED_MODE), w.week_number]}, params[:week]), class: 'form-control', include_blank: 'All' %>
+        <%= label_tag :reviewed, 'Reviewed Status' %>
+        <%= select_tag :reviewed, options_for_select([[ "Reviewed", 1], ["New", 0]], params[:reviewed]),
+                       class: 'form-control', include_blank: "All" %>
+      </div>
+
+      <div class='input-row col-lg-2 from-week-group' style='display: none;'>
+        <label>From</label>
+        <%= select_tag :from_week, options_for_select(Calendar::Year.new(year).available_weeks.map { |w| [w.display(Calendar::Week::DISPLAY_ADVANCED_MODE), w.week_number]}, params[:from_week]), class: 'form-control', include_blank: 'All' %>
+      </div>
+      <div class='input-row col-lg-2 to-week-group' style='display: none;'>
+        <label>To</label>
+        <%= select_tag :to_week, options_for_select(Calendar::Year.new(year).available_weeks.map { |w| [w.display(Calendar::Week::DISPLAY_ADVANCED_MODE), w.week_number]}, params[:to_week]), class: 'form-control', include_blank: 'All' %>
       </div>
 
       <div class='input-row col-lg-2'>
@@ -28,12 +43,6 @@
         <%= label_tag :od, 'OD' %>
         <%= select_tag :od, options_for_select(UserContext.new(current_user).ods_list(params[:phd]), params[:od]),
                        class: 'form-control', prompt: "All" %>
-      </div>
-
-      <div class='input-row col-lg-2'>
-        <%= label_tag :reviewed, 'Reviewed Status' %>
-        <%= select_tag :reviewed, options_for_select([[ "Reviewed", 1], ["New", 0]], params[:reviewed]),
-                       class: 'form-control', include_blank: "All" %>
       </div>
 
       <div class='input-row col-lg-2'>

@@ -1,6 +1,10 @@
 $(function(){
-  initFilterForm()
-  updateWeekNumberReport()
+  REVIEWED = 1;
+
+  reviewedChanged();
+
+  initFilterForm();
+  updateWeekNumberReport();
 });
 
 function updateWeekNumberReport() {
@@ -26,22 +30,11 @@ function updateWeekNumberReport() {
 }
 
 function initFilterForm(){
-  $("#year").on('change', function() {
-    var $this = $(this);
-    var year = $this.val();
-    var $week = $("#week");
+  var _self = this;
 
-    $week.find("option[value!='']").remove();
-
-    $.ajax({
-      url: '/weeks',
-      data: { year: year },
-      success: function(response){
-        $.each(response, function(i){
-          addItemToCombo(response[i]['display'], response[i]['id'], $week);
-        });
-      }
-    });
+  var $reviewed = $("#reviewed");
+  $reviewed.on('change', function() {
+    reviewedChanged();
   });
 
   $("#phd").on('change', function() {
@@ -61,11 +54,46 @@ function initFilterForm(){
       }
     })
   });
+}
 
-  function addItemToCombo(text, value, combo) {
-    var element = $("<option>");
-    element.text(text);
-    element.attr("value", value);
-    combo.append(element);
+function addItemToCombo(text, value, combo, valueSelected) {
+  var element = $("<option>");
+  element.text(text);
+  element.attr("value", value);
+  if(value == valueSelected) {
+    element.attr("selected", "selected");
+  }
+  combo.append(element);
+}
+
+function reviewedChanged() {
+  var $divFromWeek = $(".from-week-group");
+  var $divToWeek = $(".to-week-group");
+  var $fromWeekSelect = $("#from_week");
+  var $toWeekSelect = $("#to_week");
+
+  $fromWeekSelect.find("option[value!='']").remove();
+  $toWeekSelect.find("option[value!='']").remove();
+
+  var $reviewed = $("#reviewed");
+  if($reviewed.val() == REVIEWED) {
+    var $year = $("#year");
+
+    $divFromWeek.show();
+    $divToWeek.show();
+
+    $.ajax({
+      url: '/weeks',
+      data: { year: $year.val() },
+      success: function(response){
+        $.each(response, function(i){
+          addItemToCombo(response[i]['display'], response[i]['id'], $fromWeekSelect, fromWeek);
+          addItemToCombo(response[i]['display'], response[i]['id'], $toWeekSelect, toWeek);
+        });
+      }
+    });
+  } else {
+    $divFromWeek.hide();
+    $divToWeek.hide();
   }
 }

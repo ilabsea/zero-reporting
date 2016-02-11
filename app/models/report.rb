@@ -71,6 +71,10 @@ class Report < ActiveRecord::Base
     where(delete_status: false)
   end
 
+  def self.week_between from, to
+    where("week >= ? and week <= ?", from, to)
+  end
+
   # from=2015-06-29&to=2015-07-14&phd=27&od=30&status=Listened
   def self.filter options
     reports = self.where('1=1')
@@ -89,7 +93,10 @@ class Report < ActiveRecord::Base
     reports = reports.where(od_id: options[:od]) if options[:od].present?
     reports = reports.where(reviewed: options[:reviewed]) if options[:reviewed].present?
     reports = reports.where(year: options[:year]) if options[:year].present? && options[:reviewed].to_i != STATUS_NEW
-    reports = reports.where(week: options[:week]) if options[:week].present? && options[:reviewed].to_i != STATUS_NEW
+
+    reports = reports.where("week >= ?", options[:from_week]) if options[:from_week].present? && options[:reviewed].to_i == STATUS_REVIEWED
+    reports = reports.where("week <= ?", options[:to_week]) if options[:to_week].present? && options[:reviewed].to_i == STATUS_REVIEWED
+
     reports
   end
 
