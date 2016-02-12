@@ -204,6 +204,7 @@ class Report < ActiveRecord::Base
     date = self.called_at.to_date
     week = Calendar.week_number(date)
     year = date.year
+
     self.report_variables.each do |report_variable|
       threshold = report_variable.variable.threshold_by_year_week(year, week)
       if report_variable.value.to_i >= threshold
@@ -214,5 +215,11 @@ class Report < ActiveRecord::Base
         report_variable.unmark_as_reaching_threshold
       end
     end
+    alert("w#{week}-#{year}")
+  end
+
+  def alert(week_year)
+    alert_setting = Alert.find_by(verboice_project_id: self.verboice_project_id)
+    AlertCase.new(alert_setting, self, week_year).run
   end
 end

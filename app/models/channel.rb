@@ -62,4 +62,15 @@ class Channel < ActiveRecord::Base
     Sms.instance.nuntium.channel(self.name)[:connected]
   end
 
+  def self.national_channels
+    where(setup_flow: Channel::SETUP_FLOW_GLOBAL)
+  end
+
+  def self.suggested(tel)
+    self.national_channels.each do |channel|
+      return channel if channel.name == tel.carrier
+    end
+    return self.first
+  end
+
 end
