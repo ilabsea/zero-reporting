@@ -38,6 +38,12 @@
         <label class="control-label" style="vertical-align:top"> SMS template</label>
         <%= f.text_area :message_template, as: :text, rows: 6, cols: 60 %>
       </div>
+
+      <div class='form-group'>
+        <label></label>
+        <%= message_template_params_for(:alert_message_template) %>
+      </div>
+
       <div class='form-group form-action-group'>
         <label></label>
         <%= f.submit 'Save', class: 'btn btn-primary' %>

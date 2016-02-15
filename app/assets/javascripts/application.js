@@ -55,3 +55,5 @@
 //= require report/form
 
 //= require locations/import_location
+
+//= require alerts/form

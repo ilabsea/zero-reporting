@@ -151,7 +151,7 @@ module ApplicationHelper
 
       expanded_class = (!place.parent || place.id == active_place_id.to_i) ? 'active' : ''
       content_tag(:li, item, class: "tree-node-wrapper #{expanded_class}")
-      
+
     end.join('').html_safe
   end
 
@@ -221,7 +221,7 @@ module ApplicationHelper
 
      if url_components.size >1
         url_params << url_components[1]
-     end 
+     end
 
      options.each do |key, value|
          url_params << URI::escape(key)+ "=" + URI::escape(value)
@@ -237,5 +237,14 @@ module ApplicationHelper
     end
   end
 
+  def message_template_params_for selector
+    template_params = %w(week_year reported_cases)
+    template_params_selector template_params, selector
+  end
 
+  def template_params_selector template_params, selector
+    template_params.map do |anchor|
+      link_to("{{#{anchor}}}", 'javascript:void(0)', data: {selector: selector}, class: 'param-link')
+    end.join(", ").html_safe
+  end
 end
