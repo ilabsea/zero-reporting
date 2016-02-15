@@ -1,0 +1,30 @@
+<%= breadcrumb [ {"Alert Log" => nil} ] %>
+<div class="clearfix">
+  <div class="pull-left">
+    <h2 class="header-title">List of report</h2>
+  </div>
+  <div class="pull-right" style='margin-top: 10px;'>
+    <%=link_to export_as_csv_reports_path(request.query_parameters), class: 'btn btn-primary' do %>
+     <i class="glyphicon glyphicon-upload"> </i> Export as CSV
+    <% end %>
+  </div>
+</div>
+
+<div class="table-responsive">
+  <table class="report table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>To</th>
+        <th>Message</th>
+        <th>Channel</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @alert_logs.each do |alert_log| %>
+        <tr>
+          <td><%= alert_log.to %></td>
+          <td><%= alert_log.body %></td>
+          <td><%= alert_log.suggested_channel %></td>
+        </tr>
+      <% end %>
+    </tbody>

@@ -7,7 +7,10 @@ class AlertCase
   end
 
   def run
-    SmsAlertJob.set(wait: 1.minute).perform_later(message_options) if @alert.is_enable_sms_alert && !@report_variable_cases.empty?
+    messages = message_options
+    p "**************"
+    p messages
+    SmsAlertJob.set(wait: 1.minute).perform_later(messages) if @alert.is_enable_sms_alert && !@report_variable_cases.empty?
   end
 
   def message_options
