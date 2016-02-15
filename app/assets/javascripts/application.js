@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require bootstrap-sprockets
 //= require bootstrap-switch
+//= require jquery.fieldSelection
 
 //= require rails-timeago
 //= require bootstrap-treenav
