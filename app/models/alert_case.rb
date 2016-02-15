@@ -3,10 +3,11 @@ class AlertCase
     @alert = alert
     @report = report
     @week_year = week_year
+    @report_variable_cases = @report.report_variables.where(is_reached_threshold: true)
   end
 
   def run
-    SmsAlertJob.set(wait: 1.minute).perform_later(message_options) if @alert.is_enable_sms_alert
+    SmsAlertJob.set(wait: 1.minute).perform_later(message_options) if @alert.is_enable_sms_alert && !@report_variable_cases.empty?
   end
 
   def message_options
@@ -30,15 +31,15 @@ class AlertCase
     recipients = []
     @alert.recipient_type.each do |recipient|
       if recipient == "PHD"
-        recipients << User.by_place(place.phd.id)
+        recipients = recipients + User.by_place(place.phd.id)
       end
 
       if recipient == "OD"
-        recipients << User.by_place(place.od.id)
+        recipients = recipients + User.by_place(place.od.id)
       end
 
       if recipient == "HC"
-        recipients << User.by_place(place.hc.id)
+        recipients = recipients + User.by_place(place.hc.id)
       end
     end
     recipients
@@ -46,15 +47,12 @@ class AlertCase
 
   def translate_message
     return "" unless @alert.message_template
-    @report_variable_cases = @report.report_variables.where(is_reached_threshold: true)
-    if !@report_variable_cases.empty?
-      variable_cases = Variable.where(id: @report_variables_cases.pluck(:variable_id))
-      translate_options = {
-        week_year: @week_year,
-        reported_cases: variable_cases.map(&:name).join(", ")
-      }
-      MessageTemplate.instance.set_source(@alert.message_template).translate(translate_options)
-    end
-    return ""
+    variable_ids = @report_variable_cases.pluck(:variable_id)
+    variable_cases = Variable.where(id: variable_ids)
+    translate_options = {
+      week_year: @week_year,
+      reported_cases: variable_cases.map(&:name).join(", ")
+    }
+    return MessageTemplate.instance.set_source(@alert.message_template).translate(translate_options)
   end
 end

@@ -29,7 +29,7 @@ FactoryGirl.define do
     sequence(:username) {|n| "user_#{n}"}
     password "1234567"
     name "Reminder"
-    sequence(:phone) {|n| "012012345#{n}"}
+    phone "MyString"
     place { create(:phd)}
   end
 

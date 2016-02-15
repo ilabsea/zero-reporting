@@ -145,8 +145,8 @@ class Report < ActiveRecord::Base
       variable = variables.select{|variable| variable.verboice_id == call_log_answer[:project_variable_id]}.first
       report.report_variable_values.build(value: call_log_answer[:value], variable_id: variable.id) if variable
     end
-    report.check_threshold
     report.update_attributes(attrs)
+    report.check_threshold
     report
   end
 
@@ -207,11 +207,11 @@ class Report < ActiveRecord::Base
 
     self.report_variables.each do |report_variable|
       threshold = report_variable.variable.threshold_by_year_week(year, week)
-      if report_variable.value.to_i >= threshold
+      if report_variable.value.to_i > threshold
         p "is_reached_threshold #{report_variable.variable.name}"
         report_variable.mark_as_reaching_threshold
       else
-        p "#{report_variable.variable.name}"
+        p "unmarked #{report_variable.variable.name}"
         report_variable.unmark_as_reaching_threshold
       end
     end
