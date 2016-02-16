@@ -1,17 +1,58 @@
 <%= breadcrumb [ {"Alert Threshold" => nil} ] %>
-<div class="tabbable">
-	<ul id="myTab" class="nav nav-tabs">
-		<li class="active">
-			<%= link_to 'Setting', alerts_path, id: 'alert_setting', html: {'data-toggle'=> 'tab'}%>
-		</li>
-		<li>
-			<%= link_to 'Log', log_alerts_path%>
-		</li>
-	</ul>
+<div class="clearfix">
+  <div class="pull-left">
+    <h3 class="header-title">Alert Threshold</h3>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <div class="text-muted">Send alert if the case reported is greater than (w1+w2+w3)/3* 1.5</div>
+    <%= simple_form_for @alert, html: { class: 'form-inline form'} do |f| %>
+      <div class="form-group">
+        <label class="control-label">Enable SMS</label>
+        <%=f.check_box :is_enable_sms_alert, class: 'form-control ace ace-switch ace-switch-4 btn-empty' %>
+        <span class="lbl"></span>
+      </div>
 
-	<div class="tab-content">
-		<div class="tab-pane fade in active" id="alert_setting">
-      <%= render "case" %>
-		</div>
-	</div>
+      <div class="form-group">
+        <label class="control-label">Enable Email</label>
+        <%= f.check_box :is_enable_email_alert, class: 'form-control ace ace-switch ace-switch-4 btn-empty' %>
+        <span class="lbl"></span>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label" style="float: left">To</label>
+        <div class="col-sm-9">
+          <%#= f.input :recipient_type, as: :check_boxes, label: false, include_hidden: false, collection: Place::TYPE %>
+          <% Place::TYPE.each do |place_type| %>
+          <div>
+            <label>
+              <% if @alert.recipient_type.include? place_type%>
+                <input name="alert[recipient_type][]" value="<%= place_type %>" type="checkbox" class="ace" checked="checked"/>
+              <% else %>
+                <input name="alert[recipient_type][]" value="<%= place_type %>" type="checkbox" class="ace" />
+              <% end %>
+              <span class="lbl"> <%= place_type %></span>
+            </label>
+          </div>
+          <% end %>
+          <input name="alert[recipient_type][]"  type="hidden"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label" style="vertical-align:top"> SMS template</label>
+        <%= f.text_area :message_template, as: :text, rows: 6, cols: 60 %>
+      </div>
+
+      <div class='form-group'>
+        <label></label>
+        <%= message_template_params_for(:alert_message_template) %>
+      </div>
+
+      <div class='form-group form-action-group'>
+        <label></label>
+        <%= f.submit 'Save', class: 'btn btn-primary' %>
+      </div>
+    <% end %>
 </div>
