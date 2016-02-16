@@ -25,7 +25,7 @@ class AlertsController < ApplicationController
   end
 
   def log
-    @alert_logs = AlertLog.all
+    @alert_logs = AlertLog.all.page(params[:page])
   end
 
   private

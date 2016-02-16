@@ -17,6 +17,7 @@
         <th>To</th>
         <th>Message</th>
         <th>Channel</th>
+        <th>Created_at</th>
       </tr>
     </thead>
     <tbody>
@@ -25,6 +26,12 @@
           <td><%= alert_log.to %></td>
           <td><%= alert_log.body %></td>
           <td><%= alert_log.suggested_channel %></td>
+          <td><%= alert_log.created_at %></td>
         </tr>
       <% end %>
     </tbody>
+  </table>
+</div>
+<div class="clearfix">
+  <%= paginate_for(@alert_logs) %>
+</div>
