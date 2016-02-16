@@ -201,17 +201,19 @@ class Report < ActiveRecord::Base
   end
 
   def check_threshold
+    alert_setting = Alert.find_by(verboice_project_id: self.verboice_project_id)
+    return unless alert_setting
     date = self.called_at.to_date
     week = Calendar.week_number(date)
     year = date.year
 
-    self.report_variables.each do |report_variable|
+    self.report_variable_values.each do |report_variable|
       threshold = report_variable.variable.threshold_by_year_week(year, week)
       if report_variable.value.to_i > threshold
-        p "is_reached_threshold #{report_variable.variable.name}"
+        p "#{self.called_at} is_reached_threshold #{report_variable.variable.name}"
         report_variable.mark_as_reaching_threshold
       else
-        p "unmarked #{report_variable.variable.name}"
+        p "#{self.called_at} unmarked #{report_variable.variable.name}"
         report_variable.unmark_as_reaching_threshold
       end
     end

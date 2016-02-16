@@ -18,19 +18,75 @@ require 'rails_helper'
 
 RSpec.describe Variable, type: :model do
   let(:week) {Calendar.week_number(DateTime.now().to_date)}
-  let(:verboice_attrs) do
-    { "id"=>1503,
+  let(:verboice_attrs_week3) do
+    { "id"=>1501,
       "prefix_called_number"=>nil,
-      "address"=>"17772415076",
+      "address"=>"85512345678",
       "duration"=>35,
       "direction"=>"incoming",
-      "started_at"=>"2015-09-09T08:02:01Z",
+      "started_at"=>"2016-01-27T08:02:01Z",
       "call_flow_id"=>52,
       "state"=>"completed",
       "fail_reason"=>nil,
       "not_before"=>nil,
-      "finished_at"=>"2015-09-09T08:02:36Z",
-      "called_at"=>"2015-09-09T08:02:01Z",
+      "finished_at"=>"2016-01-27T08:02:36Z",
+      "called_at"=>"2016-01-27T08:02:01Z",
+
+      "account"=>{ "id"=>12, "email"=>"channa.info@gmail.com"},
+      "project"=>{ "id"=>24, "name"=>"Health"},
+      "channel"=>{"id"=>62, "name"=>"Simple - 17772071271" },
+
+      "call_log_recorded_audios"=>[],
+
+      "call_log_answers"=>[
+            {"id"=>689, "value"=>"2", "project_variable_id"=>91, "project_variable_name"=>"age"},
+            {"id"=>690, "value"=>"3", "project_variable_id"=>77, "project_variable_name"=>"grade"},
+            {"id"=>691, "value"=>"1", "project_variable_id"=>92, "project_variable_name"=>"score"},
+            {"id"=>692, "value"=>"5", "project_variable_id"=>75, "project_variable_name"=>"is_hc_worker"}]}.with_indifferent_access
+
+  end
+
+  let(:verboice_attrs_week4) do
+    { "id"=>1502,
+      "prefix_called_number"=>nil,
+      "address"=>"85512345678",
+      "duration"=>35,
+      "direction"=>"incoming",
+      "started_at"=>"2016-02-03T08:02:01Z",
+      "call_flow_id"=>52,
+      "state"=>"completed",
+      "fail_reason"=>nil,
+      "not_before"=>nil,
+      "finished_at"=>"2016-02-03T08:02:36Z",
+      "called_at"=>"2016-02-03T08:02:01Z",
+
+      "account"=>{ "id"=>12, "email"=>"channa.info@gmail.com"},
+      "project"=>{ "id"=>24, "name"=>"Health"},
+      "channel"=>{"id"=>62, "name"=>"Simple - 17772071271" },
+
+      "call_log_recorded_audios"=>[],
+
+      "call_log_answers"=>[
+            {"id"=>689, "value"=>"3", "project_variable_id"=>91, "project_variable_name"=>"age"},
+            {"id"=>690, "value"=>"1", "project_variable_id"=>77, "project_variable_name"=>"grade"},
+            {"id"=>691, "value"=>"1", "project_variable_id"=>92, "project_variable_name"=>"score"},
+            {"id"=>692, "value"=>"5", "project_variable_id"=>75, "project_variable_name"=>"is_hc_worker"}]}.with_indifferent_access
+
+  end
+
+  let(:verboice_attrs_week5) do
+    { "id"=>1503,
+      "prefix_called_number"=>nil,
+      "address"=>"85512345678",
+      "duration"=>35,
+      "direction"=>"incoming",
+      "started_at"=>"2016-02-10T08:02:01Z",
+      "call_flow_id"=>52,
+      "state"=>"completed",
+      "fail_reason"=>nil,
+      "not_before"=>nil,
+      "finished_at"=>"2016-02-10T08:02:36Z",
+      "called_at"=>"2016-02-10T08:02:01Z",
 
       "account"=>{ "id"=>12, "email"=>"channa.info@gmail.com"},
       "project"=>{ "id"=>24, "name"=>"Health"},
@@ -54,9 +110,13 @@ RSpec.describe Variable, type: :model do
     @variable3 = create(:variable, name: 'hc_worker', verboice_id: 75, verboice_name: 'is_hc_worker', verboice_project_id: 24 )
     @variable4 = create(:variable, name: 'feed_back', verboice_id: 73, verboice_name: 'feed_back', verboice_project_id: 24 )
     @variable5 = create(:variable, name: 'about', verboice_id: 93, verboice_name: 'about', verboice_project_id: 24 )
-
-    @report = Report.create_from_verboice_attrs(verboice_attrs)
-    @report_ids = [@report.id]
+    @report_week3 = Report.create_from_verboice_attrs(verboice_attrs_week3)
+    @report_week3.reviewed_as!(2016, 3)
+    @report_week4 = Report.create_from_verboice_attrs(verboice_attrs_week4)
+    @report_week4.reviewed_as!(2016, 4)
+    @report_week5 = Report.create_from_verboice_attrs(verboice_attrs_week5)
+    @report_week5.reviewed_as!(2016, 5)
+    @report_ids = [@report_week5.id]
   end
 
   context "initialized" do
@@ -70,34 +130,37 @@ RSpec.describe Variable, type: :model do
   describe "#total_report_value" do
     context 'when variable has been reported' do
       it "return the sum value" do
-        expect(@variable1.total_report_value(@report_ids)).to eq(2)
-        expect(@variable2.total_report_value(@report_ids)).to eq(3)
+        expect(@variable1.total_report_value([@report_week5.id])).to eq(2)
+        expect(@variable1.total_report_value([@report_week5.id, @report_week4.id])).to eq(5)
+        expect(@variable1.total_report_value([@report_week5.id, @report_week4.id, @report_week3.id])).to eq(7)
+        expect(@variable2.total_report_value([@report_week5.id])).to eq(3)
       end
     end
 
     context "when variable has not been reported" do
-      it "return nil" do
-        expect(@variable4.total_report_value(@report_ids)).to eq(nil)
+      it "return 0" do
+        expect(@variable4.total_report_value(@report_ids)).to eq(0)
       end
     end
   end
 
   describe "#threshold_by_week" do
-    context "when the report has not reviewed yet" do
-      it{
-        expect(@variable1.threshold_by_year_week(DateTime.now.year, week)).to eq(0)
-        expect(@variable1.threshold_by_year_week(DateTime.now.year, week+1)).to eq(0)
-      }
+    it "return threshold on week 3" do
+      expect(@variable1.threshold_by_year_week(DateTime.now.year, 3)).to eq(0)
+      expect(@variable2.threshold_by_year_week(DateTime.now.year, 3)).to eq(0)
+      expect(@variable3.threshold_by_year_week(DateTime.now.year, 3)).to eq(0)
     end
-    context "when the report has not reviewed yet" do
-      it{
-        @report.reviewed_as!(DateTime.now.year, week)
-        expect(@variable1.threshold_by_year_week(DateTime.now.year, week)).to eq(0)
-        expect(@variable1.threshold_by_year_week(DateTime.now.year, week+1)).to eq(2)
-        expect(@variable1.threshold_by_year_week(DateTime.now.year, week+2)).to eq(2)
-        expect(@variable1.threshold_by_year_week(DateTime.now.year, week+3)).to eq(2)
-        expect(@variable1.threshold_by_year_week(DateTime.now.year, week+4)).to eq(0)
-      }
+
+    it "return threshold on week 4" do
+      expect(@variable1.threshold_by_year_week(DateTime.now.year, 4)).to eq(1)
+      expect(@variable2.threshold_by_year_week(DateTime.now.year, 4)).to eq(1.5)
+      expect(@variable3.threshold_by_year_week(DateTime.now.year, 4)).to eq(2.5)
+    end
+
+    it "return threshold on week 5" do
+      expect(@variable1.threshold_by_year_week(DateTime.now.year, 5)).to eq(2.5)
+      expect(@variable2.threshold_by_year_week(DateTime.now.year, 5)).to eq(2)
+      expect(@variable3.threshold_by_year_week(DateTime.now.year, 5)).to eq(5)
     end
   end
 

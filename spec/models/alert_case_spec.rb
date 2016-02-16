@@ -14,15 +14,14 @@ RSpec.describe AlertCase, type: :model do
       "prefix_called_number"=>nil,
       "address"=>"85512345678",
       "duration"=>35,
-      "called_at"=>"2015-09-09T08:02:01Z",
       "direction"=>"incoming",
-      "started_at"=>"2015-09-09T08:02:01Z",
+      "started_at"=>"2016-02-10T08:02:01Z",
       "call_flow_id"=>52,
       "state"=>"completed",
       "fail_reason"=>nil,
       "not_before"=>nil,
-      "finished_at"=>"2015-09-09T08:02:36Z",
-      "called_at"=>"2015-09-09T08:02:01Z",
+      "finished_at"=>"2016-02-10T08:02:36Z",
+      "called_at"=>"2016-02-10T08:02:01Z",
 
       "account"=>{ "id"=>12, "email"=>"channa.info@gmail.com"},
       "project"=>{ "id"=>24, "name"=>"Health"},
@@ -59,7 +58,7 @@ RSpec.describe AlertCase, type: :model do
   describe "#message_options" do
     it "return the message_options" do
       expect(@alert_case.message_options.size).to eq(1)
-      expect(@alert_case.message_options[0][:body]).to eq "This is the alert on w#{week}-#{DateTime.now.year} for age, grade, hc_worker, feed_back, about."
+      expect(@alert_case.message_options[0][:body]).to eq "This is the alert on w#{week}-#{DateTime.now.year} for age, grade, hc_worker."
       expect(@alert_case.message_options[0][:suggested_channel]).to eq Tel.new(user.phone).carrier
     end
   end
@@ -72,7 +71,7 @@ RSpec.describe AlertCase, type: :model do
 
   describe "#translate_message" do
     it "return the translate_message" do
-      expect(@alert_case.translate_message).to eq "This is the alert on w#{week}-#{DateTime.now.year} for age, grade, hc_worker, feed_back, about."
+      expect(@alert_case.translate_message).to eq "This is the alert on w#{week}-#{DateTime.now.year} for age, grade, hc_worker."
     end
   end
 
