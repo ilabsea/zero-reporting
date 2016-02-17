@@ -59,7 +59,11 @@ class Channel < ActiveRecord::Base
   end
 
   def is_connected?
-    Sms.instance.nuntium.channel(self.name)[:connected]
+    begin
+      Sms.instance.nuntium.channel(self.name)[:connected]
+    rescue Nuntium::Exception
+      return false
+    end
   end
 
   def self.national_channels
