@@ -16,13 +16,15 @@ class AlertCase
     message_body = translate_message
     recipients.each do |recipient|
       sms = recipient.phone
-      suggested_channel = Channel.suggested(Tel.new(sms))
-      options = { from: ENV['APP_NAME'],
-                  to: "sms://#{sms}",
-                  body: message_body,
-                  suggested_channel: suggested_channel.name
-                }
-      message_options << options
+      if sms && sms != ""
+        suggested_channel = Channel.suggested(Tel.new(sms))
+        options = { from: ENV['APP_NAME'],
+                    to: "sms://#{sms}",
+                    body: message_body,
+                    suggested_channel: suggested_channel.name
+                  }
+        message_options << options
+      end
     end
     message_options
   end
