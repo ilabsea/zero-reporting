@@ -17,6 +17,11 @@ default: &default
   SIDEKIQ_USERNAME: ''
   SIDEKIQ_PASSWORD: ''
 
+  THRESHOLD_WEEK_RANGE: ''
+  THRESHOLD_FORMULA: ''
+
+  DELAY_DELIVER_IN_MINUTES: ''
+
 development:
   <<: *default
 

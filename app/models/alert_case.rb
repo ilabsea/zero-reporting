@@ -8,7 +8,7 @@ class AlertCase
 
   def run
     messages = message_options
-    SmsAlertJob.set(wait: 1.minute).perform_later(messages) if @alert.is_enable_sms_alert && !@report_variable_cases.empty?
+    SmsAlertJob.set(wait: ENV['DELAY_DELIVER_IN_MINUTES'].to_i).perform_later(messages) if @alert.is_enable_sms_alert && !@report_variable_cases.empty?
   end
 
   def message_options
@@ -17,7 +17,7 @@ class AlertCase
     recipients.each do |recipient|
       sms = recipient.phone
       suggested_channel = Channel.suggested(Tel.new(sms))
-      options = { from: "ZeroReporting",
+      options = { from: ENV['APP_NAME'],
                   to: "sms://#{sms}",
                   body: message_body,
                   suggested_channel: suggested_channel.name

@@ -6,7 +6,7 @@
 </div>
 <div class="row">
   <div class="col-xs-12">
-    <div class="text-muted">Send alert if the case reported is greater than (w1+w2+w3)/3* 1.5</div>
+    <div class="text-muted">Send alert if the case reported is greater than <b style="font-size: 16px"><%= ENV['THRESHOLD_FORMULA'].html_safe%></b></div>
     <%= simple_form_for @alert, html: { class: 'form-inline form'} do |f| %>
       <div class="form-group">
         <label class="control-label">Enable SMS</label>
