@@ -3,13 +3,13 @@ default: &default
   APP_NAME: "CDC Zero Reporting System"
   LOCAL_TZ: "Asia/Phnom_Penh"
 
-  VERBOICE_URL: ''
+  VERBOICE_URL: 'http://localhost:3000'
 
   CODECLIMATE_REPO_TOKEN: ""
   CDC_DATABASE_PASSWORD: ""
   SECRET_KEY_BASE: ""
 
-  NUNTIUM_HOST: ''
+  NUNTIUM_HOST: 'http://nuntium.instedd.org'
   NUNTIUM_ACCOUNT: ''
   NUNTIUM_APP: ''
   NUNTIUM_APP_PWD: ''
@@ -17,8 +17,8 @@ default: &default
   SIDEKIQ_USERNAME: ''
   SIDEKIQ_PASSWORD: ''
 
-  THRESHOLD_WEEK_RANGE: ''
-  THRESHOLD_FORMULA: ''
+  THRESHOLD_FORMULA: "(W<sub>n-3+W<sub>n-2</sub></sub>+W<sub>n-1</sub>)/3 * 1.5"
+  THRESHOLD_WEEK_RANGE: '3'
 
   DELAY_DELIVER_IN_MINUTES: ''
 
