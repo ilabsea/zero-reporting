@@ -4,11 +4,13 @@ RSpec.describe AlertCase, type: :model do
   include ActiveJob::TestHelper
 
   let(:week) {Calendar.week_number(DateTime.now().to_date)}
-  let!(:place){create(:hc)}
+  let!(:od){create(:od)}
+  let!(:hc){create(:hc, code: "hc_1", parent: od)}
   let!(:smart){create(:channel, name: "smart", setup_flow: Channel::SETUP_FLOW_GLOBAL)}
   let!(:camgsm){create(:channel, name: "camgsm", setup_flow: Channel::SETUP_FLOW_GLOBAL)}
-  let!(:user) {create(:user, name: "tester", username: "tester", phone: "85512345678", place_id: place.id)}
-  let!(:alert) {create(:alert, is_enable_sms_alert: true, message_template: "This is the alert on {{week_year}} for {{reported_cases}}.", verboice_project_id: 24, recipient_type: ["HC"])}
+  let!(:od_user) {create(:user, name: "od_user", username: "od_user", phone: "85510345678", place_id: od.id)}
+  let!(:hc_user) {create(:user, name: "hc_user", username: "hc_user", phone: "85512345678", place_id: hc.id)}
+  let!(:alert) {create(:alert, is_enable_sms_alert: true, message_template: "This is the alert on {{week_year}} for {{reported_cases}}.", verboice_project_id: 24, recipient_type: ["OD", "HC"])}
   let(:verboice_attrs) do
     { "id"=>1503,
       "prefix_called_number"=>nil,
@@ -57,15 +59,17 @@ RSpec.describe AlertCase, type: :model do
 
   describe "#message_options" do
     it "return the message_options" do
-      expect(@alert_case.message_options.size).to eq(1)
+      expect(@alert_case.message_options.size).to eq(2)
       expect(@alert_case.message_options[0][:body]).to eq "This is the alert on w#{week}-#{DateTime.now.year} for age, grade, hc_worker."
-      expect(@alert_case.message_options[0][:suggested_channel]).to eq Tel.new(user.phone).carrier
+      expect(@alert_case.message_options[0][:suggested_channel]).to eq Tel.new(od_user.phone).carrier
+      expect(@alert_case.message_options[1][:suggested_channel]).to eq Tel.new(hc_user.phone).carrier
     end
   end
 
   describe "#recipients" do
     it "return the recipients according to alert_recipient_type" do
-      expect(@alert_case.recipients).to include(user)
+      expect(@alert_case.recipients).to include(hc_user)
+      expect(@alert_case.recipients).to include(od_user)
     end
   end
 
