@@ -71,18 +71,20 @@ class Channel < ActiveRecord::Base
   end
 
   def self.suggested(tel)
-    connected_national_channels = self.connected_channels.map{|channel| channel if channel.global_setup?}
-    connected_national_channels.each do |channel|
+    accessible_channels = self.accessible_channels
+    accessible_national_channels = accessible_channels.select{|channel| channel if channel.global_setup?}
+    accessible_national_channels.each do |channel|
       return channel if channel.name == tel.carrier
     end
-    return self.connected_channels.first
+    return accessible_channels.first
   end
 
-  def self.connected_channels
+  def self.accessible_channels
     channels = []
     self.all.each do |channel|
-      channels << channel if channel.is_connected?
+      channels << channel if channel.is_enable && channel.is_connected?
     end
+    channels
   end
 
 end

@@ -7,8 +7,11 @@ class AlertCase
   end
 
   def run
+    return if @alert.is_enable_sms_alert == false && @report_variable_cases.empty?
     messages = message_options
-    SmsAlertJob.set(wait: ENV['DELAY_DELIVER_IN_MINUTES'].to_i).perform_later(messages) if @alert.is_enable_sms_alert && !@report_variable_cases.empty?
+    if !messages.empty?
+      SmsAlertJob.set(wait: ENV['DELAY_DELIVER_IN_MINUTES'].to_i).perform_later(messages)
+    end
   end
 
   def message_options
@@ -18,12 +21,14 @@ class AlertCase
       sms = recipient.phone
       if sms && sms != ""
         suggested_channel = Channel.suggested(Tel.new(sms))
-        options = { from: ENV['APP_NAME'],
-                    to: "sms://#{sms}",
-                    body: message_body,
-                    suggested_channel: suggested_channel.name
-                  }
-        message_options << options
+        if suggested_channel
+          options = { from: ENV['APP_NAME'],
+                      to: "sms://#{sms}",
+                      body: message_body,
+                      suggested_channel: suggested_channel.name
+                    }
+          message_options << options
+        end
       end
     end
     message_options

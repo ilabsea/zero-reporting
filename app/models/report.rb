@@ -176,7 +176,6 @@ class Report < ActiveRecord::Base
     list = []
     summary.each do |key, value|
       colour = generate_color
-      p colour
       name = "Unknown PHD"
       if key
         percentage = sprintf( "%0.02f", (100 * value.to_f / reports.size.to_f))
@@ -203,21 +202,17 @@ class Report < ActiveRecord::Base
   def check_threshold
     alert_setting = Alert.find_by(verboice_project_id: self.verboice_project_id)
     return unless alert_setting
-    date = self.called_at.to_date
-    week = Calendar.week_number(date)
-    year = date.year
+    week = Calendar.week(self.called_at.to_date)
 
     self.report_variable_values.each do |report_variable|
-      threshold = report_variable.variable.threshold_by_year_week(year, week)
+      threshold = report_variable.variable.threshold_by_year_week(week.year.number, week.week_number)
       if report_variable.value.to_i > threshold
-        p "#{self.called_at} is_reached_threshold #{report_variable.variable.name}"
         report_variable.mark_as_reaching_threshold
       else
-        p "#{self.called_at} unmarked #{report_variable.variable.name}"
         report_variable.unmark_as_reaching_threshold
       end
     end
-    alert("w#{week}-#{year}")
+    alert(week.display(Calendar::Week::DISPLAY_NORMAL_MODE, "ww-yyyy"))
   end
 
   def alert(week_year)
