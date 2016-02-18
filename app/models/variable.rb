@@ -33,7 +33,7 @@ class Variable < ActiveRecord::Base
   end
 
   def total_report_value_by_year_week(year, week)
-    reports = Report.filter({year: year, week: week})
+    reports = Report.filter({year: year, from_week: week, to_week: week, reviewed: Report::STATUS_REVIEWED})
     report_ids = reports.map(&:id)
     total_report_value(report_ids)
   end
