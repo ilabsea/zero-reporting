@@ -42,4 +42,9 @@ class Calendar::Week
     Calendar::Year.new(values[1].to_i).week(values[0].to_i)
   end
 
+  def previous
+    previous_week_date = self.from_date
+    Calendar.week(previous_week_date)
+  end
+
 end

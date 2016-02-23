@@ -1,8 +1,8 @@
 class AlertCase
-  def initialize(alert, report, week_year)
+  def initialize(alert, report, week)
     @alert = alert
     @report = report
-    @week_year = week_year
+    @week = week
     @report_variable_cases = @report.report_variables.where(is_reached_threshold: true)
   end
 
@@ -18,20 +18,20 @@ class AlertCase
     message_options = []
     message_body = translate_message
     recipients.each do |recipient|
-      sms = recipient.phone
-      if sms && sms != ""
-        suggested_channel = Channel.suggested(Tel.new(sms))
-        if suggested_channel
-          options = { from: ENV['APP_NAME'],
-                      to: "sms://#{sms}",
-                      body: message_body,
-                      suggested_channel: suggested_channel.name
-                    }
-          message_options << options
-        end
+      suggested_channel = AlertCase.channel_suggested(recipient.phone)
+      if suggested_channel
+        message_options << { from: ENV['APP_NAME'],
+                             to: "sms://#{recipient.phone}",
+                             body: message_body,
+                             suggested_channel: suggested_channel.name
+                           }
       end
     end
     message_options
+  end
+
+  def self.channel_suggested(recipient_phone)
+    Channel.suggested(Tel.new(recipient_phone))
   end
 
   def recipients
@@ -58,7 +58,7 @@ class AlertCase
     variable_ids = @report_variable_cases.pluck(:variable_id)
     variable_cases = Variable.where(id: variable_ids)
     translate_options = {
-      week_year: @week_year,
+      week_year: @week.display(Calendar::Week::DISPLAY_NORMAL_MODE, "ww-yyyy"),
       reported_cases: variable_cases.map(&:name).join(", ")
     }
     return MessageTemplate.instance.set_source(@alert.message_template).translate(translate_options)

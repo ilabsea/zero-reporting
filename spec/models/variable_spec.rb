@@ -17,8 +17,8 @@
 require 'rails_helper'
 
 RSpec.describe Variable, type: :model do
-  let(:week) {Calendar.week_number(DateTime.now().to_date)}
-  let(:verboice_attrs_week3) do
+  let(:week) {Calendar.week(Date.new(2016, 02, 10))}
+  let(:verboice_attrs_1) do
     { "id"=>1501,
       "prefix_called_number"=>nil,
       "address"=>"85512345678",
@@ -46,7 +46,7 @@ RSpec.describe Variable, type: :model do
 
   end
 
-  let(:verboice_attrs_week4) do
+  let(:verboice_attrs_2) do
     { "id"=>1502,
       "prefix_called_number"=>nil,
       "address"=>"85512345678",
@@ -74,7 +74,7 @@ RSpec.describe Variable, type: :model do
 
   end
 
-  let(:verboice_attrs_week5) do
+  let(:verboice_attrs_3) do
     { "id"=>1503,
       "prefix_called_number"=>nil,
       "address"=>"85512345678",
@@ -110,13 +110,13 @@ RSpec.describe Variable, type: :model do
     @variable3 = create(:variable, name: 'hc_worker', verboice_id: 75, verboice_name: 'is_hc_worker', verboice_project_id: 24 )
     @variable4 = create(:variable, name: 'feed_back', verboice_id: 73, verboice_name: 'feed_back', verboice_project_id: 24 )
     @variable5 = create(:variable, name: 'about', verboice_id: 93, verboice_name: 'about', verboice_project_id: 24 )
-    @report_week3 = Report.create_from_verboice_attrs(verboice_attrs_week3)
-    @report_week3.reviewed_as!(2016, 3)
-    @report_week4 = Report.create_from_verboice_attrs(verboice_attrs_week4)
-    @report_week4.reviewed_as!(2016, 4)
-    @report_week5 = Report.create_from_verboice_attrs(verboice_attrs_week5)
-    @report_week5.reviewed_as!(2016, 5)
-    @report_ids = [@report_week5.id]
+    @report1= Report.create_from_verboice_attrs(verboice_attrs_1)
+    @report1.reviewed_as!(2016, week.previous.previous.week_number)
+    @report2 = Report.create_from_verboice_attrs(verboice_attrs_2)
+    @report2.reviewed_as!(2016, week.previous.week_number)
+    @report3 = Report.create_from_verboice_attrs(verboice_attrs_3)
+    @report3.reviewed_as!(2016, week.week_number)
+    @report_ids = [@report3.id]
   end
 
   context "initialized" do
@@ -130,10 +130,10 @@ RSpec.describe Variable, type: :model do
   describe "#total_report_value" do
     context 'when variable has been reported' do
       it "return the sum value" do
-        expect(@variable1.total_report_value([@report_week5.id])).to eq(2)
-        expect(@variable1.total_report_value([@report_week5.id, @report_week4.id])).to eq(5)
-        expect(@variable1.total_report_value([@report_week5.id, @report_week4.id, @report_week3.id])).to eq(7)
-        expect(@variable2.total_report_value([@report_week5.id])).to eq(3)
+        expect(@variable1.total_report_value([@report3.id])).to eq(2)
+        expect(@variable1.total_report_value([@report3.id, @report2.id])).to eq(5)
+        expect(@variable1.total_report_value([@report3.id, @report2.id, @report1.id])).to eq(7)
+        expect(@variable2.total_report_value([@report3.id])).to eq(3)
       end
     end
 
@@ -146,21 +146,21 @@ RSpec.describe Variable, type: :model do
 
   describe "#threshold_by_week" do
     it "return threshold on week 3" do
-      expect(@variable1.threshold_by_year_week(DateTime.now.year, 3)).to eq(0)
-      expect(@variable2.threshold_by_year_week(DateTime.now.year, 3)).to eq(0)
-      expect(@variable3.threshold_by_year_week(DateTime.now.year, 3)).to eq(0)
+      expect(@variable1.threshold_by_week(week.previous.previous)).to eq(0)
+      expect(@variable2.threshold_by_week(week.previous.previous)).to eq(0)
+      expect(@variable3.threshold_by_week(week.previous.previous)).to eq(0)
     end
 
     it "return threshold on week 4" do
-      expect(@variable1.threshold_by_year_week(DateTime.now.year, 4)).to eq(1)
-      expect(@variable2.threshold_by_year_week(DateTime.now.year, 4)).to eq(1.5)
-      expect(@variable3.threshold_by_year_week(DateTime.now.year, 4)).to eq(2.5)
+      expect(@variable1.threshold_by_week(week.previous)).to eq(1)
+      expect(@variable2.threshold_by_week(week.previous)).to eq(1.5)
+      expect(@variable3.threshold_by_week(week.previous)).to eq(2.5)
     end
 
     it "return threshold on week 5" do
-      expect(@variable1.threshold_by_year_week(DateTime.now.year, 5)).to eq(2.5)
-      expect(@variable2.threshold_by_year_week(DateTime.now.year, 5)).to eq(2)
-      expect(@variable3.threshold_by_year_week(DateTime.now.year, 5)).to eq(5)
+      expect(@variable1.threshold_by_week(week)).to eq(2.5)
+      expect(@variable2.threshold_by_week(week)).to eq(2)
+      expect(@variable3.threshold_by_week(week)).to eq(5)
     end
   end
 

@@ -72,6 +72,10 @@ class Report < ActiveRecord::Base
     where(delete_status: false)
   end
 
+  def self.reviewed_by_week week
+    where("year = ? AND week = ? AND reviewed = ?", week.year.number, week.week_number, STATUS_REVIEWED)
+  end
+
   def self.week_between from, to
     where("week >= ? and week <= ?", from, to)
   end
@@ -205,18 +209,18 @@ class Report < ActiveRecord::Base
     week = Calendar.week(self.called_at.to_date)
 
     self.report_variable_values.each do |report_variable|
-      threshold = report_variable.variable.threshold_by_year_week(week.year.number, week.week_number)
+      threshold = report_variable.variable.threshold_by_week(week)
       if report_variable.value.to_i > threshold
         report_variable.mark_as_reaching_threshold
       else
         report_variable.unmark_as_reaching_threshold
       end
     end
-    alert(week.display(Calendar::Week::DISPLAY_NORMAL_MODE, "ww-yyyy"))
+    alert(week)
   end
 
-  def alert(week_year)
+  def alert(week)
     alert_setting = Alert.find_by(verboice_project_id: self.verboice_project_id)
-    AlertCase.new(alert_setting, self, week_year).run
+    AlertCase.new(alert_setting, self, week).run
   end
 end

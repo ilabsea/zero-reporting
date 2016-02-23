@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe AlertCase, type: :model do
   include ActiveJob::TestHelper
 
-  let(:week) {Calendar.week(DateTime.now().to_date)}
+  let(:week) {Calendar.week(Date.new(2016,02,10))}
   let!(:od){create(:od)}
   let!(:hc){create(:hc, code: "hc_1", parent: od)}
   let!(:smart){create(:channel, name: "smart", setup_flow: Channel::SETUP_FLOW_GLOBAL, is_enable: true)}
@@ -38,17 +38,26 @@ RSpec.describe AlertCase, type: :model do
             {"id"=>690, "value"=>"3", "project_variable_id"=>77, "project_variable_name"=>"grade"},
             {"id"=>691, "value"=>"1", "project_variable_id"=>92, "project_variable_name"=>"score"},
             {"id"=>692, "value"=>"5", "project_variable_id"=>75, "project_variable_name"=>"is_hc_worker"}]}.with_indifferent_access
-
   end
 
   before(:each) do
+    allow(AlertCase).to receive(:channel_suggested).with("85510345678").and_return(smart)
+    allow(AlertCase).to receive(:channel_suggested).with("85512345678").and_return(camgsm)
     @variable1 = create(:variable, name: 'age', verboice_id: 91, verboice_name: 'age', verboice_project_id: 24 )
     @variable2 = create(:variable, name: 'grade', verboice_id: 77, verboice_name: 'grade', verboice_project_id: 24 )
     @variable3 = create(:variable, name: 'hc_worker', verboice_id: 75, verboice_name: 'is_hc_worker', verboice_project_id: 24 )
     @variable4 = create(:variable, name: 'feed_back', verboice_id: 73, verboice_name: 'feed_back', verboice_project_id: 24 )
     @variable5 = create(:variable, name: 'about', verboice_id: 93, verboice_name: 'about', verboice_project_id: 24 )
     @report = Report.create_from_verboice_attrs(verboice_attrs)
-    @alert_case = AlertCase.new(alert, @report, "w#{week.week_number}-#{week.year.number}")
+    @report.reviewed_as!(2016, week.previous.week_number)
+    @alert_case = AlertCase.new(alert, @report, week)
+  end
+
+  describe ".channel_suggested" do
+    it "return channel" do
+      expect(AlertCase.channel_suggested("85510345678")).to eq(smart)
+      expect(AlertCase.channel_suggested("85512345678")).to eq(camgsm)
+    end
   end
 
   describe "#run" do
