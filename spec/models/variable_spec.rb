@@ -18,6 +18,8 @@ require 'rails_helper'
 
 RSpec.describe Variable, type: :model do
   let(:week) {Calendar.week(Date.new(2016, 02, 10))}
+  let!(:hc){create(:hc, code: "hc_1")}
+  let!(:hc_user) {create(:user, name: "hc_user", username: "hc_user", phone: "85512345678", place_id: hc.id)}
   let(:verboice_attrs_1) do
     { "id"=>1501,
       "prefix_called_number"=>nil,
@@ -143,24 +145,23 @@ RSpec.describe Variable, type: :model do
       end
     end
   end
-
   describe "#threshold_by_week" do
     it "return threshold on week 3" do
-      expect(@variable1.threshold_by_week(week.previous.previous)).to eq(0)
-      expect(@variable2.threshold_by_week(week.previous.previous)).to eq(0)
-      expect(@variable3.threshold_by_week(week.previous.previous)).to eq(0)
+      expect(@variable1.threshold_by_place_and_week(hc, week.previous.previous)).to eq(0)
+      expect(@variable2.threshold_by_place_and_week(hc, week.previous.previous)).to eq(0)
+      expect(@variable3.threshold_by_place_and_week(hc, week.previous.previous)).to eq(0)
     end
 
     it "return threshold on week 4" do
-      expect(@variable1.threshold_by_week(week.previous)).to eq(1)
-      expect(@variable2.threshold_by_week(week.previous)).to eq(1.5)
-      expect(@variable3.threshold_by_week(week.previous)).to eq(2.5)
+      expect(@variable1.threshold_by_place_and_week(hc, week.previous)).to eq(1)
+      expect(@variable2.threshold_by_place_and_week(hc, week.previous)).to eq(1.5)
+      expect(@variable3.threshold_by_place_and_week(hc, week.previous)).to eq(2.5)
     end
 
     it "return threshold on week 5" do
-      expect(@variable1.threshold_by_week(week)).to eq(2.5)
-      expect(@variable2.threshold_by_week(week)).to eq(2)
-      expect(@variable3.threshold_by_week(week)).to eq(5)
+      expect(@variable1.threshold_by_place_and_week(hc, week)).to eq(2.5)
+      expect(@variable2.threshold_by_place_and_week(hc, week)).to eq(2)
+      expect(@variable3.threshold_by_place_and_week(hc, week)).to eq(5)
     end
   end
 

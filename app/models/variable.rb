@@ -37,12 +37,11 @@ class Variable < ActiveRecord::Base
     total_report_value(reports.map(&:id))
   end
 
-  def threshold_by_week(week)
-    alert = Alert.find_by(verboice_project_id: self.verboice_project_id)
+  def threshold_by_place_and_week(place, week)
     threshold = 0.0
     (1..ENV['THRESHOLD_WEEK_RANGE'].to_i).each do |i|
       week_previous = week.previous
-      threshold = threshold + self.total_report_value_by_week(week_previous)
+      threshold = threshold + WeeklyPlaceReport.new(week_previous, place).total_value_by_variable(self.id)
       week = week_previous
     end
     (threshold/ENV['THRESHOLD_WEEK_RANGE'].to_i)*1.5

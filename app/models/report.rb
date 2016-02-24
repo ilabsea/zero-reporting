@@ -80,6 +80,11 @@ class Report < ActiveRecord::Base
     where("week >= ? and week <= ?", from, to)
   end
 
+  def self.by_place place
+    user_ids = place.users.pluck(:id)
+    Report.where(user_id: user_ids)
+  end
+
   # from=2015-06-29&to=2015-07-14&phd=27&od=30&status=Listened
   def self.filter options
     reports = self.where('1=1')
@@ -209,7 +214,7 @@ class Report < ActiveRecord::Base
     week = Calendar.week(self.called_at.to_date)
 
     self.report_variable_values.each do |report_variable|
-      threshold = report_variable.variable.threshold_by_week(week)
+      threshold = Threshold.new(week, place, report_variable.variable).value
       if report_variable.value.to_i > threshold
         report_variable.mark_as_reaching_threshold
       else
@@ -217,6 +222,10 @@ class Report < ActiveRecord::Base
       end
     end
     alert(week)
+  end
+
+  def place
+    self.user.place
   end
 
   def alert(week)

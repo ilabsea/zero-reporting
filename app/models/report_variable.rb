@@ -32,7 +32,6 @@ class ReportVariable < ActiveRecord::Base
   end
 
   def unmark_as_reaching_threshold
-    p "Unmarked"
     self.is_reached_threshold = false
     self.save
   end
