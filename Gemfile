@@ -67,11 +67,11 @@ group :development, :test do
   gem 'capistrano-rails'
   gem 'capistrano-rbenv', '~> 2.0'
   gem 'capistrano-bundler', '~> 1.1.2'
-  gem 'capistrano-passenger'
+  gem 'capistrano-passenger', '~> 0.2.0'
 
   gem 'factory_girl_rails'
   gem 'pry-rails'
-  
+
   gem 'rspec-rails', '~> 3.0'
   gem 'spring-commands-rspec'
   gem 'annotate'
@@ -81,11 +81,10 @@ end
 group :test do
   gem 'rake'
   gem "codeclimate-test-reporter", require: nil
-  
+
   gem 'database_cleaner'
   gem 'shoulda-matchers'
   gem 'faker'
   gem 'launchy'
   gem 'simplecov', require: false
 end
-
