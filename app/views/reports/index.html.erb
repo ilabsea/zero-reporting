@@ -70,7 +70,7 @@
 
                 <div style="position: relative">
                   <% if report_variable && report_variable.is_reached_threshold %>
-                    <img src="/assets/warning.gif" style="top:0; right: 0; position: absolute">
+                    <%= image_tag 'warning.gif', style: 'top:0; right: 0; position: absolute' %>
                   <% end %>
                   <%= display_report_variable(report_variable) %>
                 </div>
