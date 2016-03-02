@@ -32,7 +32,7 @@ class ReportsController < ApplicationController
   end
 
   def export_as_csv
-    file = ReportCsv.start(params)
+    file = ReportCsv.new(UserContext.new(current_user)).start(params)
     send_file file, type: "text/csv"
   end
 
