@@ -13,15 +13,15 @@
   <div class="panel-body" style='padding: 10px 0px;'>
     <%= form_tag reports_path, method: 'GET' do |f| %>
       <div class='input-row col-lg-2'>
-        <%= label_tag :year, 'Period' %>
-        <%= select_tag :year, options_for_select(Calendar::Year.new(Time.now.year).near_by(2), year),
-                       class: 'form-control' %>
-      </div>
-
-      <div class='input-row col-lg-2'>
         <%= label_tag :reviewed, 'Reviewed Status' %>
         <%= select_tag :reviewed, options_for_select([[ "Reviewed", 1], ["New", 0]], params[:reviewed]),
                        class: 'form-control', include_blank: "All" %>
+      </div>
+
+      <div class='input-row col-lg-2 year' style="display: none;">
+        <%= label_tag :year, 'Period' %>
+        <%= select_tag :year, options_for_select(Calendar::Year.new(Time.now.year).near_by(2), year),
+                       class: 'form-control' %>
       </div>
 
       <div class='input-row col-lg-2 from-week-group' style='display: none;'>

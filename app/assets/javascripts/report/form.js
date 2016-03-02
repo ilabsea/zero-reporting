@@ -32,9 +32,12 @@ function updateWeekNumberReport() {
 function initFilterForm(){
   var _self = this;
 
-  var $reviewed = $("#reviewed");
-  $reviewed.on('change', function() {
+  $("#reviewed").on('change', function() {
     reviewedChanged();
+  });
+
+  $("#year").on('change', function() {
+    yearChanged();
   });
 
   $("#phd").on('change', function() {
@@ -67,33 +70,58 @@ function addItemToCombo(text, value, combo, valueSelected) {
 }
 
 function reviewedChanged() {
+  var $divYear = $(".year");
   var $divFromWeek = $(".from-week-group");
   var $divToWeek = $(".to-week-group");
+  var $year = $("#year");
+
+  var $reviewed = $("#reviewed");
+  if($reviewed.val() == REVIEWED) {
+    var years = yearNearBy(2);
+    $.each(years, function(i){
+      addItemToCombo(years[i], years[i], $year, new Date().getFullYear());
+    });
+
+    yearChanged();
+
+    $divYear.show();
+    $divFromWeek.show();
+    $divToWeek.show();
+
+  } else {
+
+    $year.find("option[value!='']").remove();
+    $divYear.hide();
+    $divFromWeek.hide();
+    $divToWeek.hide();
+  }
+}
+
+function yearChanged() {
+  var $year = $("#year");
   var $fromWeekSelect = $("#from_week");
   var $toWeekSelect = $("#to_week");
 
   $fromWeekSelect.find("option[value!='']").remove();
   $toWeekSelect.find("option[value!='']").remove();
 
-  var $reviewed = $("#reviewed");
-  if($reviewed.val() == REVIEWED) {
-    var $year = $("#year");
+  $.ajax({
+    url: '/weeks',
+    data: { year: $year.val() },
+    success: function(response){
+      $.each(response, function(i){
+        addItemToCombo(response[i]['display'], response[i]['id'], $fromWeekSelect, fromWeek); // fromWeek is global variable
+        addItemToCombo(response[i]['display'], response[i]['id'], $toWeekSelect, toWeek); // toWeek is global variable
+      });
+    }
+  });
+}
 
-    $divFromWeek.show();
-    $divToWeek.show();
-
-    $.ajax({
-      url: '/weeks',
-      data: { year: $year.val() },
-      success: function(response){
-        $.each(response, function(i){
-          addItemToCombo(response[i]['display'], response[i]['id'], $fromWeekSelect, fromWeek);
-          addItemToCombo(response[i]['display'], response[i]['id'], $toWeekSelect, toWeek);
-        });
-      }
-    });
-  } else {
-    $divFromWeek.hide();
-    $divToWeek.hide();
+function yearNearBy(number) {
+  var currentYear = new Date().getFullYear();
+  var years = [];
+  for(var i = 0 - number; i <= number; i++) {
+    years.push(currentYear + i)
   }
+  return years;
 }
