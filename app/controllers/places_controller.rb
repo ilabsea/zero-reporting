@@ -1,6 +1,6 @@
 class PlacesController < ApplicationController
 
-  authorize_resource
+  skip_authorize_resource only: [:index]
 
   def index
     @places = Place.all
@@ -64,7 +64,7 @@ class PlacesController < ApplicationController
     respond_to do |format|
       format.json  { render :json => result }
       format.csv {
-        content = "code,parent_code,name,level \n" + 
+        content = "code,parent_code,name,level \n" +
         "100,,Phnom Penh, PHD \n" +
         "101,100,Rousey Keo, OD \n" +
         "102,101,Toul Sangke, HC"
