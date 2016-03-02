@@ -4,7 +4,7 @@ $(function(){
 
 function animateAlert(){
   $alert = $(".alert-animate")
-  
+
   var appearTime    = 2 * 1000
   var disappearTime = 1.5 * 1000
 
@@ -25,7 +25,7 @@ function showNotice(l, g) {
 
 function show(l, g, e) {
   $(".flash").remove();
-  l = $("<div>").addClass("flash").addClass(g).append($("<div>").text(l));
+  l = $("<div>").addClass("flash").addClass(g).append($("<div>").html(l));
   $("body").prepend(l);
   this.display_flash(true, e);
 }
