@@ -75,11 +75,13 @@ function reviewedChanged() {
   var $divToWeek = $(".to-week-group");
   var $year = $("#year");
 
+  $year.find("option[value!='']").remove();
+
   var $reviewed = $("#reviewed");
   if($reviewed.val() == REVIEWED) {
     var years = yearNearBy(2);
     $.each(years, function(i){
-      addItemToCombo(years[i], years[i], $year, new Date().getFullYear());
+      addItemToCombo(years[i], years[i], $year, currentYear);
     });
 
     yearChanged();
@@ -89,8 +91,6 @@ function reviewedChanged() {
     $divToWeek.show();
 
   } else {
-
-    $year.find("option[value!='']").remove();
     $divYear.hide();
     $divFromWeek.hide();
     $divToWeek.hide();
