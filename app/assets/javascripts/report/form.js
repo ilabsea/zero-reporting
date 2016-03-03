@@ -37,7 +37,7 @@ function initFilterForm(){
   });
 
   $("#year").on('change', function() {
-    yearChanged();
+    yearChanged(true);
   });
 
   $("#phd").on('change', function() {
@@ -75,11 +75,13 @@ function reviewedChanged() {
   var $divToWeek = $(".to-week-group");
   var $year = $("#year");
 
+  $year.find("option[value!='']").remove();
+
   var $reviewed = $("#reviewed");
   if($reviewed.val() == REVIEWED) {
     var years = yearNearBy(2);
     $.each(years, function(i){
-      addItemToCombo(years[i], years[i], $year, new Date().getFullYear());
+      addItemToCombo(years[i], years[i], $year, currentYear);
     });
 
     yearChanged();
@@ -89,15 +91,13 @@ function reviewedChanged() {
     $divToWeek.show();
 
   } else {
-
-    $year.find("option[value!='']").remove();
     $divYear.hide();
     $divFromWeek.hide();
     $divToWeek.hide();
   }
 }
 
-function yearChanged() {
+function yearChanged(isWeekReset) {
   var $year = $("#year");
   var $fromWeekSelect = $("#from_week");
   var $toWeekSelect = $("#to_week");
@@ -110,8 +110,13 @@ function yearChanged() {
     data: { year: $year.val() },
     success: function(response){
       $.each(response, function(i){
-        addItemToCombo(response[i]['display'], response[i]['id'], $fromWeekSelect, fromWeek); // fromWeek is global variable
-        addItemToCombo(response[i]['display'], response[i]['id'], $toWeekSelect, toWeek); // toWeek is global variable
+        if(isWeekReset) {
+          addItemToCombo(response[i]['display'], response[i]['id'], $fromWeekSelect);
+          addItemToCombo(response[i]['display'], response[i]['id'], $toWeekSelect);
+        } else {
+          addItemToCombo(response[i]['display'], response[i]['id'], $fromWeekSelect, fromWeek); // fromWeek is global variable
+          addItemToCombo(response[i]['display'], response[i]['id'], $toWeekSelect, toWeek); // toWeek is global variable
+        }
       });
     }
   });

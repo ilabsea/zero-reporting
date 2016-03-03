@@ -1,6 +1,7 @@
 <script>
   fromWeek = '<%= params[:from_week] %>';
   toWeek = '<%= params[:to_week] %>';
+  currentYear = '<%= params[:year].present? ? params[:year] : Time.now.year %>';
 </script>
 
 <% year = params[:year].present? ? params[:year].to_i : Time.now.year %>
