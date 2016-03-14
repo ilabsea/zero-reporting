@@ -63,6 +63,17 @@
         </div>
       </div>
 
+      <div class="clearfix">
+
+        <div class="horizontal-checkbox-list" style="padding: 10px;">
+          <label>Apply Alert fomular by</label>
+          <div style="border-bottom:none">
+            <%= f.input_field :is_alerted_by_threshold, as: :boolean, boolean_style: :inline, class: 'ace'  %> <span class="lbl"> Threshold</span></div>
+          <div>
+            <%= f.input_field :is_alerted_by_report, as: :boolean, boolean_style: :inline, class: 'ace'  %> <span class="lbl"> Report</span></div>
+        </div>
+      </div>
+
       <div class="form-action" style="text-align: right; margin-top: 15px;">
         <button type='reset' class="btn btn-default hide-variable-form" > Cancel </button>
         <button type="button" class="btn btn-primary save-varialble"> Save </button>

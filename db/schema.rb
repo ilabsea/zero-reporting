@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160215083150) do
+ActiveRecord::Schema.define(version: 20160314035213) do
 
   create_table "alert_logs", force: :cascade do |t|
     t.string   "from",                limit: 255
@@ -156,15 +156,17 @@ ActiveRecord::Schema.define(version: 20160215083150) do
   add_index "users", ["place_id"], name: "index_users_on_place_id", using: :btree
 
   create_table "variables", force: :cascade do |t|
-    t.string   "name",                limit: 255
-    t.string   "description",         limit: 255
-    t.integer  "verboice_id",         limit: 4
-    t.string   "verboice_name",       limit: 255
-    t.integer  "verboice_project_id", limit: 4
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
-    t.string   "background_color",    limit: 255
-    t.string   "text_color",          limit: 255
+    t.string   "name",                    limit: 255
+    t.string   "description",             limit: 255
+    t.integer  "verboice_id",             limit: 4
+    t.string   "verboice_name",           limit: 255
+    t.integer  "verboice_project_id",     limit: 4
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.string   "background_color",        limit: 255
+    t.string   "text_color",              limit: 255
+    t.boolean  "is_alerted_by_threshold", limit: 1
+    t.boolean  "is_alerted_by_report",    limit: 1
   end
 
   add_foreign_key "channels", "users"
