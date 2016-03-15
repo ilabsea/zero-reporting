@@ -210,6 +210,7 @@ class Report < ActiveRecord::Base
 
   def alert
     alert = Alert.find_by(verboice_project_id: self.verboice_project_id)
+    return unless alert
     week = Calendar.week(self.called_at.to_date)
     place = self.place
     self.report_variable_values.each do |report_variable|
