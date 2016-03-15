@@ -3,11 +3,11 @@ class AlertCase
     @alert = alert
     @report = report
     @week = week
-    @report_variable_cases = @report.report_variables.where(is_reached_threshold: true)
+    @alerted_variables = @report.alerted_variables
   end
 
   def run
-    return if @alert.is_enable_sms_alert == false && @report_variable_cases.empty?
+    return if @alert.is_enable_sms_alert == false && @alerted_variables.empty?
     messages = message_options
     if !messages.empty?
       SmsAlertJob.set(wait: ENV['DELAY_DELIVER_IN_MINUTES'].to_i).perform_later(messages)
@@ -56,7 +56,7 @@ class AlertCase
 
   def translate_message
     return "" unless @alert.message_template
-    variable_ids = @report_variable_cases.pluck(:variable_id)
+    variable_ids = @alerted_variables.pluck(:variable_id)
     variable_cases = Variable.where(id: variable_ids)
     translate_options = {
       week_year: @week.display(Calendar::Week::DISPLAY_NORMAL_MODE, "ww-yyyy"),

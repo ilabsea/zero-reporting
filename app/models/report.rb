@@ -225,4 +225,9 @@ class Report < ActiveRecord::Base
   def weekly_notify(week, alert)
     AlertCase.new(alert, self, week).run
   end
+
+  def alerted_variables
+    self.report_variables.where(is_alerted: true)
+  end
+
 end
