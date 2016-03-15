@@ -36,4 +36,26 @@ class ReportVariable < ActiveRecord::Base
     self.save
   end
 
+  def check_alert_by_week(week, place)
+    self.set_threshold_alert(week, place) if self.variable.is_alerted_by_threshold?
+    self.set_report_variable_alert if self.variable.is_alerted_by_report?
+  end
+
+  def set_threshold_alert(week, place)
+    threshold = Threshold.new(week, place, self.variable).value
+    if self.value.to_i > threshold
+      self.mark_as_reaching_threshold
+    else
+      self.unmark_as_reaching_threshold
+    end
+  end
+
+  def set_report_variable_alert
+    if self.value.to_i > 0
+      self.mark_as_reaching_threshold
+    else
+      self.unmark_as_reaching_threshold
+    end
+  end
+
 end

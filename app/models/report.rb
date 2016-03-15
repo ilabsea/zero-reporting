@@ -155,7 +155,7 @@ class Report < ActiveRecord::Base
       report.report_variable_values.build(value: call_log_answer[:value], variable_id: variable.id) if variable
     end
     report.update_attributes(attrs)
-    report.check_threshold
+    report.alert
     report
   end
 
@@ -208,28 +208,21 @@ class Report < ActiveRecord::Base
     color = r + g + b
   end
 
-  def check_threshold
-    alert_setting = Alert.find_by(verboice_project_id: self.verboice_project_id)
-    return unless alert_setting
+  def alert
+    alert = Alert.find_by(verboice_project_id: self.verboice_project_id)
     week = Calendar.week(self.called_at.to_date)
-
+    place = self.place
     self.report_variable_values.each do |report_variable|
-      threshold = Threshold.new(week, place, report_variable.variable).value
-      if report_variable.value.to_i > threshold
-        report_variable.mark_as_reaching_threshold
-      else
-        report_variable.unmark_as_reaching_threshold
-      end
+      report_variable.check_alert_by_week(week, place)
     end
-    alert(week)
+    self.weekly_notify(week,alert)
   end
 
   def place
     self.user.place
   end
 
-  def alert(week)
-    alert_setting = Alert.find_by(verboice_project_id: self.verboice_project_id)
-    AlertCase.new(alert_setting, self, week).run
+  def weekly_notify(week, alert)
+    AlertCase.new(alert, self, week).run
   end
 end

@@ -49,4 +49,12 @@ class Variable < ActiveRecord::Base
     (threshold/ENV['THRESHOLD_WEEK_RANGE'].to_i)*1.5
   end
 
+  def is_alerted_by_threshold?
+    self.is_alerted_by_threshold
+  end
+
+  def is_alerted_by_report?
+    self.is_alerted_by_report
+  end
+
 end
