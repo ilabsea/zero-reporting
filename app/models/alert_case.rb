@@ -60,7 +60,8 @@ class AlertCase
     variable_cases = Variable.where(id: variable_ids)
     translate_options = {
       week_year: @week.display(Calendar::Week::DISPLAY_NORMAL_MODE, "ww-yyyy"),
-      reported_cases: variable_cases.map(&:name).join(", ")
+      reported_cases: variable_cases.map(&:name).join(", "),
+      place_name: @report.place.name
     }
     return MessageTemplate.instance.set_source(@alert.message_template).translate(translate_options)
   end
