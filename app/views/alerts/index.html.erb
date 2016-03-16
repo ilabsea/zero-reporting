@@ -12,20 +12,11 @@
       <%= simple_form_for @alert, html: { class: 'form-inline form alert-form'} do |f| %>
         <div class="form-group">
           <label class="control-label">Alert option</label>
-          <!-- <div class="col-sm-9">
-            <div class="horizontal-checkbox-list" style="display: inline-block;">
-              <%= f.check_box :is_enable_sms_alert, class: 'ace' %> <span class="lbl">SMS</span>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <%= f.check_box :is_enable_email_alert, class: 'ace' %> <span class="lbl"> Email</span>
-            </div>
-          </div> -->
-
           <div class="col-sm-9 horizontal-form-control">
             <div>
               <span class="switch-label">SMS</span><%=f.check_box :is_enable_sms_alert, class: 'form-control ace ace-switch ace-switch-4 btn-empty' %>
               <span class="lbl" style="vertical-align:bottom"></span>
             </div>
-
             <div>
               <span class="switch-label">Email</span><%=f.check_box :is_enable_email_alert, class: 'form-control ace ace-switch ace-switch-4 btn-empty' %>
               <span class="lbl" style="vertical-align:bottom"></span>
