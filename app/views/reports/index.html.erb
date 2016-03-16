@@ -1,106 +1,107 @@
 <%= breadcrumb [ {"Reports" => nil}] %>
 <%= page_title "Call list" %>
-<%= render 'filter' %>
-
-<div class="clearfix">
-  <div class="pull-left">
-    <h2 class="header-title">List of report</h2>
+<div class="inner-container">
+  <%= render 'filter' %>
+  <div class="clearfix">
+    <div class="pull-left">
+      <h2 class="header-title">List of report</h2>
+    </div>
+    <div class="pull-right" style='margin-top: 10px;'>
+      <%=link_to export_as_csv_reports_path(request.query_parameters), class: 'btn btn-primary' do %>
+       <i class="glyphicon glyphicon-upload"> </i> Export as CSV
+      <% end %>
+    </div>
   </div>
-  <div class="pull-right" style='margin-top: 10px;'>
-    <%=link_to export_as_csv_reports_path(request.query_parameters), class: 'btn btn-primary' do %>
-     <i class="glyphicon glyphicon-upload"> </i> Export as CSV
-    <% end %>
-  </div>
-</div>
 
-<div class="table-responsive">
-  <table class="report table table-striped table-bordered table-hover">
-    <thead>
-    <tr style="color: black">
-        <td>Reported date</td>
-        <td>PHD</td>
-        <td>OD</td>
-        <td>Phone</td>
-        <td><%= sortable "user_id", "Username" %></td>
-        <td>Duration<br/>(second)</td>
-        <% @variables.each do |variable| %>
-        <td style="width:150px; background-color: <%= variable.background_color%>;" > <%= variable.name %> </td>
-        <% end %>
-        <td>Reviewed and assigned</td>
-        <td>Action</td>
-      </tr>
-    </thead>
+  <div class="table-responsive">
+    <table class="report table table-striped table-bordered table-hover">
+      <thead>
+      <tr style="color: black">
+          <td>Reported date</td>
+          <td>PHD</td>
+          <td>OD</td>
+          <td>Phone</td>
+          <td><%= sortable "user_id", "Username" %></td>
+          <td>Duration<br/>(second)</td>
+          <% @variables.each do |variable| %>
+          <td style="width:150px; background-color: <%= variable.background_color%>;" > <%= variable.name %> </td>
+          <% end %>
+          <td>Reviewed and assigned</td>
+          <td>Action</td>
+        </tr>
+      </thead>
 
-    <tbody>
-    <% if @reports_by_page.size > 0 %>
-      <tr style="font-weight: bold;">
-        <td>Total</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <% @variables.each do |variable| %>
-        <td style='color: <%= variable.text_color%>;'><%= variable.total_report_value(@report_ids) %></td>
-        <% end -%>
-        <td></td>
-        <td></td>
-      </tr>
-      <% @reports_by_page.each_with_index do |report, index| %>
-          <tr>
-            <td> <%= report.called_at %></td>
+      <tbody>
+      <% if @reports_by_page.size > 0 %>
+        <tr style="font-weight: bold;">
+          <td>Total</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <% @variables.each do |variable| %>
+          <td style='color: <%= variable.text_color%>;'><%= variable.total_report_value(@report_ids) %></td>
+          <% end -%>
+          <td></td>
+          <td></td>
+        </tr>
+        <% @reports_by_page.each_with_index do |report, index| %>
+            <tr>
+              <td> <%= report.called_at %></td>
 
-            <td>
-                <%= link_to(report.phd.name, users_path(place_id: report.phd.try(:id))) if current_user.is_admin? && report.phd %>
-                <%= report.phd.try(:name) if current_user.is_normal? %>
-            </td>
-
-            <td>
-               <%= link_to(report.od.name, users_path(place_id: report.od.try(:id))) if current_user.is_admin? && report.od %>
-               <%= report.od.try(:name) if current_user.is_normal? %>
-            </td>
-
-            <td><%= report.phone %></td>
-            <td> <%= report.user.try(:name)%> </td>
-            <td> <%= report.duration%> </td>
-
-            <% @variables.each do |variable| %>
-            <td style='color: <%= variable.text_color%>;'>
-                <% report_variable = report.report_variables.select{|report_variable| report_variable.variable_id == variable.id}.first %>
-
-                <div style="position: relative">
-                  <% if report_variable && report_variable.is_alerted %>
-                    <%= image_tag 'warning.gif', style: 'top:0; right: 0; position: absolute' %>
-                  <% end %>
-                  <%= display_report_variable(report_variable) %>
-                </div>
+              <td>
+                  <%= link_to(report.phd.name, users_path(place_id: report.phd.try(:id))) if current_user.is_admin? && report.phd %>
+                  <%= report.phd.try(:name) if current_user.is_normal? %>
               </td>
-            <% end %>
 
-            <td>
-              <%= select_tag(report.id, options_for_select(Calendar::Year.new(Time.now.year).available_weeks.map { |w| w.display }, "w#{report.week}-#{report.year}"), { include_blank: true, class: 'weekly-report' }) %>
-            </td>
+              <td>
+                 <%= link_to(report.od.name, users_path(place_id: report.od.try(:id))) if current_user.is_admin? && report.od %>
+                 <%= report.od.try(:name) if current_user.is_normal? %>
+              </td>
 
-            <td>
-              <%= link_to report_path(report), method: :delete, data: {confirm: 'Are you sure to delete ?'} do %>
-                  <i class='glyphicon glyphicon-trash red'> </i>
+              <td><%= report.phone %></td>
+              <td> <%= report.user.try(:name)%> </td>
+              <td> <%= report.duration%> </td>
+
+              <% @variables.each do |variable| %>
+              <td style='color: <%= variable.text_color%>;'>
+                  <% report_variable = report.report_variables.select{|report_variable| report_variable.variable_id == variable.id}.first %>
+
+                  <div style="position: relative">
+                    <% if report_variable && report_variable.is_alerted %>
+                      <%= image_tag 'warning.gif', style: 'top:0; right: 0; position: absolute' %>
+                    <% end %>
+                    <%= display_report_variable(report_variable) %>
+                  </div>
+                </td>
               <% end %>
 
-            </td>
-          </tr>
-        <% end %>
-      <% else %>
-        <td colspan="<%= (8 + @variables.size) %>">
-          <div class="alert alert-danger center" style="margin-bottom: 0px">
-            There is no record.
-            <br>
-          </div>
-        </td>
-      <% end %>
-    </tbody>
-  </table>
-</div>
+              <td>
+                <%= select_tag(report.id, options_for_select(Calendar::Year.new(Time.now.year).available_weeks.map { |w| w.display }, "w#{report.week}-#{report.year}"), { include_blank: true, class: 'weekly-report' }) %>
+              </td>
 
-<div class="clearfix">
-  <%= paginate_for(@reports_by_page) %>
+              <td>
+                <%= link_to report_path(report), method: :delete, data: {confirm: 'Are you sure to delete ?'} do %>
+                    <i class='glyphicon glyphicon-trash red'> </i>
+                <% end %>
+
+              </td>
+            </tr>
+          <% end %>
+        <% else %>
+          <td colspan="<%= (8 + @variables.size) %>">
+            <div class="alert alert-danger center" style="margin-bottom: 0px">
+              There is no record.
+              <br>
+            </div>
+          </td>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="clearfix">
+    <%= paginate_for(@reports_by_page) %>
+  </div>
 </div>

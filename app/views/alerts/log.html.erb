@@ -1,32 +1,34 @@
 <%= breadcrumb [ {"Alert Log" => nil} ] %>
-<div class="clearfix">
-  <div class="pull-left">
-    <h3 class="header-title">List of alert log</h3>
+<div class="inner-container">
+  <div class="clearfix">
+    <div class="pull-left">
+      <h3 class="header-title">List of alert log</h3>
+    </div>
   </div>
-</div>
 
-<div class="table-responsive">
-  <table class="report table table-striped table-bordered table-hover">
-    <thead>
-      <tr>
-        <th>To</th>
-        <th>Message</th>
-        <th>Channel</th>
-        <th>Created_at</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @alert_logs.each do |alert_log| %>
+  <div class="table-responsive">
+    <table class="report table table-striped table-bordered table-hover">
+      <thead>
         <tr>
-          <td><%= alert_log.to %></td>
-          <td><%= alert_log.body %></td>
-          <td><%= alert_log.suggested_channel %></td>
-          <td><%= alert_log.created_at %></td>
+          <th>To</th>
+          <th>Message</th>
+          <th>Channel</th>
+          <th>Created_at</th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
-</div>
-<div class="clearfix">
-  <%= paginate_for(@alert_logs) %>
+      </thead>
+      <tbody>
+        <% @alert_logs.each do |alert_log| %>
+          <tr>
+            <td><%= alert_log.to %></td>
+            <td><%= alert_log.body %></td>
+            <td><%= alert_log.suggested_channel %></td>
+            <td><%= alert_log.created_at %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="clearfix">
+    <%= paginate_for(@alert_logs) %>
+  </div>
 </div>

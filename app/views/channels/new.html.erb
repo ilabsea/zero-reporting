@@ -1,8 +1,9 @@
 <%= breadcrumb [ {"Channels" => channels_path()}, {"New channel" => nil}] %>
 <% content_for(:title) { "New Channel"} %>
-
-<%= render 'list_channel_type' %>
-<%= render 'download_android_local_gateway' %>
-<%= render 'new_android_channel' %>
-<%= render 'end_wizard' %>
-<%= render 'new_national_channel' %>
+<div class="inner-container">
+  <%= render 'list_channel_type' %>
+  <%= render 'download_android_local_gateway' %>
+  <%= render 'new_android_channel' %>
+  <%= render 'end_wizard' %>
+  <%= render 'new_national_channel' %>
+</div>
