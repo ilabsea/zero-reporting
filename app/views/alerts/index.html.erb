@@ -2,30 +2,39 @@
 <div class="inner-container">
   <div class="clearfix">
     <div class="pull-left">
-      <h3 class="header-title">Alert Setting</h3>
+      <h3 class="header-title">Setting</h3>
     </div>
   </div>
   <div class="row">
     <div class="col-xs-12">
       <div class="text-muted"><i>Below you can configure the alert properties</i></div>
       <br/>
-      <%= simple_form_for @alert, html: { class: 'form-inline form'} do |f| %>
+      <%= simple_form_for @alert, html: { class: 'form-inline form alert-form'} do |f| %>
         <div class="form-group">
-          <label class="control-label">Enable SMS</label>
-          <%=f.check_box :is_enable_sms_alert, class: 'form-control ace ace-switch ace-switch-4 btn-empty' %>
-          <span class="lbl" style="vertical-align:bottom"></span>
-        </div>
+          <label class="control-label">Alert option</label>
+          <!-- <div class="col-sm-9">
+            <div class="horizontal-checkbox-list" style="display: inline-block;">
+              <%= f.check_box :is_enable_sms_alert, class: 'ace' %> <span class="lbl">SMS</span>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <%= f.check_box :is_enable_email_alert, class: 'ace' %> <span class="lbl"> Email</span>
+            </div>
+          </div> -->
 
-        <div class="form-group">
-          <label class="control-label">Enable Email</label>
-          <%= f.check_box :is_enable_email_alert, class: 'form-control ace ace-switch ace-switch-4 btn-empty' %>
-          <span class="lbl" style="vertical-align:bottom"></span>
-        </div>
+          <div class="col-sm-9 horizontal-form-control">
+            <div>
+              <span class="switch-label">SMS</span><%=f.check_box :is_enable_sms_alert, class: 'form-control ace ace-switch ace-switch-4 btn-empty' %>
+              <span class="lbl" style="vertical-align:bottom"></span>
+            </div>
 
+            <div>
+              <span class="switch-label">Email</span><%=f.check_box :is_enable_email_alert, class: 'form-control ace ace-switch ace-switch-4 btn-empty' %>
+              <span class="lbl" style="vertical-align:bottom"></span>
+            </div>
+          </div>
+        </div>
         <div class="form-group">
-          <label class="control-label" style="float: left">To</label>
+          <label class="control-label">Reciepient</label>
           <div class="col-sm-9">
-            <%#= f.input :recipient_type, as: :check_boxes, label: false, include_hidden: false, collection: Place::TYPE %>
             <% Place::TYPE.each do |place_type| %>
             <div>
               <label>
@@ -43,18 +52,23 @@
         </div>
 
         <div class="form-group">
-          <label class="control-label" style="vertical-align:top"> SMS template</label>
-          <%= f.text_area :message_template, as: :text, rows: 6, cols: 60 %>
+          <label class="control-label"> Message template</label>
+          <div class="col-sm-9">
+            <%= f.text_area :message_template, as: :text, rows: 6, cols: 60 %>
+          </div>
         </div>
 
         <div class='form-group'>
-          <label></label>
-          <%= message_template_params_for(:alert_message_template) %>
+          <label class="control-label">&nbsp;</label>
+          <div class="col-sm-9">
+            <%= message_template_params_for(:alert_message_template) %>
+          </div>
         </div>
 
-        <div class='form-group form-action-group'>
-          <label></label>
-          <%= f.submit 'Save', class: 'btn btn-primary' %>
+        <div class='form-group'>
+          <div class="col-sm-9">
+            <%= f.submit 'Save', class: 'btn btn-primary' %>
+          </div>
         </div>
       <% end %>
   </div>

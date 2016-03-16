@@ -350,7 +350,7 @@ td:last-child{
   font-style: normal;
 }
 
-.horizontal-checkbox-list div{
+.vertical-checkbox-list div{
   border: 1px solid #d5d5d5;
   padding: 5px;
   width: 43%;
@@ -358,4 +358,24 @@ td:last-child{
 
 .inner-container{
   margin-left: 15px ;
+}
+
+.horizontal-form-control{
+  float: left;
+}
+
+.horizontal-form-control div{
+  line-height: 25px;
+  margin-bottom: 10px;
+  font-style: normal;
+}
+
+.horizontal-form-control .switch-label{
+  width: 50px;
+  display: inline-block;
+}
+
+.alert-form .control-label{
+  float: left;
+  line-height: 25px;
 }

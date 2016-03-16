@@ -238,7 +238,7 @@ module ApplicationHelper
   end
 
   def message_template_params_for selector
-    template_params = %w(week_year reported_cases)
+    template_params = %w(place_name week_number var_name)
     template_params_selector template_params, selector
   end
 
