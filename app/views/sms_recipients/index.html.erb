@@ -1,0 +1,32 @@
+<%= breadcrumb [ {"SMS Recipient" => nil} ] %>
+<div class="inner-container">
+  <div class="clearfix">
+    <div class="pull-left">
+      <h3 class="header-title">SMS Recipient</h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6">
+      <table class="table table-bordered">
+        <tr>
+          <th>name</th>
+          <th>phone</th>
+          <th></th>
+        </tr>
+        <% @recipients.each do |recipient| %>
+        <tr>
+          <td><%= recipient.name%></td>
+          <td><%= recipient.phone%></td>
+          <td class="td-last">
+            <%= link_edit " ", edit_sms_recipient_path(recipient)  %>
+            <%= link_destroy " ", sms_recipient_path(recipient), method: :delete, data: { confirm: 'Are you sure to delete' } %>
+          </td>
+        </tr>
+        <% end %>
+      </table>
+    </div>
+  </div>
+  <div>
+    <%= link_to 'New recipient', new_sms_recipient_path, class: 'btn btn-primary' %>
+  </div>
+</div>

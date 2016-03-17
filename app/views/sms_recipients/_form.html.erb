@@ -1,0 +1,9 @@
+<%=simple_form_for(@recipient, html: { class: 'form-inline form'}) do |f| %>
+
+  <%=f.input :name, label: 'Name', input_html: {class: 'form-control'} %>
+  <%=f.input :phone, label: 'Phone Number',input_html: {class: 'form-control'} %>
+  <div class='form-group form-action-group'>
+    <label class='control-label'></label>
+    <%=f.submit 'Save', class: 'btn btn-primary' %>
+  </div>
+<% end %>

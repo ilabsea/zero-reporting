@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   resources :dashboards, only: [:index]
   resources :calendars, only: [:index]
   resources :weeks, only: [:index]
-
+  resources :sms_recipients
   resources :places do
     collection do
       get 'ods_list'
@@ -54,7 +54,12 @@ Rails.application.routes.draw do
   get 'external' => 'settings#external'
 
   get '/steps/manifest' => 'steps#manifest', defaults: { format: :xml }
-  post '/steps/validate_hc_worker' => 'steps#validate_hc_worker'
+  resources :steps do
+    collection do
+      post :validate_hc_worker
+      post :send_sms
+    end
+  end
 
   resources :reports, only: [:index, :destroy] do
     member do
