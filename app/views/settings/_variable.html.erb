@@ -64,13 +64,7 @@
       </div>
 
       <div class="clearfix">
-        <div class="vertical-checkbox-list" style="padding: 10px;">
-          <label>Apply variable alert setting</label>
-          <div style="border-bottom:none">
-            <%= f.input_field :is_alerted_by_threshold, as: :boolean, boolean_style: :inline, class: 'ace'  %> <span class="lbl"> If the value is greater than the threshold, <b><%= ENV['THRESHOLD_FORMULA'].html_safe %></b></span></div>
-          <div>
-            <%= f.input_field :is_alerted_by_report, as: :boolean, boolean_style: :inline, class: 'ace'  %> <span class="lbl"> If the value is reported</span></div>
-        </div>
+        <%= render 'alert_option', variable: variable %>
       </div>
 
       <div class="form-action" style="text-align: right; margin-top: 15px;">
