@@ -16,7 +16,7 @@ class ExternalSms
         option = {from: ENV['APP_NAME'],
                   to: "sms://#{recipient.phone}",
                   body: translate_message,
-                  suggested_channel: suggested_channel}
+                  suggested_channel: suggested_channel.name}
         options << option
       end
     end
