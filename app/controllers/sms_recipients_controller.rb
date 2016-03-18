@@ -1,7 +1,7 @@
 class SmsRecipientsController < ApplicationController
 
   def index
-    @recipients = SmsRecipient.where(verboice_project_id: Setting[:project])
+    @recipients = SmsRecipient.where(verboice_project_id: Setting[:project]).page(params[:page])
   end
 
   def new

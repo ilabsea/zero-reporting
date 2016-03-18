@@ -24,9 +24,15 @@
         </tr>
         <% end %>
       </table>
+
+      <div class="clearfix">
+        <div class="pull-left">
+          <%= link_to 'New recipient', new_sms_recipient_path, class: 'btn btn-primary' %>
+        </div>
+        <div class="pull-right">
+          <%= paginate_for(@recipients) %>
+        </div>
+      </div>
     </div>
-  </div>
-  <div>
-    <%= link_to 'New recipient', new_sms_recipient_path, class: 'btn btn-primary' %>
   </div>
 </div>
