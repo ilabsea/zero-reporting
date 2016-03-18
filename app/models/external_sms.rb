@@ -4,13 +4,13 @@ class ExternalSms
     @call_log_id = call_log_id
   end
 
-  def recipients
+  def self.recipients
     SmsRecipient.where(verboice_project_id: Setting[:project])
   end
 
   def message_options
     options = []
-    recipients.each do |recipient|
+    ExternalSms.recipients.each do |recipient|
       suggested_channel = Channel.suggested(Tel.new(recipient.phone))
       if suggested_channel
         option = {from: ENV['APP_NAME'],
