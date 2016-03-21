@@ -39,7 +39,7 @@ require 'rails_helper'
 RSpec.describe Report, type: :model do
   describe ".create_from_verboice_attrs" do
     let(:verboice_attrs) do
-      { "id"=>1503, 
+      { "id"=>1503,
         "prefix_called_number"=>nil,
         "address"=>"17772415076",
         "duration"=>35,
@@ -52,11 +52,11 @@ RSpec.describe Report, type: :model do
         "finished_at"=>"2015-09-09T08:02:36Z",
         "called_at"=>"2015-09-09T08:02:01Z",
 
-        "account"=>{ "id"=>12, "email"=>"channa.info@gmail.com"}, 
+        "account"=>{ "id"=>12, "email"=>"channa.info@gmail.com"},
         "project"=>{ "id"=>24, "name"=>"Health"},
         "channel"=>{"id"=>62, "name"=>"Simple - 17772071271" },
 
-        "call_log_recorded_audios"=>[ 
+        "call_log_recorded_audios"=>[
               {"call_log_id"=>1503, "key"=>"1437448115867", "project_variable_id"=>73, "project_variable_name"=>"feed_back"},
               {"call_log_id"=>1503, "key"=>"1437450427859", "project_variable_id"=>93, "project_variable_name"=>"about"}],
 
@@ -105,7 +105,7 @@ RSpec.describe Report, type: :model do
     it 'create 2 report variable audios' do
       report = Report.create_from_verboice_attrs(verboice_attrs)
       report_variable_audios = report.report_variable_audios
-      
+
       expect(report_variable_audios.length).to eq 2
 
       expect(report_variable_audios[0].value).to eq('1437448115867')
@@ -118,4 +118,40 @@ RSpec.describe Report, type: :model do
     end
 
   end
+
+  describe "#week_for_alert" do
+    context "when report is on sunday" do
+      let(:report) {create(:report, called_at: "2016-03-20 11:39:45")}
+      it "return the week previous" do
+        week = Calendar.week(report.called_at.to_date)
+        expect(report.week_for_alert.week_number).to eq week.previous.week_number
+      end
+    end
+
+    context "when report is after wednesday" do
+      let(:report) {create(:report, called_at: "2016-03-18 11:39:45")}
+      it "return the week previous" do
+        week = Calendar.week(report.called_at.to_date)
+        expect(report.week_for_alert.week_number).to eq week.previous.week_number
+      end
+    end
+
+    context "when report is not on sunday and before wednesday" do
+      let(:report) {create(:report, called_at: "2016-03-21 11:39:45")}
+      it "return the current report week" do
+        week = Calendar.week(report.called_at.to_date)
+        expect(report.week_for_alert.week_number).to eq week.week_number
+      end
+    end
+  end
+
+  describe "#place" do
+    let(:place){create(:place)}
+    let(:user){create(:user, place_id: place.id)}
+    let(:report){create(:report, user_id: user.id)}
+    it "return the place of reported user" do
+      expect(report.place).to eq place
+    end
+  end
+
 end

@@ -209,22 +209,31 @@ class Report < ActiveRecord::Base
   end
 
   def alert
-    alert = Alert.find_by(verboice_project_id: self.verboice_project_id)
-    return unless alert
-    week = Calendar.week(self.called_at.to_date)
+    alert_setting = Alert.find_by(verboice_project_id: self.verboice_project_id)
+    return unless alert_setting
+    week = self.week_for_alert
     place = self.place
     self.report_variable_values.each do |report_variable|
       report_variable.check_alert_by_week(week, place)
     end
-    self.weekly_notify(week,alert)
+    self.weekly_notify(week,alert_setting)
+  end
+
+  def week_for_alert
+    week = Calendar.week(self.called_at.to_date)
+    # shift 1 week back if the report is on sunday or after wednesday
+    if self.called_at.to_date.wday > 3 || self.called_at.to_date.wday == 0
+       return week.previous
+    end
+    return week
   end
 
   def place
     self.user.place
   end
 
-  def weekly_notify(week, alert)
-    AlertCase.new(alert, self, week).run
+  def weekly_notify(week, alert_setting)
+    AlertCase.new(alert_setting, self, week).run
   end
 
   def alerted_variables
