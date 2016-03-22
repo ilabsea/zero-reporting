@@ -242,6 +242,11 @@ module ApplicationHelper
     template_params_selector template_params, selector
   end
 
+  def external_message_template_params_for selector
+    template_params = %w(caller_phone caller_log)
+    template_params_selector template_params, selector
+  end
+
   def template_params_selector template_params, selector
     template_params.map do |anchor|
       link_to("{{#{anchor}}}", 'javascript:void(0)', data: {selector: selector}, class: 'param-link')

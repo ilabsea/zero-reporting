@@ -1,0 +1,41 @@
+<div class="clearfix">
+  <div class="pull-left">
+    <h3 class="header-title">External SMS</h3>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <div class="text-muted"><i>Below you can configure the external sms setting</i></div>
+    <br/>
+    <%= simple_form_for @external_sms_setting, html: { class: 'form-inline form alert-form'} do |f| %>
+      <div class="form-group">
+        <label class="control-label">Enable</label>
+        <div class="col-sm-9 horizontal-form-control">
+          <div>
+            <%= f.check_box :is_enable, class: 'form-control ace ace-switch ace-switch-7' %>
+            <span class="lbl" style="vertical-align:bottom"></span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label"> Message template</label>
+        <div class="col-sm-9">
+          <%= f.text_area :message_template, as: :text, rows: 6, cols: 60 %>
+        </div>
+      </div>
+
+      <div class='form-group'>
+        <label class="control-label">&nbsp;</label>
+        <div class="col-sm-9">
+          <%= external_message_template_params_for(:external_sms_setting_message_template) %>
+        </div>
+      </div>
+
+      <div class='form-group'>
+        <div class="col-sm-9">
+          <%= f.submit 'Save', class: 'btn btn-primary' %>
+        </div>
+      </div>
+  <% end %>
+  </div>
+</div>

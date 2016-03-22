@@ -91,6 +91,8 @@ Rails.application.routes.draw do
       get 'log'
     end
   end
+
+  resources :external_sms_settings
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

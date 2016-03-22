@@ -58,3 +58,5 @@
 //= require locations/import_location
 
 //= require alerts/form
+
+//= require external_sms_settings/form

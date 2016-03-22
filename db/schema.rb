@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160317035908) do
+ActiveRecord::Schema.define(version: 20160322070627) do
 
   create_table "alert_logs", force: :cascade do |t|
     t.string   "from",                limit: 255
@@ -66,6 +66,15 @@ ActiveRecord::Schema.define(version: 20160317035908) do
   end
 
   add_index "channels", ["user_id"], name: "index_channels_on_user_id", using: :btree
+
+  create_table "external_sms_settings", force: :cascade do |t|
+    t.boolean  "is_enable",           limit: 1
+    t.string   "message_template",    limit: 255
+    t.integer  "verboice_project_id", limit: 4
+    t.datetime "created_at",                                           null: false
+    t.datetime "updated_at",                                           null: false
+    t.string   "recipients",          limit: 255, default: "--- []\n"
+  end
 
   create_table "places", force: :cascade do |t|
     t.string   "name",       limit: 255

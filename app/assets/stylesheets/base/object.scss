@@ -379,3 +379,23 @@ td:last-child{
   float: left;
   line-height: 25px;
 }
+
+#list-recipients{
+  list-style: none;
+  margin-left: 0px;
+  margin-top: 10px;
+}
+
+#list-recipients li{
+  margin-bottom: 5px;
+}
+
+#list-recipients .btn-remove-recipient{
+  color: red;
+}
+
+.rounded{
+  border : 1px solid #ccc;
+  padding: 1px 8px;
+  border-radius: 10px;
+}

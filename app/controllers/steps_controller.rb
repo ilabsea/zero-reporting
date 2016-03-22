@@ -23,7 +23,7 @@ class StepsController < ApplicationController
   end
 
   def send_sms
-    ExternalSms.new(params[:address], params[:CallSid]).run
+    ExternalSmsResult.new(params[:address], params[:CallSid]).run
     render json: {}
   end
 

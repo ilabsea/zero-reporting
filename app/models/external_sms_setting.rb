@@ -1,0 +1,18 @@
+# == Schema Information
+#
+# Table name: external_sms_settings
+#
+#  id                  :integer          not null, primary key
+#  is_enable           :boolean
+#  message_template    :string(255)
+#  verboice_project_id :integer
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  recipients          :string(255)      default("--- []\n")
+#
+
+class ExternalSmsSetting < ActiveRecord::Base
+  validates :is_enable, presence: true
+  validates :message_template, presence: true
+  serialize :recipients, Array
+end

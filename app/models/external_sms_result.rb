@@ -1,4 +1,4 @@
-class ExternalSms
+class ExternalSmsResult
   def initialize(caller_phone, call_log_id)
     @caller_phone = caller_phone
     @call_log_id = call_log_id
@@ -10,7 +10,7 @@ class ExternalSms
 
   def message_options
     options = []
-    ExternalSms.recipients.each do |recipient|
+    ExternalSmsResult.recipients.each do |recipient|
       suggested_channel = Channel.suggested(Tel.new(recipient.phone))
       if suggested_channel
         option = {from: ENV['APP_NAME'],
@@ -32,6 +32,9 @@ class ExternalSms
   end
 
   def run
-    SmsAlertJob.set(wait: ENV['DELAY_DELIVER_IN_MINUTES'].to_i).perform_later(self.message_options) if !message_options.empty?
+    external_sms_setting = ExternalSmsSetting.find_by(verboice_project_id: Setting[:project])
+    if external_sms_setting.is_enable && !message_options.empty?
+      SmsAlertJob.set(wait: ENV['DELAY_DELIVER_IN_MINUTES'].to_i).perform_later(self.message_options)
+    end
   end
 end
