@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160323025230) do
+ActiveRecord::Schema.define(version: 20160323030401) do
 
   create_table "alert_logs", force: :cascade do |t|
     t.string   "from",                limit: 255
@@ -143,14 +143,6 @@ ActiveRecord::Schema.define(version: 20160323025230) do
   end
 
   add_index "settings", ["thing_type", "thing_id", "var"], name: "index_settings_on_thing_type_and_thing_id_and_var", unique: true, using: :btree
-
-  create_table "sms_recipients", force: :cascade do |t|
-    t.string   "name",                limit: 255
-    t.string   "phone",               limit: 255
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
-    t.integer  "verboice_project_id", limit: 4
-  end
 
   create_table "users", force: :cascade do |t|
     t.string   "username",             limit: 255
