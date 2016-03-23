@@ -10,19 +10,19 @@ class ExternalSmsSettingsController < ApplicationController
     @external_sms_setting = ExternalSmsSetting.new(filter_params)
     @external_sms_setting.verboice_project_id = Setting[:project]
     if(@external_sms_setting.save)
-      redirect_to  alerts_path, notice: 'External SMS Setting has been created successfully'
+      redirect_to  external_sms_settings_path, notice: 'External SMS Setting has been created successfully'
     else
       flash.now[:alert] = 'Failed to save external sms setting'
-      render :new
+      render :index
     end
   end
 
   def update
     @external_sms_setting = ExternalSmsSetting.find(params[:id])
     if @external_sms_setting.update_attributes(filter_params)
-      redirect_to alerts_path, notice: 'External SMS Setting has been updated successfully'
+      redirect_to external_sms_settings_path, notice: 'External SMS Setting has been updated successfully'
     else
-      render :new
+      render :index
     end
   end
 

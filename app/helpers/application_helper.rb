@@ -243,7 +243,7 @@ module ApplicationHelper
   end
 
   def external_message_template_params_for selector
-    template_params = %w(caller_phone caller_log)
+    template_params = %w(caller_phone call_log_id)
     template_params_selector template_params, selector
   end
 

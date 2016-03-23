@@ -12,8 +12,8 @@
 #  updated_at              :datetime         not null
 #  background_color        :string(255)
 #  text_color              :string(255)
-#  is_alerted_by_threshold :boolean
-#  is_alerted_by_report    :boolean
+#  is_alerted_by_threshold :boolean          default(TRUE)
+#  is_alerted_by_report    :boolean          default(FALSE)
 #
 
 class Variable < ActiveRecord::Base

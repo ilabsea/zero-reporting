@@ -2,18 +2,16 @@ require 'rails_helper'
 
 RSpec.describe ExternalSmsResult, type: :model do
   include ActiveJob::TestHelper
-  let!(:smart){create(:channel, name: "smart", setup_flow: Channel::SETUP_FLOW_GLOBAL, is_enable: true)}
+  let(:smart){create(:channel, name: "smart", setup_flow: Channel::SETUP_FLOW_GLOBAL, is_enable: true)}
+  let(:setting){create(:external_sms_setting, is_enable: true, message_template: "{{caller_phone}} has left voice message on call log {{call_log_id}}", recipients: ["85512345678", "8551012345678"])}
   before(:each) do
-    @recipient_1 = create(:sms_recipient, name: "test", phone: "85512345678", verboice_project_id: 1)
-    @recipient_2 = create(:sms_recipient, name: "test", phone: "85510345678", verboice_project_id: 1)
-    @external_sms_result = ExternalSmsResult.new("01012345678", "1111")
-    allow(ExternalSmsResult).to receive(:recipients).and_return([@recipient_1, @recipient_2])
+    @external_sms_result = ExternalSmsResult.new(setting, "8551012345678", "1111")
     allow(Channel).to receive(:suggested).and_return(smart)
   end
 
   describe ".recipients" do
     it {
-      expect(ExternalSmsResult.recipients).to include @recipient_1
+      expect(@external_sms_result.recipients).to include "85512345678"
     }
   end
 
@@ -22,13 +20,13 @@ RSpec.describe ExternalSmsResult, type: :model do
       expect(@external_sms_result.message_options.length).to eq 2
     end
     it "returns message_options by recipient" do
-      expect(@external_sms_result.message_options).to include({from: ENV['APP_NAME'], to: "sms://#{@recipient_1.phone}", body: "01012345678 has left voice message on call log 1111", suggested_channel: smart.name})
+      expect(@external_sms_result.message_options).to include({from: ENV['APP_NAME'], to: "sms://8551012345678", body: "8551012345678 has left voice message on call log 1111", suggested_channel: smart.name})
     end
   end
 
   describe "#translate_message" do
     it {
-      expect(@external_sms_result.translate_message).to eq("01012345678 has left voice message on call log 1111")
+      expect(@external_sms_result.translate_message).to eq("8551012345678 has left voice message on call log 1111")
     }
   end
 

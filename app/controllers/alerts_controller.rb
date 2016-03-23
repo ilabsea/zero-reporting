@@ -11,7 +11,7 @@ class AlertsController < ApplicationController
       redirect_to  alerts_path, notice: 'Alert has been created successfully'
     else
       flash.now[:alert] = 'Failed to save alert'
-      render :new
+      render :index
     end
   end
 
@@ -20,7 +20,7 @@ class AlertsController < ApplicationController
     if @alert.update_attributes(filter_params)
       redirect_to alerts_path, notice: 'Alert has been updated successfully'
     else
-      render :new
+      render :index
     end
   end
 

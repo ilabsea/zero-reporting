@@ -8,11 +8,10 @@
 #  verboice_project_id :integer
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
-#  recipients          :string(255)      default("--- []\n")
+#  recipients          :string(255)      default([])
 #
 
 class ExternalSmsSetting < ActiveRecord::Base
-  validates :is_enable, presence: true
   validates :message_template, presence: true
   serialize :recipients, Array
 end

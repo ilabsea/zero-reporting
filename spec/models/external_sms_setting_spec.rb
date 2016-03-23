@@ -8,7 +8,7 @@
 #  verboice_project_id :integer
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
-#  recipients          :string(255)      default("--- []\n")
+#  recipients          :string(255)      default([])
 #
 
 require 'rails_helper'
