@@ -3,7 +3,6 @@ class ExternalSmsSettingsController < ApplicationController
 
   def index
     @external_sms_setting = ExternalSmsSetting.find_or_initialize_by(verboice_project_id: Setting[:project])
-    @recipients = SmsRecipient.where(verboice_project_id: Setting[:project])
   end
 
   def create
