@@ -37,8 +37,8 @@
                     <li id="recipient-<%= r %>">
                       <span class="rounded"><%= r %></span>
                       <input type="hidden" name="external_sms_setting[recipients][]" value="<%= r %>" />
-                      <a href="#">
-                        <span class="glyphicon glyphicon-remove-circle btn-remove-recipient" data-value="<%= r %>"></span>
+                      <a href="#" class="btn-remove-recipient" onclick="removeRecipient(<%= r %>)">
+                        <span class="glyphicon glyphicon-remove-circle" data-value="<%= r %>"></span>
                       </a>
                     </li>
                   <% end %>
