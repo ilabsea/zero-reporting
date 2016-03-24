@@ -20,8 +20,9 @@ class AlertCase
     recipients.each do |recipient|
       suggested_channel = AlertCase.channel_suggested(recipient.phone)
       if suggested_channel
+        phone = Tel.new(recipient.phone).with_country_code
         message_options << { from: ENV['APP_NAME'],
-                             to: "sms://#{recipient.phone}",
+                             to: "sms://#{phone}",
                              body: message_body,
                              suggested_channel: suggested_channel.name
                            }
