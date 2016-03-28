@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160328010447) do
+ActiveRecord::Schema.define(version: 20160328021211) do
 
   create_table "alert_logs", force: :cascade do |t|
     t.string   "from",                limit: 255
@@ -172,10 +172,11 @@ ActiveRecord::Schema.define(version: 20160328010447) do
     t.integer  "verboice_id",             limit: 4
     t.string   "verboice_name",           limit: 255
     t.integer  "verboice_project_id",     limit: 4
-    t.datetime "created_at",                                          null: false
-    t.datetime "updated_at",                                          null: false
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
     t.string   "background_color",        limit: 255
     t.string   "text_color",              limit: 255
+    t.string   "dhis2_data_element_uuid", limit: 255
     t.boolean  "is_alerted_by_threshold", limit: 1,   default: true
     t.boolean  "is_alerted_by_report",    limit: 1,   default: false
   end

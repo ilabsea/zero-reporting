@@ -23,6 +23,7 @@ function handleSaveVariable() {
     var verboice_id   = $form.find("#variable_verboice_id").val()
     var background_color   = $form.find("#variable_background_color").val()
     var text_color   = $form.find("#variable_text_color").val()
+    var dhis2_data_element_uuid = $form.find("#variable_dhis2_data_element_uuid").val();
     var is_alerted_by_threshold   = $form.find("#variable_is_alerted_by_threshold").is(':checked')
     var is_alerted_by_report   = $form.find("#variable_is_alerted_by_report").is(':checked')
     var method = $form.find("input[name=_method]").val()
@@ -32,9 +33,8 @@ function handleSaveVariable() {
       return
     }
 
-    var data = { name: name, verboice_name: verboice_name, verboice_id: verboice_id, background_color: background_color, text_color: text_color,
+    var data = { name: name, verboice_name: verboice_name, verboice_id: verboice_id, background_color: background_color, text_color: text_color, dhis2_data_element_uuid: dhis2_data_element_uuid, _method: method}
       is_alerted_by_threshold: is_alerted_by_threshold, is_alerted_by_report: is_alerted_by_report, _method: method}
-    console.log(data)
 
     $.ajax({
       method: 'POST',

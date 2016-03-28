@@ -33,16 +33,16 @@
     <%= simple_form_for variable do |f| %>
       <div class='alert alert-danger error-message' style="display:none;"> ffff</div>
       <div class="clearfix">
-          <div class="pull-left" style='width: 45%; padding: 10px;'>
+          <div class="pull-left" style='width: 30%; padding: 10px;'>
             <%= f.input :name, label: 'Variable name', class: 'form-control s-width' %>
           </div>
 
-          <div class="pull-left" style='width: 10%; padding: 20px; padding-left: 30px; margin-top: 20px;' >
+          <div class="pull-left" style='width: 5%; padding: 20px; padding-left: 5px; margin-top: 20px;' >
             <i class='glyphicon glyphicon-link'> </i>
           </div>
 
 
-          <div style='width: 45%; padding: 10px;' class="pull-left">
+          <div style='width: 35%; padding: 10px;' class="pull-left">
             <%= f.hidden_field :verboice_name, class: 'verboice-variable-name' %>
             <%= f.label :verboice_id, 'Verboice variable' %>
             <%= f.select :verboice_id,
@@ -50,14 +50,18 @@
                        {include_blank: 'Select variable'},
                        {class: 'form-control s-width verboice-variable-id' } %>
           </div>
+
+          <div class="pull-left" style='width: 30%; padding: 10px;'>
+            <%= f.input :dhis2_data_element_uuid, label: "CamEwarn's UUID", class: 'form-control s-width' %>
+          </div>
       </div>
 
       <div class="clearfix">
-        <div class="pull-left" style='width: 45%; padding: 10px;'>
+        <div class="pull-left" style='width: 35%; padding: 10px;'>
           <%= f.input :background_color, label: 'Header background color', as: :minicolors, input_html: {data: {
         minicolors: {theme: :bootstrap,defaultValue: '#f3f3f3', position: :right}}} %>
         </div>
-        <div class="pull-right" style='width: 45%; padding: 10px;'>
+        <div class="pull-left" style='width: 35%; padding: 10px;'>
           <%= f.input :text_color, label: 'Text column color', as: :minicolors, input_html: {data: {
         minicolors: {theme: :bootstrap,defaultValue: '#000000', position: :right}}} %>
         </div>
