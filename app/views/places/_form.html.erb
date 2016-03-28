@@ -4,6 +4,7 @@
   <%=f.input :parent_id, as: :hidden %>
   <%=f.input :name, label: 'Name', input_html: {class: 'form-control'} %>
   <%=f.input :code, input_html: {class: 'form-control'} %>
+  <%= f.input :dhis2_organisation_unit_uuid, label: "CamEwarn organisation unit's UUID", input_html: { class: 'form-control' } %>
 
   <div class='form-group form-action-group'>
     <label class='control-label'></label>
