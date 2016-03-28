@@ -105,7 +105,7 @@ class PlacesController < ApplicationController
   end
 
   def filter_params
-    params.require(:place).permit(:name, :code, :parent_id)
+    params.require(:place).permit(:name, :code, :dhis2_organisation_unit_uuid, :parent_id)
   end
 
 end

@@ -143,9 +143,14 @@ module ApplicationHelper
     places.map do |place, children|
       selected_class = (place.id == active_place_id.to_i ? 'selected' : '')
 
-      item = link_to("#{place.my_type} - #{place.name} (#{place.code})", users_path(place_id: place.id ),
+      item = link_to("#{place.my_type} - #{place.name} (#{place.code}) ", users_path(place_id: place.id ),
                      class: "tree-node #{selected_class}",
                      data: {id: place.id})
+
+      if place.dhis2_organisation_unit_uuid
+        item += content_tag(:i, '', class: "glyphicon glyphicon-link")
+        item += " #{place.dhis2_organisation_unit_uuid}"
+      end
 
       item += content_tag(:ul, children_tree_for(children, active_place_id)) if children.size > 0
 
