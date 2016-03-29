@@ -1,17 +1,17 @@
-<%= breadcrumb [ {"External SMS Setting" => nil} ] %>
+<%= breadcrumb [ {"Verboice SMS Notification" => nil} ] %>
 <div class="inner-container">
   <div class="clearfix">
     <div class="pull-left">
-      <h3 class="header-title">External SMS Setting</h3>
+      <h3 class="header-title">Verboice SMS Notification</h3>
     </div>
   </div>
   <div class="row">
     <div class="col-xs-12">
-      <div class="text-muted"><i>Below you can configure the external sms setting</i></div>
+      <div class="text-muted"><i>Configure SMS notification triggered from Verboice external step SMS</i></div>
       <br/>
       <div class="row">
         <div class="col-xs-12">
-          <%= simple_form_for @external_sms_setting, html: { class: 'form-inline form alert-form'} do |f| %>
+          <%= simple_form_for @external_sms_setting, html: { class: 'form-inline form external-sms-form'} do |f| %>
             <div class="form-group">
               <label class="control-label">Enable</label>
               <div class="col-sm-9 horizontal-form-control">
@@ -22,7 +22,8 @@
               </div>
             </div>
             <div class="form-group">
-              <label class="control-label"> Recipient </label>
+              <label class="control-label"> SMS To <span class="label-desc"> (Any new call reached external SMS step)</span></label>
+
               <div class="col-sm-9">
                 <div class="input-group col-sm-3">
                   <input type="text" class="form-control" placeholder="Phone number" id="recipient">
@@ -45,6 +46,7 @@
                 </ul>
               </div>
             </div>
+
 
             <div class="form-group">
               <label class="control-label"> Message template</label>

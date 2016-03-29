@@ -22,12 +22,11 @@
           <li><%= link_to "Settings", settings_path %> </li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-              <i class=''> </i>Alert<span class="caret"> </span>
+              <i class=''> </i>SMS<span class="caret"> </span>
             </a>
             <ul class="dropdown-menu" role="menu">
-              <li><%= link_to 'Setting', alerts_path() %></li>
-              <li><%= link_to 'External Sms', external_sms_settings_path() %></li>
               <li><%= link_to 'Log', log_alerts_path() %></li>
+              <li><%= link_to 'Verboice SMS Notification', external_sms_settings_path() %></li>
             </ul>
           </li>
           <li><%= link_to "Channels", channels_path %> </li>

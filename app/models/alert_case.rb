@@ -39,15 +39,15 @@ class AlertCase
     place = @report.user.place
     recipients = []
     @alert.recipient_type.each do |recipient|
-      if recipient == "PHD"
+      if recipient == Place::PLACE_TYPE_PHD
         recipients = recipients + User.by_place(place.phd.id) if !place.phd.nil?
       end
 
-      if recipient == "OD"
+      if recipient == Place::PLACE_TYPE_OD
         recipients = recipients + User.by_place(place.od.id) if !place.od.nil?
       end
 
-      if recipient == "HC"
+      if recipient == Place::PLACE_TYPE_HC
         recipients = recipients + User.by_place(place.hc.id) if !place.hc.nil?
       end
     end

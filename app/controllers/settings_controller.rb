@@ -6,6 +6,7 @@ class SettingsController < ApplicationController
     @settings   = Setting.unscoped
     @parameters = verboice_parameters
     @variables  = Variable.where(verboice_project_id: Setting[:project])
+    @alert = Alert.find_or_initialize_by(verboice_project_id: Setting[:project])
   end
 
   def update_settings

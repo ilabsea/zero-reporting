@@ -29,6 +29,9 @@ class Place < ActiveRecord::Base
   PLACE_TYPE_HC  = 'HC'
 
   TYPE = [PLACE_TYPE_PHD, PLACE_TYPE_OD, PLACE_TYPE_HC]
+  TYPE_FOR_ALERT = [{label: "Provincial Health Department of Health Centre Reporter", value: PLACE_TYPE_PHD},
+     {label: "Operation District of Health Centre Reporter", value: PLACE_TYPE_OD},
+    {label: "Health Center Reporter", value: PLACE_TYPE_HC}]
 
   before_save :set_my_type
 

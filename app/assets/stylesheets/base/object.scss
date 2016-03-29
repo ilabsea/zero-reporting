@@ -378,6 +378,8 @@ td:last-child{
 .alert-form .control-label{
   float: left;
   line-height: 25px;
+  width: 8em !important;
+  font-weight: normal;
 }
 
 #list-recipients{
@@ -398,4 +400,15 @@ td:last-child{
   border : 1px solid #ccc;
   padding: 1px 8px;
   border-radius: 10px;
+}
+
+.label-desc{
+  font-size: 11px;
+  display: block;
+  font-weight: normal;
+}
+
+.external-sms-form .control-label{
+  float: left;
+  line-height: 25px;
 }

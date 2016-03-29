@@ -8,7 +8,7 @@ class AlertsController < ApplicationController
     @alert = Alert.new(filter_params)
     @alert.verboice_project_id = Setting[:project]
     if(@alert.save)
-      redirect_to  alerts_path, notice: 'Alert has been created successfully'
+      redirect_to  settings_path, notice: 'Alert has been created successfully'
     else
       flash.now[:alert] = 'Failed to save alert'
       render :index
@@ -18,7 +18,7 @@ class AlertsController < ApplicationController
   def update
     @alert = Alert.find(params[:id])
     if @alert.update_attributes(filter_params)
-      redirect_to alerts_path, notice: 'Alert has been updated successfully'
+      redirect_to settings_path, notice: 'Alert has been updated successfully'
     else
       render :index
     end
