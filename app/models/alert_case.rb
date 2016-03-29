@@ -7,7 +7,7 @@ class AlertCase
   end
 
   def run
-    return if @alert.is_enable_sms_alert == false && @alerted_variables.empty?
+    return if @alert.is_enable_sms_alert == false || @alerted_variables.empty?
     messages = message_options
     if !messages.empty?
       SmsAlertJob.set(wait: ENV['DELAY_DELIVER_IN_MINUTES'].to_i).perform_later(messages)
