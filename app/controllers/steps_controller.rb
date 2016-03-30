@@ -14,7 +14,7 @@ class StepsController < ApplicationController
       user = User.find_by(phone_without_prefix: phone_without_prefix)
       if user.od.code == '810'
         result = 1
-      elsif user.od.code == '801'
+      else
         result = 2
       end
     end
