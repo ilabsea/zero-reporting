@@ -1,5 +1,5 @@
 <div class="vertical-checkbox-list" style="padding: 10px;">
-  <label>Apply variable alert setting</label>
+  <label>Apply alert setting</label>
   <div style="border-bottom:none">
     <% if variable.is_alerted_by_threshold %>
       <input type='radio' name='alert-setting' checked='checked' id="variable_is_alerted_by_threshold" class="ace" />
@@ -14,6 +14,6 @@
     <% else %>
       <input type='radio' name='alert-setting' id="variable_is_alerted_by_report" class="ace" />
     <% end %>
-      <span class="lbl"> If the value is reported</span>
+      <span class="lbl"> If the value is greater than 0</span>
   </div>
 </div>

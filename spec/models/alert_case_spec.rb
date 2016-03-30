@@ -69,7 +69,7 @@ RSpec.describe AlertCase, type: :model do
   describe "#message_options" do
     it "return the message_options" do
       expect(@alert_case.message_options.size).to eq(2)
-      expect(@alert_case.message_options[0][:body]).to eq "This is the alert on w#{week.week_number}-#{week.year.number} for age, grade, hc_worker."
+      expect(@alert_case.message_options[0][:body]).to eq "This is the alert on w#{week.week_number}-#{week.year.number} for age: 2(2.0) , grade: 3(3.0) , hc_worker: 5(5.0)."
     end
   end
 
@@ -82,7 +82,14 @@ RSpec.describe AlertCase, type: :model do
 
   describe "#translate_message" do
     it "return the translate_message" do
-      expect(@alert_case.translate_message).to eq "This is the alert on w#{week.week_number}-#{week.year.number} for age, grade, hc_worker."
+      expect(@alert_case.translate_message).to eq "This is the alert on w#{week.week_number}-#{week.year.number} for age: 2(2.0) , grade: 3(3.0) , hc_worker: 5(5.0)."
+    end
+  end
+
+  describe "#translate_reported_cases" do
+    it "return the translate reported cases message" do
+      expect(@alert_case.translate_reported_cases).to include "age: 2(2.0)"
+      expect(@alert_case.translate_reported_cases).to eq ["age: 2(2.0)" , "grade: 3(3.0)" , "hc_worker: 5(5.0)"]
     end
   end
 
