@@ -237,7 +237,7 @@ class Report < ActiveRecord::Base
   end
 
   def alerted_variables
-    self.report_variables.where(is_alerted: true)
+    self.report_variables.where(is_alerted: true).joins(:variable).select("report_variables.*, variables.name")
   end
 
 end

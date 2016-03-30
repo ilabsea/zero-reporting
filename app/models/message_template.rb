@@ -15,4 +15,13 @@ class MessageTemplate
       values[key.to_sym] || matched
     end
   end
+
+  def translate_reported_cases reported_cases
+    messages = []
+    reported_cases.each do |reported_case|
+      message = self.translate(reported_case)
+      messages << message
+    end
+    messages
+  end
 end

@@ -2,17 +2,18 @@
 #
 # Table name: report_variables
 #
-#  id          :integer          not null, primary key
-#  report_id   :integer
-#  variable_id :integer
-#  type        :string(255)
-#  value       :string(255)
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  has_audio   :boolean          default(FALSE)
-#  listened    :boolean          default(FALSE)
-#  token       :string(255)
-#  is_alerted  :boolean          default(FALSE)
+#  id           :integer          not null, primary key
+#  report_id    :integer
+#  variable_id  :integer
+#  type         :string(255)
+#  value        :string(255)
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  has_audio    :boolean          default(FALSE)
+#  listened     :boolean          default(FALSE)
+#  token        :string(255)
+#  is_alerted   :boolean          default(FALSE)
+#  exceed_value :string(255)
 #
 # Indexes
 #
@@ -31,6 +32,12 @@ class ReportVariable < ActiveRecord::Base
     self.save
   end
 
+  def mark_as_reaching_alert_with_exceed_value(value)
+    self.is_alerted = true
+    self.exceed_value = value
+    self.save
+  end
+
   def unmark_as_reaching_alert
     self.is_alerted = false
     self.save
@@ -44,7 +51,7 @@ class ReportVariable < ActiveRecord::Base
   def set_threshold_alert(week, place)
     threshold = Threshold.new(week, place, self.variable).value
     if self.value.to_i > threshold
-      self.mark_as_reaching_alert
+      self.mark_as_reaching_alert_with_exceed_value(self.value.to_i - threshold)
     else
       self.unmark_as_reaching_alert
     end
@@ -52,7 +59,7 @@ class ReportVariable < ActiveRecord::Base
 
   def set_report_variable_alert
     if self.value.to_i > 0
-      self.mark_as_reaching_alert
+      self.mark_as_reaching_alert_with_exceed_value(self.value)
     else
       self.unmark_as_reaching_alert
     end

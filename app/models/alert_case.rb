@@ -56,13 +56,16 @@ class AlertCase
 
   def translate_message
     return "" unless @alert.message_template
-    variable_ids = @alerted_variables.pluck(:variable_id)
-    variable_cases = Variable.where(id: variable_ids)
     translate_options = {
       week_year: @week.display(Calendar::Week::DISPLAY_NORMAL_MODE, "ww-yyyy"),
-      reported_cases: variable_cases.map(&:name).join(", "),
+      reported_cases: translate_reported_cases.join(" , "),
       place_name: @report.place.name
     }
     return MessageTemplate.instance.set_source(@alert.message_template).translate(translate_options)
+  end
+
+  def translate_reported_cases
+    reported_case = @alerted_variables.map{|rv| {name: rv.name, value: rv.value, exceed_value: rv.exceed_value}}
+    MessageTemplate.instance.set_source(ENV['REPORTED_CASE_ALERT_TEMPLATE']).translate_reported_cases(reported_case)
   end
 end

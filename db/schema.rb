@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160323030401) do
+ActiveRecord::Schema.define(version: 20160330022857) do
 
   create_table "alert_logs", force: :cascade do |t|
     t.string   "from",                limit: 255
@@ -88,16 +88,17 @@ ActiveRecord::Schema.define(version: 20160323030401) do
   add_index "places", ["ancestry"], name: "index_places_on_ancestry", using: :btree
 
   create_table "report_variables", force: :cascade do |t|
-    t.integer  "report_id",   limit: 4
-    t.integer  "variable_id", limit: 4
-    t.string   "type",        limit: 255
-    t.string   "value",       limit: 255
-    t.datetime "created_at",                              null: false
-    t.datetime "updated_at",                              null: false
-    t.boolean  "has_audio",   limit: 1,   default: false
-    t.boolean  "listened",    limit: 1,   default: false
-    t.string   "token",       limit: 255
-    t.boolean  "is_alerted",  limit: 1,   default: false
+    t.integer  "report_id",    limit: 4
+    t.integer  "variable_id",  limit: 4
+    t.string   "type",         limit: 255
+    t.string   "value",        limit: 255
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
+    t.boolean  "has_audio",    limit: 1,   default: false
+    t.boolean  "listened",     limit: 1,   default: false
+    t.string   "token",        limit: 255
+    t.boolean  "is_alerted",   limit: 1,   default: false
+    t.string   "exceed_value", limit: 255
   end
 
   add_index "report_variables", ["report_id"], name: "index_report_variables_on_report_id", using: :btree
@@ -178,7 +179,6 @@ ActiveRecord::Schema.define(version: 20160323030401) do
     t.boolean  "is_alerted_by_report",    limit: 1,   default: false
   end
 
-  add_foreign_key "channels", "users"
   add_foreign_key "report_variables", "reports"
   add_foreign_key "report_variables", "variables"
   add_foreign_key "reports", "users"
