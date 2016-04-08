@@ -19,6 +19,19 @@
         <hr />
       </div>
 
+      <% if Setting.hub_enabled? %>
+        <div>
+          <a href='#' class='collasable-link' style="padding: 20px 0px; display:block;">
+            <i class='glyphicon glyphicon-cog'> </i> Hub Connection
+          </a>
+
+          <div class='collasable-container' <%= style %> >
+            <%= render 'hub_connection' %>
+            <hr />
+          </div>
+        </div>
+      <% end %>
+
       <% if Setting[:verboice_token].present? %>
         <div style='margin-top: 30px;'>
           <p> <%= render 'verboice' %> </p>

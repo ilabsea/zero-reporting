@@ -16,4 +16,9 @@
 #
 
 class Setting < RailsSettings::CachedSettings
+
+  def self.hub_enabled?
+    ENV["HUB_ENABLED"] == '1'
+  end
+
 end

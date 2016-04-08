@@ -29,6 +29,9 @@ default: &default
   API_USERNAME: 'test'
   API_CREDENTIAL: 'test'
 
+  # HUB
+  HUB_ENABLED: '1' # '1' => enabled, '0' => disabled
+
 development:
   <<: *default
 
