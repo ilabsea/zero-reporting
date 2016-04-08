@@ -16,6 +16,7 @@ default: &default
 
   SIDEKIQ_USERNAME: ''
   SIDEKIQ_PASSWORD: ''
+  DELAY_DELIVER_IN_MINUTES: ''
 
   THRESHOLD_FORMULA: "(W<sub>n-3+W<sub>n-2</sub></sub>+W<sub>n-1</sub>)/3 * 1.5"
   THRESHOLD_WEEK_RANGE: '3'
@@ -23,7 +24,10 @@ default: &default
   EXTERNAL_MESSAGE_TEMPLATE: ""
   REPORTED_CASE_ALERT_TEMPLATE: ""
 
-  DELAY_DELIVER_IN_MINUTES: ''
+  # API credential
+  API_DEFAULT_VERSION: 'v1'
+  API_USERNAME: 'test'
+  API_CREDENTIAL: 'test'
 
 development:
   <<: *default
