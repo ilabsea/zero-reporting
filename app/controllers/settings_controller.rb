@@ -36,6 +36,14 @@ class SettingsController < ApplicationController
     end
   end
 
+  # PUT /hub
+  def hub
+    Setting[:hub_url] = params[:url] if params[:url].present?
+    Setting[:hub_task_name] = params[:task_name] if params[:task_name].present?
+
+    redirect_to settings_path, notice: 'Hub connection has been saved'
+  end
+
   def get_project_variables(project_id)
     project_id.present? ? Service::Verboice.connect(Setting).project_variables(project_id) : []
   end

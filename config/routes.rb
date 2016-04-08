@@ -50,6 +50,7 @@ Rails.application.routes.draw do
   put 'update_settings' => 'settings#update_settings'
 
   put 'verboice' => 'settings#verboice'
+  put 'hub' => 'settings#hub'
   get 'project_variables' => 'settings#project_variables'
   get 'external' => 'settings#external'
 

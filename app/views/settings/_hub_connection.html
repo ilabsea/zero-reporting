@@ -1,0 +1,17 @@
+<%= form_tag hub_path, class: 'form form-inline', method: :put do %>
+  <input type='password' style='display:none;' />
+  <div class='input-row'>
+    <%= label_tag :url %>
+    <%= text_field_tag :url, Setting[:hub_url], class: 'form-control' %>
+  </div>
+
+  <div class='input-row'>
+    <%= label_tag :task_name %>
+    <%= text_field_tag :task_name, Setting[:hub_task_name], class: 'form-control' %>
+  </div>
+
+  <div class='input-row'>
+    <label></label>
+    <%=button_tag 'Save', class: 'btn btn-primary' %>
+  </div>
+<% end %>
