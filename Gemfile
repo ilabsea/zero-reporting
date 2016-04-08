@@ -36,12 +36,15 @@ gem 'sinatra', :require => nil
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
+
 gem 'simple_form'
 gem 'rails-settings-cached'
 gem 'typhoeus'
 gem 'audiojs-rails'
 gem 'rails-timeago', '~> 2.0'
 gem 'cancancan', '~> 1.10'
+
+gem 'active_model_serializers'
 
 gem 'has_secure_token'
 gem 'rack-attack'
@@ -54,7 +57,6 @@ group :development do
   gem 'bullet'
   gem 'brakeman', require: false
 end
-
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
