@@ -27,6 +27,9 @@
 #  week                 :integer
 #  reviewed_at          :datetime
 #  is_reached_threshold :boolean          default(FALSE)
+#  dhis2_submitted      :boolean          default(FALSE)
+#  dhis2_submitted_at   :datetime
+#  dhis2_submitted_by   :integer
 #
 # Indexes
 #
@@ -35,6 +38,7 @@
 #
 
 class Report < ActiveRecord::Base
+
   serialize :recorded_audios, Array
   serialize :call_log_answers, Array
 
@@ -238,6 +242,12 @@ class Report < ActiveRecord::Base
 
   def alerted_variables
     self.report_variables.where(is_alerted: true).joins(:variable).select("report_variables.*, variables.name")
+  end
+
+  def notify_hub!
+    attributes = report_variables.map { |report_variable| report_variable.hub_parameter if report_variable.value }
+
+    HubJob.perform_later(attributes)
   end
 
 end

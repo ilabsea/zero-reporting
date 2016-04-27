@@ -1,3 +1,20 @@
+# == Schema Information
+#
+# Table name: variables
+#
+#  id                      :integer          not null, primary key
+#  name                    :string(255)
+#  description             :string(255)
+#  verboice_id             :integer
+#  verboice_name           :string(255)
+#  verboice_project_id     :integer
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
+#  background_color        :string(255)
+#  text_color              :string(255)
+#  dhis2_data_element_uuid :string(255)
+#
+
 class VariableSerializer < ActiveModel::Serializer
   attributes :id, :name, :description, :verboice_variable_id, :verboice_variable_name, :verboice_project_id, :dhis2_data_element_uuid,
             :text_color, :background_color, :created_at, :updated_at

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160328021211) do
+ActiveRecord::Schema.define(version: 20160426091937) do
 
   create_table "alert_logs", force: :cascade do |t|
     t.string   "from",                limit: 255
@@ -130,6 +130,9 @@ ActiveRecord::Schema.define(version: 20160328021211) do
     t.integer  "week",                 limit: 4
     t.datetime "reviewed_at"
     t.boolean  "is_reached_threshold", limit: 1,     default: false
+    t.boolean  "dhis2_submitted",      limit: 1,     default: false
+    t.datetime "dhis2_submitted_at"
+    t.integer  "dhis2_submitted_by",   limit: 4
   end
 
   add_index "reports", ["user_id"], name: "index_reports_on_user_id", using: :btree

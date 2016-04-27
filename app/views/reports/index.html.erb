@@ -82,10 +82,14 @@
               </td>
 
               <td>
+              <% if Setting.hub_enabled? && report.reviewed? %>
+                <% label = report.dhis2_submitted ? 'Re-submit to camEwarn' : 'Submit to camEwarn' %>
+                <%= button_tag label, data: { id: report.id }, class: 'hub btn-success' %>
+              <% end %>
+
                 <%= link_to report_path(report), method: :delete, data: {confirm: 'Are you sure to delete ?'} do %>
                     <i class='glyphicon glyphicon-trash red'> </i>
                 <% end %>
-
               </td>
             </tr>
           <% end %>

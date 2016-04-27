@@ -87,6 +87,7 @@ Rails.application.routes.draw do
       put 'state'
     end
   end
+
   resources :alerts do
     collection do
       get 'log'
@@ -94,6 +95,7 @@ Rails.application.routes.draw do
   end
 
   resources :external_sms_settings
+  resources :hub_notifications, only: [:create]
 
   namespace :api, defaults: {format: 'json'} do
     namespace :hub do

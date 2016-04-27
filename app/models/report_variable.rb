@@ -65,4 +65,8 @@ class ReportVariable < ActiveRecord::Base
     end
   end
 
+  def hub_parameter
+    {variable.dhis2_data_element_uuid => value} if variable && variable.dhis2_data_element_uuid
+  end
+
 end
