@@ -8,4 +8,5 @@ production:
   :concurrency: 10
 
 :queues:
+  - hub
   - default

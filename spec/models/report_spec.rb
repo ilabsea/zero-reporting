@@ -27,6 +27,9 @@
 #  week                 :integer
 #  reviewed_at          :datetime
 #  is_reached_threshold :boolean          default(FALSE)
+#  dhis2_submitted      :boolean          default(FALSE)
+#  dhis2_submitted_at   :datetime
+#  dhis2_submitted_by   :integer
 #
 # Indexes
 #

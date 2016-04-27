@@ -1,5 +1,6 @@
 class SettingsController < ApplicationController
   authorize_resource
+  
   def index
     # to get all items for render list
     Setting[:project] = params[:project] if params[:project]

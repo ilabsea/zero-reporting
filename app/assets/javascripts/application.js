@@ -54,6 +54,7 @@
 //= require channels/form
 
 //= require report/form
+//= require report/list
 
 //= require locations/import_location
 

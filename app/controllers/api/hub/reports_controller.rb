@@ -1,5 +1,5 @@
 module Api::Hub
-  class ReportsController < ApiController
+  class ReportsController < Api::ApiController
     before_filter :authenticate_http_basic
 
     # GET api/hub/reports
