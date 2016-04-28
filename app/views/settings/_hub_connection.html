@@ -6,8 +6,23 @@
   </div>
 
   <div class='input-row'>
+    <%= label_tag :email %>
+    <%= text_field_tag :email, Setting[:hub_email], class: 'form-control' %>
+  </div>
+
+  <div class='input-row'>
+    <%= label_tag :password %>
+    <%= password_field_tag :password, '', class: 'form-control' %>
+  </div>
+
+  <div class='input-row'>
     <%= label_tag :task_name %>
     <%= text_field_tag :task_name, Setting[:hub_task_name], class: 'form-control' %>
+  </div>
+
+  <div class='input-row'>
+    <%= label_tag :dataset, 'CamEwarn dataset UUID' %>
+    <%= text_field_tag :dataset, Setting[:dhis2_dataset], class: 'form-control' %>
   </div>
 
   <div class='input-row'>

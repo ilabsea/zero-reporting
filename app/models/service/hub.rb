@@ -1,17 +1,19 @@
 class Service::Hub
 
-  def self.instance url
-    @@instance ||= self.new(url)
+  def self.connect url, email, password
+    @@instance ||= self.new(url, email, password)
   end
 
-  def initialize url
+  def initialize url, email, password
     @url = url
+    @email = email
+    @password = password
   end
 
   def notify! task, attributes
-    hub_task_url = "#{@url}/api/tasks/#{task}"
+    uri = build_uri("api/tasks/#{task}")
     begin
-      post(hub_task_url, attributes)
+      post(uri, attributes)
     rescue
       raise "Can't connect to #{@url}"
     end
@@ -19,7 +21,11 @@ class Service::Hub
 
   private
 
-  def post(url, params)
-    Typhoeus.post(url, body: JSON.generate({ form: { attributes: params } }), userpwd: "kakada@instedd.org:a1b2c3", headers: {'content-type' => 'application/json'} )
+  def post(uri, params)
+    Typhoeus.post(uri, body: JSON.generate(params), userpwd: "#{@email}:#{@password}", headers: {'content-type' => 'application/json'} )
+  end
+
+  def build_uri(path)
+    URI.join(@url, path)
   end
 end
