@@ -245,9 +245,25 @@ class Report < ActiveRecord::Base
   end
 
   def notify_hub!
-    attributes = report_variables.map { |report_variable| report_variable.hub_parameter if report_variable.value }
+    HubJob.perform_later(to_hub_parameters)
+  end
 
-    HubJob.perform_later(attributes)
+  private
+
+  def to_hub_parameters
+    params = {
+      period: "#{year}W#{format('%02d', week)}",
+      completeDate: Date.today.to_s
+    }
+
+    params[:dataSet] = Setting[:dhis2_dataset] if Setting[:dhis2_dataset].present?
+    params[:orgUnit] = user.place.hc.dhis2_organisation_unit_uuid if user.place.hc.dhis2_organisation_unit_uuid
+
+    report_variables.each do |report_variable|
+      params.merge!(report_variable.to_hub_parameters) if report_variable.value
+    end
+
+    params
   end
 
 end

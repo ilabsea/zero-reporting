@@ -29,7 +29,6 @@ function reviewWeekNumberChanged() {
 function notifyHub() {
   $('.hub').on('click', function() {
     var reportId = $(this).attr('data-id');
-    alert(reportId)
     var url = "/hub_notifications"
     $.ajax({
       method: "POST",
