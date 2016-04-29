@@ -1,6 +1,6 @@
 $(function(){
   reviewWeekNumberChanged();
-  notifyHub();
+  subscribeHubEventHandler();
 });
 
 function reviewWeekNumberChanged() {
@@ -16,6 +16,7 @@ function reviewWeekNumberChanged() {
         data: {week: weekNumber},
         success: function(){
           setNotification('notice', "Report was successfully updated");
+          location.reload();
         },
         error: function(){
           _self.checked = !_self.checked;
@@ -26,20 +27,33 @@ function reviewWeekNumberChanged() {
   });
 }
 
-function notifyHub() {
+function subscribeHubEventHandler() {
   $('.hub').on('click', function() {
-    var reportId = $(this).attr('data-id');
-    var url = "/hub_notifications"
-    $.ajax({
-      method: "POST",
-      data: {"report_id": reportId},
-      url: url,
-      success: function(){
-        setNotification('notice', "Report was successfully submitted to CamEwarn");
-      },
-      error: function(){
-        setNotification('alert', "Failed to submit to CamEwarn");
-      }
-    });
+    $("#hubOK").attr('data-id', $(this).attr('data-id'));
+    $("#hubModal").modal('show');
+  });
+
+  $("#hubCancel").on('click', function() {
+    $("#hubModal").modal('hide');
+  });
+
+  $("#hubOK").on('click', function(event) {
+    notifyHub($(this).attr('data-id'));
+    $("#hubModal").modal('hide');
+  });
+}
+
+function notifyHub(reportId) {
+  var url = "/hub_push_notifications"
+  $.ajax({
+    method: "POST",
+    data: {"report_id": reportId},
+    url: url,
+    success: function(){
+      setNotification('notice', "Report was successfully submitted to CamEwarn");
+    },
+    error: function(response){
+      setNotification('alert', response.responseText);
+    }
   });
 }
