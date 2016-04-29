@@ -1,46 +1,44 @@
 <%= breadcrumb [ {"Settings" => nil} ] %>
-<div class="inner-container">
+
+<% if Setting.hub_enabled? %>
+  <div>
+    <a href='#' class='collasable-link' style="padding: 10px 0px; display:block;">
+      <i class='glyphicon glyphicon-cog'> </i> Hub Connection
+    </a>
+
+    <div class='collasable-container' style="display:none;" >
+      <%= render 'hub_connection' %>
+      <hr />
+    </div>
+  </div>
+<% end %>
+
+<div>
+  <a href='#' class='collasable-link' style="padding: 10px 0px; display:block;">
+    <i class='glyphicon glyphicon-cog'> </i> Verboice Connection
+  </a>
+  <% style = Setting['verboice_token'].blank? ? '' : "style=display:none;" %>
+
+  <div class='collasable-container' <%= style %> >
+    <p>
+      <% if Setting[:verboice_token].blank? %>
+        <span class='vb-status vb-red'> </span> <span class='color-red'> Not Connected </span>
+      <% else %>
+        <span class='vb vb-green'> </span> <span class='color-green'> Connected </span>
+      <% end %>
+    </p>
+
+    <%= render 'connection' %>
+    <hr />
+  </div>
+
+  <% if Setting[:verboice_token].present? %>
     <div>
-      <a href='#' class='collasable-link' style="padding: 20px 0px; display:block;">
-        <i class='glyphicon glyphicon-cog'> </i> Verboice Connection
-      </a>
-      <% style = Setting['verboice_token'].blank? ? '' : "style=display:none;" %>
-
-      <div class='collasable-container' <%= style %> >
-        <p>
-          <% if Setting[:verboice_token].blank? %>
-            <span class='vb-status vb-red'> </span> <span class='color-red'> Not Connected </span>
-          <% else %>
-            <span class='vb vb-green'> </span> <span class='color-green'> Connected </span>
-          <% end %>
-        </p>
-
-        <%= render 'connection' %>
-        <hr />
-      </div>
-
-      <% if Setting.hub_enabled? %>
-        <div>
-          <a href='#' class='collasable-link' style="padding: 20px 0px; display:block;">
-            <i class='glyphicon glyphicon-cog'> </i> Hub Connection
-          </a>
-
-          <div class='collasable-container' <%= style %> >
-            <%= render 'hub_connection' %>
-            <hr />
-          </div>
-        </div>
-      <% end %>
-
-      <% if Setting[:verboice_token].present? %>
-        <div style='margin-top: 30px;'>
-          <p> <%= render 'verboice' %> </p>
-        </div>
-      <% end %>
-
+      <%= render 'verboice' %>
+    </div>
+  <% end %>
     </div>
 
     <div>
       <%= render 'alert'%>
     </div>
-</div>

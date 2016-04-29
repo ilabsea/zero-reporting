@@ -245,10 +245,8 @@ class Report < ActiveRecord::Base
   end
 
   def notify_hub!
-    HubJob.perform_later(to_hub_parameters)
+    HubJob.perform_later(to_hub_parameters) if Setting.hub_enabled? && Setting.hub_configured?
   end
-
-  private
 
   def to_hub_parameters
     params = {

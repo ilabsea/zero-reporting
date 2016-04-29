@@ -82,30 +82,55 @@
               </td>
 
               <td>
-              <% if Setting.hub_enabled? && report.reviewed? %>
-                <% label = report.dhis2_submitted ? 'Re-submit to camEwarn' : 'Submit to camEwarn' %>
-                <%= button_tag label, data: { id: report.id }, class: 'hub btn-success' %>
-              <% end %>
-
-                <%= link_to report_path(report), method: :delete, data: {confirm: 'Are you sure to delete ?'} do %>
-                    <i class='glyphicon glyphicon-trash red'> </i>
+              <div style="width: 180px;">
+                <% if Setting.hub_enabled? && report.reviewed? %>
+                  <% if report.dhis2_submitted %>
+                    <span class='green'> CamEwarn submitted <i class='glyphicon glyphicon-ok green'> </i></span>
+                  <% else %>
+                    <%= button_tag 'Submit to CamEwarn', data: { id: report.id }, style: 'width: 150px;', class: 'hub btn-success' %>
+                  <% end %>
                 <% end %>
-              </td>
-            </tr>
-          <% end %>
-        <% else %>
-          <td colspan="<%= (8 + @variables.size) %>">
-            <div class="alert alert-danger center" style="margin-bottom: 0px">
-              There is no record.
-              <br>
-            </div>
-          </td>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
 
-  <div class="clearfix">
-    <%= paginate_for(@reports_by_page) %>
+                <% unless report.dhis2_submitted %>
+                  <%= link_to report_path(report), method: :delete, data: {confirm: 'Are you sure to delete ?'} do %>
+                      <i class='glyphicon glyphicon-trash red'> </i>
+                  <% end %>
+                <% end %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      <% else %>
+        <td colspan="<%= (8 + @variables.size) %>">
+          <div class="alert alert-danger center" style="margin-bottom: 0px">
+            There is no record.
+            <br>
+          </div>
+        </td>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<div class="clearfix">
+  <%= paginate_for(@reports_by_page) %>
+</div>
+
+<!-- set up the modal to start hidden and fade in and out -->
+<div id="hubModal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- dialog body -->
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        Are you sure you want to submit report to CamEwarn?
+      </div>
+      <!-- dialog buttons -->
+
+      <div class="modal-footer">
+        <button id="hubOK" type="button" class="btn btn-primary">OK</button>
+        <button id="hubCancel" type="button" class="btn btn-default">Cancel</button>
+      </div>
+    </div>
   </div>
 </div>

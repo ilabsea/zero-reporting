@@ -39,11 +39,11 @@ class SettingsController < ApplicationController
 
   # PUT /hub
   def hub
-    Setting[:hub_url] = params[:url] if params[:url].present?
-    Setting[:hub_email] = params[:email] if params[:email].present?
+    Setting[:hub_url] = params[:url]
+    Setting[:hub_email] = params[:email]
     Setting[:hub_password] = params[:password] if params[:password].present?
-    Setting[:hub_task_name] = params[:task_name] if params[:task_name].present?
-    Setting[:dhis2_dataset] = params[:dataset] if params[:dataset].present?
+    Setting[:hub_task_name] = params[:task_name]
+    Setting[:dhis2_dataset] = params[:dataset]
 
     redirect_to settings_path, notice: 'Hub connection has been saved'
   end
