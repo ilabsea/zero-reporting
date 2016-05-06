@@ -66,9 +66,9 @@ class ReportsController < ApplicationController
 
     @report.delete_status = true
     if @report.save
-      redirect_to reports_path, notice: 'Report has been deleted successfully'
+      redirect_to request.referrer, notice: 'Report has been deleted successfully'
     else
-      redirect_to reports_path, alert: 'Failed to delete report'
+      redirect_to request.referrer, alert: 'Failed to delete report'
     end
   end
 
