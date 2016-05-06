@@ -120,10 +120,18 @@ class User < ActiveRecord::Base
     end
   end
 
-  def self.hc_worker? phone_number
-    phone_without_prefix = Tel.new(phone_number).without_prefix
-    user = User.find_by(phone_without_prefix: phone_without_prefix)
-    !user.nil? && user.place && user.place.is_kind_of_hc?
+  def self.find_by_address(address)
+    return nil if address.nil? || address.empty?
+    User.find_by(phone_without_prefix: Tel.new(address).without_prefix)
+  end
+
+  def self.hc_worker? address
+    user = find_by_address(address)
+    !user.nil? && user.hc_worker?
+  end
+
+  def hc_worker?
+    !place.nil? && place.is_kind_of_hc?
   end
 
   def self.decode_and_validate_user_csv(string)
