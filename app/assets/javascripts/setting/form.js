@@ -33,8 +33,8 @@ function handleSaveVariable() {
       return
     }
 
-    var data = { name: name, verboice_name: verboice_name, verboice_id: verboice_id, background_color: background_color, text_color: text_color, dhis2_data_element_uuid: dhis2_data_element_uuid, _method: method}
-      is_alerted_by_threshold: is_alerted_by_threshold, is_alerted_by_report: is_alerted_by_report, _method: method}
+    var data = { name: name, verboice_name: verboice_name, verboice_id: verboice_id, background_color: background_color, text_color: text_color,
+      is_alerted_by_threshold: is_alerted_by_threshold, is_alerted_by_report: is_alerted_by_report, dhis2_data_element_uuid: dhis2_data_element_uuid, _method: method}
 
     $.ajax({
       method: 'POST',
