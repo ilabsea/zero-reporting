@@ -78,7 +78,11 @@
               <% end %>
 
               <td>
-                <%= select_tag(report.id, options_for_select(Calendar::Year.new(Time.now.year).available_weeks.map { |w| w.display }, "w#{report.week}-#{report.year}"), { include_blank: true, class: 'weekly-report' }) %>
+                <% if report.dhis2_submitted %>
+                  <%= "w#{report.week}-#{report.year}" %>
+                <% else %>
+                  <%= select_tag(report.id, options_for_select(Calendar::Year.new(Time.now.year).available_weeks.map { |w| w.display }, "w#{report.week}-#{report.year}"), { include_blank: true, class: 'weekly-report' }) %>
+                <% end %>
               </td>
 
               <td>
