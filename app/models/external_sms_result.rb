@@ -15,7 +15,7 @@ class ExternalSmsResult
       suggested_channel = Channel.suggested(Tel.new(phone))
       if suggested_channel
         option = {from: ENV['APP_NAME'],
-                  to: "sms://#{phone}",
+                  to: "sms://#{Tel.new(phone).with_country_code}",
                   body: translate_message,
                   suggested_channel: suggested_channel.name}
         options << option
