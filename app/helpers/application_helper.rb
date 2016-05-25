@@ -147,7 +147,7 @@ module ApplicationHelper
                      class: "tree-node #{selected_class}",
                      data: {id: place.id})
 
-      if place.dhis2_organisation_unit_uuid
+      if place.has_dhis_location?
         item += content_tag(:i, '', class: "glyphicon glyphicon-link")
         item += " #{place.dhis2_organisation_unit_uuid}"
       end
