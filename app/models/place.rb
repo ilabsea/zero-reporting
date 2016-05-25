@@ -241,4 +241,8 @@ class Place < ActiveRecord::Base
     end
   end
 
+  def has_dhis_location?
+    dhis2_organisation_unit_uuid.present?
+  end
+
 end
