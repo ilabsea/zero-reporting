@@ -51,7 +51,7 @@ function notifyHub(reportId) {
     url: url,
     success: function(){
       setNotification('notice', "Report was successfully submitted to CamEwarn");
-      location.reload();
+      setTimeout(function(){location.reload();}, 3000 );
     },
     error: function(response){
       setNotification('alert', response.responseText);
