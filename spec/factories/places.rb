@@ -39,6 +39,7 @@ FactoryGirl.define do
   factory :hc, class: Place do
     sequence(:name) {|n| "Place-#{n}"}
     sequence(:code) {|n| "0#{n}" }
+    sequence(:dhis2_organisation_unit_uuid) {|n| "0#{n}" }
     kind_of Place::PLACE_TYPE_HC
     parent{ create(:od, code: "#{code}-2")}
   end

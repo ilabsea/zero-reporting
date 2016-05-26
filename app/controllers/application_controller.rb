@@ -6,5 +6,8 @@ class ApplicationController < ActionController::Base
   include Authenticable
   include AuthorizedResource
 
+  include Errors::RescueError
+
   helper_method :current_user
+
 end
