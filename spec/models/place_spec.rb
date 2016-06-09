@@ -22,7 +22,7 @@ RSpec.describe Place, type: :model do
   describe 'create' do
     context 'with no parent place' do
       it 'set place type to PHD' do
-        place = create(:place, kind_of: Place::PLACE_TYPE_PHD)
+        place = create(:place, kind_of: Place::Type::PHD)
         expect(place.is_kind_of_phd?).to be true
       end
     end

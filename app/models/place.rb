@@ -25,16 +25,6 @@ class Place < ActiveRecord::Base
   validates :name, :code, presence: true
   validates :code, uniqueness: true
 
-
-  PLACE_TYPE_PHD = 'PHD'
-  PLACE_TYPE_OD  = 'OD'
-  PLACE_TYPE_HC  = 'HC'
-
-  TYPE = [PLACE_TYPE_PHD, PLACE_TYPE_OD, PLACE_TYPE_HC]
-  TYPE_FOR_ALERT = [{label: "Provincial Health Department of Health Centre Reporter", value: PLACE_TYPE_PHD},
-     {label: "Operation District of Health Centre Reporter", value: PLACE_TYPE_OD},
-    {label: "Health Center Reporter", value: PLACE_TYPE_HC}]
-
   before_save :set_my_type
 
   def set_my_type
@@ -43,22 +33,22 @@ class Place < ActiveRecord::Base
 
   def my_type
     if self.parent.present?
-      (self.parent.is_kind_of_phd? ? Place::PLACE_TYPE_OD : Place::PLACE_TYPE_HC)
+      (self.parent.is_kind_of_phd? ? Place::Type::OD : Place::Type::HC)
     else
-      Place::PLACE_TYPE_PHD
+      Place::Type::PHD
     end
   end
 
   def is_kind_of_phd?
-    self.kind_of == Place::PLACE_TYPE_PHD
+    self.kind_of == Place::Type::PHD
   end
 
   def is_kind_of_od?
-    self.kind_of == Place::PLACE_TYPE_OD
+    self.kind_of == Place::Type::OD
   end
 
   def is_kind_of_hc?
-    self.kind_of == Place::PLACE_TYPE_HC
+    self.kind_of == Place::Type::HC
   end
 
 
@@ -80,7 +70,7 @@ class Place < ActiveRecord::Base
   end
 
   def self.phds
-    where([ "kind_of = ? AND ancestry is NULL ", Place::PLACE_TYPE_PHD ] )
+    where([ "kind_of = ? AND ancestry is NULL ", Place::Type::PHD ] )
   end
 
   def self.phds_list
@@ -89,7 +79,7 @@ class Place < ActiveRecord::Base
 
   def self.ods_list(phd_id)
     return [] unless phd_id.present?
-    ods = where(["kind_of = ?", Place::PLACE_TYPE_OD])
+    ods = where(["kind_of = ?", Place::Type::OD])
     ods = ods.where(["ancestry = ?", phd_id])
     ods.pluck(:name, :id)
   end
@@ -226,7 +216,7 @@ class Place < ActiveRecord::Base
     CSV.generate(options) do |csv|
       header = ['code', 'parent_code', 'name', 'level']
       csv << header
-      where(kind_of: PLACE_TYPE_PHD).each do |phd|
+      where(kind_of: Place::Type::PHD).each do |phd|
         row = [phd.code, "", phd.name, phd.kind_of]
         csv << row
         phd.children.each do |od|
@@ -245,4 +235,25 @@ class Place < ActiveRecord::Base
     dhis2_organisation_unit_uuid.present?
   end
 
+  def self.level level
+    where(kind_of: level)
+  end
+
+  def self.in(ids = [])
+    where(id: ids)
+  end
+
+  class Type
+    PHD = 'PHD'
+    OD  = 'OD'
+    HC  = 'HC'
+
+    def self.all
+      [
+        {code: PHD, name: "Provincial Health Department", display_name: "Provincial Health Department of Health Centre Reporter"},
+        {code: OD, name: "Operational District", display_name: "Operation District of Health Centre Reporter"},
+        {code: HC, name: "Health Center", display_name: "Health Center Reporter"}
+      ]
+    end
+  end
 end

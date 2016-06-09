@@ -20,19 +20,19 @@ FactoryGirl.define do
   factory :place do
     sequence(:name) {|n| "Place-#{n}"}
     sequence(:code) {|n| "0#{n}" }
-    kind_of Place::PLACE_TYPE_PHD
+    kind_of Place::Type::PHD
   end
 
   factory :phd, class: Place do
     sequence(:name) {|n| "Place-#{n}"}
     sequence(:code) {|n| "0#{n}" }
-    kind_of Place::PLACE_TYPE_PHD
+    kind_of Place::Type::PHD
   end
 
   factory :od, class: Place do
     sequence(:name) {|n| "Place-#{n}"}
     sequence(:code) {|n| "0#{n}" }
-    kind_of Place::PLACE_TYPE_OD
+    kind_of Place::Type::OD
     parent {create(:phd, code: "#{code}-1")}
   end
 
@@ -40,7 +40,7 @@ FactoryGirl.define do
     sequence(:name) {|n| "Place-#{n}"}
     sequence(:code) {|n| "0#{n}" }
     sequence(:dhis2_organisation_unit_uuid) {|n| "0#{n}" }
-    kind_of Place::PLACE_TYPE_HC
+    kind_of Place::Type::HC
     parent{ create(:od, code: "#{code}-2")}
   end
 
