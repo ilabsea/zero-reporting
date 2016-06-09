@@ -2,7 +2,7 @@ class HubPushNotificationsController < ApplicationController
   # POST /hub_push_notifications
   def create
     raise_error('Missing report parameter') unless params[:report_id].present?
-    raise_error('Missing Hub configuration') unless Setting.hub_enabled? && Setting.hub_configured?
+    raise_error('Missing Hub configuration') unless (Setting.hub_enabled? && Setting.hub_configured?)
 
     report = Report.find(params[:report_id])
     raise_error('Missing DHIS location reference') unless report.place.has_dhis_location?

@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe HubPushNotificationsController, type: :controller do
   let(:user) { build(:user) }
+  let(:report) { create(:report, reviewed: false) }
 
   before(:each) do
     allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
@@ -25,17 +26,17 @@ RSpec.describe HubPushNotificationsController, type: :controller do
       end
 
       it "missing Hub configuration when hub is not configured" do
-        post :create, report_id: 1
+        expect(Setting).to receive(:hub_enabled?).and_return(false)
+        post :create, report_id: report.id
         expect(response.body).to eq('Missing Hub configuration')
       end
 
       it "missing DHIS location reference when report location is not configured" do
-        setting = class_double("Setting")
-        allow(setting).to receive(:hub_enabled?).and_return(false)
-        allow(setting).to receive(:hub_configured?).and_return(false)
+        expect(Setting).to receive(:hub_enabled?).and_return(true)
+        expect(Setting).to receive(:hub_configured?).and_return(true)
 
-        post :create, report_id: 1
-        expect(response.body).to eq('Missing Hub configuration')
+        post :create, report_id: report.id
+        expect(response.body).to eq('Missing DHIS location reference')
       end
     end
 
