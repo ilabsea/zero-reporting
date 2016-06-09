@@ -97,7 +97,10 @@ Rails.application.routes.draw do
   resources :external_sms_settings
   resources :hub_push_notifications, only: [:create]
 
+  resources :sms_simulations, only: [:index, :create]
+
   namespace :api, defaults: {format: 'json'} do
+    resources :places, only: [:index]
     namespace :hub do
       resources :reports, only: [:index, :show]
     end
