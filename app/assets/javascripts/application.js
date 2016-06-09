@@ -61,3 +61,7 @@
 //= require alerts/form
 
 //= require external_sms_settings/form
+
+//= require sms_simulations
+
+//= require lib/select2.min

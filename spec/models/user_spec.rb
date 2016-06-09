@@ -136,7 +136,49 @@ RSpec.describe User, :type => :model do
         expect(User.hc_worker?('855975555555')).to eq(false)
       end
     end
+  end
 
+  describe User, '.members_of' do
+    context 'a place' do
+      let(:phd) { create(:phd)}
+      let(:places) { [phd] }
+
+      before(:each) do
+        @members = [create(:user, phone: '1000', place: phd), create(:user, phone: '2000', place: phd)]
+      end
+
+      it "return an array of members" do
+        expect(User.members_of(places)).to eq(@members)
+      end
+    end
+
+    context 'places' do
+      let(:phd1) { create(:phd) }
+      let(:phd2) { create(:phd) }
+      let(:places) { [phd1, phd2] }
+
+      before(:each) do
+        @members = [create(:user, phone: '1000', place: phd1), create(:user, phone: '2000', place: phd2)]
+      end
+
+      it "return an array of members" do
+        expect(User.members_of(places)).to eq(@members)
+      end
+    end
+
+    context 'places with difference level' do
+      let(:phd1) { create(:phd) }
+      let(:od1) { create(:od, parent: phd1) }
+      let(:places) { [phd1, od1] }
+
+      before(:each) do
+        @members = [create(:user, phone: '1000', place: phd1), create(:user, phone: '2000', place: od1)]
+      end
+
+      it "return an array of members" do
+        expect(User.members_of(places)).to eq(@members)
+      end
+    end
   end
 
 end

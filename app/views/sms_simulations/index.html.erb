@@ -1,0 +1,45 @@
+<h3 class="header-title"> Send Message </h3>
+<p class='italic gray callout' >
+  Broadcast message to a specific location(s)
+</p>
+<div class="panel panel-default panel-variable" style="width: 600px;">
+
+  <div class="panel-head clearfix" style="padding: 10px;">
+    <%= simple_form_for :sms_simulation, url: sms_simulations_path, html: { class: 'form-inline form alert-form' }  do |f| %>
+      <div class="form-group">
+        <label class="control-label">To every user in </label>
+        <div class="horizontal-form-control">
+          <% types = [['All', '']].concat(Place::Type.all.delete_if {|i| i[:code] == "HC"}.map { |type| [type[:display_name], type[:code]] }) %>
+          <%= f.input_field :level, collection: types, class: 'location-level', required: false, selected: Place::Type::PHD, include_blank: false, as: :select %>
+          </div>
+      </div>
+
+      <div style='clear:both;' />
+
+      <div class="form-group clearfix locations">
+        <label class="control-label"> &nbsp; </label>
+        <div>
+          <%= f.input_field :locations,
+                class: "js-example-basic-multiple",
+                style: "width:340px;",
+                multiple: true,
+                as: :select
+          %>
+        </div>
+      </div>
+
+      <div class="form-group clearfix">
+        <label class="control-label">Message template</label>
+        <div>
+          <%= f.text_area :message, as: :text, rows: 6, cols: 60 %>
+        </div>
+      </div>
+
+      <div class='form-group clearfix'>
+        <label class="control-label">&nbsp;</label>
+        <%= f.submit 'Send', class: 'btn btn-primary' %>
+      </div>
+    <% end %>
+
+  </div>
+</div>

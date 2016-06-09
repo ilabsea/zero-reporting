@@ -64,17 +64,12 @@ class User < ActiveRecord::Base
   attr_accessor :old_password
 
   def self.search phone
-    @users = where("1=1")
-    @users = where(["phone LIKE ?", "%#{phone}%"]) unless phone.blank?
-    @users
+    phone.present? ? where(["phone LIKE ?", "%#{phone}%"]) : all
   end
 
   def self.by_place place_id
-    users = User.order("name DESC").all
-    if(place_id.present?)
-      users = users.where(place_id: place_id)
-    end
-    users
+    users = User.order("name DESC")
+    place_id.present? ? users.where(place_id: place_id) : users.all
   end
 
   def set_place_tree
@@ -283,4 +278,15 @@ class User < ActiveRecord::Base
     end
     return {:data => datas}
   end
+
+  def self.members_of(places)
+    members = []
+    places.each do |place|
+      place.users.each { |user| members.push(user) unless members.include?(user) }
+
+      place.children ? members.concat(members_of(place.children)) : members
+    end
+    members
+  end
+
 end

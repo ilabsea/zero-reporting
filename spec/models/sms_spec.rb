@@ -19,4 +19,20 @@ RSpec.describe Sms, type: :model do
       @sms.send([option])
     end
   end
+
+  describe "#options" do
+    let!(:tel) { Tel.new('010888999') }
+    let!(:sms_options) { Sms::Options.new('Just testing', tel) }
+    let!(:channel) { build(:channel, name: 'Testing') }
+
+    it "to nuntium parameters" do
+      expect(Channel).to receive(:suggested).with(tel).and_return(channel)
+      expect(sms_options.to_nuntium_params).to eq({
+        from: ENV['APP_NAME'],
+        to: "sms://85510888999",
+        body: 'Just testing',
+        suggested_channel: 'Testing'
+      })
+    end
+  end
 end
