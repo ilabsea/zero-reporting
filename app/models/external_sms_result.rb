@@ -34,7 +34,7 @@ class ExternalSmsResult
 
   def run
     if @setting.is_enable && !message_options.empty?
-      SmsAlertJob.set(wait: ENV['DELAY_DELIVER_IN_MINUTES'].to_i).perform_later(self.message_options)
+      SmsJob.set(wait: ENV['DELAY_DELIVER_IN_MINUTES'].to_i).perform_later(self.message_options)
     end
   end
 end

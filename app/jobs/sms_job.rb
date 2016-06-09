@@ -1,4 +1,4 @@
-class SmsAlertJob < ActiveJob::Base
+class SmsJob < ActiveJob::Base
   queue_as :default
 
   def perform(message_options)
