@@ -16,7 +16,7 @@ function reviewWeekNumberChanged() {
         data: {week: weekNumber},
         success: function(){
           setNotification('notice', "Report was successfully updated");
-          location.reload();
+          setTimeout(function(){location.reload();}, 3000 );
         },
         error: function(){
           _self.checked = !_self.checked;
