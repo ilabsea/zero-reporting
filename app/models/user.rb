@@ -279,7 +279,7 @@ class User < ActiveRecord::Base
     return {:data => datas}
   end
 
-  def self.members_of(places)
+  def self.members_of(places = [])
     members = []
     places.each do |place|
       place.users.each { |user| members.push(user) unless members.include?(user) }

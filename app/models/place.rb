@@ -235,11 +235,15 @@ class Place < ActiveRecord::Base
     dhis2_organisation_unit_uuid.present?
   end
 
-  def self.level level
+  def self.level level = nil
     where(kind_of: level)
   end
 
-  def self.in(ids = [])
+  def self.levels levels = []
+    where(kind_of: levels)
+  end
+
+  def self.in ids = []
     where(id: ids)
   end
 

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe SmsSimulationsController, type: :controller do
+RSpec.describe SmsBroadcastsController, type: :controller do
 
   let(:user) { build(:user) }
 
@@ -9,34 +9,53 @@ RSpec.describe SmsSimulationsController, type: :controller do
   end
 
   describe "create" do
+    context "raise exception" do
+      before(:each) do
+        allow(Place).to receive(:level).with('PHD').and_return(Place)
+        allow(Place).to receive(:in).with(["1", "2"]).and_return([1])
+        allow(User).to receive(:members_of).with([1]).and_return(['1000'])
+      end
+
+      it "should has error message" do
+        post :create, sms_broadcast: { message: 'Testing', level: 'PHD', locations: ["1", "2"] }
+
+        expect(response).to redirect_to(sms_broadcasts_path)
+        expect(flash[:alert]).to be_present
+      end
+    end
+
     context "without locations" do
       it "should has status redirect" do
-        post :create, sms_simulation: { message: 'Testing' }
+        post :create, sms_broadcast: { message: 'Testing' }
 
         expect(response).to have_http_status(:found) #302
       end
 
       it "should redirect to index" do
-        post :create, sms_simulation: { message: 'Testing' }
+        post :create, sms_broadcast: { message: 'Testing' }
 
-        expect(response).to redirect_to(sms_simulations_path)
+        expect(response).to redirect_to(sms_broadcasts_path)
       end
     end
 
     context "with locations" do
       it "should receive level " do
         allow(Place).to receive(:level).with('PHD').and_return([])
-        post :create, sms_simulation: { message: 'Testing', level: 'PHD' }
 
-        expect(response).to redirect_to(sms_simulations_path)
+        post :create, sms_broadcast: { message: 'Testing', level: 'PHD' }
+
+        expect(response).to redirect_to(sms_broadcasts_path)
+        expect(flash[:notice]).to be_present
       end
 
       it "should receive level and locations " do
         allow(Place).to receive(:level).with('PHD').and_return(Place)
         allow(Place).to receive(:in).with(["1", "2"]).and_return([])
-        post :create, sms_simulation: { message: 'Testing', level: 'PHD', locations: ["1", "2"] }
 
-        expect(response).to redirect_to(sms_simulations_path)
+        post :create, sms_broadcast: { message: 'Testing', level: 'PHD', locations: ["1", "2"] }
+
+        expect(response).to redirect_to(sms_broadcasts_path)
+        expect(flash[:notice]).to be_present
       end
     end
   end

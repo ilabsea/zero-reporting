@@ -6,8 +6,6 @@ RSpec.describe AlertCase, type: :model do
   let(:week) {Calendar.week(Date.new(2016,02,10))}
   let!(:od){create(:od)}
   let!(:hc){create(:hc, code: "hc_1", parent: od)}
-  let!(:smart){create(:channel, name: "smart", setup_flow: Channel::SETUP_FLOW_GLOBAL, is_enable: true)}
-  let!(:camgsm){create(:channel, name: "camgsm", setup_flow: Channel::SETUP_FLOW_GLOBAL, is_enable: true)}
   let!(:od_user) {create(:user, name: "od_user", username: "od_user", phone: "85510345678", place_id: od.id)}
   let!(:hc_user) {create(:user, name: "hc_user", username: "hc_user", phone: "85512345678", place_id: hc.id)}
   let!(:alert) {create(:alert, is_enable_sms_alert: true, message_template: "This is the alert on {{week_year}} for {{reported_cases}}.", verboice_project_id: 24, recipient_type: ["OD", "HC"])}
@@ -41,8 +39,6 @@ RSpec.describe AlertCase, type: :model do
   end
 
   before(:each) do
-    allow(AlertCase).to receive(:channel_suggested).with("85510345678").and_return(smart)
-    allow(AlertCase).to receive(:channel_suggested).with("85512345678").and_return(camgsm)
     @variable1 = create(:variable, name: 'age', verboice_id: 91, verboice_name: 'age', verboice_project_id: 24, is_alerted_by_threshold: true)
     @variable2 = create(:variable, name: 'grade', verboice_id: 77, verboice_name: 'grade', verboice_project_id: 24, is_alerted_by_threshold: true)
     @variable3 = create(:variable, name: 'hc_worker', verboice_id: 75, verboice_name: 'is_hc_worker', verboice_project_id: 24, is_alerted_by_threshold: true)
@@ -53,23 +49,21 @@ RSpec.describe AlertCase, type: :model do
     @alert_case = AlertCase.new(alert, @report, week)
   end
 
-  describe ".channel_suggested" do
-    it "return channel" do
-      expect(AlertCase.channel_suggested("85510345678")).to eq(smart)
-      expect(AlertCase.channel_suggested("85512345678")).to eq(camgsm)
-    end
-  end
-
   describe "#run" do
     it "create a job for send sms alert" do
       expect(enqueued_jobs.size).to eq(1)
     end
   end
 
-  describe "#message_options" do
-    it "return the message_options" do
-      expect(@alert_case.message_options.size).to eq(2)
-      expect(@alert_case.message_options[0][:body]).to eq "This is the alert on w#{week.week_number}-#{week.year.number} for age: 2(2.0) , grade: 3(3.0) , hc_worker: 5(5.0)."
+  describe "#to_sms_message" do
+    before(:each) do
+      allow(@alert_case).to receive(:interpolate_variable_values).and_return('This is just testing')
+    end
+
+    it "return the sms message instance" do
+      expect(@alert_case.to_sms_message).to be_kind_of(Sms::Message)
+      expect(@alert_case.to_sms_message.receivers).to eq(['85510345678', '85512345678'])
+      expect(@alert_case.to_sms_message.body).to eq('This is just testing')
     end
   end
 
@@ -80,16 +74,9 @@ RSpec.describe AlertCase, type: :model do
     end
   end
 
-  describe "#translate_message" do
+  describe "#interpolate_variable_values" do
     it "return the translate_message" do
-      expect(@alert_case.translate_message).to eq "This is the alert on w#{week.week_number}-#{week.year.number} for age: 2(2.0) , grade: 3(3.0) , hc_worker: 5(5.0)."
-    end
-  end
-
-  describe "#translate_reported_cases" do
-    it "return the translate reported cases message" do
-      expect(@alert_case.translate_reported_cases).to include "age: 2(2.0)"
-      expect(@alert_case.translate_reported_cases).to eq ["age: 2(2.0)" , "grade: 3(3.0)" , "hc_worker: 5(5.0)"]
+      expect(@alert_case.interpolate_variable_values).to eq "This is the alert on w#{week.week_number}-#{week.year.number} for age: 2(2.0) , grade: 3(3.0) , hc_worker: 5(5.0)."
     end
   end
 

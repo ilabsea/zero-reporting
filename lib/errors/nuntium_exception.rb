@@ -1,5 +1,5 @@
 module Errors
-  class RecordNotFoundException < StandardError
+  class NuntiumException < StandardError
     def initialize(message)
       super(message)
     end

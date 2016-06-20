@@ -4,7 +4,7 @@ class ChannelNuntium
 
   def initialize(channel)
     @channel = channel
-    @nuntium = Sms.instance.nuntium
+    @nuntium = Sms::Nuntium.instance.nuntium
   end
 
   def create

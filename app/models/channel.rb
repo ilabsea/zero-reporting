@@ -60,7 +60,7 @@ class Channel < ActiveRecord::Base
 
   def is_connected?
     begin
-      Sms.instance.nuntium.channel(self.name)[:connected]
+      Sms::Nuntium.instance.nuntium.channel(self.name)[:connected]
     rescue Nuntium::Exception
       return false
     end
@@ -85,6 +85,10 @@ class Channel < ActiveRecord::Base
       channels << channel if channel.is_enable && channel.is_connected?
     end
     channels
+  end
+
+  def self.has_active?
+    accessible_channels.count > 0
   end
 
 end

@@ -9,32 +9,22 @@ class ExternalSmsResult
     @setting.recipients
   end
 
-  def message_options
-    options = []
-    self.recipients.each do |phone|
-      suggested_channel = Channel.suggested(Tel.new(phone))
-      if suggested_channel
-        option = {from: ENV['APP_NAME'],
-                  to: "sms://#{Tel.new(phone).with_country_code}",
-                  body: translate_message,
-                  suggested_channel: suggested_channel.name}
-        options << option
-      end
-    end
-    options
+  def to_sms_message
+    Sms::Message.new(recipients, interpolate_variable_values)
   end
 
-  def translate_message
-    translate_options = {
+  def interpolate_variable_values
+    variable_values = {
       caller_phone: @caller_phone,
       call_log_id: @call_log_id
     }
-    MessageTemplate.instance.set_source(@setting.message_template).translate(translate_options)
+
+    MessageTemplate.instance.set_source!(@setting.message_template).interpolate(variable_values)
   end
 
   def run
-    if @setting.is_enable && !message_options.empty?
-      SmsJob.set(wait: ENV['DELAY_DELIVER_IN_MINUTES'].to_i).perform_later(self.message_options)
+    if @setting.enabled? && !recipients.empty?
+      SmsQueueJob.set(wait: ENV['DELAY_DELIVER_IN_MINUTES'].to_i).perform_later(to_sms_message.to_hash)
     end
   end
 end

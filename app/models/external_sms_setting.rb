@@ -14,4 +14,8 @@
 class ExternalSmsSetting < ActiveRecord::Base
   validates :message_template, presence: true
   serialize :recipients, Array
+
+  def enabled?
+    self.is_enable
+  end
 end

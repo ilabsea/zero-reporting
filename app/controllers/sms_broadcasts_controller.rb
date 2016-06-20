@@ -1,4 +1,4 @@
-class SmsSimulationsController < ApplicationController
+class SmsBroadcastsController < ApplicationController
   def create
     places = Place.order(:ancestry)
     places = places.level(protected_params[:level]) if protected_params[:level].present?
@@ -7,17 +7,17 @@ class SmsSimulationsController < ApplicationController
     places = places.in(protected_params[:locations]) if protected_params[:locations] && protected_params[:locations].reject(&:empty?).present?
 
     begin
-      SmsSimulation.new(protected_params[:message]).simulate_to(User.members_of(places))
-    rescue Errors::RecordNotFoundException => e
-      redirect_to sms_simulations_path, alert: e.message
+      SmsBroadcast.new(protected_params[:message]).broadcast_to(User.members_of(places))
+    rescue Nuntium::Exception => e
+      redirect_to sms_broadcasts_path, alert: e.message
       return
     end
 
-    redirect_to sms_simulations_path, notice: "SMS successfully broadcasted"
+    redirect_to sms_broadcasts_path, notice: "SMS successfully broadcasted"
   end
 
   private
   def protected_params
-    params.require(:sms_simulation).permit(:message, :level, :locations => [])
+    params.require(:sms_broadcast).permit(:message, :level, :locations => [])
   end
 end
