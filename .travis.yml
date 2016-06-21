@@ -20,3 +20,6 @@ before_script:
 # - rm Gemfile.lock
   - cp config/application.travis.yml config/application.yml
   - mysql -e 'create database cdc_call_test'
+
+notifications:
+  slack: ilabsea:C4mpJ4flOxHey8sO8SgEkg77
