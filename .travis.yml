@@ -1,6 +1,9 @@
 language: ruby
 cache: bundler
 
+services:
+  - redis-server
+
 addons:
   code_climate:
     repo_token: 'b2207aa683bedabf3e9cddc692141d0df7ce871f54f8ca8bc2774c7fd4e2bb8a'
