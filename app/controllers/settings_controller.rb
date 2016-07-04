@@ -43,7 +43,6 @@ class SettingsController < ApplicationController
     Setting[:hub_email] = params[:email]
     Setting[:hub_password] = params[:password] if params[:password].present?
     Setting[:hub_task_name] = params[:task_name]
-    Setting[:dhis2_dataset] = params[:dataset]
 
     redirect_to settings_path, notice: 'Hub connection has been saved'
   end

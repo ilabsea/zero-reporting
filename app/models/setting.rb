@@ -22,7 +22,7 @@ class Setting < RailsSettings::CachedSettings
   end
 
   def self.hub_configured?
-    Setting[:hub_url].present? && Setting[:hub_email].present? && Setting[:hub_password].present? && Setting[:hub_task_name].present? && Setting[:dhis2_dataset].present?
+    Setting[:hub_url].present? && Setting[:hub_email].present? && Setting[:hub_password].present? && Setting[:hub_task_name].present?
   end
 
 end

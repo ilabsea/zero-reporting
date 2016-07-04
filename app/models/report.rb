@@ -254,7 +254,6 @@ class Report < ActiveRecord::Base
       completeDate: Date.today.to_s
     }
 
-    params[:dataSet] = Setting[:dhis2_dataset] if Setting[:dhis2_dataset].present?
     params[:orgUnit] = user.place.hc.dhis2_organisation_unit_uuid if user.place.hc.dhis2_organisation_unit_uuid
 
     report_variables.each do |report_variable|
