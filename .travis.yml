@@ -6,7 +6,7 @@ services:
 
 addons:
   code_climate:
-    repo_token: 'b2207aa683bedabf3e9cddc692141d0df7ce871f54f8ca8bc2774c7fd4e2bb8a'
+    repo_token: 'ff44355d041f6826c54189f18c7dac2a99c82e8efcf45d5650a29fd6f965feb5'
 rvm:
   - "2.2.1"
 
