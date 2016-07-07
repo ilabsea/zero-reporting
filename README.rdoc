@@ -3,5 +3,4 @@
 CDC IVR Zero Reporting application
 
 {<img src="https://travis-ci.org/ilabsea/zero-reporting.svg" alt="Build Status" />}[https://travis-ci.org/ilabsea/zero-reporting]
-{<img src="https://codeclimate.com/github/ilabsea/zero-reporting/badges/gpa.svg" />}[https://codeclimate.com/github/ilabsea/zero-reporting]
-{<img src="https://codeclimate.com/github/ilabsea/zero-reporting/badges/coverage.svg" />}[https://codeclimate.com/github/ilabsea/zero-reporting/coverage]
+
