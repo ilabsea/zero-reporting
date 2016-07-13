@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160426091937) do
+ActiveRecord::Schema.define(version: 20160712040432) do
 
   create_table "alert_logs", force: :cascade do |t|
     t.string   "from",                limit: 255
@@ -66,6 +66,23 @@ ActiveRecord::Schema.define(version: 20160426091937) do
   end
 
   add_index "channels", ["user_id"], name: "index_channels_on_user_id", using: :btree
+
+  create_table "event_attachments", force: :cascade do |t|
+    t.string   "file",       limit: 255
+    t.integer  "event_id",   limit: 4
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "event_attachments", ["event_id"], name: "index_event_attachments_on_event_id", using: :btree
+
+  create_table "events", force: :cascade do |t|
+    t.text     "description", limit: 65535
+    t.date     "from_date"
+    t.date     "to_date"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
 
   create_table "external_sms_settings", force: :cascade do |t|
     t.boolean  "is_enable",           limit: 1
@@ -175,8 +192,8 @@ ActiveRecord::Schema.define(version: 20160426091937) do
     t.integer  "verboice_id",             limit: 4
     t.string   "verboice_name",           limit: 255
     t.integer  "verboice_project_id",     limit: 4
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.datetime "created_at",                                          null: false
+    t.datetime "updated_at",                                          null: false
     t.string   "background_color",        limit: 255
     t.string   "text_color",              limit: 255
     t.string   "dhis2_data_element_uuid", limit: 255
@@ -184,6 +201,7 @@ ActiveRecord::Schema.define(version: 20160426091937) do
     t.boolean  "is_alerted_by_report",    limit: 1,   default: false
   end
 
+  add_foreign_key "channels", "users"
   add_foreign_key "report_variables", "reports"
   add_foreign_key "report_variables", "variables"
   add_foreign_key "reports", "users"

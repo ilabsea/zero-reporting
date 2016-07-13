@@ -65,3 +65,5 @@
 //= require sms_broadcasts
 
 //= require lib/select2.min
+
+//= require events

@@ -1,4 +1,11 @@
 Rails.application.routes.draw do
+  resources :events, only: [:index, :new, :create, :destroy]
+  resources :event_attachments, only: [] do
+    member do
+      get :download
+    end
+  end
+
   require 'sidekiq/web'
 
   Sidekiq::Web.use Rack::Auth::Basic do |username, password|

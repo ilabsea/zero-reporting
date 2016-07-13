@@ -1,0 +1,8 @@
+<% content_for(:title) { "New Event"} %>
+
+<%= breadcrumb [ {"Events" => events_path}, {"Event Creation" => nil} ] %>
+
+
+<%= page_header "Event Creation" %>
+
+<%= render 'form' %>
