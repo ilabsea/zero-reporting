@@ -2,7 +2,10 @@ class EventsController < ApplicationController
   before_action :set_event, only: [:destroy]
 
   def index
-    @events = Event.all.order('id DESC').includes(:attachments).page(params[:page])
+    @events = Event.all
+    @events = Event.upcoming if params[:type] === Event::UPCOMING
+    @events = Event.past if params[:type] === Event::PAST
+    @events = @events.order('from_date DESC').includes(:attachments).page(params[:page])
   end
 
   def new
@@ -14,7 +17,7 @@ class EventsController < ApplicationController
     @event = Event.new(event_params)
 
     if @event.save
-      redirect_to events_path, notice: 'Event was successfully created'
+      redirect_to events_path(type: Event::UPCOMING), notice: 'Event was successfully created'
     else
       @event.attachments.build if @event.attachments.empty?
 

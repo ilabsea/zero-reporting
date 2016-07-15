@@ -9,59 +9,11 @@
     </div>
   </div>
 
-  <div class="table-responsive">
-    <table class="report table table-striped table-bordered table-hover">
-      <thead>
-        <tr style="color: black">
-          <td>Event Date</td>
-          <td>Description</td>
-          <td>Attachment</td>
-          <td>Action</td>
-        </tr>
-      </thead>
-
-      <tbody>
-        <% if @events.size > 0 %>
-          <% @events.each_with_index do |event, index| %>
-            <tr>
-              <td><%= event.due_date %></td>
-              <td><%= event.description %></td>
-              <td>
-                <% event.attachments.each do |attachment| %>
-                  <%= link_to download_event_attachment_path(attachment) do %>
-                    <i class='glyphicon glyphicon-download green'> </i> <%= attachment.filename %>
-                  <% end %>
-                <% end %>
-              </td>
-              <td>
-                <div>
-                  <%= link_to event_path(event), method: :delete, data: {confirm: 'Are you sure to delete ?'} do %>
-                      <i class='glyphicon glyphicon-trash red'> </i>
-                  <% end %>
-                </div>
-              </td>
-            </tr>
-          <% end %>
-        <% else %>
-          <td colspan="5">
-            <div class="alert alert-danger center" style="margin-bottom: 0px">
-              There is no record.
-              <br>
-            </div>
-          </td>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="clearfix">
-    <%= paginate_for(@events) %>
-  </div>
+  <%= render 'nav_bar' %>
+  <%= render 'table' %>
 
   <%= link_to new_event_path, class: 'btn btn-primary' do %>
     <i class="glyphicon glyphicon-plus"> </i> New Event
   <% end %>
 
 </div>
-
-

@@ -31,7 +31,7 @@
             </ul>
           </li>
           <li><%= link_to "Channels", channels_path %></li>
-          <li><%= link_to "Events", events_path %></li>
+          <li><%= link_to "Events", events_path(type: Event::UPCOMING) %></li>
         <% else %>
           <li><%= link_to "Reports", reports_path %></li>
         <% end %>
