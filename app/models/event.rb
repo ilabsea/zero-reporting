@@ -23,18 +23,24 @@ class Event < ActiveRecord::Base
 
 	accepts_nested_attributes_for :attachments, allow_destroy: true, :reject_if => lambda { |e| e[:file].blank? }
 
-	scope :upcoming, -> { where("from_date >= ?", Date.today) }
 	scope :past, -> { where("from_date < ?", Date.today) }
 
 	UPCOMING = 'upcoming'
 	PAST = 'past'
 
+	ANNOUNEMENT_LISTING = 3
+	
 	def due_date
 		if from_date === to_date or !to_date.present?
 			from_date.to_s
 		else
 			from_date.to_s + " to " + to_date.to_s
 		end
+	end
+
+	def self.upcoming days = nil
+		return where("from_date >= ?", Date.today) if days.nil?
+		where(from_date: Date.today...Date.today + days)
 	end
 
 	def over?
