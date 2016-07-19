@@ -1,0 +1,11 @@
+csv << ['code', 'parent_code', 'name', 'level']
+
+Place.level(Place::Type::PHD).each do |phd|
+  csv << [phd.code, "", phd.name, phd.kind_of]
+  phd.children.each do |od|
+    csv << [od.code, od.parent.code, od.name, od.kind_of]
+    od.children.each do |hc|
+      csv << [hc.code, hc.parent.code, hc.name, hc.kind_of]
+    end
+  end
+end

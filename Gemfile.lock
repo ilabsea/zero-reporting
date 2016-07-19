@@ -7,6 +7,13 @@ GIT
       json
       rest-client
 
+GIT
+  remote: https://github.com/lchanmann/csv_builder.git
+  revision: 93300fe8141839eb3ca58f1e5617c7d65ad5dccb
+  specs:
+    csv_builder (2.1.1)
+      actionpack (>= 3.0.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -345,6 +352,7 @@ DEPENDENCIES
   capistrano-rbenv (~> 2.0)
   carrierwave
   codeclimate-test-reporter
+  csv_builder!
   database_cleaner
   date_validator
   draper

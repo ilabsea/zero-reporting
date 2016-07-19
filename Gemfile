@@ -53,6 +53,8 @@ gem "audited-activerecord", "~> 4.0"
 gem 'nuntium_api', github: 'channainfo/nuntium-api-ruby', branch: 'encode_uri'
 gem 'sidekiq', '~> 4.0', '>= 4.0.2'
 
+gem 'csv_builder', :git => "https://github.com/lchanmann/csv_builder.git"
+
 gem 'carrierwave'
 gem 'date_validator'
 gem "validate_url"
