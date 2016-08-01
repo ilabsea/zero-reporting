@@ -1,19 +1,5 @@
-csv << ['Phone Number', 'Name', 'Location Name', 'Level']
+csv << ['Level', 'Location Code', 'CamEwarn UUID', 'Location Name', 'Phone Number', 'Name']
 
-Place.level(Place::Type::PHD).order(:id).each do |phd|
-  phd.users.each do |phd_user|
-    csv << [phd_user.phone, phd_user.name, phd.name, phd.my_type]
-  end
-
-  phd.children.each do |od|
-    od.users.each do |od_user|
-      csv << [od_user.phone, od_user.name, od.name, od.my_type]
-    end
-
-    od.children.each do |hc|
-      hc.users.each do |hc_user|
-        csv << [hc_user.phone, hc_user.name, hc.name, hc.my_type]
-      end
-    end
-  end
+Place.level(Place::Type::PHD).order(:id).each do |place|
+  user_hierarchy_to_csv place, csv
 end
