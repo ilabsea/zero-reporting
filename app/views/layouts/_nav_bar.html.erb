@@ -17,7 +17,7 @@
       <ul class="nav navbar-nav navbar-right">
         <% if current_user.is_admin? %>
           <li><%= link_to "Dashboards", dashboards_path %> </li>
-          <li><%= link_to "Reports", reports_path %> </li>
+          <li><%= link_to "Reports", reports_path(state: Report::NEW, last_day: Report::DEFALUT_DISLAY_IN_LAST_DAY) %> </li>
           <li><%= link_to "Health Structurs", users_path %> </li>
           <li><%= link_to "Settings", settings_path %> </li>
           <li class="dropdown">

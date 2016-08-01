@@ -13,6 +13,12 @@
 
   <div class="panel-body" style='padding: 10px 0px;'>
     <%= form_tag reports_path, method: 'GET' do |f| %>
+      <%= hidden_field_tag :state, params[:state] %>
+
+      <% if params[:state] === Report::NEW %>
+        <%= hidden_field_tag :last_day, Report::DEFALUT_DISLAY_IN_LAST_DAY %>
+      <% end %>
+
       <div class='input-row col-lg-2'>
         <%= label_tag :reviewed, 'Reviewed Status' %>
         <%= select_tag :reviewed, options_for_select([[ "Reviewed", 1], ["New", 0]], params[:reviewed]),

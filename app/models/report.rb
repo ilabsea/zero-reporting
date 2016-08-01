@@ -62,6 +62,11 @@ class Report < ActiveRecord::Base
   STATUS_NEW = 0
   STATUS_REVIEWED = 1
 
+  NEW = 'new'
+  REVIEWED = 'reviewed'
+
+  DEFALUT_DISLAY_IN_LAST_DAY = 3
+
   before_save :normalize_attrs
 
   def normalize_attrs
@@ -103,9 +108,11 @@ class Report < ActiveRecord::Base
       reports = reports.where(['called_at <= ?', to.end_of_day ])
     end
 
+    reports = reports.where(called_at: options[:last_day].to_i.day.ago.to_date..Date.today + 1.day) if options[:last_day].present?
     reports = reports.where(phd_id: options[:phd]) if options[:phd].present?
     reports = reports.where(od_id: options[:od]) if options[:od].present?
     reports = reports.where(reviewed: options[:reviewed]) if options[:reviewed].present?
+    reports = reports.where(reviewed: true) if options[:state] === Report::REVIEWED
     reports = reports.where(year: options[:year]) if options[:year].present? && options[:reviewed].to_i != STATUS_NEW
 
     reports = reports.where("week >= ?", options[:from_week]) if options[:from_week].present? && options[:reviewed].to_i == STATUS_REVIEWED

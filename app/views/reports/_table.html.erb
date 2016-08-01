@@ -9,6 +9,22 @@
   </div>
 </div>
 
+<ul class="nav nav-tabs">
+  <li role="presentation" class="<%= params[:state] === Report::NEW ? 'active' : '' %>"><%= link_to Report::NEW.camelcase, reports_path(state: Report::NEW, last_day: Report::DEFALUT_DISLAY_IN_LAST_DAY) %></li>
+  <li role="presentation" class="<%= params[:state] === Report::REVIEWED ? 'active' : '' %>"><%= link_to Report::REVIEWED.camelcase, reports_path(state: Report::REVIEWED) %></li>
+  <li role="presentation" class="<%= params[:state].present? ? '' : 'active' %>"><%= link_to 'All', reports_path %></li>
+</ul>
+
+<% if params[:state] === Report::NEW %>
+  <div class="clearfix">
+    <div class="pull-left">
+      <h2 class="header-title">
+        from last <%= select_tag 'report_last_day', options_for_select(1..7, params[:last_day]), class: 'report-last-day' %> day(s)
+      </h2>
+    </div>
+  </div>
+<% end %>
+
 <div class="table-responsive">
   <table class="report table table-striped table-bordered table-hover">
     <thead>
