@@ -149,7 +149,7 @@ RSpec.describe Report, type: :model do
   end
 
   describe "#place" do
-    let(:place){create(:place)}
+    let(:place){create(:phd)}
     let(:user){create(:user, place_id: place.id)}
     let(:report){create(:report, user_id: user.id)}
     it "return the place of reported user" do

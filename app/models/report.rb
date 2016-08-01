@@ -69,9 +69,13 @@ class Report < ActiveRecord::Base
   DEFAULT_DISPLAY_DATE_FORMAT = '%a %d-%m-%y %H:%M' # Tue 30-12-2016 10:00
 
   before_save :normalize_attrs
+  before_save :set_place_tree
 
   def normalize_attrs
     self.phone_without_prefix = Tel.new(self.phone).without_prefix if self.phone.present?
+  end
+
+  def set_place_tree
     if self.user && self.user.place
       self.phd = self.user.place.phd
       self.od  = self.user.place.od

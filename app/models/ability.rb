@@ -6,12 +6,12 @@ class Ability
     #
     #   user ||= User.new # guest user (not logged in)
       can :profile, User
-      if user.is_admin?
+      if user.admin?
         can :manage, :all
       else
-        if user.place.is_kind_of_od?
+        if user.place.od?
           can :manage, Report, od_id: user.place_id
-        elsif user.place.is_kind_of_phd?
+        elsif user.place.phd?
           can :manage, Report, phd_id: user.place_id
         end
       end

@@ -143,7 +143,7 @@ module ApplicationHelper
     places.map do |place, children|
       selected_class = (place.id == active_place_id.to_i ? 'selected' : '')
 
-      item = link_to("#{place.my_type} - #{place.name} (#{place.code}) ", users_path(place_id: place.id ),
+      item = link_to("#{place.kind} - #{place.name} (#{place.code}) ", users_path(place_id: place.id ),
                      class: "tree-node #{selected_class}",
                      data: {id: place.id})
 
@@ -181,7 +181,7 @@ module ApplicationHelper
   def parent_for place
     result = []
     if place.parent
-      text = "#{place.parent.my_type} - #{place.parent.name} ( #{place.parent.code} )"
+      text = "#{place.parent.kind} - #{place.parent.name} ( #{place.parent.code} )"
       result << text
       result += parent_for(place.parent)
     end
@@ -195,7 +195,7 @@ module ApplicationHelper
   def hierachy_for place
     result = []
     if place
-      text = "#{place.my_type} - #{place.name} ( #{place.code} )"
+      text = "#{place.kind} - #{place.name} ( #{place.code} )"
       result << text
       result += hierachy_for(place.parent)
     end

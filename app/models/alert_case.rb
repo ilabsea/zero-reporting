@@ -19,20 +19,23 @@ class AlertCase
   end
 
   def recipients
-    place = @report.user.place
     recipients = []
+
+    place = @report.user.place
     @alert.recipient_type.each do |recipient|
-      if recipient == Place::Type::PHD
-        recipients = recipients + User.by_place(place.phd.id) if !place.phd.nil?
-      end
+      recipients = recipients + User.by_place(place.try(&recipient.to_sym.downcase).id) if place.try(&recipient.to_sym.downcase)
 
-      if recipient == Place::Type::OD
-        recipients = recipients + User.by_place(place.od.id) if !place.od.nil?
-      end
+      # if recipient == Place::Type::PHD
+      #   recipients = recipients + User.by_place(place.phd.id) if !place.phd.nil?
+      # end
 
-      if recipient == Place::Type::HC
-        recipients = recipients + User.by_place(place.hc.id) if !place.hc.nil?
-      end
+      # if recipient == Place::Type::OD
+      #   recipients = recipients + User.by_place(place.od.id) if !place.od.nil?
+      # end
+
+      # if recipient == Place::Type::HC
+      #   recipients = recipients + User.by_place(place.hc.id) if !place.hc.nil?
+      # end
     end
     recipients
   end

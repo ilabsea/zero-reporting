@@ -81,7 +81,7 @@
   </div>
 <% end %>
 
-<%if user_admin? %>
+<% if user_admin? %>
   <%=form_for @channel, html: { class: 'form form-inline'} do |f| %>
     <div class="panel panel-info">
       
@@ -114,4 +114,4 @@
     </div>
   <% end %>
 
-<% end -%>
+<% end %>

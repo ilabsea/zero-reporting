@@ -9,7 +9,16 @@ class PlacesController < ApplicationController
   end
 
   def new
-    @place = Place.new(parent_id: params[:parent_id])
+    if params[:parent_id].present?
+      parent = Place.find params[:parent_id]
+      if parent.child_allowed?
+        @place = Place.new(parent_id: params[:parent_id], kind_of: parent.child_type)
+      else
+        redirect_to places_path, alert: "#{parent.kind} - #{parent.name} is not allow to has child"
+      end
+    else
+      @place = Place.new(parent_id: params[:parent_id], kind_of: PHD.kind)
+    end
   end
 
   def create
@@ -58,23 +67,16 @@ class PlacesController < ApplicationController
     rescue ActiveRecord::StatementInvalid => error
       redirect_to places_with_ref_path(@place.id), alert: 'Failed to remove place. Make sure there are no users associate to this place'
     end
-
   end
 
   def ods_list
-    render json: UserContext.new(current_user).ods_list(params[:phd_id]), root: false
+    render json: Adapter::UserContextAdapter.new(UserContext.for(current_user)).ods_list(params[:phd_id]), root: false
   end
 
   def download_template
     respond_to do |format|
       format.json  { render :json => result }
-      format.csv {
-        content = "code,parent_code,name,level \n" +
-        "100,,Phnom Penh, PHD \n" +
-        "101,100,Rousey Keo, OD \n" +
-        "102,101,Toul Sangke, HC"
-        render :text => content
-      }
+      format.csv { send_file "public/sample/location_template.csv", type: 'text/csv' }
     end
   end
 
@@ -95,7 +97,7 @@ class PlacesController < ApplicationController
       else
         parent = Place.generate_ancestry(col[1].strip)
       end
-      Place.create!(:name => col[2].strip, :code => col[0].strip, :kind_of => col[3], :ancestry => parent)
+      Place.create!(:name => col[2].strip, :code => col[0].strip, :kind_of => col[3].strip, :ancestry => parent)
       num_rows = num_rows + 1
     end
 
@@ -110,7 +112,7 @@ class PlacesController < ApplicationController
   end
 
   def filter_params
-    params.require(:place).permit(:name, :code, :dhis2_organisation_unit_uuid, :parent_id)
+    params.require(:place).permit(:name, :code, :dhis2_organisation_unit_uuid, :parent_id, :kind_of)
   end
 
   def csv_settings

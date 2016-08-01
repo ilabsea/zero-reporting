@@ -19,7 +19,7 @@
           <td><%= highlight(user.phone, params[:phone]) %></td>
           <td><%=user.role%></td>
           <td class='td-last'>
-            <% if !user.is_admin? %>
+            <% if !user.admin? %>
              <%= link_edit " ", edit_user_path(user)  %>
              <%= link_destroy " ", user_path(user), method: :delete, data: { confirm: 'Are you sure to delete' } %>
             <% end %>

@@ -23,24 +23,21 @@ FactoryGirl.define do
     kind_of Place::Type::PHD
   end
 
-  factory :phd, class: Place do
+  factory :phd, class: PHD do
     sequence(:name) {|n| "Place-#{n}"}
     sequence(:code) {|n| "0#{n}" }
-    kind_of Place::Type::PHD
   end
 
-  factory :od, class: Place do
+  factory :od, class: OD do
     sequence(:name) {|n| "Place-#{n}"}
     sequence(:code) {|n| "0#{n}" }
-    kind_of Place::Type::OD
     parent {create(:phd, code: "#{code}-1")}
   end
 
-  factory :hc, class: Place do
+  factory :hc, class: HC do
     sequence(:name) {|n| "Place-#{n}"}
     sequence(:code) {|n| "0#{n}" }
     sequence(:dhis2_organisation_unit_uuid) {|n| "0#{n}" }
-    kind_of Place::Type::HC
     parent{ create(:od, code: "#{code}-2")}
   end
 
