@@ -66,6 +66,7 @@ class Report < ActiveRecord::Base
   REVIEWED = 'reviewed'
 
   DEFALUT_DISLAY_IN_LAST_DAY = 3
+  DEFAULT_DISPLAY_DATE_FORMAT = '%a %d-%m-%y %H:%M' # Tue 30-12-2016 10:00
 
   before_save :normalize_attrs
 
