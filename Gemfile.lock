@@ -318,6 +318,9 @@ GEM
       unf_ext
     unf_ext (0.0.7.1)
     uniform_notifier (1.9.0)
+    validate_url (1.0.2)
+      activemodel (>= 3.0.0)
+      addressable
 
 PLATFORMS
   ruby
@@ -372,6 +375,7 @@ DEPENDENCIES
   spring-commands-rspec
   typhoeus
   uglifier (>= 1.3.0)
+  validate_url
 
 BUNDLED WITH
    1.11.2

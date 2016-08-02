@@ -14,7 +14,7 @@ module Event::DateRangeIdentifiable
 			where(from_date: (Date.today - days)...Date.today)
 		end
 
-		def upcoming days = nil
+		def upcoming(days = nil)
 			return where("from_date >= ?", Date.today) if days.nil?
 			where(from_date: Date.today...(Date.today + days))
 		end

@@ -8,6 +8,7 @@
 #  to_date     :date
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  url_ref     :string(255)
 #
 
 FactoryGirl.define do
@@ -15,6 +16,7 @@ FactoryGirl.define do
 		sequence(:description) { FFaker::Name.name }
 		sequence(:from_date) { FFaker::Time.date }
 		sequence(:to_date) { FFaker::Time.date }
+    sequence(:url_ref) { FFaker::Internet.http_url }
 		attachments { [build(:event_attachment)] }
   end
 

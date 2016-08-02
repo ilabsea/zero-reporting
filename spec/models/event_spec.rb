@@ -8,6 +8,7 @@
 #  to_date     :date
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  url_ref     :string(255)
 #
 
 require 'rails_helper'
@@ -15,7 +16,6 @@ require 'rails_helper'
 RSpec.describe Event, type: :model do
   context "validations" do
     it { should validate_presence_of(:description) }
-    it { should validate_presence_of(:attachments) }
 
     context "invalid" do
 	    it "from date must be presence" do
