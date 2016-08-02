@@ -35,30 +35,10 @@ RSpec.describe Event, type: :model do
     end
 
     context "valid" do
-    	let(:event) { Event.new(description: 'test', from_date: Date.today, to_date: Date.today + 1.day, attachments: [build(:event_attachment)])}
-    	
+    	let(:event) { Event.new(description: 'test', from_date: Date.today, to_date: Date.today + 1.day, attachments: [build(:event_attachment)]) }
+
     	it { expect { event.save! }.to change(Event, :count).by(1) }
     end
-  end
-
-  context "#due_date" do
-  	context "has only from date" do
-  		let(:event) { build(:event, from_date: Date.new(2016,1,1), to_date: nil)}
-
-  		it { expect(event.due_date).to eq("2016-01-01")}
-  	end
-
-  	context "from date and to date are on the same date" do
-  		let(:event) { build(:event, from_date: Date.new(2016,1,1), to_date: Date.new(2016,1,1))}
-
-  		it { expect(event.due_date).to eq("2016-01-01")}
-  	end
-
-  	context "from date and to date are difference" do
-  		let(:event) { build(:event, from_date: Date.new(2016,1,1), to_date: Date.new(2016,2,1))}
-
-  		it { expect(event.due_date).to eq("2016-01-01 to 2016-02-01")}
-  	end
   end
 
 end

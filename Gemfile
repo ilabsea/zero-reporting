@@ -56,6 +56,8 @@ gem 'sidekiq', '~> 4.0', '>= 4.0.2'
 gem 'carrierwave'
 gem 'date_validator'
 
+gem 'draper'
+
 group :development do
   gem 'bullet'
   gem 'brakeman', require: false

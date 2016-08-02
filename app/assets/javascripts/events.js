@@ -21,7 +21,7 @@ function addElementTo(element, parent) {
 function buildChildElement(index) {
 	var div = $("<div>");
 	div.addClass("form-group file optional event_attachments_file");
-	var label = $("<label class='file optional control-label' for='event_attachments_attributes_" + index + "_file'></label>");
+	var label = $("<label class='file optional control-label' for='event_attachments_attributes_" + index + "_file'>&nbsp;</label>");
 	div.append(label);
 	var input = $("<input style='display:inline;' class='file optional' type='file' name='event[attachments_attributes][" + index + "][file]' id='event_attachments_attributes_" + index + "_file'>");
 	div.append(input);

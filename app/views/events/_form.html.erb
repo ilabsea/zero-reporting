@@ -1,12 +1,16 @@
 <%=simple_form_for(@event, html: { class: 'form-inline form'}) do |f| %>
   <%= f.input :id, as: :hidden %>
   <%= f.input :description, as: :text, input_html: {class: 'form-control'} %>
-  <%= f.input :from_date, as: :date, html5: true %>
-  <%= f.input :to_date, as: :date, html5: true %>
+  <%= f.input :from_date, as: :date, required: true, order: [:day, :month, :year] %>
+  <%= f.input :to_date, as: :date, order: [:day, :month, :year] %>
 
   <div class="form-group text optional event_attachments">
+    <label class='file required control-label left' for='event_attachments_attributes_0_file'>
+      <abbr title="required">*</abbr>
+       Attachment(s)
+     </label>
 	  <%= f.simple_fields_for :attachments do |ff| %>
-	  	<%= ff.input :file, label: 'Attachment(s)', multiple: true, input_html: { style: 'display:inline;' }, as: :file  %>
+	  	<%= ff.input :file, label: false, input_html: { style: 'display:inline;' }, as: :file  %>
 	  <% end %>
   </div>
 
@@ -23,4 +27,3 @@
   </div>
 
 <% end %>
-

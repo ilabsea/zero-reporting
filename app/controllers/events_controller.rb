@@ -3,9 +3,9 @@ class EventsController < ApplicationController
 
   def index
     @events = Event.all
-    @events = Event.upcoming if params[:type] === Event::UPCOMING
-    @events = Event.past if params[:type] === Event::PAST
+    @events = @events.of_type(params[:type]) if params[:type].present?
     @events = @events.order('from_date DESC').includes(:attachments).page(params[:page])
+    @events = EventDecorator.decorate_collection(@events)
   end
 
   def new
@@ -16,9 +16,10 @@ class EventsController < ApplicationController
   def create
     @event = Event.new(event_params)
 
-    if @event.save
-      redirect_to events_path(type: Event::UPCOMING), notice: 'Event was successfully created'
-    else
+    begin
+      @event.save!
+      redirect_to events_url(type: Event::UPCOMING), notice: 'Event was successfully created'
+    rescue ActiveRecord::RecordInvalid
       @event.attachments.build if @event.attachments.empty?
 
       flash[:error] = attachment_error_messages
@@ -27,10 +28,11 @@ class EventsController < ApplicationController
   end
 
   def destroy
-    if @event.destroy
-      redirect_to events_url, notice: 'Event was successfully removed'
-    else
-      redirect_to events_url, error: "Failed to remove event"
+    begin
+      @event.destroy
+      redirect_to events_url(type: params[:type]), notice: 'Event was successfully removed'
+    rescue ActiveRecord::StatementInvalid
+      redirect_to events_url, alert: "Failed to remove event. Make sure there is no attachments associate to this event"
     end
   end
 
@@ -41,7 +43,7 @@ class EventsController < ApplicationController
   end
 
   def event_params
-    params.require(:event).permit(:name, :description, :from_date, :to_date, attachments_attributes: [:id, :event_id, :file])
+    params.require(:event).permit(:description, :from_date, :to_date, attachments_attributes: [:id, :event_id, :file])
   end
 
   def attachment_error_messages

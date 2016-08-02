@@ -17,7 +17,8 @@ class ReportsController < ApplicationController
     @reports_by_page = reports.page(params[:page])
     @variables = Variable.applied(Setting[:project])
 
-    @events = Event.upcoming(1.week).order("from_date ASC").limit(Event::ANNOUNEMENT_LISTING)
+    @events = Event.upcoming(1.week).order("from_date ASC").limit(Event::ANNOUNCEMENT_LISTING)
+    @events = EventDecorator.decorate_collection(@events)
   end
 
   def query_piechart
