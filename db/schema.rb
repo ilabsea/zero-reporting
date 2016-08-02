@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160712040432) do
+ActiveRecord::Schema.define(version: 20160802030905) do
 
   create_table "alert_logs", force: :cascade do |t|
     t.string   "from",                limit: 255
@@ -202,6 +202,7 @@ ActiveRecord::Schema.define(version: 20160712040432) do
   end
 
   add_foreign_key "channels", "users"
+  add_foreign_key "event_attachments", "events"
   add_foreign_key "report_variables", "reports"
   add_foreign_key "report_variables", "variables"
   add_foreign_key "reports", "users"
