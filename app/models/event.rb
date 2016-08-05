@@ -8,10 +8,14 @@
 #  to_date     :date
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  url_ref     :string(255)
 #
 
 class Event < ActiveRecord::Base
 	include Event::Attachmentable, Event::DateRangeIdentifiable
+
+	validates :description, presence: true
+	validates :url_ref, :url => {:allow_blank => true}
 
 	UPCOMING = 'upcoming'
 	PAST = 'past'

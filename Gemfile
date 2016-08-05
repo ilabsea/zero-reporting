@@ -55,6 +55,7 @@ gem 'sidekiq', '~> 4.0', '>= 4.0.2'
 
 gem 'carrierwave'
 gem 'date_validator'
+gem "validate_url"
 
 gem 'draper'
 

@@ -43,7 +43,7 @@ class EventsController < ApplicationController
   end
 
   def event_params
-    params.require(:event).permit(:description, :from_date, :to_date, attachments_attributes: [:id, :event_id, :file])
+    params.require(:event).permit(:description, :from_date, :to_date, :url_ref, attachments_attributes: [:id, :event_id, :file])
   end
 
   def attachment_error_messages
