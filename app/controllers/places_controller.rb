@@ -1,6 +1,7 @@
 class PlacesController < ApplicationController
 
   skip_authorize_resource only: [:index]
+  before_action :csv_settings, only: [:download_user]
 
   def index
     @places = Place.all
@@ -29,8 +30,12 @@ class PlacesController < ApplicationController
 
   end
 
-  def export_as_csv
-    send_data Place.to_csv, type: 'text/csv'
+  def download
+    @filename = "Places_(#{Time.now.to_s.gsub(' ', '_')}).csv"
+  end
+
+  def download_users
+    @filename = "Users_location_(#{Time.now.to_s.gsub(' ', '_')}).csv"
   end
 
   def update
@@ -106,6 +111,12 @@ class PlacesController < ApplicationController
 
   def filter_params
     params.require(:place).permit(:name, :code, :dhis2_organisation_unit_uuid, :parent_id)
+  end
+
+  def csv_settings
+    @output_encoding = 'UTF-8'
+    @csv_options = { :force_quotes => true, :col_sep => ',' }
+    @streaming = true
   end
 
 end

@@ -1,0 +1,5 @@
+csv << ['Level', 'Location Code', 'CamEwarn UUID', 'Location Name', 'Phone Number', 'Name']
+
+Place.level(Place::Type::PHD).order(:id).each do |place|
+  user_hierarchy_to_csv place, csv
+end

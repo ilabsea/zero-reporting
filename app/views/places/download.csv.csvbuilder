@@ -1,0 +1,5 @@
+csv << ['code', 'parent_code', 'CamEwarn UUID', 'name', 'level']
+
+Place.level(Place::Type::PHD).each do |place|
+  place_hierarchy_to_csv place, csv
+end

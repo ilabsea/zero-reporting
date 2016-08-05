@@ -212,25 +212,6 @@ class Place < ActiveRecord::Base
     end
   end
 
-  def self.to_csv(options = {})
-    CSV.generate(options) do |csv|
-      header = ['code', 'parent_code', 'name', 'level']
-      csv << header
-      where(kind_of: Place::Type::PHD).each do |phd|
-        row = [phd.code, "", phd.name, phd.kind_of]
-        csv << row
-        phd.children.each do |od|
-          row = [od.code, od.parent.code, od.name, od.kind_of]
-          csv << row
-          od.children.each do |hc|
-            row = [hc.code, hc.parent.code, hc.name, hc.kind_of]
-            csv << row
-          end
-        end
-      end
-    end
-  end
-
   def has_dhis_location?
     dhis2_organisation_unit_uuid.present?
   end
