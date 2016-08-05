@@ -30,9 +30,10 @@
               <li><%= link_to 'Verboice SMS Notification', external_sms_settings_path() %></li>
             </ul>
           </li>
-          <li><%= link_to "Channels", channels_path %> </li>
+          <li><%= link_to "Channels", channels_path %></li>
+          <li><%= link_to "Events", events_path(type: Event::UPCOMING) %></li>
         <% else %>
-          <li><%= link_to "Reports", reports_path %> </li>
+          <li><%= link_to "Reports", reports_path %></li>
         <% end %>
 
 

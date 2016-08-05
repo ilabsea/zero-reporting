@@ -1,0 +1,23 @@
+<div class='panel panel-default'>
+  <div class="panel-body" style='padding: 0;'>
+    <table class="table no-margin">
+      <thead>
+        <td style='text-align: left;'>Announcement</td>
+      </thead>
+      <tbody>
+        <% @events.each do |event| %>
+          <tr class='red'>
+            <td colspan="2" style='text-align: left;'>
+              <%= event.due_date %>: <%= event.description %>
+              <% event.attachments.each do |attachment| %>
+                <%= link_to download_event_attachment_path(attachment), class: 'btn btn-xs btn-success' do %>
+                  <i class='glyphicon glyphicon-download'> </i> <%= attachment.filename %>
+                <% end %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

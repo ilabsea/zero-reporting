@@ -1,0 +1,19 @@
+<%= breadcrumb [ {"Events" => nil}] %>
+
+<%= page_title "Events" %>
+
+<div class="inner-container">
+  <div class="clearfix">
+    <div class="pull-left">
+      <h2 class="header-title">List of event</h2>
+    </div>
+  </div>
+
+  <%= render 'nav_bar' %>
+  <%= render 'table' %>
+
+  <%= link_to new_event_path, class: 'btn btn-primary' do %>
+    <i class="glyphicon glyphicon-plus"> </i> New Event
+  <% end %>
+
+</div>

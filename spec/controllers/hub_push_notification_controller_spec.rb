@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe HubPushNotificationsController, type: :controller do
-  let(:user) { build(:user) }
+  let(:place) { build(:hc, dhis2_organisation_unit_uuid: 'abacad') }
+  let(:user) { build(:user, place: place) }
   let(:report) { create(:report, reviewed: false) }
 
   before(:each) do
@@ -43,16 +44,14 @@ RSpec.describe HubPushNotificationsController, type: :controller do
     context "success" do
       before(:each) do
         @report = create(:report, user: user, reviewed: true)
-        @hc = build(:hc, dhis2_organisation_unit_uuid: 'abacad')
 
+        allow(Report).to receive(:find).with(@report.id.to_s).and_return(@report)
         allow(Setting).to receive(:hub_enabled?).and_return(true)
         allow(Setting).to receive(:hub_configured?).and_return(true)
-
-        allow_any_instance_of(Report).to receive(:place).and_return(@hc)
-        allow_any_instance_of(Report).to receive(:to_hub_parameters).and_return(nil)
       end
 
       it "return status 200" do
+        expect(@report).to receive(:notify_hub!)
         post :create, report_id: @report.id
         expect(response).to have_http_status(200)
       end

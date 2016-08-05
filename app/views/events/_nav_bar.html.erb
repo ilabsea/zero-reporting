@@ -1,0 +1,5 @@
+<ul class="nav nav-tabs">
+  <li role="presentation" class="<%= params[:type] === Event::UPCOMING ? 'active' : '' %>"><a href="?type=<%= Event::UPCOMING %>"><%= Event::UPCOMING.camelcase %></a></li>
+  <li role="presentation" class="<%= params[:type] === Event::PAST ? 'active' : '' %>"><a href="?type=past"><%= Event::PAST.camelcase %></a></li>
+  <li role="presentation" class="<%= params[:type].present? ? '' : 'active' %>"><a href="events">All</a></li>
+</ul>

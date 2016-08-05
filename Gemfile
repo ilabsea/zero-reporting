@@ -53,6 +53,11 @@ gem "audited-activerecord", "~> 4.0"
 gem 'nuntium_api', github: 'channainfo/nuntium-api-ruby', branch: 'encode_uri'
 gem 'sidekiq', '~> 4.0', '>= 4.0.2'
 
+gem 'carrierwave'
+gem 'date_validator'
+
+gem 'draper'
+
 group :development do
   gem 'bullet'
   gem 'brakeman', require: false
@@ -86,7 +91,8 @@ group :test do
 
   gem 'database_cleaner'
   gem 'shoulda-matchers'
-  gem 'faker'
+  gem 'ffaker'
   gem 'launchy'
   gem 'simplecov', require: false
+
 end
