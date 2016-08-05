@@ -1,7 +1,15 @@
 $(function(){
   reviewWeekNumberChanged();
   subscribeHubEventHandler();
+  lastDayChanged();
 });
+
+function lastDayChanged() {
+  $(".report-last-day").on("change", function() {
+    var url = location.href.replace(/(last_day=)[^\&]+/, '$1' + $(this).val());
+    location.href = url
+  });
+}
 
 function reviewWeekNumberChanged() {
   $('.weekly-report').on('change', function() {

@@ -4,30 +4,7 @@ $(function(){
   reviewedChanged();
 
   initFilterForm();
-  updateWeekNumberReport();
 });
-
-function updateWeekNumberReport() {
-  $('.weekly-report').on('change', function() {
-    var _self = this;
-    var report_id = _self.id;
-    var week_number = $(_self).val();
-    if(week_number) {
-      var url = "/reports/" + report_id + "/update_week?week=" + week_number;
-      $.ajax({
-        method: 'PUT',
-        url: url,
-        success: function(){
-          setNotification('notice', "Report was successfully updated");
-        },
-        error: function(){
-          _self.checked = !_self.checked;
-          setNotification('alert', "Failed to update report");
-        }
-      });
-    }
-  });
-}
 
 function initFilterForm(){
   var _self = this;
