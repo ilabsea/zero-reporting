@@ -10,7 +10,7 @@ module AuthorizedResource
   end
 
   def required_admin_role!
-    if !current_user.is_admin?
+    if !current_user.admin?
       no_permission("You do not permission to access this page")
     end
   end

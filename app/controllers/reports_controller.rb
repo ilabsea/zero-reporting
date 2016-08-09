@@ -8,7 +8,7 @@ class ReportsController < ApplicationController
   end
 
   def index
-    reports = UserContext.new(current_user).reports.includes(:report_variables, :user, :phd, :od)
+    reports = Adapter::UserContextAdapter.new(UserContext.for(current_user)).reports.includes(:report_variables, :user, :phd, :od)
                      .effective
                      .filter(params)
                      .includes(:phd, :od)
@@ -22,7 +22,7 @@ class ReportsController < ApplicationController
   end
 
   def query_piechart
-    @reports = UserContext.new(current_user)
+    @reports = Adapter::UserContextAdapter.new(UserContext.for(current_user))
                      .reports
                      .includes(:report_variables, :user, :phd, :od)
                      .effective
@@ -35,7 +35,7 @@ class ReportsController < ApplicationController
   end
 
   def export_as_csv
-    file = ReportCsv.new(UserContext.new(current_user)).start(params)
+    file = ReportCsv.new(Adapter::UserContextAdapter.new(UserContext.for(current_user))).start(params)
     send_file file, type: "text/csv"
   end
 

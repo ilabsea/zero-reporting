@@ -36,7 +36,7 @@ class User < ActiveRecord::Base
   has_many :channels
   has_many :alerts
   # password must be present within 6..72
-  validates :place_id, presence: true, if: ->(u) { !u.is_admin? }
+  validates :place_id, presence: true, if: ->(u) { !u.admin? }
 
   validates :password, presence: true, on: :create
   validates :password, length: { in: 6..72}, on: :create
@@ -48,7 +48,7 @@ class User < ActiveRecord::Base
 
   validates :phone, uniqueness: true, if: ->(u) { u.phone.present? }
 
-  validates :phone, presence: {message: "Health Center user must has a phone number"}, if: ->(u) { u.place && u.place.is_kind_of_hc?}
+  validates :phone, presence: {message: "Health Center user must has a phone number"}, if: ->(u) { u.place && u.place.hc?}
 
   validates :name, presence: true
 
@@ -96,11 +96,11 @@ class User < ActiveRecord::Base
     [ROLE_NORMAL, ROLE_ADMIN]
   end
 
-  def is_admin?
+  def admin?
     role == User::ROLE_ADMIN
   end
 
-  def is_normal?
+  def normal?
     role == User::ROLE_NORMAL
   end
 
@@ -126,7 +126,7 @@ class User < ActiveRecord::Base
   end
 
   def hc_worker?
-    !place.nil? && place.is_kind_of_hc?
+    !place.nil? && place.hc?
   end
 
   def self.decode_and_validate_user_csv(string)
@@ -260,9 +260,6 @@ class User < ActiveRecord::Base
     csv.each do |row|
       datas.push row
       place = Place.find_by_code(row[6].strip)
-      phd_id = place.phd.id
-      od_id = nil
-      od_id = place.od.id if place.od
       User.create!(
           username: row[0],
           name: row[1],
@@ -271,9 +268,7 @@ class User < ActiveRecord::Base
           role: "Normal",
           place_id: place.id,
           password: row[4],
-          password_confirmation: row[5],
-          phd_id: phd_id,
-          od_id: od_id
+          password_confirmation: row[5]
       )
     end
     return {:data => datas}

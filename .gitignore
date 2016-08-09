@@ -6,11 +6,26 @@
 
 # Ignore bundler config.
 /.bundle
+.bundle
+*.sqlite3
+*.orig
+*.pid
+*.*~
+*.o
+*.so
+*.swp
+*.DS_Store
+nbproject/*
 
 # Ignore all logfiles and tempfiles.
+*.tmp*~
+*.log
+*.log.*
 /log/*
 !/log/.keep
 /tmp
 /config/application.yml
 /coverage
+spec/reports/*
+public/assets
 /public/audios/*

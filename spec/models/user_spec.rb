@@ -31,14 +31,13 @@ RSpec.describe User, :type => :model do
     it { should validate_uniqueness_of(:username)}
     it { should validate_presence_of(:password).on(:create) }
     it { should have_secure_password }
-
   end
 
   describe '#normalize_attrs' do
     it 'set role, downcase username and add phone_without_prefix' do
       user = create(:user, username: 'CDC0Reporting', phone: '8550975553553')
       expect(user.username).to eq 'cdc0reporting'
-      expect(user.is_normal?).to eq true
+      expect(user.normal?).to eq true
       expect(user.phone_without_prefix).to eq '975553553'
     end
 
@@ -48,7 +47,7 @@ RSpec.describe User, :type => :model do
       it 'reset phone_without_prefix when phone number is empty' do
         user.update_attributes(phone: '')
         expect(user.username).to eq 'cdc0reporting'
-        expect(user.is_normal?).to eq true
+        expect(user.normal?).to eq true
         expect(user.phone_without_prefix).to eq nil
       end
     end

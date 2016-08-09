@@ -1,6 +1,6 @@
-<% content_for(:title) { "#{@place.my_type} Modification"} %>
-<%= breadcrumb [ {"Health Structure" => users_path(place_id: @place.id)}, {"#{@place.my_type} Modification" => nil}] %>
+<% content_for(:title) { "#{@place.kind} Modification"} %>
+<%= breadcrumb [ {"Health Structure" => users_path(place_id: @place.id)}, {"#{@place.kind} Modification" => nil}] %>
 
-<%= page_header "#{@place.my_type} Modification" %>
+<%= page_header "#{@place.kind} Modification" %>
 
 <%= render 'form' %>
