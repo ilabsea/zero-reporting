@@ -9,15 +9,11 @@ class PlacesController < ApplicationController
   end
 
   def new
-    if params[:parent_id].present?
-      parent = Place.find params[:parent_id]
-      if parent.child_allowed?
-        @place = Place.new(parent_id: params[:parent_id], kind_of: parent.child_type)
-      else
-        redirect_to places_path, alert: "#{parent.kind} - #{parent.name} is not allow to has child"
-      end
-    else
-      @place = Place.new(parent_id: params[:parent_id], kind_of: PHD.kind)
+    parent = params[:parent_id].present? ? Place.find(params[:parent_id]) : Place
+    begin
+      @place = parent.new_child
+    rescue RuntimeError => ex
+      redirect_to places_path, alert: ex.message
     end
   end
 

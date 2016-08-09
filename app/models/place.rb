@@ -42,6 +42,14 @@ class Place < ActiveRecord::Base
     self.name.split('::').last
   end
 
+  def self.new_child
+    PHD.new
+  end
+
+  def new_child
+    children.new(parent: self, kind_of: child_type)
+  end
+
   def phd?
     kind_of === PHD.name
   end
