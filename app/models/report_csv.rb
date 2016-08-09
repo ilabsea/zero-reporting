@@ -11,7 +11,7 @@ class ReportCsv
     variables = Variable.applied(Setting[:project])
 
     CSV.open(file,"wb") do |csv|
-      header = ['Date', 'PHD', 'OD', 'Phone', 'Username', 'Duration'] + variables.map(&:name) + ["Reviewed and assigned"]
+      header = ['Date', 'PHD', 'OD', 'Phone', 'Username', 'Duration'] + variables.map(&:name) + ["Reviewed and assigned"] + ["CamEwarn submitted at"]
 
       csv << header
       reports = @user_context.reports.effective
@@ -20,7 +20,7 @@ class ReportCsv
                        .order('id DESC')
 
       reports.find_each(batch_size: 100) do |report|
-        row = [ report.called_at, report.phd.try(:name), report.od.try(:name), report.phone,
+        row = [ report.called_at.strftime(Report::DEFAULT_DISPLAY_DATE_FORMAT), report.phd.try(:name), report.od.try(:name), report.phone,
                 report.user.try(:name), report.duration ]
 
 
@@ -29,6 +29,7 @@ class ReportCsv
           row << show_report_variable(report_variable)
         end
         row << (report.reviewed ? Calendar::Year.new(report.year).week(report.week).display : nil)
+        row << (report.dhis2_submitted ? report.dhis2_submitted_at.strftime(Report::DEFAULT_DISPLAY_DATE_FORMAT) : nil)
         csv << row
       end
     end

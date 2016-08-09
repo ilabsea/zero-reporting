@@ -97,7 +97,7 @@
             <div style="width: 180px;">
               <% if Setting.hub_enabled? && report.reviewed? %>
                 <% if report.dhis2_submitted %>
-                  <span class='green'> CamEwarn submitted <i class='glyphicon glyphicon-ok green'> </i></span>
+                  <span class='green'><i class='glyphicon glyphicon-ok green'> </i> CamEwarn submitted on <%= report.dhis2_submitted_at.strftime(Report::DEFAULT_DISPLAY_DATE_FORMAT) %></span>
                 <% else %>
                   <%= button_tag 'Submit to CamEwarn', data: { id: report.id }, style: 'width: 150px;', class: 'hub btn-success' %>
                 <% end %>
