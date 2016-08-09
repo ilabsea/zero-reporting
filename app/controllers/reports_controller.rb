@@ -36,7 +36,6 @@ class ReportsController < ApplicationController
 
   def export_as_csv
     file = ReportCsv.new(Adapter::UserContextAdapter.new(UserContext.for(current_user))).start(params)
-    debugger
     send_file file, type: "text/csv"
   end
 
