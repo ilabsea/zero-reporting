@@ -13,12 +13,11 @@
 #
 
 FactoryGirl.define do
-  factory :alert_log do
+  factory :sms_log do
     from "MyString"
-to "MyString"
-body "MyString"
-suggested_channel "MyString"
-verboice_project_id 1
+    to "MyString"
+    body "MyString"
+    suggested_channel "MyString"
+    verboice_project_id 1
   end
-
 end

@@ -16,17 +16,17 @@
       </tr>
     </thead>
     <tbody>
-      <% @alert_logs.each do |alert_log| %>
+      <% @logs.each do |log| %>
         <tr>
-          <td><%= alert_log.to %></td>
-          <td><%= alert_log.body %></td>
-          <td><%= alert_log.suggested_channel %></td>
-          <td><%= alert_log.created_at %></td>
+          <td><%= log.to %></td>
+          <td><%= log.body %></td>
+          <td><%= log.suggested_channel %></td>
+          <td><%= log.created_at %></td>
         </tr>
       <% end %>
     </tbody>
   </table>
 </div>
 <div class="clearfix">
-  <%= paginate_for(@alert_logs) %>
+  <%= paginate_for(@logs) %>
 </div>

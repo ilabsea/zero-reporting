@@ -12,5 +12,5 @@
 #  updated_at          :datetime         not null
 #
 
-class AlertLog < ActiveRecord::Base
+class SmsLog < ActiveRecord::Base
 end

@@ -25,7 +25,7 @@ class AlertsController < ApplicationController
   end
 
   def log
-    @alert_logs = AlertLog.order("created_at desc").page(params[:page])
+    @logs = SmsLog.order("created_at desc").page(params[:page])
   end
 
   private
