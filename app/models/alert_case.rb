@@ -6,9 +6,9 @@ class AlertCase
   end
 
   def run
-    return if @alert.is_enable_sms_alert == false || @report.alerted_variables.empty?
+    return if !@alert.is_enable_sms_alert || @report.alerted_variables.empty?
 
-    message_body = @alert.message_template ? MessageTemplate.instance.set_source!(@alert.message_template).interpolate(variables) : ""
+    message_body = MessageTemplate.instance.set_source!(@alert.message_template).interpolate(variables)
     receivers = recipients.map { |user| user.phone if user.phone.present? }.compact
 
     sms = Sms::Message.new(receivers, message_body, SmsType.alert)
@@ -21,7 +21,7 @@ class AlertCase
 
     place = @report.user.place
     @alert.recipient_type.each do |recipient|
-      recipients = recipients + User.by_place(place.try(&recipient.to_sym.downcase).id) if place.try(&recipient.to_sym.downcase)
+      recipients = recipients + User.by_place(place.try(&recipient.to_sym.downcase).id) if recipient.present? && place.try(&recipient.to_sym.downcase)
     end 
     recipients
   end
