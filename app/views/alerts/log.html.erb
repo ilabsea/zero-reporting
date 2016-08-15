@@ -12,6 +12,7 @@
         <th>To</th>
         <th>Message</th>
         <th>Channel</th>
+        <th>Type</th>
         <th>Created_at</th>
       </tr>
     </thead>
@@ -21,6 +22,7 @@
           <td><%= log.to %></td>
           <td><%= log.body %></td>
           <td><%= log.suggested_channel %></td>
+          <td><%= log.type.try(:name) %></td>
           <td><%= log.created_at %></td>
         </tr>
       <% end %>

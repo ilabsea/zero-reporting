@@ -9,7 +9,9 @@ module Sms
     end
 
     def send sms
-      nuntium.send_ao(sms.to_nuntium_params)
+      SmsLog.write sms
+      
+      nuntium.send_ao sms.to_nuntium_params
     end
 
     def nuntium

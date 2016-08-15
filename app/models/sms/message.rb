@@ -1,22 +1,23 @@
 module Sms
   class Message
-    attr_reader :receivers, :body
+    attr_reader :receivers, :body, :type
 
-    def initialize receivers = [], body = nil
+    def initialize receivers = [], body = nil, type = nil
       @receivers = receivers
       @body = body
+      @type = type
     end
 
     def to_hash
-      {receivers: @receivers, body: @body}
+      {receivers: @receivers, body: @body, type: @type}
     end
 
     def self.from_hash options
-      Sms::Message.new options[:receivers], options[:body]
+      Sms::Message.new options[:receivers], options[:body], options[:type]
     end
 
     def to_nuntium_params
-      raise StandardError, "Missing receiver" unless @receivers.present?
+      raise StandardError, "Missing receivers" unless @receivers.present?
 
       message_options = []
 
