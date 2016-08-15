@@ -15,8 +15,4 @@ class MessageTemplate
     end
   end
 
-  def interpolate_reported_cases reported_cases
-    reported_cases.map { |reported_case| self.interpolate(reported_case) }
-  end
-
 end
