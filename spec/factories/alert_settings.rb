@@ -11,7 +11,7 @@
 #
 
 FactoryGirl.define do
-  factory :alert do
+  factory :alert_setting do
     is_enable_sms_alert false
     is_enable_email_alert false
     message_template "String"

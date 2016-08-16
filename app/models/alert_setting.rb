@@ -10,6 +10,6 @@
 #  recipient_type        :text(65535)
 #
 
-class Alert < ActiveRecord::Base
+class AlertSetting < ActiveRecord::Base
   serialize :recipient_type, Array
 end

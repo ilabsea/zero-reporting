@@ -8,7 +8,7 @@ RSpec.describe AlertCase, type: :model do
   let!(:hc){create(:hc, name: 'Testing HC', code: 'hc_1', parent: od)}
   let!(:od_user) {create(:user, name: 'od_user', username: 'od_user', phone: '85510345678', place_id: od.id)}
   let!(:hc_user) {create(:user, name: 'hc_user', username: 'hc_user', phone: '85512345678', place_id: hc.id)}
-  let!(:alert) {create(:alert, is_enable_sms_alert: true, message_template: 'This is the alert on {{week_year}} for {{reported_cases}}.', verboice_project_id: 24, recipient_type: ['OD', 'HC'])}
+  let!(:alert_setting) {create(:alert_setting, is_enable_sms_alert: true, message_template: 'This is the alert on {{week_year}} for {{reported_cases}}.', verboice_project_id: 24, recipient_type: ['OD', 'HC'])}
   let(:verboice_attrs) do
     { 'id'=>1503,
       'prefix_called_number'=>nil,
@@ -46,7 +46,7 @@ RSpec.describe AlertCase, type: :model do
     @variable5 = create(:variable, name: 'about', verboice_id: 93, verboice_name: 'about', verboice_project_id: 24, is_alerted_by_threshold: true)
     @report = Report.create_from_verboice_attrs(verboice_attrs)
     @report.reviewed_as!(2016, week.previous.week_number)
-    @alert_case = AlertCase.new(alert, @report, week)
+    @alert_case = AlertCase.new(alert_setting, @report, week)
   end
 
   describe '#run' do

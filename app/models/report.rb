@@ -228,7 +228,7 @@ class Report < ActiveRecord::Base
   end
 
   def alert
-    alert_setting = Alert.find_by(verboice_project_id: self.verboice_project_id)
+    alert_setting = AlertSetting.find_by(verboice_project_id: self.verboice_project_id)
     return unless alert_setting
     week = self.week_for_alert
     place = self.place

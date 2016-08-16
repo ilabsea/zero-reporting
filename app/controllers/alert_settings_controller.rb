@@ -1,4 +1,4 @@
-class AlertsController < ApplicationController
+class AlertSettingsController < ApplicationController
   authorize_resource
   def index
     @alert = Alert.find_or_initialize_by(verboice_project_id: Setting[:project])
@@ -22,10 +22,6 @@ class AlertsController < ApplicationController
     else
       render :index
     end
-  end
-
-  def log
-    @logs = SmsLog.order("created_at desc").page(params[:page])
   end
 
   private

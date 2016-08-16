@@ -100,11 +100,9 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :alerts do
-    collection do
-      get 'log'
-    end
-  end
+  resources :sms_logs, only: [:index]
+
+  resources :alert_settings
 
   resources :external_sms_settings
   resources :hub_push_notifications, only: [:create]
