@@ -1,27 +1,29 @@
-<%= form_tag hub_path, class: 'form form-inline', method: :put do %>
-  <input type='password' style='display:none;' />
-  <div class='input-row'>
-    <%= label_tag :url %>
-    <%= text_field_tag :url, Setting[:hub_url], class: 'form-control' %>
-  </div>
+<div class="hub panel-head clearfix" style="padding: 10px;">
+  <%= form_tag hub_path, class: 'form form-inline', method: :put do %>
+    <input type='password' style='display:none;' />
+    <div class='input-row'>
+      <%= label_tag :url %>
+      <%= text_field_tag :url, Setting[:hub_url], class: 'form-control' %>
+    </div>
 
-  <div class='input-row'>
-    <%= label_tag :email %>
-    <%= text_field_tag :email, Setting[:hub_email], class: 'form-control' %>
-  </div>
+    <div class='input-row'>
+      <%= label_tag :email %>
+      <%= text_field_tag :email, Setting[:hub_email], class: 'form-control' %>
+    </div>
 
-  <div class='input-row'>
-    <%= label_tag :password %>
-    <%= password_field_tag :password, '', class: 'form-control' %>
-  </div>
+    <div class='input-row'>
+      <%= label_tag :password %>
+      <%= password_field_tag :password, '', class: 'form-control' %>
+    </div>
 
-  <div class='input-row'>
-    <%= label_tag :task_name %>
-    <%= text_field_tag :task_name, Setting[:hub_task_name], class: 'form-control' %>
-  </div>
+    <div class='input-row'>
+      <%= label_tag :task_name %>
+      <%= text_field_tag :task_name, Setting[:hub_task_name], class: 'form-control' %>
+    </div>
 
-  <div class='input-row'>
-    <label></label>
-    <%=button_tag 'Save', class: 'btn btn-primary' %>
-  </div>
-<% end %>
+    <div class='input-row'>
+      <label></label>
+      <%=button_tag 'Save', class: 'btn btn-primary' %>
+    </div>
+  <% end %>
+</div>

@@ -1,44 +1,51 @@
 <%= breadcrumb [ {"Settings" => nil} ] %>
 
-<% if Setting.hub_enabled? %>
+<%= render 'nav_bar' %>
+
+<% if params[:tab] === Setting::HUB.to_s %>
+  <% if Setting.hub_enabled? %>
+    <div>
+      <%= render 'hub_connection' %>
+    </div>
+  <% end %>
+<% end %>
+
+<% if !params[:tab].present? || params[:tab] === Setting::VERBOICE.to_s %>
   <div>
     <a href='#' class='collasable-link' style="padding: 10px 0px; display:block;">
-      <i class='glyphicon glyphicon-cog'> </i> Hub Connection
+      <i class='glyphicon glyphicon-cog'> </i> Verboice Connection
     </a>
+    <% style = Setting['verboice_token'].blank? ? '' : "style=display:none;" %>
 
-    <div class='collasable-container' style="display:none;" >
-      <%= render 'hub_connection' %>
+    <div class='collasable-container' <%= style %> >
+      <p>
+        <% if Setting[:verboice_token].blank? %>
+          <span class='vb-status vb-red'> </span> <span class='color-red'> Not Connected </span>
+        <% else %>
+          <span class='vb vb-green'> </span> <span class='color-green'> Connected </span>
+        <% end %>
+      </p>
+
+      <%= render 'connection' %>
       <hr />
     </div>
+
+    <% if Setting[:verboice_token].present? %>
+      <div>
+        <%= render 'verboice' %>
+      </div>
+    <% end %>
+</div>
+<% end %>
+
+<% if params[:tab] === Setting::ALERT.to_s %>
+  <div>
+    <%= render 'alert' %>
   </div>
 <% end %>
 
-<div>
-  <a href='#' class='collasable-link' style="padding: 10px 0px; display:block;">
-    <i class='glyphicon glyphicon-cog'> </i> Verboice Connection
-  </a>
-  <% style = Setting['verboice_token'].blank? ? '' : "style=display:none;" %>
-
-  <div class='collasable-container' <%= style %> >
-    <p>
-      <% if Setting[:verboice_token].blank? %>
-        <span class='vb-status vb-red'> </span> <span class='color-red'> Not Connected </span>
-      <% else %>
-        <span class='vb vb-green'> </span> <span class='color-green'> Connected </span>
-      <% end %>
-    </p>
-
-    <%= render 'connection' %>
-    <hr />
+<% if params[:tab] === Setting::REPORT.to_s %>
+  <div>
+    <%= render 'report' %>
   </div>
-
-  <% if Setting[:verboice_token].present? %>
-    <div>
-      <%= render 'verboice' %>
-    </div>
-  <% end %>
-    </div>
-
-    <div>
-      <%= render 'alert'%>
-    </div>
+<% end %>

@@ -1,5 +1,11 @@
 <ul class="nav nav-tabs">
-  <li role="presentation" class="<%= params[:type] === Event::UPCOMING ? 'active' : '' %>"><a href="?type=<%= Event::UPCOMING %>"><%= Event::UPCOMING.camelcase %></a></li>
-  <li role="presentation" class="<%= params[:type] === Event::PAST ? 'active' : '' %>"><a href="?type=past"><%= Event::PAST.camelcase %></a></li>
-  <li role="presentation" class="<%= params[:type].present? ? '' : 'active' %>"><a href="events">All</a></li>
+  <li role="presentation" class="<%= params[:type] === Event::UPCOMING ? 'active' : '' %>">
+    <%= link_to Event::UPCOMING.camelcase, events_path(type: Event::UPCOMING) %>
+  </li>
+  <li role="presentation" class="<%= params[:type] === Event::PAST ? 'active' : '' %>">
+    <%= link_to Event::PAST.camelcase, events_path(type: Event::PAST) %>
+  </li>
+  <li role="presentation" class="<%= params[:type].present? ? '' : 'active' %>">
+    <%= link_to 'All', events_path %>
+  </li>
 </ul>

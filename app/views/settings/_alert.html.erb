@@ -1,9 +1,4 @@
-<h3 class="header-title"> Alert Setting</h3>
-<p class='italic gray callout' >
-  Configure the alert setting
-</p>
-<div class="panel panel-default panel-variable" style="width: 600px;">
-
+<div class="alert-section" style="width: 620px;">
   <div class="panel-head clearfix" style="padding: 10px;">
     <%= simple_form_for @alert, html: { class: 'form-inline form alert-form'} do |f| %>
       <div class="form-group">
@@ -13,8 +8,9 @@
             <span class="lbl" style="vertical-align:bottom"></span>
         </div>
       </div>
+      
       <div class="form-group">
-        <label class="control-label">Reciepient</label>
+        <label class="control-label">Recipient(s)</label>
         <div class="horizontal-form-control">
           <% Place::Type.all.each do |place_type| %>
           <div>
@@ -47,6 +43,5 @@
         <%= f.submit 'Save', class: 'btn btn-primary' %>
       </div>
     <% end %>
-
   </div>
 </div>

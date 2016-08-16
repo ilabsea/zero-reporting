@@ -16,6 +16,10 @@
 #
 
 class Setting < RailsSettings::CachedSettings
+  VERBOICE = :verboice
+  HUB = :hub
+  ALERT = :alert
+  REPORT = :report
 
   def self.hub_enabled?
     ENV["HUB_ENABLED"] == '1'
@@ -24,5 +28,4 @@ class Setting < RailsSettings::CachedSettings
   def self.hub_configured?
     Setting[:hub_url].present? && Setting[:hub_email].present? && Setting[:hub_password].present? && Setting[:hub_task_name].present?
   end
-
 end
