@@ -66,7 +66,7 @@ class PlacesController < ApplicationController
   end
 
   def ods_list
-    render json: Adapter::UserContextAdapter.new(UserContext.for(current_user)).ods_list(params[:phd_id]), root: false
+    render json: Adapter::UserContextAdapter.new(Contexts::UserContext.for(current_user)).ods_list(params[:phd_id]), root: false
   end
 
   def download_template

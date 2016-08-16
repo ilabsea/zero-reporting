@@ -2,8 +2,8 @@
 require 'csv'
 
 class ReportCsv
-  def initialize user_context
-    @user_context = user_context
+  def initialize user_context_adapter
+    @user_context_adapter = user_context_adapter
   end
 
   def start options
@@ -14,7 +14,7 @@ class ReportCsv
       header = ['Date', 'PHD', 'OD', 'Phone', 'Username', 'Duration'] + variables.map(&:name) + ["Reviewed and assigned"] + ["CamEwarn submitted at"]
 
       csv << header
-      reports = @user_context.reports.effective
+      reports = @user_context_adapter.reports.effective
                        .filter(options)
                        .includes(:phd, :od, :user)
                        .order('id DESC')
