@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160812050327) do
+ActiveRecord::Schema.define(version: 20160816084312) do
 
   create_table "alerts", force: :cascade do |t|
     t.boolean "is_enable_sms_alert",   limit: 1
@@ -141,8 +141,10 @@ ActiveRecord::Schema.define(version: 20160812050327) do
     t.boolean  "dhis2_submitted",      limit: 1,     default: false
     t.datetime "dhis2_submitted_at"
     t.integer  "dhis2_submitted_by",   limit: 4
+    t.integer  "place_id",             limit: 4
   end
 
+  add_index "reports", ["place_id"], name: "index_reports_on_place_id", using: :btree
   add_index "reports", ["user_id"], name: "index_reports_on_user_id", using: :btree
   add_index "reports", ["year", "week"], name: "index_reports_on_year_and_week", using: :btree
 

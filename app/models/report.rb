@@ -30,9 +30,11 @@
 #  dhis2_submitted      :boolean          default(FALSE)
 #  dhis2_submitted_at   :datetime
 #  dhis2_submitted_by   :integer
+#  place_id             :integer
 #
 # Indexes
 #
+#  index_reports_on_place_id       (place_id)
 #  index_reports_on_user_id        (user_id)
 #  index_reports_on_year_and_week  (year,week)
 #
@@ -45,6 +47,7 @@ class Report < ActiveRecord::Base
   audited
 
   belongs_to :user
+  belongs_to :place
 
   belongs_to :phd, class_name: 'Place', foreign_key: 'phd_id'
   belongs_to :od, class_name: 'Place', foreign_key: 'od_id'
