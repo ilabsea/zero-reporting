@@ -1,5 +1,9 @@
-module Contexts
-  class User::AdminUserContext < UserContext
+module Users
+  class AdminUser
+    def initialize(user)
+      @user = user
+    end
+    
     def reports
       Report.all
     end

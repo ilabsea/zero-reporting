@@ -1,7 +1,7 @@
 class ReportsController < ApplicationController
   authorize_resource
 
-  before_action :load_user_context_adapter, only: [:index, :query_piechart, :export_as_csv]
+  before_action :load_user_context, only: [:index, :query_piechart, :export_as_csv]
 
   helper_method :sort_column, :sort_direction
 
@@ -10,7 +10,7 @@ class ReportsController < ApplicationController
   end
 
   def index
-    reports = @user_context_adapter.reports.includes(:report_variables, :user, :phd, :od)
+    reports = @user_context.reports.includes(:report_variables, :user, :phd, :od)
                      .effective
                      .filter(params)
                      .includes(:phd, :od)
@@ -24,7 +24,7 @@ class ReportsController < ApplicationController
   end
 
   def query_piechart
-    @reports = @user_context_adapter.reports
+    @reports = @user_context.reports
       .includes(:report_variables, :user, :phd, :od)
       .effective
       .filter(params)
@@ -36,7 +36,7 @@ class ReportsController < ApplicationController
   end
 
   def export_as_csv
-    file = ReportCsv.new(@user_context_adapter).start(params)
+    file = ReportCsv.new(@user_context).start(params)
     send_file file, type: "text/csv"
   end
 
@@ -78,8 +78,8 @@ class ReportsController < ApplicationController
 
   private
 
-  def load_user_context_adapter
-    @user_context_adapter = Adapter::UserContextAdapter.new(Contexts::UserContext.for(current_user))
+  def load_user_context
+    @user_context = Contexts::UserContext.for(current_user)
   end
 
   def sort_column
