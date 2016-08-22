@@ -61,6 +61,8 @@ gem "validate_url"
 
 gem 'draper'
 
+gem 'whenever', :require => false
+
 group :development do
   gem 'bullet'
   gem 'brakeman', require: false
