@@ -10,6 +10,7 @@
 #  updated_at                   :datetime         not null
 #  ancestry                     :string(255)
 #  dhis2_organisation_unit_uuid :string(255)
+#  auditable                    :boolean          default(TRUE)
 #
 # Indexes
 #

@@ -10,6 +10,7 @@
 #  updated_at                   :datetime         not null
 #  ancestry                     :string(255)
 #  dhis2_organisation_unit_uuid :string(255)
+#  auditable                    :boolean          default(TRUE)
 #
 # Indexes
 #
@@ -45,11 +46,11 @@ class Place < ActiveRecord::Base
   end
 
   def self.new_child
-    PHD.new
+    PHD.new auditable: false
   end
 
   def new_child
-    children.new(parent: self, kind_of: child_type)
+    children.new(parent: self, kind_of: child_type, auditable: (child_type === HC.kind ? true : false))
   end
 
   def phd?

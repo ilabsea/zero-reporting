@@ -108,7 +108,7 @@ class PlacesController < ApplicationController
   end
 
   def filter_params
-    params.require(:place).permit(:name, :code, :dhis2_organisation_unit_uuid, :parent_id, :kind_of)
+    params.require(:place).permit(:name, :code, :dhis2_organisation_unit_uuid, :parent_id, :kind_of, :auditable)
   end
 
   def csv_settings

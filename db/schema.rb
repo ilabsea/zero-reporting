@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160816150813) do
+ActiveRecord::Schema.define(version: 20160817155044) do
 
   create_table "alert_settings", force: :cascade do |t|
     t.boolean "is_enable_sms_alert",   limit: 1
@@ -87,10 +87,11 @@ ActiveRecord::Schema.define(version: 20160816150813) do
     t.string   "name",                         limit: 255
     t.string   "code",                         limit: 255
     t.string   "kind_of",                      limit: 255
-    t.datetime "created_at",                               null: false
-    t.datetime "updated_at",                               null: false
+    t.datetime "created_at",                                              null: false
+    t.datetime "updated_at",                                              null: false
     t.string   "ancestry",                     limit: 255
     t.string   "dhis2_organisation_unit_uuid", limit: 255
+    t.boolean  "auditable",                    limit: 1,   default: true
   end
 
   add_index "places", ["ancestry"], name: "index_places_on_ancestry", using: :btree

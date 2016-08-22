@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: alerts
+# Table name: alert_settings
 #
 #  id                    :integer          not null, primary key
 #  is_enable_sms_alert   :boolean

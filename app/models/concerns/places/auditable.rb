@@ -7,7 +7,7 @@ module Places::Auditable
 
   module ClassMethods
     def missing_report_in days
-      where(kind_of: HC.kind).where.not(id: Report.where('called_at >= ?', days.ago).select(:place_id).group('place_id').having('count(id) > 0'))
+      where(kind_of: HC.kind, auditable: true).where.not(id: Report.where('called_at >= ?', days.ago).select(:place_id).group('place_id').having('count(id) > 0'))
     end
   end
 end
