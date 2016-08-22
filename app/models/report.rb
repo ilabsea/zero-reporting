@@ -80,6 +80,7 @@ class Report < ActiveRecord::Base
 
   def set_place_tree
     if self.user && self.user.place
+      self.place = self.user.place
       self.phd = self.user.place.phd
       self.od  = self.user.place.od
     end
@@ -247,12 +248,10 @@ class Report < ActiveRecord::Base
     return week
   end
 
-  def place
-    self.user.place
-  end
-
   def weekly_notify(week, alert_setting)
-    AlertCase.new(alert_setting, self, week).run
+    alert = Alert::ReportCaseAlert.new(alert_setting, self, week)
+    context = Contexts::AlertContext.new(alert)
+    context.process
   end
 
   def alerted_variables

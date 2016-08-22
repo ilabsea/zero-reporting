@@ -43,6 +43,34 @@ RSpec.describe Place, type: :model do
         expect(place.hc?).to be true
       end
     end
+  end
+
+  describe 'Audit missing report' do
+    let!(:hc1) { create(:hc) }
+    let!(:hc2) { create(:hc) }
+    let!(:hc3) { create(:hc) }
+    let!(:user_hc1) { create(:user, place: hc1) }
+    let!(:user_hc2) { create(:user, place: hc2) }
+
+    before(:each) do
+      create(:report, called_at: Time.now - 13.days, user: user_hc1)
+      create(:report, called_at: Time.now - 15.days, user: user_hc2)
+    end
+
+    context "in 1 weeks" do
+      it { expect(Place.missing_report_in(1.week).count).to eq 3 }
+      it { expect(Place.missing_report_in(1.week)).to eq [hc1, hc2, hc3] }
+    end
+
+    context "in 2 weeks" do
+      it { expect(Place.missing_report_in(2.week).count).to eq 2 }
+      it { expect(Place.missing_report_in(2.week)).to eq [hc2, hc3] }
+    end
+
+    context "in 3 weeks" do
+      it { expect(Place.missing_report_in(3.week).count).to eq 1 }
+      it { expect(Place.missing_report_in(3.week)).to eq [hc3] }
+    end
 
   end
 end

@@ -252,8 +252,12 @@ module ApplicationHelper
     template_params_selector template_params, selector
   end
 
-  def report_message_template_params_for selector
-    template_params_selector Setting::ReportSetting::VARIABLES, selector
+  def message_template_reporter_params_for selector
+    template_params_selector Setting::ReportSetting::REPORTER_VARIABLES, selector
+  end
+
+  def message_template_supervisor_params_for selector
+    template_params_selector Setting::ReportSetting::SUPERVISOR_VARIABLES, selector
   end
 
   def template_params_selector template_params, selector

@@ -46,5 +46,6 @@ FactoryGirl.define do
     called_at "2015-05-21 11:39:45"
     call_log_id 10
     reviewed false
+    place
   end
 end

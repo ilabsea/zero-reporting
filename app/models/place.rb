@@ -19,6 +19,8 @@
 require 'csv'
 
 class Place < ActiveRecord::Base
+  include Places::Auditable
+  
   has_ancestry(orphan_strategy: :destroy)
 
   self.inheritance_column = :kind_of
