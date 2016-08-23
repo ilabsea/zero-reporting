@@ -6,8 +6,10 @@ namespace :report do
     log("Updating place in #{total_reports} reports") do
       reports.each_with_index do |report, i|
         print "\r Processing #{i + 1}/#{total_reports}"
-        report.place = report.user.place
-        report.save
+        if report.user
+          report.place = report.user.place
+          report.save
+        end
       end
     end
   end
