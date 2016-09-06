@@ -10,8 +10,8 @@ class ReportCsv
     file = "#{Rails.root}/tmp/report-#{Date.current.strftime("%Y-%m-%d")}.csv"
     variables = Variable.applied(Setting[:project])
 
-    CSV.open(file,"wb") do |csv|
-      header = ['Date', 'PHD', 'OD', 'Phone', 'Username', 'Duration'] + variables.map(&:name) + ["Reviewed and assigned"] + ["CamEwarn submitted at"]
+    CSV.open(file, 'wb') do |csv|
+      header = ['Date', 'PHD', 'OD', 'Phone', 'Username', 'Duration'] + variables.map(&:name) + ['Reviewed and assigned'] + ['CamEwarn submitted at']
 
       csv << header
       reports = @user_context.reports.effective
@@ -19,12 +19,12 @@ class ReportCsv
                        .includes(:phd, :od, :user)
                        .order('id DESC')
 
-      reports.find_each(batch_size: 100) do |report|
+      reports.each do |report|
         row = [ report.called_at.strftime(Report::DEFAULT_DISPLAY_DATE_FORMAT), report.phd.try(:name), report.od.try(:name), report.phone,
                 report.user.try(:name), report.duration ]
 
         variables.each do |variable|
-          report_variable = report.report_variables.select{|report_variable| report_variable.variable_id == variable.id}.first
+          report_variable = report.report_variables.select { |report_variable| report_variable.variable_id === variable.id }.first
           row << show_report_variable(report_variable)
         end
 
@@ -40,7 +40,7 @@ class ReportCsv
   def show_report_variable(report_variable)
     return '' unless report_variable
     
-    if report_variable.type == "ReportVariableAudio"
+    if report_variable.type === 'ReportVariableAudio'
       Rails.application.routes.url_helpers.play_audio_report_variable_url(report_variable.token, host: ENV['HOST'])
     else
       report_variable.value
