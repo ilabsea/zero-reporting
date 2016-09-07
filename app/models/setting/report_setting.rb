@@ -1,19 +1,41 @@
 class Setting::ReportSetting
-  attr_reader :x_week, :message_template_reporter, :message_template_supervisor, :recipient_types
+  attr_reader :enables, :x_week, :recipient_types
 
   REPORTER_VARIABLES = %w(place_name last_reported x_week)
   SUPERVISOR_VARIABLES = %w(place_name x_week)
 
   def initialize options = { recipient_types: [] }
-    @enabled = options[:enabled ].to_i || false
+    @enables = options[:enables] || []
     @x_week = options[:x_week].to_i || 0
-    @message_template_reporter = options[:message_template_reporter] || ''
-    @message_template_supervisor = options[:message_template_supervisor] || ''
     @recipient_types = options[:recipient_types].reject(&:empty?) || []
   end
 
-  def enabled?
-    @enabled === true || @enabled === 1
+  def templates
+    @templates || {}
+  end
+
+  def templates=(templates)
+    @templates = {}
+
+    templates.each do |k, v|
+      if k === Alert::TYPES[:sms]
+        @templates[k] = Setting::SmsTemplateSetting.new v
+      else
+        @templates[k] = Setting::VoiceTemplateSetting.new v
+      end
+    end
+  end
+
+  def has_enabled?
+    @enables.size > 0
+  end
+
+  def voice_enabled?
+    @enables.include?(Alert::TYPES[:voice])
+  end
+
+  def sms_enabled?
+    @enables.include?(Alert::TYPES[:sms])
   end
 
   def has_week?
@@ -23,4 +45,5 @@ class Setting::ReportSetting
   def has_recipient? place_type
     recipient_types.include? place_type
   end
+
 end

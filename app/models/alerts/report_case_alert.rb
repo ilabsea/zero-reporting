@@ -1,4 +1,4 @@
-module Alert
+module Alerts
   class ReportCaseAlert
     def initialize(setting, report, week)
       @setting = setting

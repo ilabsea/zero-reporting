@@ -1,4 +1,4 @@
-module Alert
+module Alerts
   class Place::SupervisorAlert < PlaceAlert
     def initialize place, setting, child_places
       super(place, setting)
@@ -10,7 +10,7 @@ module Alert
     end
 
     def message_template
-      @setting.message_template_supervisor
+      @setting.templates[Alert::TYPES[:sms]].supervisor
     end
 
     def variables

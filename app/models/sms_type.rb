@@ -30,4 +30,8 @@ class SmsType < ActiveRecord::Base
   def self.verboice
     where(name: :verboice).first
   end
+
+  def self.voice
+    where(name: :voice).first
+  end
 end

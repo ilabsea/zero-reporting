@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Alert::ReportCaseAlert, type: :model do
+RSpec.describe Alerts::ReportCaseAlert, type: :model do
 
   let(:week) { Calendar.week(Date.new(2016,02,10)) }
   let!(:od){ create(:od) }
@@ -48,7 +48,7 @@ RSpec.describe Alert::ReportCaseAlert, type: :model do
     @report = Report.create_from_verboice_attrs(verboice_attrs)
     @report.reviewed_as!(2016, week.previous.week_number)
 
-    @report_alert = Alert::ReportCaseAlert.new(alert_setting, @report, week)
+    @report_alert = Alerts::ReportCaseAlert.new(alert_setting, @report, week)
   end
 
   context '#enabled?' do
@@ -56,7 +56,7 @@ RSpec.describe Alert::ReportCaseAlert, type: :model do
       let(:alert_setting) { create(:alert_setting, is_enable_sms_alert: false) }
 
       before(:each) do
-        @report_alert = Alert::ReportCaseAlert.new(alert_setting, @report, week)
+        @report_alert = Alerts::ReportCaseAlert.new(alert_setting, @report, week)
 
         allow(@report).to receive(:alerted_variables).and_return([])
       end

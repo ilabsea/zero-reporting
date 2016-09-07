@@ -15,6 +15,18 @@ class Service::Verboice
     @token = token
   end
 
+  def bulk_call addresses, options
+    raise 'Address must be an array' unless addresses.kind_of?(Array)
+
+    calls = []
+
+    addresses.each do |address|
+      calls.push(options.merge(address: address))
+    end
+
+    post('/bulk_call', { call: calls })
+  end
+
   def channels
     get('/channels')
   end
@@ -25,6 +37,10 @@ class Service::Verboice
 
   def call_flows
     get('/call_flows')
+  end
+
+  def project_call_flows project_id
+    call_flows.select { |c| c['project_id'] === project_id.to_i }
   end
 
   def call_log(id)

@@ -1,11 +1,11 @@
-module Alert
+module Alerts
   class Place::ReporterAlert < PlaceAlert
     def enabled?
       super && @setting.has_recipient?(HC.kind)
     end
 
     def message_template
-      @setting.message_template_reporter
+      @setting.templates[Alert::TYPES[:sms]].reporter
     end
 
     def variables

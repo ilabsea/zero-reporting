@@ -1,4 +1,4 @@
-module Alert
+module Alerts
   class ExternalServiceAlert
     def initialize(setting, caller_phone, call_log_id)
       @setting = setting

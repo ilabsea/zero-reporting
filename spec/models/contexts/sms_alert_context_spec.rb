@@ -1,14 +1,14 @@
 require 'rails_helper'
 
-RSpec.describe Contexts::AlertContext, type: :model do
+RSpec.describe Contexts::SmsAlertContext, type: :model do
   include ActiveJob::TestHelper
 
   describe '#process' do
     context 'external service alert' do
       let(:setting) { create(:external_sms_setting, is_enable: true, message_template: '{{caller_phone}} has left voice message on call log {{call_log_id}}', recipients: ['85512345678', '8551012345678']) }
-      let(:alert) { Alert::ExternalServiceAlert.new(setting, '1000', '1') }
+      let(:alert) { Alerts::ExternalServiceAlert.new(setting, '1000', '1') }
 
-      let(:context) { Contexts::AlertContext.new(alert) }
+      let(:context) { Contexts::SmsAlertContext.new(alert) }
 
       it 'enqueue an alert job to queue' do
         context.process
@@ -26,9 +26,9 @@ RSpec.describe Contexts::AlertContext, type: :model do
       let(:report) { create(:report, user: user) }
       let(:week) { Calendar::Year.new(2016).week(1) }
       let!(:setting) { create(:alert_setting, is_enable_sms_alert: true, message_template: 'This is the alert on {{week_year}} for {{reported_cases}}', verboice_project_id: 24, recipient_type: ['OD', 'HC']) }
-      let(:alert) { Alert::ReportCaseAlert.new(setting, report, week) }
+      let(:alert) { Alerts::ReportCaseAlert.new(setting, report, week) }
 
-      let(:context) { Contexts::AlertContext.new(alert) }
+      let(:context) { Contexts::SmsAlertContext.new(alert) }
 
       it 'enqueue an alert job to queue' do
         context.process
@@ -43,9 +43,9 @@ RSpec.describe Contexts::AlertContext, type: :model do
     context 'broadcast alert' do
       let(:user_1) { build(:user, phone: '1000') }
       let(:user_2) { build(:user, phone: '2000') }
-      let(:alert) { Alert::BroadcastAlert.new([user_1, user_2], 'Testing message') }
+      let(:alert) { Alerts::BroadcastAlert.new([user_1, user_2], 'Testing message') }
 
-      let(:context) { Contexts::AlertContext.new(alert) }
+      let(:context) { Contexts::SmsAlertContext.new(alert) }
 
       it 'enqueue an alert job to queue' do
         context.process

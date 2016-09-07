@@ -1,4 +1,4 @@
-module Alert
+module Alerts
   class PlaceAlert
     def initialize place, setting
       @place = place
@@ -6,7 +6,7 @@ module Alert
     end
 
     def enabled?
-      @setting && @setting.enabled? && @setting.has_week?
+      @setting && @setting.sms_enabled? && @setting.has_week?
     end
 
     def message_template; end

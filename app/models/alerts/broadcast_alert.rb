@@ -1,4 +1,4 @@
-module Alert
+module Alerts
   class BroadcastAlert
     def initialize(users, message)
       @users = users

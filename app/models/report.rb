@@ -249,8 +249,8 @@ class Report < ActiveRecord::Base
   end
 
   def weekly_notify(week, alert_setting)
-    alert = Alert::ReportCaseAlert.new(alert_setting, self, week)
-    context = Contexts::AlertContext.new(alert)
+    alert = Alerts::ReportCaseAlert.new(alert_setting, self, week)
+    context = Contexts::SmsAlertContext.new(alert)
     context.process
   end
 

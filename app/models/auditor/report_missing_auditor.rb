@@ -5,7 +5,7 @@ module Auditor
     end
 
     def audit
-      if @setting && @setting.enabled?
+      if @setting && @setting.has_enabled?
         if @setting.has_week?
           places = Place.missing_report_in @setting.x_week.week
 

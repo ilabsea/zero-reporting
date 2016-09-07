@@ -25,8 +25,8 @@ class StepsController < ApplicationController
   def send_sms
     setting = ExternalSmsSetting.find_by(verboice_project_id: Setting[:project])
     
-    alert = Alert::ExternalServiceAlert.new(setting, params[:address], params[:CallSid])
-    context = Context::AlertContext.new(alert)
+    alert = Alerts::ExternalServiceAlert.new(setting, params[:address], params[:CallSid])
+    context = Context::SmsAlertContext.new(alert)
     context.process
 
     render json: {}

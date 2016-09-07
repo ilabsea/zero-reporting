@@ -2,9 +2,11 @@ module Auditor
   class Places::ReporterAuditor < PlaceAuditor
     def audit
       @places.each do |place|
-        place_alert = Alert::Place::ReporterAlert.new place, @setting
-        context = Contexts::AlertContext.new(place_alert)
-        context.process
+        @setting.enables.each do |channel|
+          alert = Parser::AlertParser.parse(channel, place, @setting)
+          alert_context = Parser::AlertContextParser.parse(channel, alert)
+          alert_context.process
+        end
       end
     end
   end

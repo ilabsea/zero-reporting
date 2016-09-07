@@ -7,8 +7,8 @@ module Auditor
           place = Place.find(ancestry_place.ancestry.split('/').last)
           child_places = @places.where(ancestry: ancestry_place.ancestry)
           
-          place_alert = Alert::Place::SupervisorAlert.new place, @setting, child_places
-          context = Contexts::AlertContext.new(place_alert)
+          place_alert = Alerts::Place::SupervisorAlert.new place, @setting, child_places
+          context = Contexts::SmsAlertContext.new(place_alert)
           context.process
         end
       end

@@ -8,8 +8,8 @@ class SmsBroadcast
 
     raise Nuntium::Exception.new('There is no channel available, please configure channel for sending out message.') unless Channel.has_active?
 
-    alert = Alert::BroadcastAlert.new(users, @message)
-    context = Contexts::AlertContext.new(alert)
+    alert = Alerts::BroadcastAlert.new(users, @message)
+    context = Contexts::SmsAlertContext.new(alert)
     context.process
   end
 end

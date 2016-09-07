@@ -8,7 +8,7 @@ class SettingsController < ApplicationController
     @parameters = verboice_parameters
     @variables  = Variable.where(verboice_project_id: Setting[:project])
     @alert = AlertSetting.find_or_initialize_by(verboice_project_id: Setting[:project])
-    @report_setting = Setting.report
+    @report_setting = Setting.report || Setting::ReportSetting.new {}
   end
 
   def update_settings
@@ -53,26 +53,36 @@ class SettingsController < ApplicationController
   def update_report
     if params[:report].present?
       report_setting = Setting::ReportSetting.new(params[:report])
+      report_setting.templates = params[:report][:templates]
       Setting[:report] = report_setting
     end
 
     redirect_to settings_path(tab: Setting::REPORT), notice: 'Report setting has been saved'
   end
 
-  def get_project_variables(project_id)
-    project_id.present? ? Service::Verboice.connect(Setting).project_variables(project_id) : []
-  end
+  private
 
   def verboice_parameters
     result = { projects: [], project_variables: [] }
 
     begin
-      result[:projects]   = Service::Verboice.connect(Setting).projects
-      result[:project_variables]  = get_project_variables(Setting[:project])
+      result[:projects] = Service::Verboice.connect(Setting).projects
+      result[:project_variables] = project_variables(Setting[:project])
+      result[:project_call_flows] = project_call_flows(Setting[:project])
+      result[:channels] = Service::Verboice.connect(Setting).channels
     rescue JSON::ParserError
       flash.now.alert = " Failed to fetch some data from verboice"
     end
 
     result
   end
+
+  def project_variables(project_id)
+    project_id.present? ? Service::Verboice.connect(Setting).project_variables(project_id) : []
+  end
+
+  def project_call_flows project_id
+    project_id.present? ? Service::Verboice.connect(Setting).project_call_flows(project_id) : []
+  end
+
 end

@@ -1,14 +1,14 @@
 require 'rails_helper'
 
-RSpec.describe Alert::ExternalServiceAlert, type: :model do
+RSpec.describe Alerts::ExternalServiceAlert, type: :model do
 
   let(:setting) { create(:external_sms_setting, is_enable: true, message_template: '{{caller_phone}} has left voice message on call log {{call_log_id}}', recipients: ['85512345678', '8551012345678']) }
-  let(:alert) { Alert::ExternalServiceAlert.new(setting, '8551012345678', '1111') }
+  let(:alert) { Alerts::ExternalServiceAlert.new(setting, '8551012345678', '1111') }
 
   context '#enabled?' do
     context 'false when it is not enabled or there is no any recipients defined' do
       let(:setting) { create(:external_sms_setting, is_enable: true, recipients: []) }
-      let(:alert) { Alert::ExternalServiceAlert.new(setting, '8551012345678', '1111') }
+      let(:alert) { Alerts::ExternalServiceAlert.new(setting, '8551012345678', '1111') }
 
       it { expect(alert.enabled?).to eq(false) }
     end
