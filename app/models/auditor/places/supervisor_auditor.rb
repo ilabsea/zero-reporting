@@ -8,8 +8,8 @@ module Auditor
           child_places = @places.where(ancestry: ancestry_place.ancestry)
           
           place_alert = Alerts::Place::SupervisorAlert.new place, @setting, child_places
-          context = Contexts::SmsAlertContext.new(place_alert)
-          context.process
+          adapter = Adapter::SmsAlertAdapter.new(place_alert)
+          adapter.process
         end
       end
     end

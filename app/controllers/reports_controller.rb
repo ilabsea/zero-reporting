@@ -79,7 +79,7 @@ class ReportsController < ApplicationController
   private
 
   def load_user_context
-    @user_context = Contexts::UserContext.for(current_user)
+    @user_context = UserContext.for(current_user)
   end
 
   def sort_column

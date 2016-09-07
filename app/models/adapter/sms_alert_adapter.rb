@@ -1,5 +1,5 @@
-module Contexts
-  class SmsAlertContext
+module Adapter
+  class SmsAlertAdapter
     def initialize alert
       @alert = alert
     end

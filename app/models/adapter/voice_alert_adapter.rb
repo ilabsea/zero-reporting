@@ -1,5 +1,5 @@
-module Contexts
-  class VoiceAlertContext
+module Adapter
+  class VoiceAlertAdapter
     def initialize alert
       @alert = alert
     end

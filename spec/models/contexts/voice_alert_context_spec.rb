@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Contexts::VoiceAlertContext, type: :model do
+RSpec.describe Adapter::VoiceAlertAdapter, type: :model do
   include ActiveJob::TestHelper
 
   describe '#process' do
@@ -13,11 +13,11 @@ RSpec.describe Contexts::VoiceAlertContext, type: :model do
       before(:each) do
         report_setting.templates = { 'voice' => { channel_id: 1, call_flow_id: 1 } }
         alert = Alerts::VoiceAlert.new hc, report_setting
-        @context = Contexts::VoiceAlertContext.new(alert)
+        @adapter = Adapter::VoiceAlertAdapter.new(alert)
       end
 
       it 'enqueue an verboice alert job to queue' do
-        @context.process
+        @adapter.process
 
         expect(enqueued_jobs.size).to eq(1)
 
