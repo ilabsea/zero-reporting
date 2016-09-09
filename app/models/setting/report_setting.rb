@@ -5,6 +5,7 @@ class Setting::ReportSetting
   SUPERVISOR_VARIABLES = %w(place_name x_week)
 
   def initialize options = { recipient_types: [] }
+    @days = options[:days] || []
     @enables = options[:enables] || []
     @x_week = options[:x_week].to_i || 0
     @recipient_types = options[:recipient_types].reject(&:empty?) || []
@@ -24,6 +25,10 @@ class Setting::ReportSetting
         @templates[k] = Setting::VoiceTemplateSetting.new v
       end
     end
+  end
+
+  def has_day? wday
+    @days.include?(wday.to_s)
   end
 
   def has_enabled?

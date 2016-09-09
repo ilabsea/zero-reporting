@@ -16,7 +16,8 @@ module Alerts
     def variables
       {
         channel_id: @setting.templates[Alert::TYPES[:voice]].channel_id,
-        call_flow_id: @setting.templates[Alert::TYPES[:voice]].call_flow_id
+        call_flow_id: @setting.templates[Alert::TYPES[:voice]].call_flow_id,
+        not_before: "#{Date.today.strftime('%Y-%m-%d')} #{@setting.templates[Alert::TYPES[:voice]].call_time}:00"
       }
     end
 

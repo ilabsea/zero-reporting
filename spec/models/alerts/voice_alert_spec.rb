@@ -40,10 +40,10 @@ RSpec.describe Alerts::VoiceAlert, type: :model do
     }
 
     before(:each) do
-      report_setting.templates = { 'voice' => { channel_id: 1, call_flow_id: 1 } }
+      report_setting.templates = { 'voice' => { channel_id: 1, call_flow_id: 1, call_time: '08:00' } }
       @alert = Alerts::VoiceAlert.new nil, report_setting
     end
     
-    it { expect(@alert.variables).to eq({ channel_id: 1, call_flow_id: 1 }) }
+    it { expect(@alert.variables).to eq({ channel_id: 1, call_flow_id: 1, not_before: "#{Date.today.strftime('%Y-%m-%d')} 08:00:00" }) }
   end
 end

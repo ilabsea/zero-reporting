@@ -277,4 +277,12 @@ class Report < ActiveRecord::Base
     params
   end
 
+  def self.audit_missing
+    report_setting = Setting.report
+    if report_setting.has_day?(Date.today.wday)
+      auditor = Auditor::ReportMissingAuditor.new(report_setting)
+      auditor.audit
+    end
+  end
+
 end

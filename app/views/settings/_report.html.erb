@@ -3,7 +3,17 @@
     <%= form_tag update_report_settings_path, class: 'form form-inline', method: :put do %>
 
       <div class="form-group">
-        <label class="control-label left">Alert when missing </label>
+        <label class="control-label left">Alert on </label>
+        <div>
+          <% Date::DAYNAMES.each_index do |i| %>
+            <%= check_box_tag 'report[days][]', i, @report_setting.has_day?(i) %>
+            <%= Date::ABBR_DAYNAMES[i] %>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label left">When health center missing report </label>
         <div>
           <%= number_field_tag 'report[x_week]', @report_setting.try(:x_week), min: 1, max: 10 %>
           <span> week(s)</label>
@@ -27,66 +37,77 @@
         </div>
       </div>
 
+      <div class='clearfix'></div>
+
       <!-- SMS -->
       <div class="form-group">
         <label class="control-label left">SMS</label>
         <div class="horizontal-form-control">
-            <%= check_box_tag 'report[enables][]', Alert::TYPES[:sms], @report_setting.try(:sms_enabled?), class: 'form-control ace ace-switch ace-switch-4 btn-empty' %>
+            <%= check_box_tag 'report[enables][]', Alert::TYPES[:sms], @report_setting.try(:sms_enabled?), class: 'form-control ace ace-switch ace-switch-4 btn-empty sms-reminder-toggle' %>
             <span class="lbl" style="vertical-align:bottom"></span>
         </div>
       </div>
 
       <div class='clearfix'> </div>
 
-      <div class="form-group">
-        <label class="control-label left">Message template for PHD & OD</label>
-        <div>
-          <%= text_area_tag 'report[templates][sms][supervisor_template]', @report_setting.templates['sms'].try(:supervisor), rows: 6, cols: 60 %>
+      <div id="sms-reminder-variables">
+        <div class="form-group">
+          <label class="control-label left">Message template for PHD & OD</label>
+          <div>
+            <%= text_area_tag 'report[templates][sms][supervisor_template]', @report_setting.templates['sms'].try(:supervisor), rows: 6, cols: 60 %>
+          </div>
         </div>
-      </div>
 
-      <div class='form-group'>
-        <label class="control-label">&nbsp;</label>
-        <%= message_template_supervisor_params_for(:report_templates_sms_supervisor_template) %>
-      </div>
-
-      <div class="form-group">
-        <label class="control-label left">message template for HC</label>
-        <div>
-          <%= text_area_tag 'report[templates][sms][reporter_template]', @report_setting.try(:templates)['sms'].try(:reporter), rows: 6, cols: 60 %>
+        <div class='form-group'>
+          <label class="control-label">&nbsp;</label>
+          <%= message_template_supervisor_params_for(:report_templates_sms_supervisor_template) %>
         </div>
-      </div>
 
-      <div class='form-group'>
-        <label class="control-label">&nbsp;</label>
-        <%= message_template_reporter_params_for(:report_templates_sms_reporter_template) %>
+        <div class="form-group">
+          <label class="control-label left">message template for HC</label>
+          <div>
+            <%= text_area_tag 'report[templates][sms][reporter_template]', @report_setting.try(:templates)['sms'].try(:reporter), rows: 6, cols: 60 %>
+          </div>
+        </div>
+
+        <div class='form-group'>
+          <label class="control-label">&nbsp;</label>
+          <%= message_template_reporter_params_for(:report_templates_sms_reporter_template) %>
+        </div>
       </div>
 
       <!-- Voice -->
       <div class="form-group">
         <label class="control-label left">Voice</label>
         <div class="horizontal-form-control">
-            <%= check_box_tag 'report[enables][]', Alert::TYPES[:voice], @report_setting.try(:voice_enabled?), class: 'form-control ace ace-switch ace-switch-4 btn-empty' %>
+            <%= check_box_tag 'report[enables][]', Alert::TYPES[:voice], @report_setting.try(:voice_enabled?), class: 'form-control ace ace-switch ace-switch-4 btn-empty voice-reminder-toggle' %>
             <span class="lbl" style="vertical-align:bottom"></span>
         </div>
       </div>
 
       <div class='clearfix'> </div>
 
-      <div class='form-group input-row'>
-        <%= label_tag 'report[templates][voice][channel_id]', 'Verboice channel' %>
-        <%= select_tag 'report[templates][voice][channel_id]',
-             options_for_select(@parameters[:channels].map { |p| [ p['name'], p['id'] ] }, @report_setting.templates['voice'].try(:channel_id)),
-             include_blank: 'Select Verboice channel',
-             class: 'form-control s-width' %>
-      </div>
+      <div id="voice-reminder-variables">
+        <div class='form-group input-row'>
+          <%= label_tag 'report[templates][voice][channel_id]', 'Using channel' %>
+          <%= select_tag 'report[templates][voice][channel_id]',
+               options_for_select(@parameters[:channels].map { |p| [ p['name'], p['id'] ] }, @report_setting.templates['voice'].try(:channel_id)),
+               include_blank: 'Select Verboice channel',
+               class: 'form-control s-width' %>
+        </div>
+    
+        <div class='form-group input-row'>
+          <%= label_tag 'report[templates][voice][call_flow_id]', 'With call flow' %>
+          <%= select_tag 'report[templates][voice][call_flow_id]',
+               options_for_select(@parameters[:project_call_flows].map { |p| [ p['name'], p['id'] ] }, @report_setting.templates['voice'].try(:call_flow_id)),
+               include_blank: 'Select Verboice call flow',
+               class: 'form-control s-width' %>
+        </div>
 
-      <div class='form-group input-row'>
-        <%= label_tag 'report[templates][voice][call_flow_id]', 'Verboice call flow' %>
-        <%= select_tag 'report[templates][voice][call_flow_id]',
-             options_for_select(@parameters[:project_call_flows].map { |p| [ p['name'], p['id'] ] }, @report_setting.templates['voice'].try(:call_flow_id)),
-             include_blank: 'Select Verboice call flow',
-             class: 'form-control s-width' %>
+        <div class='form-group input-row'>
+          <%= label_tag 'report[templates][voice][call_time]', 'Call time' %>
+          <%= text_field_tag 'report[templates][voice][call_time]', @report_setting.templates['voice'].try(:call_time), class: 'time-select', style: 'width: 4em;' %>
+        </div>
       </div>
 
       <div class='form-group'>

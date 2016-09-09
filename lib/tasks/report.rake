@@ -17,8 +17,7 @@ namespace :report do
   desc "Audit reporter who is missing report in x week(s)"
   task :audit_missing => :environment do
     log("Audit reporter who is missing report in x week(s)") do
-      auditor = Auditor::ReportMissingAuditor.new(Setting.report)
-      auditor.audit
+      Report.audit_missing
     end
   end
 end

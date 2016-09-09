@@ -127,6 +127,7 @@ RSpec.describe Report, type: :model do
   describe "#week_for_alert" do
     context "when report is on sunday" do
       let(:report) {create(:report, called_at: "2016-03-20 11:39:45")}
+      
       it "return the week previous" do
         week = Calendar.week(report.called_at.to_date)
         expect(report.week_for_alert.week_number).to eq week.previous.week_number
@@ -135,6 +136,7 @@ RSpec.describe Report, type: :model do
 
     context "when report is after wednesday" do
       let(:report) {create(:report, called_at: "2016-03-18 11:39:45")}
+      
       it "return the week previous" do
         week = Calendar.week(report.called_at.to_date)
         expect(report.week_for_alert.week_number).to eq week.previous.week_number
@@ -143,6 +145,7 @@ RSpec.describe Report, type: :model do
 
     context "when report is not on sunday and before wednesday" do
       let(:report) {create(:report, called_at: "2016-03-21 11:39:45")}
+      
       it "return the current report week" do
         week = Calendar.week(report.called_at.to_date)
         expect(report.week_for_alert.week_number).to eq week.week_number
@@ -154,9 +157,32 @@ RSpec.describe Report, type: :model do
     let(:place){create(:phd)}
     let(:user){create(:user, place_id: place.id)}
     let(:report){create(:report, user_id: user.id)}
+    
     it "return the place of reported user" do
       expect(report.place).to eq place
     end
+  end
+
+  describe ".audit_missing" do
+    let!(:report_setting) { Setting.report = Setting::ReportSetting.new({ days: ["0"], x_week: 2, recipient_types: ['HC'], enables: [] }) }
+
+    before(:each) do
+      today = double('today')
+
+      allow(Date).to receive(:today).and_return(today)
+      allow(today).to receive(:wday).and_return(0)
+    end
+
+    it 'should has enable Sunday' do
+      report_setting.has_day?(Date.today.wday)
+    end
+
+    it 'should ReportMissingAuditor process audit' do
+      expect_any_instance_of(Auditor::ReportMissingAuditor).to receive(:audit).once
+
+      Report.audit_missing
+    end
+
   end
 
 end
