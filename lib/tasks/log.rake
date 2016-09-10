@@ -1,7 +1,7 @@
-namespace :sms_log do
+namespace :log do
   desc "Set every log as alert for undefined"
   task :mark_undefined_as_alert => :environment do
-    undefined_logs = SmsLog.where(type: nil)
+    undefined_logs = Log.where(type: nil)
     log("Updating #{undefined_logs.count} undefined sms log to alert") do
       undefined_logs.find_each do |log|
         log.type = LogType.alert

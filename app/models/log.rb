@@ -37,4 +37,12 @@ class Log < ActiveRecord::Base
     Log.create! options
   end
 
+  def self.by_kind(kind)
+    where(kind: kind)
+  end
+
+  def self.by_type(type)
+    where(type: type)
+  end
+
 end

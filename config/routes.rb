@@ -100,7 +100,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :sms_logs, only: [:index]
+  resources :logs, only: [:index]
 
   resources :alert_settings
 

@@ -66,6 +66,8 @@
 
 //= require external_sms_settings/form
 
+//= require log/filter
+
 //= require sms_broadcasts
 
 //= require lib/select2.min
