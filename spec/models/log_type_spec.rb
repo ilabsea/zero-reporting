@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: sms_types
+# Table name: log_types
 #
 #  id          :integer          not null, primary key
 #  name        :string(255)      not null
@@ -10,7 +10,7 @@
 #
 # Indexes
 #
-#  index_sms_types_on_name  (name) UNIQUE
+#  index_log_types_on_name  (name) UNIQUE
 #
 
 require 'rails_helper'

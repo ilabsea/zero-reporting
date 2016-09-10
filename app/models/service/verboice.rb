@@ -15,7 +15,15 @@ class Service::Verboice
     @token = token
   end
 
-  def bulk_call calls
+  def call(call)
+    unless call.receivers.empty?
+      bulk_call call.to_verboice_calls
+
+      Log.write_call(call)
+    end
+  end
+
+  def bulk_call(calls)
     return if calls.empty?
 
     post('/bulk_call', { call: calls })

@@ -25,9 +25,9 @@ RSpec.describe Adapter::SmsAlertAdapter, type: :model do
         expect(enqueued_jobs.size).to eq(2)
 
         expect(enqueued_jobs.first[:job]).to eq(SmsQueueJob)
-        expect(enqueued_jobs.first[:args].first).to eq({ receiver: '1000', body: '2020 has left voice message on call log 1', suggested_channel: channel, type: nil})
+        expect(enqueued_jobs.first[:args].first).to eq({ to: '1000', body: '2020 has left voice message on call log 1', suggested_channel: channel, type: nil})
         expect(enqueued_jobs.last[:job]).to eq(SmsQueueJob)
-        expect(enqueued_jobs.last[:args].first).to eq({ receiver: '2000', body: '2020 has left voice message on call log 1', suggested_channel: channel, type: nil})
+        expect(enqueued_jobs.last[:args].first).to eq({ to: '2000', body: '2020 has left voice message on call log 1', suggested_channel: channel, type: nil})
       end
     end
 
@@ -47,7 +47,7 @@ RSpec.describe Adapter::SmsAlertAdapter, type: :model do
         expect(enqueued_jobs.size).to eq(1)
 
         expect(enqueued_jobs.first[:job]).to eq(SmsQueueJob)
-        expect(enqueued_jobs.first[:args].first).to eq({ receiver: '1000', body: 'This is the alert on w1-2016 for ', suggested_channel: channel, type: nil })
+        expect(enqueued_jobs.first[:args].first).to eq({ to: '1000', body: 'This is the alert on w1-2016 for ', suggested_channel: channel, type: nil })
       end
     end
 
@@ -64,9 +64,9 @@ RSpec.describe Adapter::SmsAlertAdapter, type: :model do
         expect(enqueued_jobs.size).to eq(2)
 
         expect(enqueued_jobs.first[:job]).to eq(SmsQueueJob)
-        expect(enqueued_jobs.first[:args].first).to eq({ receiver: '1000', body: 'Testing message', suggested_channel: channel, type: nil })
+        expect(enqueued_jobs.first[:args].first).to eq({ to: '1000', body: 'Testing message', suggested_channel: channel, type: nil })
         expect(enqueued_jobs.last[:job]).to eq(SmsQueueJob)
-        expect(enqueued_jobs.last[:args].first).to eq({ receiver: '2000', body: 'Testing message', suggested_channel: channel, type: nil })
+        expect(enqueued_jobs.last[:args].first).to eq({ to: '2000', body: 'Testing message', suggested_channel: channel, type: nil })
       end
     end
   end

@@ -18,7 +18,7 @@
 #
 
 FactoryGirl.define do
-  factory :sms_log do
+  factory :log do
     from "MyString"
     to "MyString"
     body "MyString"

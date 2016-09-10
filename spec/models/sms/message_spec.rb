@@ -5,12 +5,12 @@ RSpec.describe Sms::Message, type: :model do
   let(:channel) { build(:channel, name: 'Channel1') }
 
   describe "#from_hash" do
-    let(:options) { { receiver: '1000', body: 'Testing', suggested_channel: channel } }
+    let(:options) { { to: '1000', body: 'Testing', suggested_channel: channel } }
 
     it "get message from hash" do
       message = Sms::Message.from_hash(options)
 
-      expect(message.receiver).to eq('1000')
+      expect(message.to).to eq('1000')
       expect(message.body).to eq('Testing')
       expect(message.suggested_channel).to a_kind_of(Channel)
     end
@@ -22,7 +22,7 @@ RSpec.describe Sms::Message, type: :model do
     it "get hash from message object" do
       options = message.to_hash
 
-      expect(options[:receiver]).to eq('1000')
+      expect(options[:to]).to eq('1000')
       expect(options[:body]).to eq('Testing')
       expect(options[:suggested_channel]).to eq(channel)
     end

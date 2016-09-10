@@ -11,7 +11,7 @@ RSpec.describe Sms::Nuntium, type: :model do
 
   describe "#send" do
     let(:suggested_channel) { build(:channel, name: 'Channel 1') }
-    let(:sms) { Sms::Message.new ['010123456'], 'Testing', suggested_channel, build(:sms_type, name: :alert) }
+    let(:sms) { Sms::Message.new ['010123456'], 'Testing', suggested_channel, build(:log_type, name: :alert) }
 
     before(:each) do
       @nuntium = double("Nuntium")
@@ -25,7 +25,7 @@ RSpec.describe Sms::Nuntium, type: :model do
 
       nuntium_server.send(sms)
 
-      expect(SmsLog.count).to eq(1)
+      expect(Log.count).to eq(1)
     end
   end
 end

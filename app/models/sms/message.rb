@@ -1,28 +1,28 @@
 class Sms::Message
-  attr_reader :receiver, :body, :suggested_channel, :type
+  attr_reader :to, :body, :suggested_channel, :type
 
-  def initialize receiver, body, suggested_channel, type
-    @receiver = receiver
+  def initialize to, body, suggested_channel, type
+    @to = to
     @body = body
     @suggested_channel = suggested_channel
     @type = type
   end
 
   def to_hash
-    { receiver: @receiver, body: @body, suggested_channel: @suggested_channel, type: @type }
+    { to: @to, body: @body, suggested_channel: @suggested_channel, type: @type }
   end
 
   def self.from_hash options
-    Sms::Message.new options[:receiver], options[:body], options[:suggested_channel], options[:type]
+    Sms::Message.new options[:to], options[:body], options[:suggested_channel], options[:type]
   end
 
   def to_nuntium_params
-    raise StandardError, "Missing receiver" unless @receiver.present?
+    raise StandardError, "Missing recipient" unless @to.present?
     raise Nuntium::Exception.new('Unknown channel exception') if @suggested_channel.nil? 
 
     {
       from: ENV['APP_NAME'],
-      to: "sms://#{Tel.new(receiver).with_country_code}",
+      to: "sms://#{Tel.new(@to).with_country_code}",
       body: @body,
       suggested_channel: @suggested_channel.name
     }

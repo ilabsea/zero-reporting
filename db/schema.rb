@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160910003611) do
+ActiveRecord::Schema.define(version: 20160910010203) do
 
   create_table "alert_settings", force: :cascade do |t|
     t.boolean "is_enable_sms_alert",   limit: 1
@@ -92,6 +92,19 @@ ActiveRecord::Schema.define(version: 20160910003611) do
 
   add_index "log_types", ["name"], name: "index_log_types_on_name", unique: true, using: :btree
 
+  create_table "logs", force: :cascade do |t|
+    t.string   "from",                limit: 255
+    t.string   "to",                  limit: 255
+    t.string   "body",                limit: 255
+    t.string   "suggested_channel",   limit: 255
+    t.integer  "verboice_project_id", limit: 4
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.integer  "type_id",             limit: 4
+  end
+
+  add_index "logs", ["type_id"], name: "index_logs_on_type_id", using: :btree
+
   create_table "places", force: :cascade do |t|
     t.string   "name",                         limit: 255
     t.string   "code",                         limit: 255
@@ -167,19 +180,6 @@ ActiveRecord::Schema.define(version: 20160910003611) do
   end
 
   add_index "settings", ["thing_type", "thing_id", "var"], name: "index_settings_on_thing_type_and_thing_id_and_var", unique: true, using: :btree
-
-  create_table "sms_logs", force: :cascade do |t|
-    t.string   "from",                limit: 255
-    t.string   "to",                  limit: 255
-    t.string   "body",                limit: 255
-    t.string   "suggested_channel",   limit: 255
-    t.integer  "verboice_project_id", limit: 4
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
-    t.integer  "type_id",             limit: 4
-  end
-
-  add_index "sms_logs", ["type_id"], name: "index_sms_logs_on_type_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "username",             limit: 255

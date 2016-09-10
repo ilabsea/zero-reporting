@@ -3,6 +3,6 @@ class VerboiceQueueJob < ActiveJob::Base
 
   def perform(options)
     call = Call.from_hash(options)
-    Service::Verboice.connect(Setting).bulk_call(call.to_verboice_calls)
+    Service::Verboice.connect(Setting).call(call)
   end
 end
