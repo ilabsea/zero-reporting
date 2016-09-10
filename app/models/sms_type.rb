@@ -31,7 +31,12 @@ class SmsType < ActiveRecord::Base
     where(name: :verboice).first
   end
 
-  def self.voice
-    where(name: :voice).first
+  def self.reminder
+    where(name: :reminder).first
   end
+
+  def self.call
+    where(name: :call).first
+  end
+
 end

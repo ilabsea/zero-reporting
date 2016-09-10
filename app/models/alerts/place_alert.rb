@@ -20,7 +20,7 @@ module Alerts
     end
 
     def type
-      SmsType.alert
+      SmsType.reminder
     end
   end
 end

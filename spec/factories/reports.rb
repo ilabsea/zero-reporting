@@ -41,9 +41,9 @@
 
 FactoryGirl.define do
   factory :report do
-    phone "MyString"
+    sequence(:phone) { |n| "100#{n}" }
     user
-    called_at "2015-05-21 11:39:45"
+    called_at '2015-05-21 11:39:45'
     call_log_id 10
     reviewed false
     place

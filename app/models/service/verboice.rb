@@ -15,14 +15,8 @@ class Service::Verboice
     @token = token
   end
 
-  def bulk_call addresses, options
-    raise 'Address must be an array' unless addresses.kind_of?(Array)
-
-    calls = []
-
-    addresses.each do |address|
-      calls.push(options.merge(address: address))
-    end
+  def bulk_call calls
+    return if calls.empty?
 
     post('/bulk_call', { call: calls })
   end

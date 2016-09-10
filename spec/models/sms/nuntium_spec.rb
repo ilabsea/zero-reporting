@@ -10,17 +10,18 @@ RSpec.describe Sms::Nuntium, type: :model do
   end
 
   describe "#send" do
-    let(:sms) { Sms::Message.new ['010123456'], 'Testing', build(:sms_type, name: :alert) }
+    let(:suggested_channel) { build(:channel, name: 'Channel 1') }
+    let(:sms) { Sms::Message.new ['010123456'], 'Testing', suggested_channel, build(:sms_type, name: :alert) }
 
     before(:each) do
       @nuntium = double("Nuntium")
 
-      allow(sms).to receive(:to_nuntium_params).and_return([{}])
+      allow(sms).to receive(:to_nuntium_params).and_return({})
       allow(nuntium_server).to receive(:nuntium).and_return(@nuntium)
     end
 
     it "should write alert log and send sms to nuntium" do
-      expect(@nuntium).to receive(:send_ao).with([{}]).once
+      expect(@nuntium).to receive(:send_ao).with({}).once
 
       nuntium_server.send(sms)
 

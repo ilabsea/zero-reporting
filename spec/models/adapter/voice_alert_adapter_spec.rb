@@ -22,8 +22,7 @@ RSpec.describe Adapter::VoiceAlertAdapter, type: :model do
         expect(enqueued_jobs.size).to eq(1)
 
         expect(enqueued_jobs.first[:job]).to eq(VerboiceQueueJob)
-        expect(enqueued_jobs.first[:args].first).to eq(['1000'])
-        expect(enqueued_jobs.first[:args].last).to eq({ channel_id: 1, call_flow_id: 1, not_before: "#{Date.today.strftime('%Y-%m-%d')} 08:00:00" })
+        expect(enqueued_jobs.first[:args].first).to eq({ receivers: ['1000'], call_flow_id: 1, channel_id: 1, type: nil, not_before: '2016-09-10 08:00:00' })
       end
     end
   end

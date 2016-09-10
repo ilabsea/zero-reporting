@@ -30,7 +30,7 @@ module Alerts
     end
 
     def type
-      SmsType.voice
+      SmsType.call
     end
   end
 end

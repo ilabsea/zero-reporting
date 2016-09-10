@@ -27,18 +27,18 @@ RSpec.describe SmsBroadcast, type: :model do
       let(:user_without_phone_number) { build(:user, phone: nil) }
       let(:users) { [user, user_without_phone_number] }
       let(:sms_type) { create(:sms_type, name: :broadcast) }
-      let(:sms) { Sms::Message.new(['1000'], 'Testing', sms_type) }
+      let(:sms) { Sms::Message.new('1000', 'Testing', nil, sms_type) }
 
       before(:each) do
         allow(Channel).to receive(:has_active?).and_return(true)
-        allow(Sms::Message).to receive(:new).with(['1000'], 'Testing', sms_type).and_return(sms)
+        allow(Sms::Message).to receive(:new).with('1000', 'Testing', nil, sms_type).and_return(sms)
       end
 
       it {
         sms_broadcaster.broadcast_to users
 
         expect(enqueued_jobs.size).to eq(1)
-        expect(enqueued_jobs.first[:args].first).to eq({receivers: ['1000'], body: 'Testing', type: sms_type})
+        expect(enqueued_jobs.first[:args].first).to eq({ receiver: '1000', body: 'Testing', suggested_channel: nil, type: sms_type })
       }
     end
   end

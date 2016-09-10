@@ -23,8 +23,7 @@ class SmsLog < ActiveRecord::Base
   belongs_to :type, class_name: "SmsType"
 
   def self.write(sms)
-    sms.to_nuntium_params.each do |log|
-      SmsLog.create log.merge(type: sms.type)
-    end
+    SmsLog.create sms.to_nuntium_params.merge(type: sms.type)
   end
+
 end
