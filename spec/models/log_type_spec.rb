@@ -15,7 +15,7 @@
 
 require 'rails_helper'
 
-RSpec.describe SmsType, type: :model do
+RSpec.describe LogType, type: :model do
   it { should validate_presence_of(:name) }
   it { should validate_uniqueness_of(:name) }
 end

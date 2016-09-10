@@ -30,7 +30,7 @@ module Alerts
     end
 
     def type
-      SmsType.call
+      LogType.reminder_call
     end
   end
 end

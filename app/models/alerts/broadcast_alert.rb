@@ -22,7 +22,7 @@ module Alerts
     end
 
     def type
-      SmsType.broadcast
+      LogType.broadcast
     end
 
     def variables

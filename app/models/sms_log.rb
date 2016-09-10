@@ -20,7 +20,7 @@
 class SmsLog < ActiveRecord::Base
   default_scope { includes(:type) }
 
-  belongs_to :type, class_name: "SmsType"
+  belongs_to :type, class_name: "LogType"
 
   def self.write(sms)
     SmsLog.create sms.to_nuntium_params.merge(type: sms.type)

@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: sms_types
+# Table name: log_types
 #
 #  id          :integer          not null, primary key
 #  name        :string(255)      not null
@@ -10,10 +10,10 @@
 #
 # Indexes
 #
-#  index_sms_types_on_name  (name) UNIQUE
+#  index_log_types_on_name  (name) UNIQUE
 #
 
-class SmsType < ActiveRecord::Base
+class LogType < ActiveRecord::Base
   validates :name, presence: true
   validates :name, uniqueness: true
 
@@ -27,16 +27,16 @@ class SmsType < ActiveRecord::Base
     where(name: :broadcast).first
   end
 
-  def self.verboice
-    where(name: :verboice).first
+  def self.notify
+    where(name: :notify).first
   end
 
   def self.reminder
     where(name: :reminder).first
   end
 
-  def self.call
-    where(name: :call).first
+  def self.reminder_call
+    where(name: :reminder_call).first
   end
 
 end

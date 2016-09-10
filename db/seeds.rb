@@ -4,23 +4,35 @@ user_attrs = { username: 'admin', password: '123456', name: 'Admin', role: User:
 user = User.where(username: user_attrs[:username]).first_or_initialize
 user.update_attributes(user_attrs)
 
-# Sms type
-alert_sms_type = SmsType.where(name: :alert).first_or_initialize
-if alert_sms_type.new_record?
-  alert_sms_type.description = 'Alert message when report reaches threshold'
-  alert_sms_type.save
+# Log type
+alert_log_type = LogType.where(name: :alert).first_or_initialize
+if alert_log_type.new_record?
+  alert_log_type.description = 'Alert SMS message when report reaches threshold'
+  alert_log_type.save
 end
 
-broadcast_sms_type = SmsType.where(name: :broadcast).first_or_initialize
-if broadcast_sms_type.new_record?
-  broadcast_sms_type.description = 'Broadcast message'
-  broadcast_sms_type.save
+broadcast_log_type = LogType.where(name: :broadcast).first_or_initialize
+if broadcast_log_type.new_record?
+  broadcast_log_type.description = 'Broadcast SMS message'
+  broadcast_log_type.save
 end
 
-verboice_sms_type = SmsType.where(name: :verboice).first_or_initialize
-if verboice_sms_type.new_record?
-  verboice_sms_type.description = 'Verboice message when caller left voice record'
-  verboice_sms_type.save
+notify_log_type = LogType.where(name: :notify).first_or_initialize
+if notify_log_type.new_record?
+  notify_log_type.description = 'SMS notify supervisor when caller left voice record'
+  notify_log_type.save
+end
+
+reminder_log_type = LogType.where(name: :reminder).first_or_initialize
+if reminder_log_type.new_record?
+  reminder_log_type.description = 'SMS notify supervisor and remind health center when report was missing in x week(s)'
+  reminder_log_type.save
+end
+
+reminder_call_log_type = LogType.where(name: :reminder_call).first_or_initialize
+if reminder_call_log_type.new_record?
+  reminder_call_log_type.description = 'Call remind health center when report was missing in x week(s)'
+  reminder_call_log_type.save
 end
 
 # phd_attrs = [

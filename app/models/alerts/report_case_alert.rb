@@ -23,7 +23,7 @@ module Alerts
     end
 
     def type
-      SmsType.alert
+      LogType.alert
     end
 
     def variables

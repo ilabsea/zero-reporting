@@ -23,7 +23,7 @@ module Alerts
     end
 
     def type
-      SmsType.verboice
+      LogType.notify
     end
 
     def variables
