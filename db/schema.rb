@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160910010203) do
+ActiveRecord::Schema.define(version: 20160910024611) do
 
   create_table "alert_settings", force: :cascade do |t|
     t.boolean "is_enable_sms_alert",   limit: 1
@@ -94,15 +94,18 @@ ActiveRecord::Schema.define(version: 20160910010203) do
 
   create_table "logs", force: :cascade do |t|
     t.string   "from",                limit: 255
-    t.string   "to",                  limit: 255
+    t.text     "to",                  limit: 65535
     t.string   "body",                limit: 255
     t.string   "suggested_channel",   limit: 255
     t.integer  "verboice_project_id", limit: 4
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
     t.integer  "type_id",             limit: 4
+    t.string   "kind",                limit: 255
+    t.datetime "started_at"
   end
 
+  add_index "logs", ["kind"], name: "index_logs_on_kind", using: :btree
   add_index "logs", ["type_id"], name: "index_logs_on_type_id", using: :btree
 
   create_table "places", force: :cascade do |t|
