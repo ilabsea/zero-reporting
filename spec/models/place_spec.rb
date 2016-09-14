@@ -20,6 +20,14 @@
 require 'rails_helper'
 
 RSpec.describe Place, type: :model do
+
+  let(:today) { Date.new(2016, 9, 14) }
+
+  before(:each) do
+    allow(Date).to receive(:today).and_return(today)
+    allow(Calendar).to receive(:beginning_date_of_week).with(today).and_return(today)
+  end
+
   describe 'create' do
     context 'with no parent place' do
       let(:place) { create(:phd) }
@@ -58,19 +66,19 @@ RSpec.describe Place, type: :model do
       create(:report, called_at: Time.now - 15.days, user: user_hc2)
     end
 
-    context "in 1 weeks" do
-      it { expect(Place.missing_report_in(1.week).count).to eq 3 }
-      it { expect(Place.missing_report_in(1.week)).to eq [hc1, hc2, hc3] }
+    context 'in 1 weeks' do
+      it { expect(Place.missing_report_since(Date.new(2016, 9, 7)).count).to eq 3 }
+      it { expect(Place.missing_report_since(Date.new(2016, 9, 7))).to eq [hc1, hc2, hc3] }
     end
 
-    context "in 2 weeks" do
-      it { expect(Place.missing_report_in(2.week).count).to eq 2 }
-      it { expect(Place.missing_report_in(2.week)).to eq [hc2, hc3] }
+    context 'in 2 weeks' do
+      it { expect(Place.missing_report_since(Date.new(2016, 8, 31)).count).to eq 2 }
+      it { expect(Place.missing_report_since(Date.new(2016, 8, 31))).to eq [hc2, hc3] }
     end
 
-    context "in 3 weeks" do
-      it { expect(Place.missing_report_in(3.week).count).to eq 1 }
-      it { expect(Place.missing_report_in(3.week)).to eq [hc3] }
+    context 'in 3 weeks' do
+      it { expect(Place.missing_report_since(Date.new(2016, 8, 24)).count).to eq 1 }
+      it { expect(Place.missing_report_since(Date.new(2016, 8, 24))).to eq [hc3] }
     end
 
   end
