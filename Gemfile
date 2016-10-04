@@ -1,20 +1,20 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.0'
+gem 'rails', '~> 4.2.5.2'
 # Use mysql as the database for Active Record
 gem 'mysql2'
 # Use SCSS for stylesheets
-gem 'sass-rails', '~> 5.0'
+gem 'sass-rails', '~> 5.0.3'
 # Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 1.3.0'
+gem 'uglifier', '~> 3.0'
 # Use CoffeeScript for .coffee assets and views
 # gem 'coffee-rails', '~> 4.1.0'
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
 # Use jquery as the JavaScript library
-gem 'jquery-rails'
+gem 'jquery-rails', '~> 4.0.4'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.0'
@@ -46,10 +46,10 @@ gem 'cancancan', '~> 1.10'
 gem 'active_model_serializers'
 
 gem 'has_secure_token'
-gem 'rack-attack'
+gem 'rack-attack', '~> 4.3.1'
 
 gem "audited-activerecord", "~> 4.0"
-gem 'nuntium_api', github: 'channainfo/nuntium-api-ruby', branch: 'encode_uri'
+gem 'nuntium_api', git: 'https://github.com/channainfo/nuntium-api-ruby', branch: 'encode_uri'
 gem 'sidekiq', '~> 4.0', '>= 4.0.2'
 
 gem 'csv_builder', :git => "https://github.com/lchanmann/csv_builder.git"
@@ -65,6 +65,7 @@ gem 'whenever', :require => false
 group :development do
   gem 'bullet'
   gem 'brakeman', require: false
+  gem 'bundler-audit', require: false
 end
 
 group :development, :test do
