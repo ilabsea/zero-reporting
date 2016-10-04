@@ -8,7 +8,7 @@ Bundler.require(*Rails.groups)
 
 ENV.update YAML.load_file('config/application.yml')[Rails.env] rescue {}
 
-module RemindersAgent
+module ZeroReporting
   class Application < Rails::Application
 
     config.middleware.use Rack::Attack
