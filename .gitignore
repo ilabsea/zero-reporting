@@ -24,8 +24,10 @@ nbproject/*
 /log/*
 !/log/.keep
 /tmp
+/config/database.yml
 /config/application.yml
 /coverage
 spec/reports/*
 public/assets
 /public/audios/*
+/public/uploads/*
