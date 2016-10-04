@@ -2,13 +2,10 @@ $(function(){
   REVIEWED = 1;
 
   reviewedChanged();
-
-  initFilterForm();
+  initReportFilterForm();
 });
 
-function initFilterForm(){
-  var _self = this;
-
+function initReportFilterForm() {
   $("#reviewed").on('change', function() {
     reviewedChanged();
   });
