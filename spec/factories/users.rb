@@ -27,9 +27,9 @@
 FactoryGirl.define do
   factory :user do
     sequence(:username) {|n| "user_#{n}"}
-    password "1234567"
-    name "Reminder"
-    phone "MyString"
+    password "123456"
+    sequence(:name) {|n| "User_#{n}"}
+    sequence(:phone) {|n| "100#{n}"}
     place { create(:phd)}
   end
 

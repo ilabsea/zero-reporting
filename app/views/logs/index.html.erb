@@ -1,0 +1,41 @@
+<%= breadcrumb [ {"Log" => nil} ] %>
+
+<div class="clearfix">
+  <div class="pull-left">
+    <h3 class="header-title">Log Activities 
+    <%= select_tag 'kind', options_for_select(Alert::TYPES.keys, @kind), class: 'log-kind' %>
+    <% if @kind != Alert::TYPES[:voice] %> 
+      <%= select_tag 'type', options_from_collection_for_select(LogType.by_kind(@kind), 'id', 'name', params[:type]), :include_blank => 'All', class: 'log-type' %>
+    <% end %>
+      </h3>
+  </div>
+</div>
+
+<div class="table-responsive">
+  <table class="report table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>To</th>
+        <th>Message</th>
+        <th>Channel</th>
+        <th>Type</th>
+        <th>Created_at</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @logs.each do |log| %>
+        <tr>
+          <td><%= log.to %></td>
+          <td><%= log.kind === Alert::TYPES[:voice] ? "Call flow: #{log.body}" : log.body %></td>
+          <td><%= log.suggested_channel %></td>
+          <td><%= "#{(log.kind ? log.kind.camelcase : '')}::#{log.type.try(:name).try(:camelcase)}" %></td>
+          <td><%= log.started_at.strftime(Report::DEFAULT_DISPLAY_DATE_FORMAT) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<div class="clearfix">
+  <%= paginate_for(@logs) %>
+</div>

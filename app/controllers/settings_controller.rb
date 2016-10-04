@@ -7,7 +7,8 @@ class SettingsController < ApplicationController
     @settings   = Setting.unscoped
     @parameters = verboice_parameters
     @variables  = Variable.where(verboice_project_id: Setting[:project])
-    @alert = Alert.find_or_initialize_by(verboice_project_id: Setting[:project])
+    @alert_setting = AlertSetting.find_or_initialize_by(verboice_project_id: Setting[:project])
+    @report_setting = Setting.report || Setting::ReportSetting.new {}
   end
 
   def update_settings
@@ -30,7 +31,7 @@ class SettingsController < ApplicationController
 
     if response && response["success"]
       Setting[:verboice_token] = response["auth_token"]
-      redirect_to settings_path, notice: 'Successfully connected to verboice'
+      redirect_to settings_path(tab: Setting::VERBOICE), notice: 'Successfully connected to verboice'
     else
       flash.now[:alert] = 'Could not connect to verboice'
       render :index
@@ -39,28 +40,49 @@ class SettingsController < ApplicationController
 
   # PUT /hub
   def hub
+    # TODO refactoring to Setting[:hub] to store HubSetting Object
     Setting[:hub_url] = params[:url]
     Setting[:hub_email] = params[:email]
     Setting[:hub_password] = params[:password] if params[:password].present?
     Setting[:hub_task_name] = params[:task_name]
 
-    redirect_to settings_path, notice: 'Hub connection has been saved'
+    redirect_to settings_path(tab: Setting::HUB), notice: 'Hub connection has been saved'
   end
 
-  def get_project_variables(project_id)
-    project_id.present? ? Service::Verboice.connect(Setting).project_variables(project_id) : []
+  # PUT /settings/update_report
+  def update_report
+    if params[:report].present?
+      report_setting = Setting::ReportSetting.new(params[:report])
+      report_setting.templates = params[:report][:templates]
+      Setting[:report] = report_setting
+    end
+
+    redirect_to settings_path(tab: Setting::REPORT), notice: 'Report setting has been saved'
   end
+
+  private
 
   def verboice_parameters
-    result = {projects: [], project_variables: [] }
+    result = { projects: [], project_variables: [] }
 
     begin
-      result[:projects]   = Service::Verboice.connect(Setting).projects
-      result[:project_variables]  = get_project_variables(Setting[:project])
+      result[:projects] = Service::Verboice.connect(Setting).projects
+      result[:project_variables] = project_variables(Setting[:project])
+      result[:project_call_flows] = project_call_flows(Setting[:project])
+      result[:channels] = Service::Verboice.connect(Setting).channels
     rescue JSON::ParserError
       flash.now.alert = " Failed to fetch some data from verboice"
     end
 
     result
   end
+
+  def project_variables(project_id)
+    project_id.present? ? Service::Verboice.connect(Setting).project_variables(project_id) : []
+  end
+
+  def project_call_flows project_id
+    project_id.present? ? Service::Verboice.connect(Setting).project_call_flows(project_id) : []
+  end
+
 end

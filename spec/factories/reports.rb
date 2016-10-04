@@ -30,19 +30,22 @@
 #  dhis2_submitted      :boolean          default(FALSE)
 #  dhis2_submitted_at   :datetime
 #  dhis2_submitted_by   :integer
+#  place_id             :integer
 #
 # Indexes
 #
+#  index_reports_on_place_id       (place_id)
 #  index_reports_on_user_id        (user_id)
 #  index_reports_on_year_and_week  (year,week)
 #
 
 FactoryGirl.define do
   factory :report do
-    phone "MyString"
+    sequence(:phone) { |n| "100#{n}" }
     user
-    called_at "2015-05-21 11:39:45"
+    called_at '2015-05-21 11:39:45'
     call_log_id 10
     reviewed false
+    place
   end
 end

@@ -11,12 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160812050327) do
+ActiveRecord::Schema.define(version: 20160910034447) do
 
-  create_table "alerts", force: :cascade do |t|
+  create_table "alert_settings", force: :cascade do |t|
     t.boolean "is_enable_sms_alert",   limit: 1
     t.string  "message_template",      limit: 255
-    t.integer "user_id",               limit: 4
     t.integer "verboice_project_id",   limit: 4
     t.boolean "is_enable_email_alert", limit: 1,     default: false
     t.text    "recipient_type",        limit: 65535
@@ -84,14 +83,42 @@ ActiveRecord::Schema.define(version: 20160812050327) do
     t.string   "recipients",          limit: 255, default: "--- []\n"
   end
 
+  create_table "log_types", force: :cascade do |t|
+    t.string   "name",        limit: 255, null: false
+    t.string   "description", limit: 255
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.string   "kind",        limit: 255
+  end
+
+  add_index "log_types", ["kind"], name: "index_log_types_on_kind", using: :btree
+  add_index "log_types", ["name"], name: "index_log_types_on_name", unique: true, using: :btree
+
+  create_table "logs", force: :cascade do |t|
+    t.string   "from",                limit: 255
+    t.text     "to",                  limit: 65535
+    t.string   "body",                limit: 255
+    t.string   "suggested_channel",   limit: 255
+    t.integer  "verboice_project_id", limit: 4
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.integer  "type_id",             limit: 4
+    t.string   "kind",                limit: 255
+    t.datetime "started_at"
+  end
+
+  add_index "logs", ["kind"], name: "index_logs_on_kind", using: :btree
+  add_index "logs", ["type_id"], name: "index_logs_on_type_id", using: :btree
+
   create_table "places", force: :cascade do |t|
     t.string   "name",                         limit: 255
     t.string   "code",                         limit: 255
     t.string   "kind_of",                      limit: 255
-    t.datetime "created_at",                               null: false
-    t.datetime "updated_at",                               null: false
+    t.datetime "created_at",                                              null: false
+    t.datetime "updated_at",                                              null: false
     t.string   "ancestry",                     limit: 255
     t.string   "dhis2_organisation_unit_uuid", limit: 255
+    t.boolean  "auditable",                    limit: 1,   default: true
   end
 
   add_index "places", ["ancestry"], name: "index_places_on_ancestry", using: :btree
@@ -141,8 +168,10 @@ ActiveRecord::Schema.define(version: 20160812050327) do
     t.boolean  "dhis2_submitted",      limit: 1,     default: false
     t.datetime "dhis2_submitted_at"
     t.integer  "dhis2_submitted_by",   limit: 4
+    t.integer  "place_id",             limit: 4
   end
 
+  add_index "reports", ["place_id"], name: "index_reports_on_place_id", using: :btree
   add_index "reports", ["user_id"], name: "index_reports_on_user_id", using: :btree
   add_index "reports", ["year", "week"], name: "index_reports_on_year_and_week", using: :btree
 
@@ -156,28 +185,6 @@ ActiveRecord::Schema.define(version: 20160812050327) do
   end
 
   add_index "settings", ["thing_type", "thing_id", "var"], name: "index_settings_on_thing_type_and_thing_id_and_var", unique: true, using: :btree
-
-  create_table "sms_logs", force: :cascade do |t|
-    t.string   "from",                limit: 255
-    t.string   "to",                  limit: 255
-    t.string   "body",                limit: 255
-    t.string   "suggested_channel",   limit: 255
-    t.integer  "verboice_project_id", limit: 4
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
-    t.integer  "type_id",             limit: 4
-  end
-
-  add_index "sms_logs", ["type_id"], name: "index_sms_logs_on_type_id", using: :btree
-
-  create_table "sms_types", force: :cascade do |t|
-    t.string   "name",        limit: 255, null: false
-    t.string   "description", limit: 255
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
-  end
-
-  add_index "sms_types", ["name"], name: "index_sms_types_on_name", unique: true, using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "username",             limit: 255

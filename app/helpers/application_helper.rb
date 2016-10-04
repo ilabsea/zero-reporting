@@ -252,6 +252,14 @@ module ApplicationHelper
     template_params_selector template_params, selector
   end
 
+  def message_template_reporter_params_for selector
+    template_params_selector Setting::ReportSetting::REPORTER_VARIABLES, selector
+  end
+
+  def message_template_supervisor_params_for selector
+    template_params_selector Setting::ReportSetting::SUPERVISOR_VARIABLES, selector
+  end
+
   def template_params_selector template_params, selector
     template_params.map do |anchor|
       link_to("{{#{anchor}}}", 'javascript:void(0)', data: {selector: selector}, class: 'param-link')

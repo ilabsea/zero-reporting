@@ -10,6 +10,7 @@
 #  updated_at                   :datetime         not null
 #  ancestry                     :string(255)
 #  dhis2_organisation_unit_uuid :string(255)
+#  auditable                    :boolean          default(TRUE)
 #
 # Indexes
 #
@@ -25,18 +26,18 @@ FactoryGirl.define do
 
   factory :phd, class: PHD do
     sequence(:name) {|n| "Place-#{n}"}
-    sequence(:code) {|n| "0#{n}" }
+    sequence(:code) {|n| "phd_0#{n}" }
   end
 
   factory :od, class: OD do
     sequence(:name) {|n| "Place-#{n}"}
-    sequence(:code) {|n| "0#{n}" }
+    sequence(:code) {|n| "od_0#{n}" }
     parent {create(:phd, code: "#{code}-1")}
   end
 
   factory :hc, class: HC do
     sequence(:name) {|n| "Place-#{n}"}
-    sequence(:code) {|n| "0#{n}" }
+    sequence(:code) {|n| "hc_0#{n}" }
     sequence(:dhis2_organisation_unit_uuid) {|n| "0#{n}" }
     parent{ create(:od, code: "#{code}-2")}
   end

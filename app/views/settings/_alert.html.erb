@@ -1,11 +1,6 @@
-<h3 class="header-title"> Alert Setting</h3>
-<p class='italic gray callout' >
-  Configure the alert setting
-</p>
-<div class="panel panel-default panel-variable" style="width: 600px;">
-
+<div class="alert-section" style="width: 620px;">
   <div class="panel-head clearfix" style="padding: 10px;">
-    <%= simple_form_for @alert, html: { class: 'form-inline form alert-form'} do |f| %>
+    <%= simple_form_for @alert_setting, html: { class: 'form-inline form alert-form'} do |f| %>
       <div class="form-group">
         <label class="control-label">SMS</label>
         <div>
@@ -13,20 +8,21 @@
             <span class="lbl" style="vertical-align:bottom"></span>
         </div>
       </div>
+      
       <div class="form-group">
-        <label class="control-label">Reciepient</label>
+        <label class="control-label">Recipient(s)</label>
         <div class="horizontal-form-control">
           <% Place::Type.all.each do |place_type| %>
           <div>
-            <% if @alert.recipient_type.include? place_type[:code] %>
-              <input name="alert[recipient_type][]" value="<%= place_type[:code] %>" type="checkbox" class="ace" checked="checked"/>
+            <% if @alert_setting.recipient_type.include? place_type[:code] %>
+              <input name="alert_setting[recipient_type][]" value="<%= place_type[:code] %>" type="checkbox" class="ace" checked="checked"/>
             <% else %>
-              <input name="alert[recipient_type][]" value="<%= place_type[:code] %>" type="checkbox" class="ace" />
+              <input name="alert_setting[recipient_type][]" value="<%= place_type[:code] %>" type="checkbox" class="ace" />
             <% end %>
             <span class="lbl"> <%= place_type[:display_name] %></span>
           </div>
           <% end %>
-          <input name="alert[recipient_type][]"  type="hidden"/>
+          <input name="alert_setting[recipient_type][]"  type="hidden"/>
         </div>
       </div>
 
@@ -47,6 +43,5 @@
         <%= f.submit 'Save', class: 'btn btn-primary' %>
       </div>
     <% end %>
-
   </div>
 </div>

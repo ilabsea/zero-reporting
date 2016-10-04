@@ -42,13 +42,13 @@
 
       <div class='input-row col-lg-2'>
         <%= label_tag :phd, 'PHD' %>
-        <%= select_tag :phd, options_for_select(Adapter::UserContextAdapter.new(UserContext.for(current_user)).phds_list, params[:phd]),
+        <%= select_tag :phd, options_for_select(UserContext.for(current_user).phds_list, params[:phd]),
                        class: 'form-control', include_blank: 'All' %>
       </div>
 
       <div class='input-row col-lg-2'>
         <%= label_tag :od, 'OD' %>
-        <%= select_tag :od, options_for_select(Adapter::UserContextAdapter.new(UserContext.for(current_user)).ods_list(params[:phd]), params[:od]), class: 'form-control', prompt: "All" %>
+        <%= select_tag :od, options_for_select(UserContext.for(current_user).ods_list(params[:phd]), params[:od]), class: 'form-control', prompt: "All" %>
       </div>
 
       <div class='input-row col-lg-2'>

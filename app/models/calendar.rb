@@ -11,4 +11,8 @@ class Calendar
     remaining_days = (begining_date_of_week - year.beginning_date).to_i % 7 > 0 ? 1 : 0
     year.week(week_number + remaining_days)
   end
+
+  def self.weekdays
+    { '3' => 'Wed', '4' => 'Thu', '5' => 'Fri', '6' => 'Sat', '0' => 'Sun', '1' => 'Mon', '2' => 'Tue' }
+  end
 end

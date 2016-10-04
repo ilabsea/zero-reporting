@@ -4,7 +4,6 @@ $(function() {
   handleVerboiceVariableChange()
   handleSaveVariable()
 
-
   variableCollapsable()
   cancelVariableForm()
 });
@@ -51,7 +50,6 @@ function handleSaveVariable() {
     })
   })
 }
-
 
 function cancelVariableForm(){
   $(document.body).delegate(".hide-variable-form", 'click', function(){

@@ -22,7 +22,7 @@ class PlacesController < ApplicationController
     if @place.save
       redirect_to places_with_ref_path(@place.id), notice: 'Place has been created'
     else
-      flash.now[:alert] = "Failed to create place"
+      flash.now[:alert] = 'Failed to create place'
       render :new
     end
   end
@@ -48,7 +48,7 @@ class PlacesController < ApplicationController
     if @place.update_attributes(filter_params)
       redirect_to places_with_ref_path(@place.id), notice: 'Place has been updated'
     else
-      flash.now[:alert] = "Failed to update place"
+      flash.now[:alert] = 'Failed to update place'
       render :edit
     end
   end
@@ -66,13 +66,13 @@ class PlacesController < ApplicationController
   end
 
   def ods_list
-    render json: Adapter::UserContextAdapter.new(UserContext.for(current_user)).ods_list(params[:phd_id]), root: false
+    render json: UserContext.for(current_user).ods_list(params[:phd_id]), root: false
   end
 
   def download_template
     respond_to do |format|
       format.json  { render :json => result }
-      format.csv { send_file "public/sample/location_template.csv", type: 'text/csv' }
+      format.csv { send_file 'public/sample/location_template.csv', type: 'text/csv' }
     end
   end
 
@@ -98,7 +98,6 @@ class PlacesController < ApplicationController
     end
 
     render :json => {:data => csv_string, :row_imported => num_rows}, :root => false
-
   end
 
   private
@@ -108,7 +107,7 @@ class PlacesController < ApplicationController
   end
 
   def filter_params
-    params.require(:place).permit(:name, :code, :dhis2_organisation_unit_uuid, :parent_id, :kind_of)
+    params.require(:place).permit(:name, :code, :dhis2_organisation_unit_uuid, :parent_id, :kind_of, :auditable)
   end
 
   def csv_settings

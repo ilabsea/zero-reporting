@@ -1,6 +1,8 @@
 class ReportsController < ApplicationController
   authorize_resource
 
+  before_action :load_user_context, only: [:index, :query_piechart, :export_as_csv]
+
   helper_method :sort_column, :sort_direction
 
   def required_admin_role!
@@ -8,7 +10,7 @@ class ReportsController < ApplicationController
   end
 
   def index
-    reports = Adapter::UserContextAdapter.new(UserContext.for(current_user)).reports.includes(:report_variables, :user, :phd, :od)
+    reports = @user_context.reports.includes(:report_variables, :user, :phd, :od)
                      .effective
                      .filter(params)
                      .includes(:phd, :od)
@@ -22,20 +24,19 @@ class ReportsController < ApplicationController
   end
 
   def query_piechart
-    @reports = Adapter::UserContextAdapter.new(UserContext.for(current_user))
-                     .reports
-                     .includes(:report_variables, :user, :phd, :od)
-                     .effective
-                     .filter(params)
-                     .includes(:phd, :od)
-                     .order('id DESC')
+    @reports = @user_context.reports
+      .includes(:report_variables, :user, :phd, :od)
+      .effective
+      .filter(params)
+      .includes(:phd, :od)
+      .order('id DESC')
     data_review = Report.to_piechart_reviewed(@reports)
     data_phd = Report.to_piechart_phd(@reports)
     render :json => {:review => data_review, :phd => data_phd}
   end
 
   def export_as_csv
-    file = ReportCsv.new(Adapter::UserContextAdapter.new(UserContext.for(current_user))).start(params)
+    file = ReportCsv.new(@user_context).start(params)
     send_file file, type: "text/csv"
   end
 
@@ -76,6 +77,10 @@ class ReportsController < ApplicationController
   end
 
   private
+
+  def load_user_context
+    @user_context = UserContext.for(current_user)
+  end
 
   def sort_column
     Report.column_names.include?(params[:sort]) ? params[:sort] : nil

@@ -30,9 +30,11 @@
 #  dhis2_submitted      :boolean          default(FALSE)
 #  dhis2_submitted_at   :datetime
 #  dhis2_submitted_by   :integer
+#  place_id             :integer
 #
 # Indexes
 #
+#  index_reports_on_place_id       (place_id)
 #  index_reports_on_user_id        (user_id)
 #  index_reports_on_year_and_week  (year,week)
 #
@@ -45,6 +47,7 @@ class Report < ActiveRecord::Base
   audited
 
   belongs_to :user
+  belongs_to :place
 
   belongs_to :phd, class_name: 'Place', foreign_key: 'phd_id'
   belongs_to :od, class_name: 'Place', foreign_key: 'od_id'
@@ -77,6 +80,7 @@ class Report < ActiveRecord::Base
 
   def set_place_tree
     if self.user && self.user.place
+      self.place = self.user.place
       self.phd = self.user.place.phd
       self.od  = self.user.place.od
     end
@@ -225,7 +229,7 @@ class Report < ActiveRecord::Base
   end
 
   def alert
-    alert_setting = Alert.find_by(verboice_project_id: self.verboice_project_id)
+    alert_setting = AlertSetting.find_by(verboice_project_id: self.verboice_project_id)
     return unless alert_setting
     week = self.week_for_alert
     place = self.place
@@ -244,12 +248,10 @@ class Report < ActiveRecord::Base
     return week
   end
 
-  def place
-    self.user.place
-  end
-
   def weekly_notify(week, alert_setting)
-    AlertCase.new(alert_setting, self, week).run
+    alert = Alerts::ReportCaseAlert.new(alert_setting, self, week)
+    adapter = Adapter::SmsAlertAdapter.new(alert)
+    adapter.process
   end
 
   def alerted_variables
@@ -273,6 +275,14 @@ class Report < ActiveRecord::Base
     end
 
     params
+  end
+
+  def self.audit_missing
+    report_setting = Setting.report
+    if report_setting.has_day?(Date.today.wday)
+      auditor = Auditor::ReportMissingAuditor.new(report_setting)
+      auditor.audit
+    end
   end
 
 end

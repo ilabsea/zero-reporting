@@ -9,8 +9,8 @@ module Sms
     end
 
     def send sms
-      SmsLog.write sms
-      
+      Log.write_sms sms
+
       nuntium.send_ao sms.to_nuntium_params
     end
 

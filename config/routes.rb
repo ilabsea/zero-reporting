@@ -54,7 +54,11 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :settings, only: [:index]
+  resources :settings, only: [:index] do
+    collection do
+      put 'update_report'
+    end
+  end
   put 'update_settings' => 'settings#update_settings'
 
   put 'verboice' => 'settings#verboice'
@@ -96,11 +100,9 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :alerts do
-    collection do
-      get 'log'
-    end
-  end
+  resources :logs, only: [:index]
+
+  resources :alert_settings
 
   resources :external_sms_settings
   resources :hub_push_notifications, only: [:create]

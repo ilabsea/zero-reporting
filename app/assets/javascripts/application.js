@@ -31,8 +31,6 @@
 //= require shared/jquery.easypiechart
 //= require shared/piechart
 
-//= require setting/form
-
 //= require shared/alert-animate
 //= require shared/hidden-content
 
@@ -46,12 +44,18 @@
 //= require shared/audio-init
 //= require shared/redirect-to
 
+//= require jquery.minicolors
+//= require jquery.minicolors.simple_form
+//= require jquery.minicolors
+//= require jquery.minicolors.simple_form
+
+//= require global
+
 //= require member/action
-//= require jquery.minicolors
-//= require jquery.minicolors.simple_form
-//= require jquery.minicolors
-//= require jquery.minicolors.simple_form
 //= require channels/form
+
+//= require setting/form
+//= require setting/report
 
 //= require report/form
 //= require report/list
@@ -62,8 +66,11 @@
 
 //= require external_sms_settings/form
 
+//= require log/filter
+
 //= require sms_broadcasts
 
 //= require lib/select2.min
+//= require lib/jquery.timepicker.min
 
 //= require events
