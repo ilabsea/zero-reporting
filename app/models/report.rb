@@ -40,6 +40,7 @@
 #
 
 class Report < ActiveRecord::Base
+  include Reports::Filterable
 
   serialize :recorded_audios, Array
   serialize :call_log_answers, Array
@@ -103,80 +104,30 @@ class Report < ActiveRecord::Base
     Report.where(user_id: user_ids)
   end
 
-  # from=2015-06-29&to=2015-07-14&phd=27&od=30&status=Listened
-  def self.filter options
-    reports = self.where('1=1')
 
-    if options[:from].present?
-      from = Date.strptime(options[:from], '%Y-%m-%d').to_time
-      reports = reports.where(['called_at >= ?', from.beginning_of_day ])
+  def self.create_from_call_log_id_with_status(call_log_id, status)
+    verboice_attrs = Service::Verboice.connect(Setting).call_log(call_log_id)
+    user = User.find_by_address(verboice_attrs.with_indifferent_access[:address])
+    if user && user.hc_worker?
+      report = Parser::ReportParser.parse(verboice_attrs.with_indifferent_access)
+      report.status = status
+      if report.save
+        report.alert if report.success?
+        report
+      end
     end
-
-    if options[:to].present?
-      to = Date.strptime(options[:to], '%Y-%m-%d').to_time
-      reports = reports.where(['called_at <= ?', to.end_of_day ])
-    end
-
-    reports = reports.where(called_at: options[:last_day].to_i.day.ago.to_date..Date.today + 1.day) if options[:last_day].present?
-    reports = reports.where(phd_id: options[:phd]) if options[:phd].present?
-    reports = reports.where(od_id: options[:od]) if options[:od].present?
-    reports = reports.where(reviewed: options[:reviewed]) if options[:reviewed].present?
-    reports = reports.where(reviewed: true) if options[:state] === Report::REVIEWED
-    reports = reports.where(year: options[:year]) if options[:year].present? && options[:reviewed].to_i != STATUS_NEW
-
-    reports = reports.where("week >= ?", options[:from_week]) if options[:from_week].present? && options[:reviewed].to_i == STATUS_REVIEWED
-    reports = reports.where("week <= ?", options[:to_week]) if options[:to_week].present? && options[:reviewed].to_i == STATUS_REVIEWED
-
-    reports
   end
 
   def self.create_from_call_log_id(call_log_id)
     verboice_attrs = Service::Verboice.connect(Setting).call_log(call_log_id)
     user = User.find_by_address(verboice_attrs.with_indifferent_access[:address])
     if user && user.hc_worker?
-      create_from_verboice_attrs(verboice_attrs.with_indifferent_access)
-    end
-  end
-
-  def self.create_from_verboice_attrs verboice_attrs
-    attrs = {
-      verboice_project_id: verboice_attrs[:project][:id],
-      phone: verboice_attrs[:address],
-      duration: verboice_attrs[:duration],
-      called_at: verboice_attrs[:called_at],
-      started_at: verboice_attrs[:started_at],
-      call_log_id: verboice_attrs[:id],
-      call_flow_id: verboice_attrs[:call_flow_id],
-      recorded_audios: verboice_attrs[:call_log_recorded_audios],
-      call_log_answers: verboice_attrs[:call_log_answers],
-      reviewed: false
-    }
-
-    verboice_attrs[:call_log_recorded_audios].each do |recorded_audio|
-      if recorded_audio[:project_variable_id] == Setting[:project_variable].to_i
-        attrs[:audio_key] = recorded_audio[:key]
-        break
-      else
+      report = Parser::ReportParser.parse(verboice_attrs.with_indifferent_access)
+      if report.save
+        report.alert
+        report
       end
     end
-
-    variables = Variable.where(verboice_project_id: verboice_attrs[:project][:id])
-
-    attrs[:user] = User.find_by(phone_without_prefix: Tel.new(verboice_attrs[:address]).without_prefix)
-    report = Report.where(call_log_id: attrs[:call_log_id]).first_or_initialize
-
-    verboice_attrs[:call_log_recorded_audios].each do |recorded_audio|
-      variable = variables.select{|variable| variable.verboice_id == recorded_audio[:project_variable_id]}.first
-      report.report_variable_audios.build( value: recorded_audio[:key], variable_id: variable.id) if variable
-    end
-
-    verboice_attrs[:call_log_answers].each do |call_log_answer|
-      variable = variables.select{|variable| variable.verboice_id == call_log_answer[:project_variable_id]}.first
-      report.report_variable_values.build(value: call_log_answer[:value], variable_id: variable.id) if variable
-    end
-    report.update_attributes(attrs)
-    report.alert
-    report
   end
 
   def toggle_status
@@ -213,7 +164,7 @@ class Report < ActiveRecord::Base
       else
         percentage = sprintf( "%0.02f", (100 * value.to_f / reports.size.to_f))
       end
-      list.push({ label: "#{name}(#{percentage}%)",  data: percentage, color: "##{colour}"})
+      list.push({ label: "#{name}(#{percentage}%)",  data: percentage, color: "##{colour}" })
     end
     return list
   end
@@ -230,21 +181,27 @@ class Report < ActiveRecord::Base
 
   def alert
     alert_setting = AlertSetting.find_by(verboice_project_id: self.verboice_project_id)
+    
     return unless alert_setting
+
     week = self.week_for_alert
     place = self.place
+
     self.report_variable_values.each do |report_variable|
       report_variable.check_alert_by_week(week, place)
     end
+
     self.weekly_notify(week,alert_setting)
   end
 
   def week_for_alert
     week = Calendar.week(self.called_at.to_date)
+
     # shift 1 week back if the report is on sunday or after wednesday
     if self.called_at.to_date.wday > 3 || self.called_at.to_date.wday == 0
        return week.previous
     end
+
     return week
   end
 
@@ -285,4 +242,22 @@ class Report < ActiveRecord::Base
     end
   end
 
+  def failed?
+    status === VERBOICE_CALL_STATUS_FAILED
+  end
+
+  def in_progress?
+    status === VERBOICE_CALL_STATUS_IN_PROGRESS
+  end
+
+  def success?
+    status === VERBOICE_CALL_STATUS_COMPLETE
+  end
+
+  def status_info
+    return { color: 'red', text: 'Failed' } if failed?
+    return { color: 'orange', text: 'In-progress' } if in_progress?
+    
+    { color: 'green', text: 'Success' }
+  end
 end

@@ -46,12 +46,7 @@
     <tbody>
     <% if @reports_by_page.size > 0 %>
       <tr style="font-weight: bold;">
-        <td>Total</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td colspan='6' style='text-align:right;'>Total</td>
         <% @variables.each do |variable| %>
         <td style='color: <%= variable.text_color%>;'><%= variable.total_report_value(@report_ids) %></td>
         <% end -%>
@@ -69,7 +64,9 @@
                <%= link_to(report.od.name, users_path(place_id: report.od.try(:id))) if current_user.admin? && report.od %>
                <%= report.od.try(:name) if current_user.normal? %>
             </td>
-            <td><%= report.phone %></td>
+            <td>
+              <a class='circle' style='border: 1px solid #f3f3f3; background-color: <%= report.status_info[:color] %>' data-toggle='tooltip' data-placement=right' title='<%= report.status_info[:text] %>'></a><%= report.phone %>
+            </td>
             <td> <%= report.user.try(:name)%> </td>
             <td> <%= report.duration%> </td>
             <% @variables.each do |variable| %>

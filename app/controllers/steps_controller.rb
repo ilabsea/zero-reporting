@@ -22,6 +22,20 @@ class StepsController < ApplicationController
     render text: content
   end
 
+  def notify_reporting_started
+    report = Report.create_from_call_log_id_with_status(params['CallSid'], Report::VERBOICE_CALL_STATUS_IN_PROGRESS)
+    
+    content = "{\"result\": \"#{report.in_progress? ? 1 : 0}\" }"
+    render text: content
+  end
+
+  def notify_reporting_ended
+    report = Report.create_from_call_log_id_with_status(params['CallSid'], Report::VERBOICE_CALL_STATUS_COMPLETE)
+
+    content = "{\"result\": \"#{report.success? ? 1 : 0}\" }"
+    render text: content
+  end
+
   def send_sms
     setting = ExternalSmsSetting.find_by(verboice_project_id: Setting[:project])
     

@@ -71,6 +71,8 @@ Rails.application.routes.draw do
     collection do
       post :validate_hc_worker
       post :send_sms
+      post :notify_reporting_started
+      post :notify_reporting_ended
     end
   end
 
