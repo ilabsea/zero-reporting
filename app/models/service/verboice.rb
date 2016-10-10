@@ -49,6 +49,10 @@ class Service::Verboice
     get("/call_logs/#{id}")
   end
 
+  def call_logs(ids)
+    get("/call_logs?id=#{ids.join(',')}")
+  end
+
   def call_log_audio(report_variable)
     url = build_url("/call_logs/#{report_variable.report.call_log_id}/play_audio?key=#{report_variable.value}")
     Rails.logger.debug("fetching resource from: #{url}")

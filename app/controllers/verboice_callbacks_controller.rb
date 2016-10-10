@@ -6,7 +6,7 @@ class VerboiceCallbacksController < ApplicationController
 
   def index
     if params['CallStatus'] == "completed" || params['CallStatus'] == "failed"
-      Report.create_from_call_log_id(params['CallSid'])
+      Report.create_from_call_log_with_status(params['CallSid'], params['CallStatus'])
     end
     render json: params
   end
