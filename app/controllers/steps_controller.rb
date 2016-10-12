@@ -31,7 +31,7 @@ class StepsController < ApplicationController
   end
 
   def notify_reporting_ended
-    report = Report.create_from_call_log_with_status(params['CallSid'], Report::VERBOICE_CALL_STATUS_COMPLETE)
+    report = Report.create_from_call_log_with_status(params['CallSid'], Report::VERBOICE_CALL_STATUS_COMPLETED)
 
     content = "{\"result\": \"#{report.success? ? 1 : 0}\" }"
     render text: content

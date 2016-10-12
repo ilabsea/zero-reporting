@@ -11,13 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160910034447) do
+ActiveRecord::Schema.define(version: 20161010091336) do
 
   create_table "alert_settings", force: :cascade do |t|
-    t.boolean "is_enable_sms_alert",   limit: 1
+    t.boolean "is_enable_sms_alert"
     t.string  "message_template",      limit: 255
     t.integer "verboice_project_id",   limit: 4
-    t.boolean "is_enable_email_alert", limit: 1,     default: false
+    t.boolean "is_enable_email_alert",               default: false
     t.text    "recipient_type",        limit: 65535
   end
 
@@ -49,7 +49,7 @@ ActiveRecord::Schema.define(version: 20160910034447) do
     t.integer  "user_id",    limit: 4
     t.string   "password",   limit: 255
     t.string   "setup_flow", limit: 255
-    t.boolean  "is_enable",  limit: 1,   default: false
+    t.boolean  "is_enable",              default: false
     t.datetime "created_at",                             null: false
     t.datetime "updated_at",                             null: false
   end
@@ -75,7 +75,7 @@ ActiveRecord::Schema.define(version: 20160910034447) do
   end
 
   create_table "external_sms_settings", force: :cascade do |t|
-    t.boolean  "is_enable",           limit: 1
+    t.boolean  "is_enable"
     t.string   "message_template",    limit: 255
     t.integer  "verboice_project_id", limit: 4
     t.datetime "created_at",                                           null: false
@@ -118,7 +118,7 @@ ActiveRecord::Schema.define(version: 20160910034447) do
     t.datetime "updated_at",                                              null: false
     t.string   "ancestry",                     limit: 255
     t.string   "dhis2_organisation_unit_uuid", limit: 255
-    t.boolean  "auditable",                    limit: 1,   default: true
+    t.boolean  "auditable",                                default: true
   end
 
   add_index "places", ["ancestry"], name: "index_places_on_ancestry", using: :btree
@@ -130,10 +130,10 @@ ActiveRecord::Schema.define(version: 20160910034447) do
     t.string   "value",        limit: 255
     t.datetime "created_at",                               null: false
     t.datetime "updated_at",                               null: false
-    t.boolean  "has_audio",    limit: 1,   default: false
-    t.boolean  "listened",     limit: 1,   default: false
+    t.boolean  "has_audio",                default: false
+    t.boolean  "listened",                 default: false
     t.string   "token",        limit: 255
-    t.boolean  "is_alerted",   limit: 1,   default: false
+    t.boolean  "is_alerted",               default: false
     t.string   "exceed_value", limit: 255
   end
 
@@ -141,36 +141,38 @@ ActiveRecord::Schema.define(version: 20160910034447) do
   add_index "report_variables", ["variable_id"], name: "index_report_variables_on_variable_id", using: :btree
 
   create_table "reports", force: :cascade do |t|
-    t.string   "phone",                limit: 255
-    t.integer  "user_id",              limit: 4
-    t.string   "audio_key",            limit: 255
+    t.string   "phone",                      limit: 255
+    t.integer  "user_id",                    limit: 4
+    t.string   "audio_key",                  limit: 255
     t.datetime "called_at"
-    t.integer  "call_log_id",          limit: 4
-    t.datetime "created_at",                                         null: false
-    t.datetime "updated_at",                                         null: false
-    t.string   "phone_without_prefix", limit: 255
-    t.integer  "phd_id",               limit: 4
-    t.integer  "od_id",                limit: 4
-    t.string   "status",               limit: 255
-    t.float    "duration",             limit: 24
+    t.integer  "call_log_id",                limit: 4
+    t.datetime "created_at",                                               null: false
+    t.datetime "updated_at",                                               null: false
+    t.string   "phone_without_prefix",       limit: 255
+    t.integer  "phd_id",                     limit: 4
+    t.integer  "od_id",                      limit: 4
+    t.string   "status",                     limit: 255
+    t.float    "duration",                   limit: 24
     t.datetime "started_at"
-    t.integer  "call_flow_id",         limit: 4
-    t.text     "recorded_audios",      limit: 65535
-    t.boolean  "has_audio",            limit: 1,     default: false
-    t.boolean  "delete_status",        limit: 1,     default: false
-    t.text     "call_log_answers",     limit: 65535
-    t.integer  "verboice_project_id",  limit: 4
-    t.boolean  "reviewed",             limit: 1,     default: false
-    t.integer  "year",                 limit: 4
-    t.integer  "week",                 limit: 4
+    t.integer  "call_flow_id",               limit: 4
+    t.text     "recorded_audios",            limit: 65535
+    t.boolean  "has_audio",                                default: false
+    t.boolean  "delete_status",                            default: false
+    t.text     "call_log_answers",           limit: 65535
+    t.integer  "verboice_project_id",        limit: 4
+    t.boolean  "reviewed",                                 default: false
+    t.integer  "year",                       limit: 4
+    t.integer  "week",                       limit: 4
     t.datetime "reviewed_at"
-    t.boolean  "is_reached_threshold", limit: 1,     default: false
-    t.boolean  "dhis2_submitted",      limit: 1,     default: false
+    t.boolean  "is_reached_threshold",                     default: false
+    t.boolean  "dhis2_submitted",                          default: false
     t.datetime "dhis2_submitted_at"
-    t.integer  "dhis2_submitted_by",   limit: 4
-    t.integer  "place_id",             limit: 4
+    t.integer  "dhis2_submitted_by",         limit: 4
+    t.integer  "place_id",                   limit: 4
+    t.integer  "verboice_sync_failed_count", limit: 4,     default: 0
   end
 
+  add_index "reports", ["call_log_id", "verboice_sync_failed_count", "status"], name: "index_call_failed_status", using: :btree
   add_index "reports", ["place_id"], name: "index_reports_on_place_id", using: :btree
   add_index "reports", ["user_id"], name: "index_reports_on_user_id", using: :btree
   add_index "reports", ["year", "week"], name: "index_reports_on_year_and_week", using: :btree
@@ -217,8 +219,14 @@ ActiveRecord::Schema.define(version: 20160910034447) do
     t.string   "background_color",        limit: 255
     t.string   "text_color",              limit: 255
     t.string   "dhis2_data_element_uuid", limit: 255
-    t.boolean  "is_alerted_by_threshold", limit: 1,   default: true
-    t.boolean  "is_alerted_by_report",    limit: 1,   default: false
+    t.boolean  "is_alerted_by_threshold",             default: true
+    t.boolean  "is_alerted_by_report",                default: false
+  end
+
+  create_table "verboice_sync_states", force: :cascade do |t|
+    t.integer  "last_call_log_id", limit: 4, default: -1
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
   end
 
   add_foreign_key "channels", "users"

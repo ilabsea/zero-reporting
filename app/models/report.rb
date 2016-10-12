@@ -31,10 +31,11 @@
 #  dhis2_submitted_at         :datetime
 #  dhis2_submitted_by         :integer
 #  place_id                   :integer
-#  verboice_sync_failed_count :integer
+#  verboice_sync_failed_count :integer          default(0)
 #
 # Indexes
 #
+#  index_call_failed_status        (call_log_id,verboice_sync_failed_count,status)
 #  index_reports_on_place_id       (place_id)
 #  index_reports_on_user_id        (user_id)
 #  index_reports_on_year_and_week  (year,week)
@@ -61,8 +62,11 @@ class Report < ActiveRecord::Base
   has_many :variables, through: :report_variables
 
   VERBOICE_CALL_STATUS_FAILED = 'failed'
-  VERBOICE_CALL_STATUS_COMPLETE = 'complete'
+  VERBOICE_CALL_STATUS_COMPLETED = 'completed'
   VERBOICE_CALL_STATUS_IN_PROGRESS = 'in-progress'
+
+  FAILED_ATTEMPT = 3
+  FETCH_SIZE = 1000
 
   STATUS_NEW = 0
   STATUS_REVIEWED = 1
@@ -75,6 +79,7 @@ class Report < ActiveRecord::Base
 
   before_save :normalize_attrs
   before_save :set_place_tree
+  after_save :notify_alert
 
   def normalize_attrs
     self.phone_without_prefix = Tel.new(self.phone).without_prefix if self.phone.present?
@@ -86,6 +91,10 @@ class Report < ActiveRecord::Base
       self.phd = self.user.place.phd
       self.od  = self.user.place.od
     end
+  end
+
+  def notify_alert
+    self.alert if self.finished?
   end
 
   def self.effective
@@ -107,10 +116,10 @@ class Report < ActiveRecord::Base
 
   def self.new_from_call_log_id call_log_id
     verboice_call_log = Service::Verboice.connect(Setting).call_log(call_log_id)
-    new_from_call_log verboice_call_log
+    new_or_initialize_from_call_log verboice_call_log
   end
 
-  def self.new_from_call_log verboice_call_log
+  def self.new_or_initialize_from_call_log verboice_call_log
     user = User.find_by_address(verboice_call_log.with_indifferent_access[:address])
     (user && user.hc_worker?) ? Parser::ReportParser.parse(verboice_call_log.with_indifferent_access) : nil
   end
@@ -121,18 +130,25 @@ class Report < ActiveRecord::Base
     return if report.nil?
 
     report.update_status! status
+
+    report
+  end
+
+  def mark_as_completed
+    update_status!(VERBOICE_CALL_STATUS_COMPLETED)
+  end
+
+  def mark_as_failed
+    update_status!(VERBOICE_CALL_STATUS_FAILED)
+  end
+
+  def mark_as_in_progress
+    update_status!(VERBOICE_CALL_STATUS_IN_PROGRESS)
   end
 
   def update_status! status
     self.status = status
-    
     save!
-    notify_alert
-    self
-  end
-
-  def notify_alert
-    self.alert if self.finished?
   end
 
   def toggle_status
@@ -196,7 +212,7 @@ class Report < ActiveRecord::Base
       report_variable.check_alert_by_week(week, place)
     end
 
-    self.weekly_notify(week,alert_setting)
+    self.weekly_notify(week, alert_setting)
   end
 
   def week_for_alert
@@ -204,7 +220,7 @@ class Report < ActiveRecord::Base
 
     # shift 1 week back if the report is on sunday or after wednesday
     if self.called_at.to_date.wday > 3 || self.called_at.to_date.wday == 0
-       return week.previous
+      return week.previous
     end
 
     return week
@@ -247,24 +263,56 @@ class Report < ActiveRecord::Base
     end
   end
 
-  def self.sync_status_with_verboice!
-    verboice_call_log_ids = in_progress.limit(100).pluck(:call_log_id)
-    verboice_call_logs = Service::Verboice.connect(Setting).call_logs(verboice_call_log_ids)
-    verboice_call_logs.each do |verboice_call_log|
-      if [VERBOICE_CALL_STATUS_COMPLETE, VERBOICE_CALL_STATUS_FAILED].include?(verboice_call_log['state'])
-        report = new_from_call_log(verboice_call_log)
+  def self.sync_calls
+    fetches_verboice_calls.each do |verboice_call_log|
+      Report.sync_call verboice_call_log
+    end
+  end
 
-        report.update_status!(verboice_call_log['state'])
+  def self.sync_call verboice_call_log
+    if finished_statuses.include?(verboice_call_log['state'])
+      report = new_or_initialize_from_call_log(verboice_call_log)
+      if report
+        begin
+          report.notify_sync_call_completed
+        rescue
+          report.notify_sync_call_failed
+        end
       end
     end
+  end
+
+  def notify_sync_call_completed
+    mark_as_completed
+    VerboiceSyncState.write(self.call_log_id)
+  end
+
+  def notify_sync_call_failed
+    verboice_sync_failed_increment
+    self.status = VERBOICE_CALL_STATUS_FAILED if fail_attempt_reached?
+    save!
+  end
+
+  def verboice_sync_failed_increment
+    self.verboice_sync_failed_count += 1
+  end
+
+  def self.fetches_verboice_calls
+    verboice_call_log_ids = after_last_sync.in_progress.limit(FETCH_SIZE).pluck(:call_log_id)
+    verboice_call_log_ids.empty? ? [] : Service::Verboice.connect(Setting).call_logs(verboice_call_log_ids)
   end
 
   def self.in_progress
     where(status: VERBOICE_CALL_STATUS_IN_PROGRESS)
   end
 
-  def finished?
-    failed? || success?
+  def self.after_last_sync
+    state = VerboiceSyncState.last
+    where('call_log_id > ? AND verboice_sync_failed_count < ?', (state.nil? ? 0 : state.last_call_log_id), FAILED_ATTEMPT)
+  end
+
+  def fail_attempt_reached?
+    verboice_sync_failed_count >= FAILED_ATTEMPT
   end
 
   def failed?
@@ -276,7 +324,15 @@ class Report < ActiveRecord::Base
   end
 
   def success?
-    status === VERBOICE_CALL_STATUS_COMPLETE
+    status === VERBOICE_CALL_STATUS_COMPLETED
+  end
+
+  def finished?
+    failed? || success?
+  end
+
+  def self.finished_statuses
+    [VERBOICE_CALL_STATUS_COMPLETED, VERBOICE_CALL_STATUS_FAILED]
   end
 
   def status_info
@@ -285,4 +341,5 @@ class Report < ActiveRecord::Base
     
     { color: 'green', text: 'Success' }
   end
+
 end

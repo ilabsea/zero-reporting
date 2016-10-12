@@ -22,9 +22,9 @@ namespace :report do
   end
 
   desc 'Synchronize status with Verboice'
-  task :sync_status_with_verboice => :environment do
+  task :sync_calls => :environment do
     log('Audit reporter who is missing report in x week(s)') do
-      Report.sync_status_with_verboice!
+      Report.sync_calls
     end
   end
 end
