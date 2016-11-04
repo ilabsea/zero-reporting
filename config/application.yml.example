@@ -32,6 +32,9 @@ default: &default
   # HUB
   HUB_ENABLED: '1' # '1' => enabled, '0' => disabled
 
+  # LOGO
+  LOGO_URL: 'path_to_image'
+
 development:
   <<: *default
 
