@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe SmsBroadcastsController, type: :controller do
 
-  let(:user) { build(:user) }
+  let(:user) { build(:user, role: User::ROLE_ADMIN) }
 
   before(:each) do
     allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)

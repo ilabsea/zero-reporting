@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe EventsController, type: :controller do
 
-  let(:user) { build(:user) }
+  let(:user) { build(:user, role: User::ROLE_ADMIN) }
 
   let(:valid_attributes) {
     {

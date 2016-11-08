@@ -6,13 +6,16 @@ class Ability
     #
     #   user ||= User.new # guest user (not logged in)
       can :profile, User
+
       if user.admin?
         can :manage, :all
       else
         if user.place.od?
           can :manage, Report, od_id: user.place_id
+          can :create, :hub_push_notification
         elsif user.place.phd?
           can :manage, Report, phd_id: user.place_id
+          can :create, :hub_push_notification
         end
       end
     #
