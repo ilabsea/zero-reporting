@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <verboice-service>
-  <name>Zero Reporting System</name>
-  <global-settings>
-    <variable name="service_domain" display-name="Service Domain" type="string"/>
-  </global-settings>
+  <name>Reporting System</name>
   <steps>
     <step name="validate_hc_worker"
       display-name="HC Worker"
       icon="medicalkit"
       type="callback"
-      callback-url="http://{service_domain}/steps/validate_hc_worker">
+      callback-url="/steps/validate_hc_worker">
 
       <settings>
         <variable name="value" display-name="Variable" type="numeric"/>
@@ -25,14 +22,14 @@
       display-name="Notify SMS"
       icon="medicalkit"
       type="callback"
-      callback-url="http://{service_domain}/steps/send_sms">
+      callback-url="/steps/send_sms">
     </step>
 
     <step name="notify_report_started"
       display-name="Notify Reporter Started"
       icon="medicalkit"
       type="callback"
-      callback-url="http://{service_domain}/steps/notify_reporting_started">
+      callback-url="/steps/notify_reporting_started">
 
       <response type="variables">
         <variable name="result" display-name="Result" type="string"/>
@@ -43,7 +40,7 @@
       display-name="Notify Reporter Ended"
       icon="medicalkit"
       type="callback"
-      callback-url="http://{service_domain}/steps/notify_reporting_ended">
+      callback-url="/steps/notify_reporting_ended">
 
       <response type="variables">
         <variable name="result" display-name="Result" type="string"/>
