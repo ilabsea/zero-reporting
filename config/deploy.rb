@@ -33,7 +33,7 @@ set :repo_url, 'https://bitbucket.org/ilab/cdc-zero-reporting-system.git'
 # set :pty, true
 
 # Default value for :linked_files is []
-set :linked_files, fetch(:linked_files, []).push('config/application.yml', 'config/secrets.yml')
+set :linked_files, fetch(:linked_files, []).push('config/application.yml', 'config/secrets.yml', 'config/step_manifest.xml')
 
 # Default value for linked_dirs is []
 set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system', 'public/audios')
