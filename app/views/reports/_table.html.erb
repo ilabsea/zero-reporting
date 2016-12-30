@@ -36,7 +36,9 @@
         <td><%= sortable "user_id", "Username" %></td>
         <td>Duration<br/>(second)</td>
         <% @variables.each do |variable| %>
-        <td style="width:150px; background-color: <%= variable.background_color%>;" > <%= variable.name %> </td>
+          <% unless variable.disabled %>
+            <td style="width:150px; background-color: <%= variable.background_color%>;" ><%= variable.name %></td>
+          <% end %>
         <% end %>
         <td>Reviewed and assigned</td>
         <td>Action</td>
@@ -48,7 +50,9 @@
       <tr style="font-weight: bold;">
         <td colspan='6' style='text-align:right;'>Total</td>
         <% @variables.each do |variable| %>
-        <td style='color: <%= variable.text_color%>;'><%= variable.total_report_value(@report_ids) %></td>
+          <% unless variable.disabled %>
+            <td style='color: <%= variable.text_color%>;'><%= variable.total_report_value(@report_ids) %></td>
+          <% end %>
         <% end -%>
         <td></td>
         <td></td>
@@ -70,16 +74,18 @@
           <td> <%= report.user.try(:name)%> </td>
           <td> <%= report.duration%> </td>
           <% @variables.each do |variable| %>
-          <td style='color: <%= variable.text_color%>;'>
-              <% report_variable = report.report_variables.select{|report_variable| report_variable.variable_id == variable.id}.first %>
+            <% unless variable.disabled %>
+              <td style='color: <%= variable.text_color%>;'>
+                <% report_variable = report.report_variables.select{|report_variable| report_variable.variable_id == variable.id}.first %>
 
-              <div style="position: relative">
-                <% if report_variable && report_variable.is_alerted %>
-                  <%= image_tag 'warning.gif', style: 'top:0; right: 0; position: absolute' %>
-                <% end %>
-                <%= display_report_variable(report_variable) %>
-              </div>
-            </td>
+                <div style="position: relative">
+                  <% if report_variable && report_variable.is_alerted %>
+                    <%= image_tag 'warning.gif', style: 'top:0; right: 0; position: absolute' %>
+                  <% end %>
+                  <%= display_report_variable(report_variable) %>
+                </div>
+              </td>
+            <% end %>
           <% end %>
 
           <td>

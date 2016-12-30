@@ -15,6 +15,7 @@
 #  dhis2_data_element_uuid :string(255)
 #  is_alerted_by_threshold :boolean          default(TRUE)
 #  is_alerted_by_report    :boolean          default(FALSE)
+#  disabled                :boolean          default(FALSE)
 #
 
 FactoryGirl.define do
