@@ -21,10 +21,10 @@ module Reports::Filterable
       reports = reports.where(od_id: options[:od]) if options[:od].present?
       reports = reports.where(reviewed: options[:reviewed]) if options[:reviewed].present?
       reports = reports.where(reviewed: true) if options[:state] === Report::REVIEWED
-      reports = reports.where(year: options[:year]) if options[:year].present? && options[:reviewed].to_i != STATUS_NEW
+      reports = reports.where(year: options[:year]) if options[:year].present? && options[:reviewed].to_i != Report::STATUS_NEW
 
-      reports = reports.where("week >= ?", options[:from_week]) if options[:from_week].present? && options[:reviewed].to_i == STATUS_REVIEWED
-      reports = reports.where("week <= ?", options[:to_week]) if options[:to_week].present? && options[:reviewed].to_i == STATUS_REVIEWED
+      reports = reports.where("week >= ?", options[:from_week]) if options[:from_week].present? && options[:reviewed].to_i === Report::STATUS_REVIEWED
+      reports = reports.where("week <= ?", options[:to_week]) if options[:to_week].present? && options[:reviewed].to_i === Report::STATUS_REVIEWED
 
       reports
     end
