@@ -15,6 +15,7 @@
 #  dhis2_data_element_uuid :string(255)
 #  is_alerted_by_threshold :boolean          default(TRUE)
 #  is_alerted_by_report    :boolean          default(FALSE)
+#  disabled                :boolean          default(FALSE)
 #
 
 class Variable < ActiveRecord::Base
@@ -24,6 +25,7 @@ class Variable < ActiveRecord::Base
   has_many :reports, through: :report_variables
   has_many :report_variable_audios
   has_many :report_variable_values
+  
   def self.applied(project_id)
     where(verboice_project_id: project_id)
   end

@@ -1,4 +1,6 @@
 class EventsController < ApplicationController
+  authorize_resource
+  
   before_action :set_event, only: [:destroy]
 
   def index

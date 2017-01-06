@@ -19,6 +19,7 @@ script:
 before_script:
 # - rm Gemfile.lock
   - cp config/application.travis.yml config/application.yml
+  - cp config/database.yml.example config/database.yml
   - mysql -e 'create database cdc_call_test'
 
 notifications:

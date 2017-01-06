@@ -1,8 +1,13 @@
 $(function(){
+  reportListInit();
   reviewWeekNumberChanged();
   subscribeHubEventHandler();
   lastDayChanged();
 });
+
+function reportListInit() {
+  $('[data-toggle="tooltip"]').tooltip();
+}
 
 function lastDayChanged() {
   $(".report-last-day").on("change", function() {

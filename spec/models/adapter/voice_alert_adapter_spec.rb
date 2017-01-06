@@ -25,7 +25,8 @@ RSpec.describe Adapter::VoiceAlertAdapter, type: :model do
         expect(enqueued_jobs.size).to eq(1)
 
         expect(enqueued_jobs.first[:job]).to eq(VerboiceQueueJob)
-        expect(enqueued_jobs.first[:args].first).to eq({ receivers: ['1000'], call_flow_id: 1, channel_id: 1, type: nil, not_before: '2016-09-10 08:00:00' })
+        first_queued = enqueued_jobs.first[:args].first.delete_if { |k, v| k === '_aj_symbol_keys' }
+        expect(first_queued).to eq({ 'receivers' => ['1000'], 'call_flow_id' => 1, 'channel_id' => 1, 'type' => nil, 'not_before' => '2016-09-10 08:00:00' })
       end
     end
   end

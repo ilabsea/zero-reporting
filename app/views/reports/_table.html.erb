@@ -36,7 +36,9 @@
         <td><%= sortable "user_id", "Username" %></td>
         <td>Duration<br/>(second)</td>
         <% @variables.each do |variable| %>
-        <td style="width:150px; background-color: <%= variable.background_color%>;" > <%= variable.name %> </td>
+          <% unless variable.disabled %>
+            <td style="width:150px; background-color: <%= variable.background_color%>;" ><%= variable.name %></td>
+          <% end %>
         <% end %>
         <td>Reviewed and assigned</td>
         <td>Action</td>
@@ -46,34 +48,34 @@
     <tbody>
     <% if @reports_by_page.size > 0 %>
       <tr style="font-weight: bold;">
-        <td>Total</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td colspan='6' style='text-align:right;'>Total</td>
         <% @variables.each do |variable| %>
-        <td style='color: <%= variable.text_color%>;'><%= variable.total_report_value(@report_ids) %></td>
+          <% unless variable.disabled %>
+            <td style='color: <%= variable.text_color%>;'><%= variable.total_report_value(@report_ids) %></td>
+          <% end %>
         <% end -%>
         <td></td>
         <td></td>
       </tr>
       <% @reports_by_page.each_with_index do |report, index| %>
-          <tr>
-            <td> <%= report.called_at.strftime(Report::DEFAULT_DISPLAY_DATE_FORMAT) %></td>
-            <td>
-                <%= link_to(report.phd.name, users_path(place_id: report.phd.try(:id))) if current_user.admin? && report.phd %>
-                <%= report.phd.try(:name) if current_user.normal? %>
-            </td>
-            <td>
-               <%= link_to(report.od.name, users_path(place_id: report.od.try(:id))) if current_user.admin? && report.od %>
-               <%= report.od.try(:name) if current_user.normal? %>
-            </td>
-            <td><%= report.phone %></td>
-            <td> <%= report.user.try(:name)%> </td>
-            <td> <%= report.duration%> </td>
-            <% @variables.each do |variable| %>
-            <td style='color: <%= variable.text_color%>;'>
+        <tr>
+          <td> <%= report.called_at.strftime(Report::DEFAULT_DISPLAY_DATE_FORMAT) %></td>
+          <td>
+              <%= link_to(report.phd.name, users_path(place_id: report.phd.try(:id))) if current_user.admin? && report.phd %>
+              <%= report.phd.try(:name) if current_user.normal? %>
+          </td>
+          <td>
+             <%= link_to(report.od.name, users_path(place_id: report.od.try(:id))) if current_user.admin? && report.od %>
+             <%= report.od.try(:name) if current_user.normal? %>
+          </td>
+          <td>
+            <a class='circle' style='border: 1px solid #f3f3f3; background-color: <%= report.status_info[:color] %>' data-toggle='tooltip' data-placement=right' title='<%= report.status_info[:text] %>'></a><%= report.phone %>
+          </td>
+          <td> <%= report.user.try(:name)%> </td>
+          <td> <%= report.duration%> </td>
+          <% @variables.each do |variable| %>
+            <% unless variable.disabled %>
+              <td style='color: <%= variable.text_color%>;'>
                 <% report_variable = report.report_variables.select{|report_variable| report_variable.variable_id == variable.id}.first %>
 
                 <div style="position: relative">
@@ -84,30 +86,35 @@
                 </div>
               </td>
             <% end %>
+          <% end %>
 
-            <td>
+          <td>
+            <% if report.dhis2_submitted %>
+              <%= "w#{report.week}-#{report.year}" %>
+            <% else %>
+              <%= select_tag(report.id, options_for_select(Calendar::Year.new(Time.now.year).available_weeks.map { |w| w.display }, "w#{report.week}-#{report.year}"), { include_blank: true, class: 'weekly-report' }) %>
+            <% end %>
+          </td>
+
+          <td>
+            <% if Setting.hub_enabled? %>
+              <div style='width: 180px;'>
+            <% else %>
+              <div>
+            <% end %>
+            <% if Setting.hub_enabled? && report.reviewed? %>
               <% if report.dhis2_submitted %>
-                <%= "w#{report.week}-#{report.year}" %>
+                <span class='green'><i class='glyphicon glyphicon-ok green'> </i> CamEwarn submitted on <%= report.dhis2_submitted_at.strftime(Report::DEFAULT_DISPLAY_DATE_FORMAT) %></span>
               <% else %>
-                <%= select_tag(report.id, options_for_select(Calendar::Year.new(Time.now.year).available_weeks.map { |w| w.display }, "w#{report.week}-#{report.year}"), { include_blank: true, class: 'weekly-report' }) %>
+                <%= button_tag 'Submit to CamEwarn', data: { id: report.id }, style: 'width: 150px;', class: 'hub btn-success' %>
               <% end %>
-            </td>
+            <% end %>
 
-            <td>
-            <div style="width: 180px;">
-              <% if Setting.hub_enabled? && report.reviewed? %>
-                <% if report.dhis2_submitted %>
-                  <span class='green'><i class='glyphicon glyphicon-ok green'> </i> CamEwarn submitted on <%= report.dhis2_submitted_at.strftime(Report::DEFAULT_DISPLAY_DATE_FORMAT) %></span>
-                <% else %>
-                  <%= button_tag 'Submit to CamEwarn', data: { id: report.id }, style: 'width: 150px;', class: 'hub btn-success' %>
-                <% end %>
+            <% unless report.dhis2_submitted %>
+              <%= link_to report_path(report), method: :delete, data: {confirm: 'Are you sure to delete ?'} do %>
+                  <i class='glyphicon glyphicon-trash red'> </i>
               <% end %>
-
-              <% unless report.dhis2_submitted %>
-                <%= link_to report_path(report), method: :delete, data: {confirm: 'Are you sure to delete ?'} do %>
-                    <i class='glyphicon glyphicon-trash red'> </i>
-                <% end %>
-              <% end %>
+            <% end %>
             </div>
           </td>
         </tr>

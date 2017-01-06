@@ -38,7 +38,8 @@ RSpec.describe SmsBroadcast, type: :model do
         sms_broadcaster.broadcast_to users
 
         expect(enqueued_jobs.size).to eq(1)
-        expect(enqueued_jobs.first[:args].first).to eq({ to: '1000', body: 'Testing', suggested_channel: nil, type: log_type })
+        first_queued = enqueued_jobs.first[:args].first.delete_if { |k, v| k === '_aj_symbol_keys' }
+        expect(first_queued).to eq({ 'to' => '1000', 'body' => 'Testing', 'suggested_channel' => nil, 'type' => { '_aj_globalid' => "gid://#{ENV['APP_NAME'].split(' ').join("-").downcase}/LogType/#{log_type.id}" } })
       }
     end
   end

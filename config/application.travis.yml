@@ -1,6 +1,6 @@
 default: &default
   TIME_ZONE: 'Bangkok'
-  APP_NAME: "CDC Zero Reporting System"
+  APP_NAME: "Zero Reporting"
   LOCAL_TZ: "Asia/Phnom_Penh"
 
   # Verboice

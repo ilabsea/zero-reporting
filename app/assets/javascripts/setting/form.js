@@ -10,30 +10,34 @@ $(function() {
 
 function handleSaveVariable() {
   $(".save-varialble").on('click', function(){
-    var $this = $(this)
-    var $form = $(this.form)
-    var $errorContainer = $form.find(".error-message")
-    $errorContainer.hide()
+    var $this = $(this);
+    var $form = $(this.form);
 
-    var url = $form.attr('action')
+    var $errorContainer = $form.find(".error-message");
+    $errorContainer.hide();
 
-    var name = $form.find("#variable_name").val()
-    var verboice_name = $form.find("#variable_verboice_name").val()
-    var verboice_id   = $form.find("#variable_verboice_id").val()
-    var background_color   = $form.find("#variable_background_color").val()
-    var text_color   = $form.find("#variable_text_color").val()
-    var dhis2_data_element_uuid = $form.find("#variable_dhis2_data_element_uuid").val();
-    var is_alerted_by_threshold   = $form.find("#variable_is_alerted_by_threshold").is(':checked')
-    var is_alerted_by_report   = $form.find("#variable_is_alerted_by_report").is(':checked')
-    var method = $form.find("input[name=_method]").val()
+    var name = $form.find("#variable_name").val();
+    var verboice_id   = $form.find("#variable_verboice_id").val();
 
     if(name == "" || verboice_id == "") {
       setNotification("alert", "Please enter variable name and verboice variable")
       return
     }
 
-    var data = { name: name, verboice_name: verboice_name, verboice_id: verboice_id, background_color: background_color, text_color: text_color,
-      is_alerted_by_threshold: is_alerted_by_threshold, is_alerted_by_report: is_alerted_by_report, dhis2_data_element_uuid: dhis2_data_element_uuid, _method: method}
+    var url = $form.attr('action');
+
+    var data = {
+      name: name,
+      verboice_id: verboice_id,
+      verboice_name: $form.find("#variable_verboice_name").val(),
+      background_color: $form.find("#variable_background_color").val(),
+      text_color: $form.find("#variable_text_color").val(),
+      is_alerted_by_threshold: $form.find("#variable_is_alerted_by_threshold").is(':checked'),
+      is_alerted_by_report: $form.find("#variable_is_alerted_by_report").is(':checked'),
+      dhis2_data_element_uuid: $form.find("#variable_dhis2_data_element_uuid").val(),
+      disabled: $form.find("#variable_disabled").is(':checked'),
+      _method: $form.find("input[name=_method]").val()
+    }
 
     $.ajax({
       method: 'POST',

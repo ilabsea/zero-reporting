@@ -1,7 +1,7 @@
-<div class="panel panel-default panel-variable" style="width: 600px;">
+<% clazz = variable.disabled ? 'grey' : '' %>
 
+<div class="panel panel-default panel-variable <%= clazz %>" style="width: 600px;">
   <div class="panel-head clearfix" style="padding: 10px; background: #d0d0d0;">
-
     <% if variable.new_record? %>
        <div class="pull-left"> Add new variable mapping </div>
        <div class="pull-right">
@@ -9,14 +9,16 @@
            <i class='icon glyphicon glyphicon-plus'> </i>
          <% end %>
        </div>
-
     <% else %>
        <div class="pull-left">
           <%= variable.name %>
           <i class='glyphicon glyphicon-link'> </i>
           <%= variable.verboice_name %>
+          <% if variable.disabled %>
+            <i class="glyphicon glyphicon glyphicon-eye-close" aria-hidden="true"> </i>
+          <% end %>
        </div>
-       <div class="pull-right">
+       <div class='pull-right'>
          <%= link_to '#', class: 'variable-collapsable' do %>
            <i class='icon glyphicon glyphicon-pencil'> </i>
          <% end %>
@@ -27,7 +29,6 @@
        </div>
     <% end %>
   </div>
-
 
   <div class="panel-body variable-form" style='border-top: 1px solid #eee; border-bottom: 1px solid #eee; display:none;'>
     <%= simple_form_for variable do |f| %>
@@ -40,7 +41,6 @@
           <div class="pull-left" style='width: 5%; padding: 20px; padding-left: 5px; margin-top: 20px;' >
             <i class='glyphicon glyphicon-link'> </i>
           </div>
-
 
           <div style='width: 35%; padding: 10px;' class="pull-left">
             <%= f.hidden_field :verboice_name, class: 'verboice-variable-name' %>
@@ -67,6 +67,14 @@
         </div>
       </div>
 
+      <div class='form-group clearfix' style='padding: 10px;'>
+        <label class='control-label left'>Hide from Report</label>
+        <div class='horizontal-form-control'>
+          <%= f.check_box :disabled, class: 'form-control ace ace-switch ace-switch-4 btn-empty', input_html: { 'data-toggle' => 'toggle' } %>
+          <span class='lbl' style='vertical-align:bottom'></span>
+        </div>
+      </div>
+
       <div class="clearfix">
         <%= render 'alert_option', variable: variable %>
       </div>
@@ -75,8 +83,6 @@
         <button type='reset' class="btn btn-default hide-variable-form" > Cancel </button>
         <button type="button" class="btn btn-primary save-varialble"> Save </button>
       </div>
-
     <% end %>
   </div>
-
 </div>

@@ -45,8 +45,13 @@ RSpec.describe Alerts::ReportCaseAlert, type: :model do
     @variable3 = create(:variable, name: 'hc_worker', verboice_id: 75, verboice_name: 'is_hc_worker', verboice_project_id: 24, is_alerted_by_threshold: true)
     @variable4 = create(:variable, name: 'feed_back', verboice_id: 73, verboice_name: 'feed_back', verboice_project_id: 24, is_alerted_by_threshold: true)
     @variable5 = create(:variable, name: 'about', verboice_id: 93, verboice_name: 'about', verboice_project_id: 24, is_alerted_by_threshold: true)
-    @report = Report.create_from_verboice_attrs(verboice_attrs)
-    @report.reviewed_as!(2016, week.previous.week_number)
+    
+    @report = Parser::ReportParser.parse(verboice_attrs)
+    @report.reviewed_as!(2016, week.week_number)
+    @report.update_status!(Report::VERBOICE_CALL_STATUS_COMPLETED)
+    # @report.status = Report::VERBOICE_CALL_STATUS_COMPLETED
+    # @report.save
+    # @report.alert
 
     @report_alert = Alerts::ReportCaseAlert.new(alert_setting, @report, week)
   end

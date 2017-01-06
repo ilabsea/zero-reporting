@@ -27,7 +27,7 @@ module Alerts
     end
 
     def variables
-      alerted_variables = @report.alerted_variables.map { |rv| {name: rv.name, value: rv.value, exceed_value: rv.exceed_value} }
+      alerted_variables = @report.alerted_variables.map { |rv| { name: rv.name, value: rv.value, exceed_value: rv.exceed_value } }
 
       reported_cases = alerted_variables.map { |alerted_variable| MessageTemplate.instance.set_source!(ENV['REPORTED_CASE_ALERT_TEMPLATE']).interpolate(alerted_variable) }
 

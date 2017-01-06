@@ -1,4 +1,6 @@
 class EventAttachmentsController < ApplicationController
+  authorize_resource
+  
 	before_action :set_event_attachment, only: [:download]
 
 	def download

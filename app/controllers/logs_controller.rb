@@ -1,4 +1,6 @@
 class LogsController < ApplicationController
+  authorize_resource
+  
   before_action :filter, only: [:index]
 
   # GET /logs

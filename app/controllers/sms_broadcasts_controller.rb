@@ -1,4 +1,6 @@
 class SmsBroadcastsController < ApplicationController
+  authorize_resource
+  
   def create
     places = Place.order(:ancestry)
     places = places.level(protected_params[:level]) if protected_params[:level].present?

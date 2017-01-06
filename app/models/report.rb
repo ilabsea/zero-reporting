@@ -2,44 +2,47 @@
 #
 # Table name: reports
 #
-#  id                   :integer          not null, primary key
-#  phone                :string(255)
-#  user_id              :integer
-#  audio_key            :string(255)
-#  called_at            :datetime
-#  call_log_id          :integer
-#  created_at           :datetime         not null
-#  updated_at           :datetime         not null
-#  phone_without_prefix :string(255)
-#  phd_id               :integer
-#  od_id                :integer
-#  status               :string(255)
-#  duration             :float(24)
-#  started_at           :datetime
-#  call_flow_id         :integer
-#  recorded_audios      :text(65535)
-#  has_audio            :boolean          default(FALSE)
-#  delete_status        :boolean          default(FALSE)
-#  call_log_answers     :text(65535)
-#  verboice_project_id  :integer
-#  reviewed             :boolean          default(FALSE)
-#  year                 :integer
-#  week                 :integer
-#  reviewed_at          :datetime
-#  is_reached_threshold :boolean          default(FALSE)
-#  dhis2_submitted      :boolean          default(FALSE)
-#  dhis2_submitted_at   :datetime
-#  dhis2_submitted_by   :integer
-#  place_id             :integer
+#  id                         :integer          not null, primary key
+#  phone                      :string(255)
+#  user_id                    :integer
+#  audio_key                  :string(255)
+#  called_at                  :datetime
+#  call_log_id                :integer
+#  created_at                 :datetime         not null
+#  updated_at                 :datetime         not null
+#  phone_without_prefix       :string(255)
+#  phd_id                     :integer
+#  od_id                      :integer
+#  status                     :string(255)
+#  duration                   :float(24)
+#  started_at                 :datetime
+#  call_flow_id               :integer
+#  recorded_audios            :text(65535)
+#  has_audio                  :boolean          default(FALSE)
+#  delete_status              :boolean          default(FALSE)
+#  call_log_answers           :text(65535)
+#  verboice_project_id        :integer
+#  reviewed                   :boolean          default(FALSE)
+#  year                       :integer
+#  week                       :integer
+#  reviewed_at                :datetime
+#  is_reached_threshold       :boolean          default(FALSE)
+#  dhis2_submitted            :boolean          default(FALSE)
+#  dhis2_submitted_at         :datetime
+#  dhis2_submitted_by         :integer
+#  place_id                   :integer
+#  verboice_sync_failed_count :integer          default(0)
 #
 # Indexes
 #
+#  index_call_failed_status        (call_log_id,verboice_sync_failed_count,status)
 #  index_reports_on_place_id       (place_id)
 #  index_reports_on_user_id        (user_id)
 #  index_reports_on_year_and_week  (year,week)
 #
 
 class Report < ActiveRecord::Base
+  include Reports::Filterable
 
   serialize :recorded_audios, Array
   serialize :call_log_answers, Array
@@ -59,8 +62,11 @@ class Report < ActiveRecord::Base
   has_many :variables, through: :report_variables
 
   VERBOICE_CALL_STATUS_FAILED = 'failed'
-  VERBOICE_CALL_STATUS_COMPLETE = 'complete'
+  VERBOICE_CALL_STATUS_COMPLETED = 'completed'
   VERBOICE_CALL_STATUS_IN_PROGRESS = 'in-progress'
+
+  FAILED_ATTEMPT = 3
+  FETCH_SIZE = 1000
 
   STATUS_NEW = 0
   STATUS_REVIEWED = 1
@@ -73,6 +79,7 @@ class Report < ActiveRecord::Base
 
   before_save :normalize_attrs
   before_save :set_place_tree
+  after_save :notify_alert
 
   def normalize_attrs
     self.phone_without_prefix = Tel.new(self.phone).without_prefix if self.phone.present?
@@ -84,6 +91,10 @@ class Report < ActiveRecord::Base
       self.phd = self.user.place.phd
       self.od  = self.user.place.od
     end
+  end
+
+  def notify_alert
+    self.alert if self.finished?
   end
 
   def self.effective
@@ -103,80 +114,41 @@ class Report < ActiveRecord::Base
     Report.where(user_id: user_ids)
   end
 
-  # from=2015-06-29&to=2015-07-14&phd=27&od=30&status=Listened
-  def self.filter options
-    reports = self.where('1=1')
-
-    if options[:from].present?
-      from = Date.strptime(options[:from], '%Y-%m-%d').to_time
-      reports = reports.where(['called_at >= ?', from.beginning_of_day ])
-    end
-
-    if options[:to].present?
-      to = Date.strptime(options[:to], '%Y-%m-%d').to_time
-      reports = reports.where(['called_at <= ?', to.end_of_day ])
-    end
-
-    reports = reports.where(called_at: options[:last_day].to_i.day.ago.to_date..Date.today + 1.day) if options[:last_day].present?
-    reports = reports.where(phd_id: options[:phd]) if options[:phd].present?
-    reports = reports.where(od_id: options[:od]) if options[:od].present?
-    reports = reports.where(reviewed: options[:reviewed]) if options[:reviewed].present?
-    reports = reports.where(reviewed: true) if options[:state] === Report::REVIEWED
-    reports = reports.where(year: options[:year]) if options[:year].present? && options[:reviewed].to_i != STATUS_NEW
-
-    reports = reports.where("week >= ?", options[:from_week]) if options[:from_week].present? && options[:reviewed].to_i == STATUS_REVIEWED
-    reports = reports.where("week <= ?", options[:to_week]) if options[:to_week].present? && options[:reviewed].to_i == STATUS_REVIEWED
-
-    reports
+  def self.new_from_call_log_id call_log_id
+    verboice_call_log = Service::Verboice.connect(Setting).call_log(call_log_id)
+    new_or_initialize_from_call_log verboice_call_log
   end
 
-  def self.create_from_call_log_id(call_log_id)
-    verboice_attrs = Service::Verboice.connect(Setting).call_log(call_log_id)
-    user = User.find_by_address(verboice_attrs.with_indifferent_access[:address])
-    if user && user.hc_worker?
-      create_from_verboice_attrs(verboice_attrs.with_indifferent_access)
-    end
+  def self.new_or_initialize_from_call_log verboice_call_log
+    user = User.find_by_address(verboice_call_log.with_indifferent_access[:address])
+    (user && user.hc_worker?) ? Parser::ReportParser.parse(verboice_call_log.with_indifferent_access) : nil
   end
 
-  def self.create_from_verboice_attrs verboice_attrs
-    attrs = {
-      verboice_project_id: verboice_attrs[:project][:id],
-      phone: verboice_attrs[:address],
-      duration: verboice_attrs[:duration],
-      called_at: verboice_attrs[:called_at],
-      started_at: verboice_attrs[:started_at],
-      call_log_id: verboice_attrs[:id],
-      call_flow_id: verboice_attrs[:call_flow_id],
-      recorded_audios: verboice_attrs[:call_log_recorded_audios],
-      call_log_answers: verboice_attrs[:call_log_answers],
-      reviewed: false
-    }
+  def self.create_from_call_log_with_status(call_log_id, status)
+    report = new_from_call_log_id(call_log_id)
 
-    verboice_attrs[:call_log_recorded_audios].each do |recorded_audio|
-      if recorded_audio[:project_variable_id] == Setting[:project_variable].to_i
-        attrs[:audio_key] = recorded_audio[:key]
-        break
-      else
-      end
-    end
+    return if report.nil?
 
-    variables = Variable.where(verboice_project_id: verboice_attrs[:project][:id])
+    report.update_status! status
 
-    attrs[:user] = User.find_by(phone_without_prefix: Tel.new(verboice_attrs[:address]).without_prefix)
-    report = Report.where(call_log_id: attrs[:call_log_id]).first_or_initialize
-
-    verboice_attrs[:call_log_recorded_audios].each do |recorded_audio|
-      variable = variables.select{|variable| variable.verboice_id == recorded_audio[:project_variable_id]}.first
-      report.report_variable_audios.build( value: recorded_audio[:key], variable_id: variable.id) if variable
-    end
-
-    verboice_attrs[:call_log_answers].each do |call_log_answer|
-      variable = variables.select{|variable| variable.verboice_id == call_log_answer[:project_variable_id]}.first
-      report.report_variable_values.build(value: call_log_answer[:value], variable_id: variable.id) if variable
-    end
-    report.update_attributes(attrs)
-    report.alert
     report
+  end
+
+  def mark_as_completed
+    update_status!(VERBOICE_CALL_STATUS_COMPLETED)
+  end
+
+  def mark_as_failed
+    update_status!(VERBOICE_CALL_STATUS_FAILED)
+  end
+
+  def mark_as_in_progress
+    update_status!(VERBOICE_CALL_STATUS_IN_PROGRESS)
+  end
+
+  def update_status! status
+    self.status = status
+    save!
   end
 
   def toggle_status
@@ -213,7 +185,7 @@ class Report < ActiveRecord::Base
       else
         percentage = sprintf( "%0.02f", (100 * value.to_f / reports.size.to_f))
       end
-      list.push({ label: "#{name}(#{percentage}%)",  data: percentage, color: "##{colour}"})
+      list.push({ label: "#{name}(#{percentage}%)",  data: percentage, color: "##{colour}" })
     end
     return list
   end
@@ -230,21 +202,27 @@ class Report < ActiveRecord::Base
 
   def alert
     alert_setting = AlertSetting.find_by(verboice_project_id: self.verboice_project_id)
+    
     return unless alert_setting
+
     week = self.week_for_alert
     place = self.place
+
     self.report_variable_values.each do |report_variable|
       report_variable.check_alert_by_week(week, place)
     end
-    self.weekly_notify(week,alert_setting)
+
+    self.weekly_notify(week, alert_setting)
   end
 
   def week_for_alert
     week = Calendar.week(self.called_at.to_date)
+
     # shift 1 week back if the report is on sunday or after wednesday
     if self.called_at.to_date.wday > 3 || self.called_at.to_date.wday == 0
-       return week.previous
+      return week.previous
     end
+
     return week
   end
 
@@ -283,6 +261,85 @@ class Report < ActiveRecord::Base
       auditor = Auditor::ReportMissingAuditor.new(report_setting)
       auditor.audit
     end
+  end
+
+  def self.sync_calls
+    fetches_verboice_calls.each do |verboice_call_log|
+      Report.sync_call verboice_call_log
+    end
+  end
+
+  def self.sync_call verboice_call_log
+    if finished_statuses.include?(verboice_call_log['state'])
+      report = new_or_initialize_from_call_log(verboice_call_log)
+      if report
+        begin
+          report.notify_sync_call_completed
+        rescue
+          report.notify_sync_call_failed
+        end
+      end
+    end
+  end
+
+  def notify_sync_call_completed
+    mark_as_completed
+    VerboiceSyncState.write(self.call_log_id)
+  end
+
+  def notify_sync_call_failed
+    verboice_sync_failed_increment
+    self.status = VERBOICE_CALL_STATUS_FAILED if fail_attempt_reached?
+    save!
+  end
+
+  def verboice_sync_failed_increment
+    self.verboice_sync_failed_count += 1
+  end
+
+  def self.fetches_verboice_calls
+    verboice_call_log_ids = after_last_sync.in_progress.limit(FETCH_SIZE).pluck(:call_log_id)
+    verboice_call_log_ids.empty? ? [] : Service::Verboice.connect(Setting).call_logs(verboice_call_log_ids)
+  end
+
+  def self.in_progress
+    where(status: VERBOICE_CALL_STATUS_IN_PROGRESS)
+  end
+
+  def self.after_last_sync
+    state = VerboiceSyncState.last
+    where('call_log_id > ? AND verboice_sync_failed_count < ?', (state.nil? ? 0 : state.last_call_log_id), FAILED_ATTEMPT)
+  end
+
+  def fail_attempt_reached?
+    verboice_sync_failed_count >= FAILED_ATTEMPT
+  end
+
+  def failed?
+    status === VERBOICE_CALL_STATUS_FAILED
+  end
+
+  def in_progress?
+    status === VERBOICE_CALL_STATUS_IN_PROGRESS
+  end
+
+  def success?
+    status === VERBOICE_CALL_STATUS_COMPLETED
+  end
+
+  def finished?
+    failed? || success?
+  end
+
+  def self.finished_statuses
+    [VERBOICE_CALL_STATUS_COMPLETED, VERBOICE_CALL_STATUS_FAILED]
+  end
+
+  def status_info
+    return { color: 'red', text: 'Failed' } if failed?
+    return { color: 'orange', text: 'In-progress' } if in_progress?
+    
+    { color: 'green', text: 'Success' }
   end
 
 end

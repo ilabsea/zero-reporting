@@ -1,5 +1,5 @@
 namespace :report do
-  desc "Migrate place to report"
+  desc 'Migrate place to report'
   task :migrate_user_place => :environment do
     reports = Report.where(place: nil).includes(:user)
     total_reports = reports.count
@@ -14,10 +14,17 @@ namespace :report do
     end
   end
 
-  desc "Audit reporter who is missing report in x week(s)"
+  desc 'Audit reporter who is missing report in x week(s)'
   task :audit_missing => :environment do
-    log("Audit reporter who is missing report in x week(s)") do
+    log('Audit reporter who is missing report in x week(s)') do
       Report.audit_missing
+    end
+  end
+
+  desc 'Synchronize status with Verboice'
+  task :sync_calls => :environment do
+    log('Audit reporter who is missing report in x week(s)') do
+      Report.sync_calls
     end
   end
 end
