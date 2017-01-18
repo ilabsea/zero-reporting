@@ -52,4 +52,35 @@ RSpec.describe Calendar::Week, type: :model do
     end
   end
 
+  describe 'Get last of' do
+    before(:each) do
+      now = Time.local(2017, 1, 1, 12, 0, 0)
+      Timecop.freeze(now)
+    end
+
+    context '2 weeks of today' do
+      let(:date) { Date.today }
+      let(:week) { Calendar.week(date) }
+
+      it { expect(week.year.number).to eq(2017) }
+      it { expect(week.week_number).to eq(1) }
+
+      it { expect(Calendar::Week.last_of(date)[0].year.number).to eq(2017) }
+      it { expect(Calendar::Week.last_of(date)[0].week_number).to eq(1) }
+    end
+
+    context '2 weeks of specific date' do
+      let(:date) { Date.new(2016, 12, 25) }
+      let(:week) { Calendar.week(date) }
+
+      it { expect(week.year.number).to eq(2016) }
+      it { expect(week.week_number).to eq(52) }
+        
+      it { expect(Calendar::Week.last_of(date, 2)[0].year.number).to eq(2016) }
+      it { expect(Calendar::Week.last_of(date, 2)[0].week_number).to eq(52) }
+      it { expect(Calendar::Week.last_of(date, 2)[1].year.number).to eq(2016) }
+      it { expect(Calendar::Week.last_of(date, 2)[1].week_number).to eq(51) }
+    end
+  end
+
 end
