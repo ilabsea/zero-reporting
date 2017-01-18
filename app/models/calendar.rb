@@ -4,12 +4,12 @@ class Calendar
     date.beginning_of_week(start_day = start_day)
   end
 
-  def self.week date, start_day = Calendar::Week::DEFAULT_START_DAY
+  def self.week date
     year = Year.new(date.year)
-    begining_date_of_week = date.beginning_of_week(start_day = start_day)
-    week_number = (begining_date_of_week - year.beginning_date).to_i / 7
-    remaining_days = (begining_date_of_week - year.beginning_date).to_i % 7 > 0 ? 1 : 0
-    year.week(week_number + remaining_days)
+    diff_days = (beginning_date_of_week(date) - beginning_date_of_week(year.beginning_date)).to_i + 1
+    week_number = diff_days / 7
+    remaining_week = (diff_days) % 7 > 0 ? 1 : 0
+    year.week(week_number + remaining_week)
   end
 
   def self.weekdays

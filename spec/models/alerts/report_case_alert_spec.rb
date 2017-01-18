@@ -49,9 +49,6 @@ RSpec.describe Alerts::ReportCaseAlert, type: :model do
     @report = Parser::ReportParser.parse(verboice_attrs)
     @report.reviewed_as!(2016, week.week_number)
     @report.update_status!(Report::VERBOICE_CALL_STATUS_COMPLETED)
-    # @report.status = Report::VERBOICE_CALL_STATUS_COMPLETED
-    # @report.save
-    # @report.alert
 
     @report_alert = Alerts::ReportCaseAlert.new(alert_setting, @report, week)
   end
@@ -86,8 +83,8 @@ RSpec.describe Alerts::ReportCaseAlert, type: :model do
   end
 
   describe '#variables' do
-    it { expect(Calendar::Year.new(2016).week(6).display(Calendar::Week::DISPLAY_ADVANCED_MODE)).to eq('w6 03.02.2016 - 09.02.2016') }
-    it { expect(@report_alert.variables).to eq({ week_year: 'w6-2016', reported_cases: 'age: 2(2.0) , grade: 3(3.0) , hc_worker: 5(5.0)', place_name: 'Testing HC' }) }
+    it { expect(Calendar::Year.new(2016).week(7).display(Calendar::Week::DISPLAY_ADVANCED_MODE)).to eq('w7 10.02.2016 - 16.02.2016') }
+    it { expect(@report_alert.variables).to eq({ week_year: 'w7-2016', reported_cases: 'age: 2(2.0) , grade: 3(3.0) , hc_worker: 5(5.0)', place_name: 'Testing HC' }) }
   end
 
 end
