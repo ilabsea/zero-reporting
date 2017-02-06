@@ -33,7 +33,7 @@
         <td>PHD</td>
         <td>OD</td>
         <td>Phone</td>
-        <td><%= sortable "user_id", "Username" %></td>
+        <td><%= sortable "user_id", "HC" %></td>
         <td>Duration<br/>(second)</td>
         <% @variables.each do |variable| %>
           <% unless variable.disabled %>
@@ -71,7 +71,10 @@
           <td>
             <a class='circle' style='border: 1px solid #f3f3f3; background-color: <%= report.status_info[:color] %>' data-toggle='tooltip' data-placement=right' title='<%= report.status_info[:text] %>'></a><%= report.phone %>
           </td>
-          <td> <%= report.user.try(:name)%> </td>
+          <td>
+            <%= report.user.try(:name)%>
+            <%= hidden_field_tag "place_report_#{report.id}", report.try(:place_id) %>
+          </td>
           <td> <%= report.duration%> </td>
           <% @variables.each do |variable| %>
             <% unless variable.disabled %>

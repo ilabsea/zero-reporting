@@ -35,10 +35,11 @@
 #
 # Indexes
 #
-#  index_call_failed_status        (call_log_id,verboice_sync_failed_count,status)
-#  index_reports_on_place_id       (place_id)
-#  index_reports_on_user_id        (user_id)
-#  index_reports_on_year_and_week  (year,week)
+#  index_call_failed_status          (call_log_id,verboice_sync_failed_count,status)
+#  index_reports_on_place_id         (place_id)
+#  index_reports_on_user_id          (user_id)
+#  index_reports_on_weekly_reviewed  (place_id,year,week,reviewed,delete_status)
+#  index_reports_on_year_and_week    (year,week)
 #
 
 class Report < ActiveRecord::Base
@@ -103,6 +104,13 @@ class Report < ActiveRecord::Base
 
   def self.reviewed_by_week week
     where("year = ? AND week = ? AND reviewed = ?", week.year.number, week.week_number, STATUS_REVIEWED)
+  end
+
+  def self.reviewed_by_weekly_place place_id, week, reviewed = nil
+    conditions = { place_id: place_id, year: week.year.number, week: week.week_number }
+    # work around to use indexing
+    conditions[:reviewed] = (reviewed.nil? ? [true, false] : reviewed)
+    where(conditions).effective
   end
 
   def self.week_between from, to

@@ -111,11 +111,12 @@ Rails.application.routes.draw do
 
   resources :sms_broadcasts, only: [:index, :create]
 
+  resources :weekly_place_reports, only: [:index]
+
   namespace :api, defaults: {format: 'json'} do
     resources :places, only: [:index]
     namespace :hub do
       resources :reports, only: [:index, :show]
     end
   end
-
 end
