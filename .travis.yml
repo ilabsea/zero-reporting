@@ -23,4 +23,7 @@ before_script:
   - mysql -e 'create database cdc_call_test'
 
 notifications:
-  slack: ilabsea:C4mpJ4flOxHey8sO8SgEkg77
+  slack:
+    on_success: change
+    on_failure: always
+    rooms: ilabsea:C4mpJ4flOxHey8sO8SgEkg77
