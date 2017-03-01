@@ -35,6 +35,9 @@ Rails.application.routes.draw do
       get 'download'
       get 'download_users'
     end
+    member do
+      put 'move'
+    end
   end
 
   resources :users do

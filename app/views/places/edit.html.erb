@@ -3,4 +3,4 @@
 
 <%= page_header "#{@place.kind} Modification" %>
 
-<%= render 'form' %>
+<%= render @moving_state ? 'form_moving' : 'form' %>

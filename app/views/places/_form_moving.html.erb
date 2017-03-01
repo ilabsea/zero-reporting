@@ -1,0 +1,30 @@
+<%= display_parent_for @place %>
+
+<%= simple_form_for(@place, :url => move_place_path(@place), method: :put, html: { class: 'form-inline form'}) do |f| %>
+  <%= f.input :parent_id, as: :hidden %>
+  <%= f.input :kind_of, as: :hidden %>
+  
+  <div class="form-group">
+    <label class="control-label left">Auditable</label>
+    <%= f.check_box :auditable, class: 'form-control ace ace-switch ace-switch-4 btn-empty', disabled: '' %>
+    <span class="lbl" style="vertical-align:bottom"></span>
+  </div>
+  
+  <%= f.input :name, label: 'Name', input_html: { class: 'form-control', disabled: '' } %>
+  <%= f.input :code, input_html: { class: 'form-control', disabled: '' } %>
+  <%= f.input :dhis2_organisation_unit_uuid, label: "CamEwarn organisation unit's UUID", input_html: { class: 'form-control', disabled: '' } %>
+
+  <% if !@place.new_record? && @place.movable? %>
+    <div class="form-group">
+      <label class="control-label left">Move to <%= @place.parent.kind %> </label>
+      <%= f.select("parent_id", @available_parents.all.collect { |place| [ "#{place.name} (#{place.code})", place.id ] }, { selected: @place.parent.id }, input_html: { class: 'form-control' }) %>
+    </div>
+  <% end %>
+
+  <div class='form-group form-action-group'>
+    <label class='control-label'></label>
+    <%= f.submit 'Move', class: 'btn btn-primary' %>
+    <%= link_to 'Cancel', places_path, class: 'btn btn-default' %>
+  </div>
+
+<% end %>
