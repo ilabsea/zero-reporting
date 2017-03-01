@@ -43,7 +43,7 @@
 #
 
 class Report < ActiveRecord::Base
-  include Reports::Filterable
+  include Reports::Filterable, Reports::AlertObservable
 
   serialize :recorded_audios, Array
   serialize :call_log_answers, Array
@@ -80,7 +80,6 @@ class Report < ActiveRecord::Base
 
   before_save :normalize_attrs
   before_save :set_place_tree
-  after_save :notify_alert
 
   def normalize_attrs
     self.phone_without_prefix = Tel.new(self.phone).without_prefix if self.phone.present?
@@ -92,10 +91,6 @@ class Report < ActiveRecord::Base
       self.phd = self.user.place.phd
       self.od  = self.user.place.od
     end
-  end
-
-  def notify_alert
-    self.alert if self.finished?
   end
 
   def self.effective
@@ -208,22 +203,7 @@ class Report < ActiveRecord::Base
     color = r + g + b
   end
 
-  def alert
-    alert_setting = AlertSetting.find_by(verboice_project_id: self.verboice_project_id)
-    
-    return unless alert_setting
-
-    week = self.week_for_alert
-    place = self.place
-
-    self.report_variable_values.each do |report_variable|
-      report_variable.check_alert_by_week(week, place)
-    end
-
-    self.weekly_notify(week, alert_setting)
-  end
-
-  def week_for_alert
+  def alert_week
     week = Calendar.week(self.called_at.to_date)
 
     # shift 1 week back if the report is on sunday or after wednesday
@@ -234,18 +214,21 @@ class Report < ActiveRecord::Base
     return week
   end
 
-  def weekly_notify(week, alert_setting)
-    alert = Alerts::ReportCaseAlert.new(alert_setting, self, week)
-    adapter = Adapter::SmsAlertAdapter.new(alert)
-    adapter.process
-  end
-
   def alerted_variables
     self.report_variables.where(is_alerted: true).joins(:variable).select("report_variables.*, variables.name")
   end
 
   def notify_hub!
     HubJob.perform_later(to_hub_parameters) if Setting.hub_enabled? && Setting.hub_configured?
+  end
+
+  def notify_alert
+    alert_setting = AlertSetting.get(self.verboice_project_id)
+    return if alert_setting.nil?
+
+    # TODO Refactoring to remove alert_setting dependency
+    alert = Alerts::ReportCaseAlert.new(alert_setting, self)
+    AdapterType.for(alert).process
   end
 
   def to_hub_parameters
@@ -337,6 +320,10 @@ class Report < ActiveRecord::Base
 
   def finished?
     failed? || success?
+  end
+
+  def finished_with_status_changed?
+    status_changed? && finished?
   end
 
   def self.finished_statuses

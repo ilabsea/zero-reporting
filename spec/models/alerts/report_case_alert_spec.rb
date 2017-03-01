@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Alerts::ReportCaseAlert, type: :model do
 
-  let(:week) { Calendar.week(Date.new(2016,02,10)) }
+  let!(:week) { Calendar.week(Date.new(2016,02,10)) }
   let!(:od){ create(:od) }
   let!(:hc){ create(:hc, name: 'Testing HC', parent: od) }
   let!(:od_user) { create(:user, name: 'od_user', username: 'od_user', phone: '85510345678', place_id: od.id) }
@@ -45,12 +45,14 @@ RSpec.describe Alerts::ReportCaseAlert, type: :model do
     @variable3 = create(:variable, name: 'hc_worker', verboice_id: 75, verboice_name: 'is_hc_worker', verboice_project_id: 24, is_alerted_by_threshold: true)
     @variable4 = create(:variable, name: 'feed_back', verboice_id: 73, verboice_name: 'feed_back', verboice_project_id: 24, is_alerted_by_threshold: true)
     @variable5 = create(:variable, name: 'about', verboice_id: 93, verboice_name: 'about', verboice_project_id: 24, is_alerted_by_threshold: true)
-    
+
     @report = Parser::ReportParser.parse(verboice_attrs)
     @report.reviewed_as!(2016, week.week_number)
     @report.update_status!(Report::VERBOICE_CALL_STATUS_COMPLETED)
 
-    @report_alert = Alerts::ReportCaseAlert.new(alert_setting, @report, week)
+    allow(@report).to receive(:alert_week).and_return(week)
+
+    @report_alert = Alerts::ReportCaseAlert.new(alert_setting, @report)
   end
 
   context '#enabled?' do
@@ -58,7 +60,7 @@ RSpec.describe Alerts::ReportCaseAlert, type: :model do
       let(:alert_setting) { create(:alert_setting, is_enable_sms_alert: false) }
 
       before(:each) do
-        @report_alert = Alerts::ReportCaseAlert.new(alert_setting, @report, week)
+        @report_alert = Alerts::ReportCaseAlert.new(alert_setting, @report)
 
         allow(@report).to receive(:alerted_variables).and_return([])
       end
