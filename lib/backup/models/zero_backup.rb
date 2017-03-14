@@ -1,18 +1,9 @@
-# encoding: utf-8
-
-##
-# Backup Generated: zero_backup
-# Once configured, you can run the backup with the following command:
-#
-# $ backup perform -t zero_backup [-c <path_to_configuration_file>]
-#
-# For more information about Backup's components, see the documentation at:
-# http://backup.github.io/backup
-#
 db_config           = YAML.load_file('/var/www/cdc-zero-reporting-system/shared/config/database.yml')['production']
 app_config          = YAML.load_file('/var/www/cdc-zero-reporting-system/shared/config/application.yml')['production']
+aws_config          = YAML.load_file('/var/www/cdc-zero-reporting-system/shared/config/aws.yml')
+smtp_config          = YAML.load_file('/var/www/cdc-zero-reporting-system/shared/config/smtp.yml')
 
-Model.new(:zero_backup, 'Description for zero_backup') do
+Model.new(:zero_backup, "Description for zero_backup") do
 
   ##
   # MySQL [Database]
@@ -29,8 +20,8 @@ Model.new(:zero_backup, 'Description for zero_backup') do
   archive :zero_reporting do |archive|
     # Run the `tar` command using `sudo`
     # archive.use_sudo
-    archive.add "/var/www/cdc-zero-reporting-system/shared/config"
-    archive.add "/var/www/cdc-zero-reporting-system/shared/public"
+    archive.add app_config['CONFIG_PATH_TO_BACKUP']
+    archive.add app_config['ASSET_PATH_TO_BACKUP']
   end
 
 
@@ -39,17 +30,15 @@ Model.new(:zero_backup, 'Description for zero_backup') do
   #
   store_with S3 do |s3|
     # AWS Credentials
-    s3.access_key_id     = "AKIAI62X5IYNHTBA3MOQ"
-    s3.secret_access_key = "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"
+    s3.access_key_id     = aws_config['AWS_ACCESS_KEY_ID']
+    s3.secret_access_key = aws_config['AWS_SECRET_ACCESS_KEY']
     # Or, to use a IAM Profile:
     # s3.use_iam_profile = true
 
-    s3.region            = "ap-southeast-1"
-    s3.bucket            = "cdc-zero-reporting"
-    #s3.path              = "path/to/backups"
+    s3.region            = aws_config['AWS_REGION']
+    s3.bucket            = aws_config['AWS_BUCKET_NAME']
     s3.keep              = 5
-    # s3.keep              = Time.now - 2592000 # Remove all backups older than 1 month.
-  end  
+  end
   #
   # The default delivery method for Mail Notifiers is 'SMTP'.
   # See the documentation for other delivery options.
@@ -60,14 +49,13 @@ Model.new(:zero_backup, 'Description for zero_backup') do
     mail.on_warning           = true
     mail.on_failure           = true
 
-    mail.from                 = "resourcemap.wfp@gmail.com"
-    mail.to                   = "thyda@instedd.org"
-    mail.cc                   = "engthyda@gmail.com"
-    mail.address              = "smtp.gmail.com"
+    mail.from                 = smtp_config['SMTP_USER_NAME']
+    mail.to                   = app_config['BACKUP_NOTIFY_EMAIL']
+    mail.address              = smtp_config['SMTP_ADDRESS']
     mail.port                 = 587
     mail.domain               = "localhost"
-    mail.user_name            = "resourcemap.wfp@gmail.com"
-    mail.password             = "wfp@emis"
+    mail.user_name            = smtp_config['SMTP_USER_NAME']
+    mail.password             = smtp_config['SMTP_PASSWORD']
     mail.authentication       = "plain"
     mail.encryption           = :starttls
   end

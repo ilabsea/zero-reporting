@@ -41,6 +41,13 @@ default: &default
   # HUB: '1' => enabled, '0' => disabled
   HUB_ENABLED: '1'
 
+  # Backup
+  BACKUP_SCRIPT_PATH: ''
+  BACKUP_MODEL_NAME: ''
+  BACKUP_NOTIFY_EMAIL: ''
+  CONFIG_PATH_TO_BACKUP: ''
+  ASSET_PATH_TO_BACKUP: ''
+
 development:
   <<: *default
 

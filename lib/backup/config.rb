@@ -29,7 +29,7 @@
 # Sets the root path for all relative paths, including default paths.
 # May be an absolute path, or relative to the current working directory.
 #
-# root_path 'my/root'
+root_path '/var/www/cdc-zero-reporting-system/current/lib/backup/'
 #
 # Sets the path where backups are processed until they're stored.
 # This must have enough free space to hold apx. 2 backups.
