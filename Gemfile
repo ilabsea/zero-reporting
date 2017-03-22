@@ -62,6 +62,8 @@ gem 'draper'
 
 gem 'whenever', :require => false
 
+gem 'aws-sdk-s3'
+
 group :development do
   gem 'bullet'
   gem 'brakeman', require: false
