@@ -12,4 +12,12 @@
 
 class AlertSetting < ActiveRecord::Base
   serialize :recipient_type, Array
+
+  def self.get(project_id)
+    AlertSetting.find_by(verboice_project_id: project_id)
+  end
+
+  def self.has_alert?(project_id)
+    get(project_id).present?
+  end
 end

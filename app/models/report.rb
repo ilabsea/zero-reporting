@@ -35,14 +35,15 @@
 #
 # Indexes
 #
-#  index_call_failed_status        (call_log_id,verboice_sync_failed_count,status)
-#  index_reports_on_place_id       (place_id)
-#  index_reports_on_user_id        (user_id)
-#  index_reports_on_year_and_week  (year,week)
+#  index_call_failed_status          (call_log_id,verboice_sync_failed_count,status)
+#  index_reports_on_place_id         (place_id)
+#  index_reports_on_user_id          (user_id)
+#  index_reports_on_weekly_reviewed  (place_id,year,week,reviewed,delete_status)
+#  index_reports_on_year_and_week    (year,week)
 #
 
 class Report < ActiveRecord::Base
-  include Reports::Filterable
+  include Reports::Filterable, Reports::AlertObservable
 
   serialize :recorded_audios, Array
   serialize :call_log_answers, Array
@@ -79,7 +80,6 @@ class Report < ActiveRecord::Base
 
   before_save :normalize_attrs
   before_save :set_place_tree
-  after_save :notify_alert
 
   def normalize_attrs
     self.phone_without_prefix = Tel.new(self.phone).without_prefix if self.phone.present?
@@ -93,16 +93,19 @@ class Report < ActiveRecord::Base
     end
   end
 
-  def notify_alert
-    self.alert if self.finished?
-  end
-
   def self.effective
     where(delete_status: false)
   end
 
   def self.reviewed_by_week week
     where("year = ? AND week = ? AND reviewed = ?", week.year.number, week.week_number, STATUS_REVIEWED)
+  end
+
+  def self.reviewed_by_weekly_place place_id, week, reviewed = nil
+    conditions = { place_id: place_id, year: week.year.number, week: week.week_number }
+    # work around to use indexing
+    conditions[:reviewed] = (reviewed.nil? ? [true, false] : reviewed)
+    where(conditions).effective
   end
 
   def self.week_between from, to
@@ -200,22 +203,7 @@ class Report < ActiveRecord::Base
     color = r + g + b
   end
 
-  def alert
-    alert_setting = AlertSetting.find_by(verboice_project_id: self.verboice_project_id)
-    
-    return unless alert_setting
-
-    week = self.week_for_alert
-    place = self.place
-
-    self.report_variable_values.each do |report_variable|
-      report_variable.check_alert_by_week(week, place)
-    end
-
-    self.weekly_notify(week, alert_setting)
-  end
-
-  def week_for_alert
+  def alert_week
     week = Calendar.week(self.called_at.to_date)
 
     # shift 1 week back if the report is on sunday or after wednesday
@@ -226,18 +214,21 @@ class Report < ActiveRecord::Base
     return week
   end
 
-  def weekly_notify(week, alert_setting)
-    alert = Alerts::ReportCaseAlert.new(alert_setting, self, week)
-    adapter = Adapter::SmsAlertAdapter.new(alert)
-    adapter.process
-  end
-
   def alerted_variables
     self.report_variables.where(is_alerted: true).joins(:variable).select("report_variables.*, variables.name")
   end
 
   def notify_hub!
     HubJob.perform_later(to_hub_parameters) if Setting.hub_enabled? && Setting.hub_configured?
+  end
+
+  def notify_alert
+    alert_setting = AlertSetting.get(self.verboice_project_id)
+    return if alert_setting.nil?
+
+    # TODO Refactoring to remove alert_setting dependency
+    alert = Alerts::ReportCaseAlert.new(alert_setting, self)
+    AdapterType.for(alert).process
   end
 
   def to_hub_parameters
@@ -329,6 +320,10 @@ class Report < ActiveRecord::Base
 
   def finished?
     failed? || success?
+  end
+
+  def finished_with_status_changed?
+    status_changed? && finished?
   end
 
   def self.finished_statuses

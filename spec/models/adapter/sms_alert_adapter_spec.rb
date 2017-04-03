@@ -40,9 +40,13 @@ RSpec.describe Adapter::SmsAlertAdapter, type: :model do
       let(:report) { create(:report, user: user, phone: '2000') }
       let(:week) { Calendar::Year.new(2016).week(1) }
       let!(:setting) { create(:alert_setting, is_enable_sms_alert: true, message_template: 'This is the alert on {{week_year}} for {{reported_cases}}', verboice_project_id: 24, recipient_type: ['OD', 'HC']) }
-      let(:alert) { Alerts::ReportCaseAlert.new(setting, report, week) }
+      let(:alert) { Alerts::ReportCaseAlert.new(setting, report) }
 
       let(:adapter) { Adapter::SmsAlertAdapter.new(alert) }
+
+      before(:each) do
+        allow(report).to receive(:alert_week).and_return(week)
+      end
 
       it 'enqueue an alert job to queue' do
         adapter.process

@@ -35,22 +35,23 @@
 #
 # Indexes
 #
-#  index_call_failed_status        (call_log_id,verboice_sync_failed_count,status)
-#  index_reports_on_place_id       (place_id)
-#  index_reports_on_user_id        (user_id)
-#  index_reports_on_year_and_week  (year,week)
+#  index_call_failed_status          (call_log_id,verboice_sync_failed_count,status)
+#  index_reports_on_place_id         (place_id)
+#  index_reports_on_user_id          (user_id)
+#  index_reports_on_weekly_reviewed  (place_id,year,week,reviewed,delete_status)
+#  index_reports_on_year_and_week    (year,week)
 #
 
 require 'rails_helper'
 
 RSpec.describe Report, type: :model do
-  describe "#week_for_alert" do
+  describe "#alert_week" do
     context "when report is on sunday" do
       let(:report) {create(:report, called_at: "2016-03-20 11:39:45")}
       
       it "return the week previous" do
         week = Calendar.week(report.called_at.to_date)
-        expect(report.week_for_alert.week_number).to eq week.previous.week_number
+        expect(report.alert_week.week_number).to eq week.previous.week_number
       end
     end
 
@@ -59,7 +60,7 @@ RSpec.describe Report, type: :model do
       
       it "return the week previous" do
         week = Calendar.week(report.called_at.to_date)
-        expect(report.week_for_alert.week_number).to eq week.previous.week_number
+        expect(report.alert_week.week_number).to eq week.previous.week_number
       end
     end
 
@@ -68,7 +69,7 @@ RSpec.describe Report, type: :model do
       
       it "return the current report week" do
         week = Calendar.week(report.called_at.to_date)
-        expect(report.week_for_alert.week_number).to eq week.week_number
+        expect(report.alert_week.week_number).to eq week.week_number
       end
     end
   end
@@ -186,6 +187,60 @@ RSpec.describe Report, type: :model do
 
         expect(report.reload.status).to eq(Report::VERBOICE_CALL_STATUS_FAILED)
       }
+    end
+  end
+
+  describe 'checking alert' do
+    context 'ignore when call is in-progress' do
+      let(:report) { build(:report, status: Report::VERBOICE_CALL_STATUS_IN_PROGRESS, verboice_sync_failed_count: 0) }
+
+      it {
+        expect(report).to receive(:alert_checking).exactly(0).times
+        report.save
+      }
+    end
+
+    context 'ignore when review on call finished' do
+      let!(:report) { create(:report, status: Report::VERBOICE_CALL_STATUS_COMPLETED, verboice_sync_failed_count: 0) }
+
+      it {
+        expect(report).to receive(:alert_checking).exactly(0).times
+
+        report.reviewed = true
+        report.save
+      }
+    end
+
+    context 'when call is finished' do
+      let(:report) { build(:report, status: Report::VERBOICE_CALL_STATUS_COMPLETED, verboice_sync_failed_count: 0) }
+
+      it {
+        expect(report).to receive(:alert_checking).once
+        report.save
+      }
+    end
+  end
+
+  describe '#notify_alert' do
+    let!(:report) { create(:report, verboice_project_id: 1) }
+    let!(:alert_setting) { create(:alert_setting, is_enable_sms_alert: true, message_template: 'This is the alert on {{week_year}} for {{reported_cases}}.', verboice_project_id: 1, recipient_type: ['OD', 'HC']) }
+    let(:alert) { :alert }
+    let(:sms_alert_adapter) { Adapter::SmsAlertAdapter.new(alert) }
+
+    describe 'on weekly case report' do
+      context 'process alert sms when sms option is enabled' do
+        before(:each) do
+          allow(AlertSetting).to receive(:get).with(1).and_return(alert_setting)
+          allow(Alerts::ReportCaseAlert).to receive(:new).with(alert_setting, report).and_return(alert)
+        end
+
+        it {
+          expect(AdapterType).to receive(:for).with(alert).and_return(sms_alert_adapter)
+          expect(sms_alert_adapter).to receive(:process)
+
+          report.notify_alert
+        }
+      end
     end
   end
 

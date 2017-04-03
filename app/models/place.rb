@@ -31,6 +31,8 @@ class Place < ActiveRecord::Base
   validates :name, :code, presence: true
   validates :code, uniqueness: true
 
+  MODE_MOVING = 'moving'
+
   # include kind_of as default self.class.inheritance_column was fully defaults include_root_in_json to false
   # read more: https://github.com/rails/rails/issues/3508
   def serializable_hash options=nil

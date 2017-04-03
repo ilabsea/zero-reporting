@@ -139,69 +139,6 @@ module ApplicationHelper
     link_to icon+text, url, options, &block
   end
 
-  def children_tree_for places, active_place_id=nil
-    places.map do |place, children|
-      selected_class = (place.id == active_place_id.to_i ? 'selected' : '')
-
-      item = link_to("#{place.kind} - #{place.name} (#{place.code}) ", users_path(place_id: place.id ),
-                     class: "tree-node #{selected_class}",
-                     data: {id: place.id})
-
-      if place.has_dhis_location?
-        item += content_tag(:i, '', class: "glyphicon glyphicon-link")
-        item += " #{place.dhis2_organisation_unit_uuid}"
-      end
-
-      item += content_tag(:ul, children_tree_for(children, active_place_id)) if children.size > 0
-
-      expanded_class = (!place.parent || place.id == active_place_id.to_i) ? 'active' : ''
-      content_tag(:li, item, class: "tree-node-wrapper #{expanded_class}")
-
-    end.join('').html_safe
-  end
-
-  def tree_for places, active_place_id=nil
-    if !active_place_id.present?
-      active_root = 'active'
-      selected_class = 'selected'
-    else
-      active_root = ''
-      selected_class = ''
-    end
-
-    content_tag(:li, class: "tree-node-wrapper #{active_root}", id: 'tree-root') do
-      link_to("Cambodia", users_path, class: "tree-node #{selected_class}", data: {id: ''}) + content_tag(:ul, children_tree_for(places, active_place_id))
-    end
-  end
-
-  def display_parent_for place
-    content_tag :p, parent_for(place).reverse.join("<br/>").html_safe, class: 'p-desc'
-  end
-
-  def parent_for place
-    result = []
-    if place.parent
-      text = "#{place.parent.kind} - #{place.parent.name} ( #{place.parent.code} )"
-      result << text
-      result += parent_for(place.parent)
-    end
-    result
-  end
-
-  def display_hierachy_for place
-    content_tag :p, hierachy_for(place).reverse.join("<br />").html_safe, class: 'p-desc'
-  end
-
-  def hierachy_for place
-    result = []
-    if place
-      text = "#{place.kind} - #{place.name} ( #{place.code} )"
-      result << text
-      result += hierachy_for(place.parent)
-    end
-    result
-  end
-
   def mapping_variables(variables, project_variable)
     variables.each do |variable|
       return variable if variable.verboice_id == project_variable['id'] && variable.verboice_name == project_variable['name']

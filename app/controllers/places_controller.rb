@@ -18,7 +18,7 @@ class PlacesController < ApplicationController
   end
 
   def create
-    @place = Place.new(filter_params)
+    @place = Place.new(protected_params)
     if @place.save
       redirect_to places_with_ref_path(@place.id), notice: 'Place has been created'
     else
@@ -29,6 +29,9 @@ class PlacesController < ApplicationController
 
   def edit
     @place = Place.find(params[:id])
+    # @available_parents = @place.phd.children.where.not(id: @place.parent_id)
+    @available_parents = @place.parent_siblings
+    @moving_state = params[:state] === Place::MODE_MOVING
   end
 
   def import
@@ -45,7 +48,7 @@ class PlacesController < ApplicationController
 
   def update
     @place = Place.find(params[:id])
-    if @place.update_attributes(filter_params)
+    if @place.update_attributes(protected_params)
       redirect_to places_with_ref_path(@place.id), notice: 'Place has been updated'
     else
       flash.now[:alert] = 'Failed to update place'
@@ -62,6 +65,17 @@ class PlacesController < ApplicationController
       redirect_to places_with_ref_path(place_id), notice: 'Place has removed'
     rescue ActiveRecord::StatementInvalid => error
       redirect_to places_with_ref_path(@place.id), alert: 'Failed to remove place. Make sure there are no users associate to this place'
+    end
+  end
+
+  def move
+    @place = Place.find(params[:id])
+    parent = Place.find(protected_params[:parent_id])
+    if @place.move_to parent
+      redirect_to places_with_ref_path(@place.id), notice: "Place has been moved to #{parent.name}"
+    else
+      flash.now[:alert] = 'Failed to move place'
+      render :edit
     end
   end
 
@@ -106,7 +120,7 @@ class PlacesController < ApplicationController
     places_path(place_id: place_id)
   end
 
-  def filter_params
+  def protected_params
     params.require(:place).permit(:name, :code, :dhis2_organisation_unit_uuid, :parent_id, :kind_of, :auditable)
   end
 
