@@ -22,4 +22,7 @@
 #
 
 class ReportVariableValue < ReportVariable
+  def has_value?
+    value.to_i > 0
+  end
 end

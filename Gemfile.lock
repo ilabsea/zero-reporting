@@ -392,6 +392,3 @@ DEPENDENCIES
   uglifier (~> 3.0)
   validate_url
   whenever
-
-BUNDLED WITH
-   1.11.2

@@ -24,8 +24,9 @@
 FactoryGirl.define do
   factory :report_variable do
     report nil
-variable nil
-type ""
+    variable nil
+    type ""
+    is_alerted false
   end
 
 end
