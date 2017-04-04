@@ -35,6 +35,13 @@ default: &default
   # LOGO
   LOGO_URL: 'path_to_image'
 
+  # S3
+  BACKUP_MODEL_NAME: ''
+  BACKUP_SCRIPT_PATH: ''
+  BACKUP_NOTIFY_EMAIL: ''
+  CONFIG_PATH_TO_BACKUP: ''
+  ASSET_PATH_TO_BACKUP: ''
+
 development:
   <<: *default
 

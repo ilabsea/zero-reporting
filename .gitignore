@@ -26,6 +26,8 @@ nbproject/*
 /tmp
 /config/database.yml
 /config/application.yml
+/config/aws.yml
+/config/smtp.yml
 /coverage
 spec/reports/*
 public/assets
