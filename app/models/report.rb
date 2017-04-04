@@ -214,6 +214,10 @@ class Report < ActiveRecord::Base
     return week
   end
 
+  def having_alerted_variable?
+    alerted_variables.size > 0
+  end
+
   def alerted_variables
     self.report_variables.where(is_alerted: true).joins(:variable).select("report_variables.*, variables.name")
   end
@@ -333,7 +337,7 @@ class Report < ActiveRecord::Base
   def status_info
     return { color: 'red', text: 'Failed' } if failed?
     return { color: 'orange', text: 'In-progress' } if in_progress?
-    
+
     { color: 'green', text: 'Success' }
   end
 

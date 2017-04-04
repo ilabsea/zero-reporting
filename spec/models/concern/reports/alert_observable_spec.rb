@@ -8,6 +8,7 @@ RSpec.describe Reports::AlertObservable, type: :model do
 
       before(:each) do
         allow(AlertSetting).to receive(:has_alert?).with(report.verboice_project_id).and_return(true)
+        allow(report).to receive(:having_alerted_variable?).and_return(true)
       end
 
       it {

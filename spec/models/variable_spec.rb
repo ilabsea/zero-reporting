@@ -12,10 +12,11 @@
 #  updated_at              :datetime         not null
 #  background_color        :string(255)
 #  text_color              :string(255)
-#  dhis2_data_element_uuid :string(255)
 #  is_alerted_by_threshold :boolean          default(TRUE)
 #  is_alerted_by_report    :boolean          default(FALSE)
+#  dhis2_data_element_uuid :string(255)
 #  disabled                :boolean          default(FALSE)
+#  alert_method            :string(255)      default("formula")
 #
 
 require 'rails_helper'
@@ -167,6 +168,17 @@ RSpec.describe Variable, type: :model do
       expect(@variable2.threshold_by_place_and_week(hc, week)).to eq(2)
       expect(@variable3.threshold_by_place_and_week(hc, week)).to eq(5)
     end
+  end
+
+  describe '.migrate_alert_method' do
+    let!(:variable1) { create(:variable, name: 'variable1', verboice_id: 11, verboice_name: 'variable1', verboice_project_id: 24, is_alerted_by_threshold: true , is_alerted_by_report: false) }
+    let!(:variable2) { create(:variable, name: 'variable2', verboice_id: 22, verboice_name: 'variable2', verboice_project_id: 24 , is_alerted_by_threshold: false, is_alerted_by_report: true)}
+
+    it {
+      Variable.migrate_alert_method
+      expect(variable1.reload.alert_method).to eq('formula')
+      expect(variable2.reload.alert_method).to eq('case_base')
+    }
   end
 
 end

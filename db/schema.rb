@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170118115812) do
+ActiveRecord::Schema.define(version: 20170403091910) do
 
   create_table "alert_settings", force: :cascade do |t|
     t.boolean "is_enable_sms_alert"
@@ -215,14 +215,15 @@ ActiveRecord::Schema.define(version: 20170118115812) do
     t.integer  "verboice_id",             limit: 4
     t.string   "verboice_name",           limit: 255
     t.integer  "verboice_project_id",     limit: 4
-    t.datetime "created_at",                                          null: false
-    t.datetime "updated_at",                                          null: false
+    t.datetime "created_at",                                              null: false
+    t.datetime "updated_at",                                              null: false
     t.string   "background_color",        limit: 255
     t.string   "text_color",              limit: 255
-    t.string   "dhis2_data_element_uuid", limit: 255
     t.boolean  "is_alerted_by_threshold",             default: true
     t.boolean  "is_alerted_by_report",                default: false
+    t.string   "dhis2_data_element_uuid", limit: 255
     t.boolean  "disabled",                            default: false
+    t.string   "alert_method",            limit: 255, default: "formula"
   end
 
   create_table "verboice_sync_states", force: :cascade do |t|
@@ -231,7 +232,6 @@ ActiveRecord::Schema.define(version: 20170118115812) do
     t.datetime "updated_at",                              null: false
   end
 
-  add_foreign_key "channels", "users"
   add_foreign_key "event_attachments", "events"
   add_foreign_key "report_variables", "reports"
   add_foreign_key "report_variables", "variables"

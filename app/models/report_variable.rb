@@ -44,25 +44,15 @@ class ReportVariable < ActiveRecord::Base
   end
 
   def check_alert_for(week, place)
-    self.set_threshold_alert(week, place) if self.variable.is_alerted_by_threshold?
-    self.set_report_variable_alert if self.variable.is_alerted_by_report?
+    strategy = Strategies::ThresholdStrategy.get(self.variable.alert_method)
+    self.set_alert(strategy, week, place)
   end
 
-  def set_threshold_alert(week, place)
-    threshold = Threshold.new(week, place, self.variable).value
-    
-    if self.value.to_i > threshold
-      self.mark_as_reaching_alert_with_exceed_value(self.value.to_i - threshold)
-    else
-      self.unmark_as_reaching_alert
-    end
-  end
-
-  def set_report_variable_alert
-    if self.value.to_i > 0
-      self.mark_as_reaching_alert_with_exceed_value(self.value)
-    else
-      self.unmark_as_reaching_alert
+  def set_alert(strategy, week, place)
+    context = ThresholdContext.new(strategy)
+    context.baseline_of(self.variable, place, week) do |threshold|
+      exceed_value = self.value.to_i - threshold.value
+      exceed_value > 0 ? self.mark_as_reaching_alert_with_exceed_value(exceed_value) : self.unmark_as_reaching_alert
     end
   end
 

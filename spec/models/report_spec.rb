@@ -48,7 +48,7 @@ RSpec.describe Report, type: :model do
   describe "#alert_week" do
     context "when report is on sunday" do
       let(:report) {create(:report, called_at: "2016-03-20 11:39:45")}
-      
+
       it "return the week previous" do
         week = Calendar.week(report.called_at.to_date)
         expect(report.alert_week.week_number).to eq week.previous.week_number
@@ -57,7 +57,7 @@ RSpec.describe Report, type: :model do
 
     context "when report is after wednesday" do
       let(:report) {create(:report, called_at: "2016-03-18 11:39:45")}
-      
+
       it "return the week previous" do
         week = Calendar.week(report.called_at.to_date)
         expect(report.alert_week.week_number).to eq week.previous.week_number
@@ -66,7 +66,7 @@ RSpec.describe Report, type: :model do
 
     context "when report is not on sunday and before wednesday" do
       let(:report) {create(:report, called_at: "2016-03-21 11:39:45")}
-      
+
       it "return the current report week" do
         week = Calendar.week(report.called_at.to_date)
         expect(report.alert_week.week_number).to eq week.week_number
@@ -78,7 +78,7 @@ RSpec.describe Report, type: :model do
     let(:place){create(:phd)}
     let(:user){create(:user, place_id: place.id)}
     let(:report){create(:report, user_id: user.id)}
-    
+
     it "return the place of reported user" do
       expect(report.place).to eq place
     end
@@ -107,7 +107,7 @@ RSpec.describe Report, type: :model do
 
   describe '#sync_call' do
     let(:report) { create(:report, status: Report::VERBOICE_CALL_STATUS_IN_PROGRESS, call_log_id: 9999) }
-    
+
     context 'notify sync call failed when exception is occured' do
       let(:verboice_call_log) { { 'state' => 'completed' } }
 
@@ -174,7 +174,7 @@ RSpec.describe Report, type: :model do
 
       it {
         report.notify_sync_call_failed
-        
+
         expect(report.reload.verboice_sync_failed_count).to eq(1)
       }
     end
@@ -242,6 +242,17 @@ RSpec.describe Report, type: :model do
         }
       end
     end
+  end
+
+  describe '#alerted_variables' do
+    before(:each) do
+      @variable1 = create(:variable, name: 'age', verboice_id: 91, verboice_name: 'age', verboice_project_id: 24, is_alerted_by_threshold: true)
+      @report = create(:report)
+      @report_variable = create(:report_variable, report: @report, variable: @variable1, is_alerted: true)
+    end
+
+    it { expect(@report.alerted_variables.size).to eq 1 }
+
   end
 
 end

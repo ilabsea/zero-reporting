@@ -12,10 +12,11 @@
 #  updated_at              :datetime         not null
 #  background_color        :string(255)
 #  text_color              :string(255)
-#  dhis2_data_element_uuid :string(255)
 #  is_alerted_by_threshold :boolean          default(TRUE)
 #  is_alerted_by_report    :boolean          default(FALSE)
+#  dhis2_data_element_uuid :string(255)
 #  disabled                :boolean          default(FALSE)
+#  alert_method            :string(255)      default("formula")
 #
 
 class Variable < ActiveRecord::Base
@@ -25,7 +26,7 @@ class Variable < ActiveRecord::Base
   has_many :reports, through: :report_variables
   has_many :report_variable_audios
   has_many :report_variable_values
-  
+
   def self.applied(project_id)
     where(verboice_project_id: project_id)
   end
@@ -52,12 +53,25 @@ class Variable < ActiveRecord::Base
     (threshold/ENV['THRESHOLD_WEEK_RANGE'].to_i)*1.5
   end
 
+  def has_alert? method
+    alert_method.to_s === method.to_s
+  end
+
   def is_alerted_by_threshold?
     self.is_alerted_by_threshold
   end
 
   def is_alerted_by_report?
     self.is_alerted_by_report
+  end
+
+  def self.migrate_alert_method
+    Variable.transaction do
+      Variable.find_each(batch_size: 100) do |variable|
+        variable.alert_method = variable.is_alerted_by_threshold ? :formula : :case_base
+        variable.save
+      end
+    end
   end
 
 end
