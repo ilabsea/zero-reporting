@@ -16,7 +16,7 @@
 #  is_alerted_by_report    :boolean          default(FALSE)
 #  dhis2_data_element_uuid :string(255)
 #  disabled                :boolean          default(FALSE)
-#  alert_method            :string(255)      default("formula")
+#  alert_method            :string(255)      default("none")
 #
 
 class VariableSerializer < ActiveModel::Serializer

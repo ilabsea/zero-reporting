@@ -32,8 +32,7 @@ function handleSaveVariable() {
       verboice_name: $form.find("#variable_verboice_name").val(),
       background_color: $form.find("#variable_background_color").val(),
       text_color: $form.find("#variable_text_color").val(),
-      is_alerted_by_threshold: $form.find("#variable_is_alerted_by_threshold").is(':checked'),
-      is_alerted_by_report: $form.find("#variable_is_alerted_by_report").is(':checked'),
+      alert_method: $form.find('input[class=alert_method]:checked').val(),
       dhis2_data_element_uuid: $form.find("#variable_dhis2_data_element_uuid").val(),
       disabled: $form.find("#variable_disabled").is(':checked'),
       _method: $form.find("input[name=_method]").val()

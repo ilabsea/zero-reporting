@@ -16,7 +16,7 @@
 #  is_alerted_by_report    :boolean          default(FALSE)
 #  dhis2_data_element_uuid :string(255)
 #  disabled                :boolean          default(FALSE)
-#  alert_method            :string(255)      default("formula")
+#  alert_method            :string(255)      default("none")
 #
 
 class Variable < ActiveRecord::Base
@@ -26,6 +26,13 @@ class Variable < ActiveRecord::Base
   has_many :reports, through: :report_variables
   has_many :report_variable_audios
   has_many :report_variable_values
+
+  ALERT_METHODS = { none: 'None',
+                   formula: "If the value is greater than the threshold, <b>#{ENV['THRESHOLD_FORMULA']}</b>",
+                   case_base: 'If the value is greater than 0'
+                 }
+
+  VALID_ALERT_METHOD = ['formula', 'case_base']
 
   def self.applied(project_id)
     where(verboice_project_id: project_id)
@@ -53,16 +60,8 @@ class Variable < ActiveRecord::Base
     (threshold/ENV['THRESHOLD_WEEK_RANGE'].to_i)*1.5
   end
 
-  def has_alert? method
-    alert_method.to_s === method.to_s
-  end
-
-  def is_alerted_by_threshold?
-    self.is_alerted_by_threshold
-  end
-
-  def is_alerted_by_report?
-    self.is_alerted_by_report
+  def has_alert_method?
+    VALID_ALERT_METHOD.include? alert_method
   end
 
   def self.migrate_alert_method

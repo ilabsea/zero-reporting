@@ -12,7 +12,7 @@ module Alerts
     def message_template
       @setting.message_template
     end
-    
+
     def recipients
       @recipients ||= recipient_users.map { |user| user.phone if user.phone.present? }.compact
     end
@@ -38,10 +38,10 @@ module Alerts
     end
 
     private
-    
+
     def recipient_users
       users = []
-      
+
       place = @report.user.place
       @setting.recipient_type.each do |recipient|
         users = users + User.by_place(place.try(&recipient.to_sym.downcase).id) if recipient.present? && place.try(&recipient.to_sym.downcase)

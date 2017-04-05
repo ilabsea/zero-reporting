@@ -40,11 +40,11 @@ RSpec.describe Alerts::ReportCaseAlert, type: :model do
   end
 
   before(:each) do
-    @variable1 = create(:variable, name: 'age', verboice_id: 91, verboice_name: 'age', verboice_project_id: 24, is_alerted_by_threshold: true)
-    @variable2 = create(:variable, name: 'grade', verboice_id: 77, verboice_name: 'grade', verboice_project_id: 24, is_alerted_by_threshold: true)
-    @variable3 = create(:variable, name: 'hc_worker', verboice_id: 75, verboice_name: 'is_hc_worker', verboice_project_id: 24, is_alerted_by_threshold: true)
-    @variable4 = create(:variable, name: 'feed_back', verboice_id: 73, verboice_name: 'feed_back', verboice_project_id: 24, is_alerted_by_threshold: true)
-    @variable5 = create(:variable, name: 'about', verboice_id: 93, verboice_name: 'about', verboice_project_id: 24, is_alerted_by_threshold: true)
+    @variable1 = create(:variable, name: 'age', verboice_id: 91, verboice_name: 'age', verboice_project_id: 24, alert_method: 'formula')
+    @variable2 = create(:variable, name: 'grade', verboice_id: 77, verboice_name: 'grade', verboice_project_id: 24, alert_method: 'formula')
+    @variable3 = create(:variable, name: 'hc_worker', verboice_id: 75, verboice_name: 'is_hc_worker', verboice_project_id: 24, alert_method: 'formula')
+    @variable4 = create(:variable, name: 'feed_back', verboice_id: 73, verboice_name: 'feed_back', verboice_project_id: 24, alert_method: 'formula')
+    @variable5 = create(:variable, name: 'about', verboice_id: 93, verboice_name: 'about', verboice_project_id: 24, alert_method: 'formula')
 
     @report = Parser::ReportParser.parse(verboice_attrs)
     @report.reviewed_as!(2016, week.week_number)

@@ -86,4 +86,31 @@ RSpec.describe ReportVariable, type: :model do
     }
   end
 
+  describe '#perform_cheked_alert?' do
+    context 'when variable has no alert_method and report_variable has value' do
+      let(:age) { create(:variable, name: 'age', verboice_id: 91, verboice_name: 'age', verboice_project_id: 24, alert_method: 'none') }
+      let(:report_variable) { create(:report_variable_value, variable: age, value: 50) }
+      it {
+        expect(report_variable.alert_defined?).to eq(false)
+      }
+    end
+
+    context 'when variable has alert_method and zero report_variable value' do
+      let(:age) { create(:variable, name: 'age', verboice_id: 91, verboice_name: 'age', verboice_project_id: 24, alert_method: 'case_base') }
+      let(:report_variable) { create(:report_variable_value, variable: age, value: 0) }
+      it {
+        expect(report_variable.alert_defined?).to eq(false)
+      }
+    end
+
+    context 'when variable has alert_method and report_variable has value' do
+      let(:age) { create(:variable, name: 'age', verboice_id: 91, verboice_name: 'age', verboice_project_id: 24, alert_method: 'formula') }
+      let(:report_variable) { create(:report_variable_value, variable: age, value: 50) }
+      it {
+        expect(report_variable.alert_defined?).to eq(true)
+      }
+    end
+
+  end
+
 end
