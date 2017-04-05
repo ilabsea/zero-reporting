@@ -48,6 +48,14 @@ class ReportVariable < ActiveRecord::Base
     self.set_alert(strategy, week, place)
   end
 
+  def has_value?
+    value.present?
+  end
+
+  def alert_defined?
+    variable.has_alert_method? && has_value?
+  end
+
   def set_alert(strategy, week, place)
     context = ThresholdContext.new(strategy)
     context.baseline_of(self.variable, place, week) do |threshold|

@@ -76,7 +76,15 @@
       </div>
 
       <div class="clearfix">
-        <%= render 'alert_option', variable: variable %>
+        <div class="vertical-checkbox-list" style="padding: 10px;">
+          <label>Apply alert setting</label>
+          <% Variable::ALERT_METHODS.each do |key, method| %>
+            <div style="border-bottom:none">
+              <%= f.radio_button :alert_method, key, class: 'alert_method' %>
+              <span class="lbl"><%= method.html_safe %></span>
+            </div>
+          <% end %>
+        </div>
       </div>
 
       <div class="form-action" style="text-align: right; margin-top: 15px;">
