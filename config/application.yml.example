@@ -42,6 +42,9 @@ default: &default
   CONFIG_PATH_TO_BACKUP: ''
   ASSET_PATH_TO_BACKUP: ''
 
+  # Setting
+  NUM_OF_REVISE_WEEK: ''
+
 development:
   <<: *default
 

@@ -75,11 +75,11 @@ RSpec.describe Calendar::Week, type: :model do
 
       it { expect(week.year.number).to eq(2016) }
       it { expect(week.week_number).to eq(52) }
-        
-      it { expect(Calendar::Week.last_of(date, 2)[0].year.number).to eq(2016) }
-      it { expect(Calendar::Week.last_of(date, 2)[0].week_number).to eq(52) }
-      it { expect(Calendar::Week.last_of(date, 2)[1].year.number).to eq(2016) }
-      it { expect(Calendar::Week.last_of(date, 2)[1].week_number).to eq(51) }
+
+      it { expect(Calendar::Week.last_of(date)[0].year.number).to eq(2016) }
+      it { expect(Calendar::Week.last_of(date)[0].week_number).to eq(52) }
+      it { expect(Calendar::Week.last_of(date)[1].year.number).to eq(2016) }
+      it { expect(Calendar::Week.last_of(date)[1].week_number).to eq(51) }
     end
   end
 
