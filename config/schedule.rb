@@ -7,5 +7,5 @@ every 5.minutes do
 end
 
 every 1.day, :at => '12:00 am' do
-  command "backup perform -t zero_backup -c /var/www/cdc-zero-reporting-system/current/lib/backup/config.rb"
+  command "cd /var/www/cdc-zero-reporting-system/current && backup perform -t zero_backup -c /var/www/cdc-zero-reporting-system/current/lib/backup/config.rb"
 end
