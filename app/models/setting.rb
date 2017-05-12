@@ -20,6 +20,7 @@ class Setting < RailsSettings::CachedSettings
   HUB = :hub
   ALERT = :alert
   REPORT = :report
+  TEMPLATE = :template
 
   def self.hub_enabled?
     ENV["HUB_ENABLED"] == '1'

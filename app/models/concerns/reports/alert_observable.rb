@@ -15,4 +15,5 @@ module Reports::AlertObservable
       self.notify_alert if self.having_alerted_variable?
     end
   end
+
 end

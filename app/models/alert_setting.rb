@@ -13,6 +13,8 @@
 class AlertSetting < ActiveRecord::Base
   serialize :recipient_type, Array
 
+  VARIABLES = %w(place_name week_year reported_cases)
+
   def self.get(project_id)
     AlertSetting.find_by(verboice_project_id: project_id)
   end

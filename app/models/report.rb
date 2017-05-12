@@ -43,7 +43,8 @@
 #
 
 class Report < ActiveRecord::Base
-  include Reports::Filterable, Reports::AlertObservable
+  include Reports::Filterable
+  include Reports::AlertObservable
 
   serialize :recorded_audios, Array
   serialize :call_log_answers, Array

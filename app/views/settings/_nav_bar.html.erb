@@ -2,15 +2,22 @@
   <li role="presentation" class="<%= params[:tab].present? ? tab_active_for(Setting::VERBOICE) : 'active' %>">
     <%= link_to Setting::VERBOICE.to_s.camelcase, settings_path(tab: Setting::VERBOICE) %>
   </li>
+
   <li role="presentation" class="<%= tab_active_for(Setting::ALERT) %>">
     <%= link_to Setting::ALERT.to_s.camelcase, settings_path(tab: Setting::ALERT) %>
   </li>
+
   <li role="presentation" class="<%= tab_active_for(Setting::REPORT) %>">
     <%= link_to Setting::REPORT.to_s.camelcase, settings_path(tab: Setting::REPORT) %>
   </li>
+
   <% if Setting.hub_enabled? %>
     <li role="presentation" class="<%= tab_active_for(Setting::HUB) %>">
       <%= link_to Setting::HUB.to_s.camelcase, settings_path(tab: Setting::HUB) %>
     </li>
   <% end %>
+
+  <li role="presentation" class="<%= tab_active_for(Setting::TEMPLATE) %>">
+    <%= link_to Setting::TEMPLATE.to_s.camelcase, settings_path(tab: Setting::TEMPLATE) %>
+  </li>
 </ul>

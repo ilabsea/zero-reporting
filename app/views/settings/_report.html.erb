@@ -54,7 +54,7 @@
 
         <div class='form-group clearfix'>
           <label class='control-label'>&nbsp;</label>
-          <%= message_template_supervisor_params_for(:report_templates_sms_supervisor_template) %>
+          <%= template_params_for(:report_templates_sms_supervisor_template, Setting::ReportSetting::SUPERVISOR_VARIABLES) %>
         </div>
 
         <div class='form-group clearfix'>
@@ -64,7 +64,7 @@
 
         <div class='form-group clearfix'>
           <label class='control-label'>&nbsp;</label>
-          <%= message_template_reporter_params_for(:report_templates_sms_reporter_template) %>
+          <%= template_params_for(:report_templates_sms_reporter_template, Setting::ReportSetting::REPORTER_VARIABLES) %>
         </div>
       </div>
 

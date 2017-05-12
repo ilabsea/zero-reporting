@@ -1,0 +1,21 @@
+<div class="alert-section" style="width: 620px;">
+  <div class="panel-head clearfix" style="padding: 10px;">
+    <%= form_tag message_template_path, class: 'form form-inline alert-form', method: :put do %>
+
+      <div class='form-group clearfix'>
+        <label class='control-label left'>Report confirmation</label>
+        <%= text_area_tag 'message_template[report_confirmation]', @message_template.report_confirmation, rows: 6, cols: 60 %>
+      </div>
+
+      <div class='form-group'>
+        <label class="control-label">&nbsp;</label>
+        <%= template_params_for(:message_template_report_confirmation, Setting::MessageTemplateSetting::VARIABLES) %>
+      </div>
+
+      <div class='form-group'>
+        <label class="control-label">&nbsp;</label>
+        <%= submit_tag 'Save', class: 'btn btn-primary' %>
+      </div>
+    <% end %>
+  </div>
+</div>
