@@ -13,4 +13,81 @@ RSpec.describe Calendar, type: :model do
     it { expect(Calendar.week(Date.new(2016, 2, 4)).week_number).to eq(6) }
   end
 
+  describe "#week" do
+
+    it {
+      week = Calendar.week(Date.new(2008, 1, 1))
+      expect(week.week_number).to eq(1)
+      expect(week.year.number).to eq(2008)
+    }
+
+    it {
+      week = Calendar.week(Date.new(2008, 12, 25))
+      expect(week.week_number).to eq(1)
+      expect(week.year.number).to eq(2009)
+    }
+
+    it {
+      week = Calendar.week(Date.new(2012, 12, 25))
+      expect(week.week_number).to eq(52)
+      expect(week.year.number).to eq(2012)
+    }
+
+    it {
+      week = Calendar.week(Date.new(2012, 12, 26))
+      expect(week.week_number).to eq(53)
+      expect(week.year.number).to eq(2012)
+    }
+    #
+    it {
+      week = Calendar.week(Date.new(2013, 1, 1))
+      expect(week.week_number).to eq(53)
+      expect(week.year.number).to eq(2012)
+    }
+
+    it {
+      week = Calendar.week(Date.new(2016, 12, 30))
+      expect(week.week_number).to eq(53)
+      expect(week.year.number).to eq(2016)
+    }
+
+    it {
+      week = Calendar.week(Date.new(2017, 1, 3))
+      expect(week.week_number).to eq(53)
+      expect(week.year.number).to eq(2016)
+    }
+
+    it {
+      week = Calendar.week(Date.new(2017, 1, 4))
+      expect(week.week_number).to eq(1)
+      expect(week.year.number).to eq(2017)
+    }
+
+    it {
+      week = Calendar.week(Date.new(2017, 5, 17))
+      expect(week.week_number).to eq(20)
+      expect(week.year.number).to eq(2017)
+    }
+    #
+    it {
+      week = Calendar.week(Date.new(2017, 12, 31))
+      expect(week.week_number).to eq(52)
+      expect(week.year.number).to eq(2017)
+    }
+
+
+    it {
+      week = Calendar.week(Date.new(2018, 1, 2))
+      expect(week.week_number).to eq(52)
+      expect(week.year.number).to eq(2017)
+    }
+
+    it {
+      week = Calendar.week(Date.new(2018, 1, 3))
+      expect(week.week_number).to eq(1)
+      expect(week.year.number).to eq(2018)
+    }
+
+  end
+
 end

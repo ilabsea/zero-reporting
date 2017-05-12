@@ -62,11 +62,11 @@ RSpec.describe Calendar::Week, type: :model do
       let(:date) { Date.today }
       let(:week) { Calendar.week(date) }
 
-      it { expect(week.year.number).to eq(2017) }
-      it { expect(week.week_number).to eq(1) }
+      it { expect(week.year.number).to eq(2016) }
+      it { expect(week.week_number).to eq(53) }
 
-      it { expect(Calendar::Week.last_of(date)[0].year.number).to eq(2017) }
-      it { expect(Calendar::Week.last_of(date)[0].week_number).to eq(1) }
+      it { expect(Calendar::Week.last_of(date)[0].year.number).to eq(2016) }
+      it { expect(Calendar::Week.last_of(date)[0].week_number).to eq(53) }
     end
 
     context '2 weeks of specific date' do
@@ -75,7 +75,7 @@ RSpec.describe Calendar::Week, type: :model do
 
       it { expect(week.year.number).to eq(2016) }
       it { expect(week.week_number).to eq(52) }
-        
+
       it { expect(Calendar::Week.last_of(date, 2)[0].year.number).to eq(2016) }
       it { expect(Calendar::Week.last_of(date, 2)[0].week_number).to eq(52) }
       it { expect(Calendar::Week.last_of(date, 2)[1].year.number).to eq(2016) }

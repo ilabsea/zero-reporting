@@ -1,5 +1,7 @@
 class Calendar::Year
   attr_accessor :number
+  EXCEPTIONAL_YEAR = ENV['EXCEPTIONAL_YEAR'].split(",").map(&:strip)
+  LEAP_YEAR = ENV['LEAP_YEAR'].split(",").map(&:strip)
 
   def initialize number
     self.number = number
@@ -50,6 +52,27 @@ class Calendar::Year
 
   def clone
     Calendar::Year.new(number)
+  end
+
+  def number_of_days_in_first_week
+    first_date = Date.new(number, 1, 1)
+    day = Calendar.beginning_date_of_week(first_date, Calendar.days[ENV['WKST']]).day
+
+    if first_date.wday == ENV['WKST'].to_i
+      return 7
+    elsif first_date.wday < ENV['WKST'].to_i || first_date.wday == 0 || first_date.wday == 6
+      return 7-(31-day)-1
+    else
+      return 7-(first_date.wday - ENV['WKST'].to_i)
+    end
+  end
+
+  def exceptional_year?
+    EXCEPTIONAL_YEAR.include? "#{self.number}"
+  end
+
+  def leap_year?
+    LEAP_YEAR.include? "#{self.number}"
   end
 
 end
