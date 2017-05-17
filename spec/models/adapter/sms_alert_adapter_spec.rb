@@ -45,7 +45,7 @@ RSpec.describe Adapter::SmsAlertAdapter, type: :model do
       let(:adapter) { Adapter::SmsAlertAdapter.new(alert) }
 
       before(:each) do
-        allow(report).to receive(:alert_week).and_return(week)
+        allow(report).to receive(:camewarn_week).and_return(week)
       end
 
       it 'enqueue an alert job to queue' do
