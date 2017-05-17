@@ -14,6 +14,8 @@ module Adapter
       @alert.recipients.each do |recipient|
         suggested_channel = Channel.suggested(Tel.new(recipient))
 
+        next if suggested_channel.nil?
+
         sms = Sms::Message.new(recipient, message, suggested_channel, @alert.type)
         SmsQueueJob.set(wait: ENV['DELAY_DELIVER_IN_MINUTES'].to_i).perform_later(sms.to_hash)
       end
