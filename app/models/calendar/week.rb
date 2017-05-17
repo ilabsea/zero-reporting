@@ -42,11 +42,12 @@ class Calendar::Week
     Calendar::Year.new(values[1].to_i).week(values[0].to_i)
   end
 
-  def self.last_of(date = Date.today)
+  def self.last_of(date = Date.today, x = 1)
     current_week = Calendar.week(date)
     weeks = []
-    num_of_revise_week = ENV['NUM_OF_REVISE_WEEK'].to_i + 1
-    num_of_revise_week.times do |i|
+    # num_of_revise_week = ENV['NUM_OF_REVISE_WEEK'].to_i + 1
+    # num_of_revise_week.times do |i|
+    x.times do |i|
       weeks.push((i === 0) ? current_week : current_week.previous(i))
     end
     weeks
