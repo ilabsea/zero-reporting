@@ -11,7 +11,13 @@ module Sms
     def send sms
       Log.write_sms sms
 
-      nuntium.send_ao sms.to_nuntium_params
+      begin
+        nuntium.send_ao sms.to_nuntium_params
+      rescue Nuntium::Exception => e
+        Sidekiq::Logging.logger.info e.message
+      rescue StandardError => e
+        Sidekiq::Logging.logger.info e.message
+      end
     end
 
     def nuntium
