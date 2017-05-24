@@ -72,7 +72,7 @@
       <div class='form-group clearfix'>
         <label class='control-label left'>Voice</label>
         <div class='horizontal-form-control'>
-          <%= check_box_tag 'report[enables][]', Alert::TYPES[:voice], @report_setting.try(:voice_enabled?), class: 'form-control ace ace-switch ace-switch-4 btn-empty voice-reminder-toggle' %>
+          <%= check_box_tag 'report[enables][]', Alert::TYPES[:voice], @report_setting.try(:voice_enabled?), class: 'form-control ace ace-switch ace-switch-4 btn-empty voice-reminder-toggle toggle' %>
           <span class='lbl' style='vertical-align:bottom'></span>
         </div>
       </div>

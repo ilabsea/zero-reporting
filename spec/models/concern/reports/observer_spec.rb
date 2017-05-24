@@ -14,9 +14,9 @@ RSpec.describe Reports::Observer, type: :model do
       }
     end
 
-    context 'notify report confirmation' do
+    context 'notify report confirmation when template is enabled' do
       let!(:report) { create(:report, verboice_project_id: 1, status: Report::VERBOICE_CALL_STATUS_COMPLETED) }
-      let!(:message_template) { Setting::MessageTemplateSetting.new(report_confirmation: 'On {{week_year}} with diseases: {{reported_cases}}') }
+      let!(:message_template) { Setting::MessageTemplateSetting.new(enabled: true, report_confirmation: 'On {{week_year}} with diseases: {{reported_cases}}') }
 
       before(:each) do
         Setting.message_template = message_template
@@ -49,12 +49,12 @@ RSpec.describe Reports::Observer, type: :model do
 
   describe '#notify_report_confirmation' do
     let!(:report) { create(:report, verboice_project_id: 1) }
-    let!(:message_template) { Setting::MessageTemplateSetting.new(report_confirmation: 'On {{week_year}} with diseases: {{reported_cases}}') }
+    let!(:message_template) { Setting::MessageTemplateSetting.new(enabled: true, report_confirmation: 'On {{week_year}} with diseases: {{reported_cases}}') }
     let(:alert) { :alert }
     let(:sms_alert_adapter) { Adapter::SmsAlertAdapter.new(alert) }
 
     describe 'on weekly case report' do
-      context 'process alert sms when template is set' do
+      context 'process alert sms when template is set and enabled' do
         before(:each) do
           Setting.message_template = message_template
 

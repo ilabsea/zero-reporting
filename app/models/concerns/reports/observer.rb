@@ -6,7 +6,7 @@ module Reports::Observer
 
     def notify_report_confirmation_and_alert
       # report confirmation
-      notify_report_confirmation if Setting.message_template
+      notify_report_confirmation if Setting.message_template && Setting.message_template.enabled?
 
       # Checking alert
       alert_checking if AlertSetting.has_alert?(self.verboice_project_id)
@@ -14,8 +14,10 @@ module Reports::Observer
 
     def notify_report_confirmation
       # TODO Refactoring to remove alert_setting dependency
-      alert = Alerts::ReportConfirmationAlert.new(Setting.message_template, self)
-      AdapterType.for(alert).process
+      if Setting.message_template.report_confirmation.present?
+        alert = Alerts::ReportConfirmationAlert.new(Setting.message_template, self)
+        AdapterType.for(alert).process
+      end
     end
 
     def alert_checking
