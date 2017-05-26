@@ -16,15 +16,15 @@ RSpec.describe Calendar, type: :model do
   describe "#week" do
 
     it {
-      week = Calendar.week(Date.new(2008, 1, 1))
+      week = Calendar.week(Date.new(2008, 1, 2))
       expect(week.week_number).to eq(1)
       expect(week.year.number).to eq(2008)
     }
 
     it {
       week = Calendar.week(Date.new(2008, 12, 25))
-      expect(week.week_number).to eq(1)
-      expect(week.year.number).to eq(2009)
+      expect(week.week_number).to eq(52)
+      expect(week.year.number).to eq(2008)
     }
 
     it {
@@ -38,7 +38,7 @@ RSpec.describe Calendar, type: :model do
       expect(week.week_number).to eq(53)
       expect(week.year.number).to eq(2012)
     }
-    #
+
     it {
       week = Calendar.week(Date.new(2013, 1, 1))
       expect(week.week_number).to eq(53)
@@ -68,13 +68,12 @@ RSpec.describe Calendar, type: :model do
       expect(week.week_number).to eq(20)
       expect(week.year.number).to eq(2017)
     }
-    #
+
     it {
       week = Calendar.week(Date.new(2017, 12, 31))
       expect(week.week_number).to eq(52)
       expect(week.year.number).to eq(2017)
     }
-
 
     it {
       week = Calendar.week(Date.new(2018, 1, 2))

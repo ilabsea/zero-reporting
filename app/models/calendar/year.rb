@@ -1,7 +1,5 @@
 class Calendar::Year
   attr_accessor :number
-  EXCEPTIONAL_YEAR = ENV['EXCEPTIONAL_YEAR'].split(",").map(&:strip)
-  LEAP_YEAR = ENV['LEAP_YEAR'].split(",").map(&:strip)
 
   def initialize number
     self.number = number
@@ -30,49 +28,72 @@ class Calendar::Year
   end
 
   def total_weeks
-    cam_ewarn_beginning_date = Calendar.beginning_date_of_week beginning_date
-    ((end_date - cam_ewarn_beginning_date) + 1).to_i / 7
+    Setting.exceptional_years.include?(number.to_s) ? 53 : 52
+  end
+
+  def beginning_date
+    first_date_of_year = Date.new(number, 1, 1)
+
+    start_date_first_week_current_year = Calendar.beginning_date_of_week first_date_of_year
+
+    if Setting.exceptional_years.include?((number - 1).to_s) || (start_date_first_week_current_year + (Setting.wkst + 1).day) < first_date_of_year
+      start_date_first_week_current_year += 7
+    end
+
+    start_date_first_week_current_year
+  end
+
+  def end_date
+    beginning_date + ((total_weeks * 7) - 1).day
   end
 
   # follows CamEwarn calendar weekly report, wednesday is starting day
-  def beginning_date
+  def beginning_date_old
     Date.new(number, 1, 1).tuesday? ? Date.new(number, 1, 2) : Date.new(number, 1, 1)
   end
 
   # follows CamEwarn calendar weekly report, wednesday is starting day
-  def end_date
+  def end_date_old
     Date.new((number + 1), 1, 1).tuesday? ? Date.new((number + 1), 1, 1) : Date.new(number, 12, 31)
   end
 
   def previous x = 1
+    move(-x)
+  end
+
+  def next x = 1
+    move(x)
+  end
+
+  def number_of_days_in_first_week
+    first_date = Date.new(number, 1, 1)
+    day = Calendar.beginning_date_of_week(first_date).day
+
+    if first_date.wday == Setting.wkst
+      return 7
+    elsif first_date.wday < Setting.wkst || first_date.wday == 0 || first_date.wday == 6
+      return 7-(31-day)-1
+    else
+      return 7-(first_date.wday - Setting.wkst)
+    end
+  end
+
+  def exceptional_year?
+    Setting.exceptional_years.include? "#{self.number}"
+  end
+
+  private
+
+  # posive x: move next
+  # negative x: move previous
+  def move x
     year = clone
-    year.number -= x
+    year.number = year.number + x
     year
   end
 
   def clone
     Calendar::Year.new(number)
-  end
-
-  def number_of_days_in_first_week
-    first_date = Date.new(number, 1, 1)
-    day = Calendar.beginning_date_of_week(first_date, Calendar.days[ENV['WKST']]).day
-
-    if first_date.wday == ENV['WKST'].to_i
-      return 7
-    elsif first_date.wday < ENV['WKST'].to_i || first_date.wday == 0 || first_date.wday == 6
-      return 7-(31-day)-1
-    else
-      return 7-(first_date.wday - ENV['WKST'].to_i)
-    end
-  end
-
-  def exceptional_year?
-    EXCEPTIONAL_YEAR.include? "#{self.number}"
-  end
-
-  def leap_year?
-    LEAP_YEAR.include? "#{self.number}"
   end
 
 end

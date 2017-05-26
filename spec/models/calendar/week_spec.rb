@@ -15,17 +15,17 @@ RSpec.describe Calendar::Week, type: :model do
     it { expect(Calendar::Year.new(2016).week(4).from_date).to eq(Date.new(2016, 1, 20)) }
     it { expect(Calendar::Year.new(2016).week(4).to_date).to eq(Date.new(2016, 1, 26)) }
 
-    it { expect(Calendar::Year.new(2017).week(1).from_date).to eq(Date.new(2016, 12, 28)) }
-    it { expect(Calendar::Year.new(2017).week(1).to_date).to eq(Date.new(2017, 1, 3)) }
+    it { expect(Calendar::Year.new(2016).week(53).from_date).to eq(Date.new(2016, 12, 28)) }
+    it { expect(Calendar::Year.new(2016).week(53).to_date).to eq(Date.new(2017, 1, 3)) }
 
-    it { expect(Calendar::Year.new(2017).week(4).from_date).to eq(Date.new(2017, 1, 18)) }
-    it { expect(Calendar::Year.new(2017).week(4).to_date).to eq(Date.new(2017, 1, 24)) }
+    it { expect(Calendar::Year.new(2017).week(4).from_date).to eq(Date.new(2017, 1, 25)) }
+    it { expect(Calendar::Year.new(2017).week(4).to_date).to eq(Date.new(2017, 1, 31)) }
 
-    it { expect(Calendar::Year.new(2018).week(1).from_date).to eq(Date.new(2017, 12, 27)) }
-    it { expect(Calendar::Year.new(2018).week(1).to_date).to eq(Date.new(2018, 1, 2)) }
+    it { expect(Calendar::Year.new(2018).week(1).from_date).to eq(Date.new(2018, 1, 3)) }
+    it { expect(Calendar::Year.new(2018).week(1).to_date).to eq(Date.new(2018, 1, 9)) }
 
-    it { expect(Calendar::Year.new(2018).week(4).from_date).to eq(Date.new(2018, 1, 17)) }
-    it { expect(Calendar::Year.new(2018).week(4).to_date).to eq(Date.new(2018, 1, 23)) }
+    it { expect(Calendar::Year.new(2018).week(4).from_date).to eq(Date.new(2018, 1, 24)) }
+    it { expect(Calendar::Year.new(2018).week(4).to_date).to eq(Date.new(2018, 1, 30)) }
   end
 
   describe "Year week from string format 'w1-yyyy'" do
@@ -80,6 +80,25 @@ RSpec.describe Calendar::Week, type: :model do
       it { expect(Calendar::Week.last_of(date, 2)[0].week_number).to eq(52) }
       it { expect(Calendar::Week.last_of(date, 2)[1].year.number).to eq(2016) }
       it { expect(Calendar::Week.last_of(date, 2)[1].week_number).to eq(51) }
+    end
+  end
+
+  describe '#next' do
+    context 'unexceptional year' do
+      let!(:week) { Calendar::Year.new(2008).week(1) }
+
+      it { expect(week.next(52).year.number).to eq(2009) }
+      it { expect(week.next(52).week_number).to eq(1) }
+    end
+
+    context 'exceptional year' do
+      let!(:week) { Calendar::Year.new(2016).week(1) }
+
+      it { expect(week.next(52).year.number).to eq(2016) }
+      it { expect(week.next(52).week_number).to eq(53) }
+
+      it { expect(week.next(53).year.number).to eq(2017) }
+      it { expect(week.next(53).week_number).to eq(1) }
     end
   end
 

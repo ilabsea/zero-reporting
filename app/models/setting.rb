@@ -28,4 +28,13 @@ class Setting < RailsSettings::CachedSettings
   def self.hub_configured?
     Setting[:hub_url].present? && Setting[:hub_email].present? && Setting[:hub_password].present? && Setting[:hub_task_name].present?
   end
+
+  def self.exceptional_years
+    ENV['EXCEPTIONAL_YEAR'].present? ? ENV['EXCEPTIONAL_YEAR'].split(",").map(&:strip) : []
+  end
+
+  def self.wkst
+    ENV['WKST'].present? ? ENV['WKST'].to_i : 0
+  end
+
 end

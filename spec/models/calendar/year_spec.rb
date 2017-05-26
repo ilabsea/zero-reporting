@@ -9,27 +9,27 @@ RSpec.describe Calendar::Year, type: :model do
   end
 
   describe "Total weeks of year" do
-    it { expect(Calendar::Year.new(2016).available_weeks.length).to eq(52) }
-    it { expect(Calendar::Year.new(2018).available_weeks.length).to eq(53) }
+    it { expect(Calendar::Year.new(2016).available_weeks.length).to eq(53) }
+    it { expect(Calendar::Year.new(2018).available_weeks.length).to eq(52) }
   end
 
   describe "Available weeks of year" do
-    it { expect(Calendar::Year.new(2016).available_weeks.length).to eq(52) }
+    it { expect(Calendar::Year.new(2016).available_weeks.length).to eq(53) }
     it { expect(Calendar::Year.new(2016).available_weeks.first).to be_a(Calendar::Week) }
     it { expect(Calendar::Year.new(2016).available_weeks.last).to be_a(Calendar::Week) }
 
-    it { expect(Calendar::Year.new(2018).available_weeks.length).to eq(53) }
+    it { expect(Calendar::Year.new(2018).available_weeks.length).to eq(52) }
     it { expect(Calendar::Year.new(2018).available_weeks.first).to be_a(Calendar::Week) }
     it { expect(Calendar::Year.new(2018).available_weeks.last).to be_a(Calendar::Week) }
   end
 
   describe "Week number" do
     it { expect(Calendar::Year.new(2016).week(0)).to eq(nil) }
-    it { expect(Calendar::Year.new(2016).week(53)).to eq(nil) }
+    it { expect(Calendar::Year.new(2016).week(53)).to be_a(Calendar::Week) }
 
     it { expect(Calendar::Year.new(2016).week(1)).to be_a(Calendar::Week) }
 
-    it { expect(Calendar::Year.new(2018).week(53)).to be_a(Calendar::Week) }
+    it { expect(Calendar::Year.new(2018).week(53)).to eq(nil) }
   end
 
 
