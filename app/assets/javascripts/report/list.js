@@ -22,23 +22,28 @@ function reviewWeekNumberChanged() {
     var reportId = _self.id;
     var placeId = $("#place_report_" + reportId).val();
     var weekNumber = $(_self).val();
-    if(weekNumber) {
-      if(placeId) {
-        var url = "/weekly_place_reports?place_id=" + placeId + "&week=" + weekNumber;
-        $.ajax({
-          method: 'GET',
-          url: url,
-          success: function(response){
-            if(response.length > 0) {
-              var r = confirm("Week " + weekNumber + " of this place is already reviewed, are you sure you want to review as this week?");
-              (r == true ? reviewedReport(reportId, weekNumber) : location.reload(true));
-            } else {
-              reviewedReport(reportId, weekNumber);
-            }
-          }
-        });
-      }
-    }
+
+    //TODO investigation why some browser problem on location.reload();
+    //Ignore validation for the existing reviewed
+    reviewedReport(reportId, weekNumber);
+
+    // if(weekNumber) {
+    //   if(placeId) {
+    //     var url = "/weekly_place_reports?place_id=" + placeId + "&week=" + weekNumber;
+    //     $.ajax({
+    //       method: 'GET',
+    //       url: url,
+    //       success: function(response){
+    //         if(response.length > 0) {
+    //           var r = confirm("Week " + weekNumber + " of this place is already reviewed, are you sure you want to review as this week?");
+    //           (r == true ? reviewedReport(reportId, weekNumber) : location.reload(true));
+    //         } else {
+    //           reviewedReport(reportId, weekNumber);
+    //         }
+    //       }
+    //     });
+    //   }
+    // }
   });
 }
 

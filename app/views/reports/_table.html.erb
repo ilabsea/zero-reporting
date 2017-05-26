@@ -95,7 +95,7 @@
             <% if report.dhis2_submitted %>
               <%= Calendar::Year.new(report.year).week(report.week).display %>
             <% else %>
-              <%= select_tag(report.id, options_for_select(Calendar::Week.last_of(report.created_at.to_date, 2).map { |w| w.display }, Calendar::Year.new(report.year).week(report.week).display), { include_blank: true, class: 'weekly-report' }) %>
+              <%= select_tag(report.id, options_for_select(Calendar::Week.last_of(report.created_at.to_date, Setting.number_of_revise_week_available).map { |w| w.display }, Calendar::Year.new(report.year).week(report.week).display), { include_blank: true, class: 'weekly-report' }) %>
             <% end %>
           </td>
 
