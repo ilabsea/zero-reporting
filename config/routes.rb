@@ -104,6 +104,7 @@ Rails.application.routes.draw do
   resources :channels do
     member do
       put 'state'
+      put 'mark_as_default'
     end
   end
 

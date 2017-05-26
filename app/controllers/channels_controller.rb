@@ -1,5 +1,7 @@
 class ChannelsController < ApplicationController
   authorize_resource
+
+  before_filter :set_channel, only: [:destroy, :mark_as_default, :state]
   def index
     @my_channels = current_user.channels.page(params[:page])
   end
@@ -21,12 +23,10 @@ class ChannelsController < ApplicationController
     else
       render json: channel_nuntium.error_message, status: 400, :layout => false
     end
-
   end
 
   def destroy
-    channel = Channel.find(params[:id])
-    channel_nuntium = ChannelNuntium.new(channel)
+    channel_nuntium = ChannelNuntium.new(@channel)
 
     if channel_nuntium.delete
       redirect_to channels_path, notice: 'Channel has been deleted'
@@ -35,13 +35,22 @@ class ChannelsController < ApplicationController
     end
   end
 
+  def mark_as_default
+    @channel.mark_as_default
+
+    redirect_to channels_path
+  end
+
   def state
-    @channel = Channel.find(params[:id])
     @channel.update_state(params[:state])
     head :ok
   end
 
   private
+
+  def set_channel
+    @channel = current_user.channels.find(params[:id])
+  end
 
   def filter_params
     params.require(:channel).permit(:name, :password, :ticket_code, :setup_flow)

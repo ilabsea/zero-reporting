@@ -19,6 +19,7 @@ class SmsBroadcastsController < ApplicationController
   end
 
   private
+  
   def protected_params
     params.require(:sms_broadcast).permit(:message, :level, :locations => [])
   end
