@@ -15,7 +15,7 @@ class Calendar::Week
   end
 
   def from_date
-    Calendar.beginning_date_of_week(year.beginning_date + ((week_number - 1) * 7).days)
+    year.beginning_date + ((week_number - 1) * 7).days
   end
 
   def to_date
@@ -56,12 +56,27 @@ class Calendar::Week
   def previous x = 1
     week = clone
 
-    if week.week_number === 1 || (week.week_number - x) <= 0
+    if (week.week_number - x) <= 0
       shift_year = ((x - week.week_number) / week.year.previous.total_weeks) + 1
       week.year = week.year.previous(shift_year)
       week.week_number = week.year.total_weeks - ((x - week.week_number) % week.year.total_weeks)
     else
       week.week_number -= x
+    end
+
+    week
+  end
+
+  def next x = 1
+    week = clone
+
+    if week.week_number + x > week.year.total_weeks
+      week.week_number = ((x + week.week_number) - week.year.total_weeks) % week.year.total_weeks
+
+      shift_year = (x + week.week_number) / week.year.total_weeks
+      week.year = week.year.next(shift_year)
+    else
+      week.week_number += x
     end
 
     week

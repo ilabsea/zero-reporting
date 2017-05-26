@@ -7,7 +7,7 @@
         <div>
           <% Calendar.weekdays.each do |k, v| %>
             <%= check_box_tag 'report[days][]', k, @report_setting.has_day?(k) %>
-            <%= v %>
+            <%= v[:short_name] %>
           <% end %>
         </div>
       </div>

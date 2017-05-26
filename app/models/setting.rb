@@ -29,6 +29,14 @@ class Setting < RailsSettings::CachedSettings
     Setting[:hub_url].present? && Setting[:hub_email].present? && Setting[:hub_password].present? && Setting[:hub_task_name].present?
   end
 
+  def self.exceptional_years
+    ENV['EXCEPTIONAL_YEAR'].present? ? ENV['EXCEPTIONAL_YEAR'].split(",").map(&:strip) : []
+  end
+
+  def self.wkst
+    ENV['WKST'].present? ? ENV['WKST'].to_i : 0
+  end
+  
   def self.number_of_revise_week_available
     ENV["NUM_OF_REVISE_WEEK"].present? ? ENV["NUM_OF_REVISE_WEEK"].to_i : 1
   end
