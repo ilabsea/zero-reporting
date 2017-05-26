@@ -9,6 +9,7 @@ class SettingsController < ApplicationController
     @variables  = Variable.where(verboice_project_id: Setting[:project])
     @alert_setting = AlertSetting.find_or_initialize_by(verboice_project_id: Setting[:project])
     @report_setting = Setting.report || Setting::ReportSetting.new {}
+    @message_template = Setting.message_template || Setting::MessageTemplateSetting.new {}
   end
 
   def update_settings
@@ -58,6 +59,16 @@ class SettingsController < ApplicationController
     end
 
     redirect_to settings_path(tab: Setting::REPORT), notice: 'Report setting has been saved'
+  end
+
+  # PUT /settings/update_message_template
+  def update_message_template
+    if params[:message_template].present?
+      message_template = Setting::MessageTemplateSetting.new(params[:message_template])
+      Setting[:message_template] = message_template
+    end
+
+    redirect_to settings_path(tab: Setting::TEMPLATE), notice: 'Report setting has been saved'
   end
 
   private

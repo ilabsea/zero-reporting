@@ -43,7 +43,8 @@
 #
 
 class Report < ActiveRecord::Base
-  include Reports::Filterable, Reports::AlertObservable
+  include Reports::Filterable
+  include Reports::Observer
 
   serialize :recorded_audios, Array
   serialize :call_log_answers, Array
@@ -203,7 +204,7 @@ class Report < ActiveRecord::Base
     color = r + g + b
   end
 
-  def alert_week
+  def camewarn_week
     week = Calendar.week(self.called_at.to_date)
 
     # shift 1 week back if the report is on sunday or after wednesday

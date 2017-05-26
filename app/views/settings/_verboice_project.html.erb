@@ -1,0 +1,23 @@
+<h3 class="header-title">Data mapping to Verboice</h3>
+<p class='italic gray callout' >
+  Here you can map variable to pull data input from verboice
+</p>
+
+<%= form_tag(update_settings_path(tab: params[:tab]), method: :put, class: 'form form-inline', id: 'form-verboice') do %>
+  <div class='input-row'>
+    <%= label_tag :project, 'Verboice Project' %>
+    <%= select_tag :project,
+                   options_for_select(@parameters[:projects].map{|p| [ p['name'], p['id'] ] }, Setting[:project]),
+                   include_blank: 'Select verboice project',
+                   class: 'form-control s-width' %>
+  </div>
+
+  <div class='input-row hidden'>
+    <%= label_tag :project_variable %>
+
+    <%= select_tag :project_variable,
+                   options_for_select(@parameters[:project_variables].map{|p| [ p['name'], p['id'] ] }, Setting[:project_variable]),
+                   include_blank: 'Select variable',
+                   class: 'form-control s-width' %>
+  </div>
+<% end %>

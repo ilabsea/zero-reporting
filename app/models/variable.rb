@@ -27,10 +27,11 @@ class Variable < ActiveRecord::Base
   has_many :report_variable_audios
   has_many :report_variable_values
 
-  ALERT_METHODS = { none: 'None',
-                   formula: "If the value is greater than the threshold, <b>#{ENV['THRESHOLD_FORMULA']}</b>",
-                   case_base: 'If the value is greater than 0'
-                 }
+  ALERT_METHODS = { 
+    none: 'None',
+    formula: "If the value is greater than the threshold, <b>#{ENV['THRESHOLD_FORMULA']}</b>",
+    case_base: 'If the value is greater than 0'
+  }
 
   VALID_ALERT_METHOD = ['formula', 'case_base']
 

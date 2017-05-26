@@ -219,9 +219,9 @@ ActiveRecord::Schema.define(version: 20170405024701) do
     t.datetime "updated_at",                                           null: false
     t.string   "background_color",        limit: 255
     t.string   "text_color",              limit: 255
+    t.string   "dhis2_data_element_uuid", limit: 255
     t.boolean  "is_alerted_by_threshold",             default: true
     t.boolean  "is_alerted_by_report",                default: false
-    t.string   "dhis2_data_element_uuid", limit: 255
     t.boolean  "disabled",                            default: false
     t.string   "alert_method",            limit: 255, default: "none"
   end
@@ -232,6 +232,7 @@ ActiveRecord::Schema.define(version: 20170405024701) do
     t.datetime "updated_at",                              null: false
   end
 
+  add_foreign_key "channels", "users"
   add_foreign_key "event_attachments", "events"
   add_foreign_key "report_variables", "reports"
   add_foreign_key "report_variables", "variables"

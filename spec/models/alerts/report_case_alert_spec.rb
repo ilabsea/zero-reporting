@@ -50,7 +50,7 @@ RSpec.describe Alerts::ReportCaseAlert, type: :model do
     @report.reviewed_as!(2016, week.week_number)
     @report.update_status!(Report::VERBOICE_CALL_STATUS_COMPLETED)
 
-    allow(@report).to receive(:alert_week).and_return(week)
+    allow(@report).to receive(:camewarn_week).and_return(week)
 
     @report_alert = Alerts::ReportCaseAlert.new(alert_setting, @report)
   end

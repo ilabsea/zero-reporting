@@ -35,13 +35,8 @@ if reminder_call_log_type.new_record?
   reminder_call_log_type.save
 end
 
-# phd_attrs = [
-#   { name: "KampongCham", code: "01" },
-#   { name: "Tbong Khum", code: "02" },
-#   { name: "Phnom penh", code: "03" },
-# ]
-
-# phd_attrs.each do |phd_attr|
-#   phd = Phd.where(code: phd_attr[:code]).first_or_initialize
-#   phd.update_attributes(phd_attr)
-# end
+report_confirmation_type = LogType.where(name: :report_confirmation, kind: :sms).first_or_initialize
+if report_confirmation_type.new_record?
+  report_confirmation_type.description = 'SMS confirmation to health center on the successful report'
+  report_confirmation_type.save
+end

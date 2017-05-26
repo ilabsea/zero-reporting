@@ -62,6 +62,8 @@ Rails.application.routes.draw do
       put 'update_report'
     end
   end
+
+  put 'message_template' => 'settings#update_message_template'
   put 'update_settings' => 'settings#update_settings'
 
   put 'verboice' => 'settings#verboice'
