@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170527012229) do
+ActiveRecord::Schema.define(version: 20170527063020) do
 
   create_table "alert_settings", force: :cascade do |t|
     t.boolean "is_enable_sms_alert"
@@ -138,6 +138,7 @@ ActiveRecord::Schema.define(version: 20170527012229) do
     t.string   "exceed_value", limit: 255
   end
 
+  add_index "report_variables", ["report_id", "variable_id", "type"], name: "index_report_variables_on_report_id_and_variable_id_and_type", using: :btree
   add_index "report_variables", ["report_id"], name: "index_report_variables_on_report_id", using: :btree
   add_index "report_variables", ["variable_id"], name: "index_report_variables_on_variable_id", using: :btree
 
