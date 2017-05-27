@@ -17,12 +17,18 @@ module Reports::Filterable
       end
 
       reports = reports.where(called_at: options[:last_day].to_i.day.ago.to_date..Date.today + 1.day) if options[:last_day].present?
+      reports = reports.where(place_id: options[:place_id]) if options[:place_id].present?
       reports = reports.where(phd_id: options[:phd]) if options[:phd].present?
       reports = reports.where(od_id: options[:od]) if options[:od].present?
       reports = reports.where(reviewed: options[:reviewed]) if options[:reviewed].present?
       reports = reports.where(reviewed: true) if options[:state] === Report::REVIEWED
-      reports = reports.where(year: options[:year]) if options[:year].present? && options[:reviewed].to_i != Report::STATUS_NEW
 
+      if options[:week].present?
+        week = Calendar::Week.parse(options[:week])
+        reports = reports.where(year: week.year.number, week: week.week_number)
+      end
+
+      reports = reports.where(year: options[:year]) if options[:year].present? && options[:reviewed].to_i != Report::STATUS_NEW
       reports = reports.where("week >= ?", options[:from_week]) if options[:from_week].present? && options[:reviewed].to_i === Report::STATUS_REVIEWED
       reports = reports.where("week <= ?", options[:to_week]) if options[:to_week].present? && options[:reviewed].to_i === Report::STATUS_REVIEWED
 

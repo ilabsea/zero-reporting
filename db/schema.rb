@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170526065947) do
+ActiveRecord::Schema.define(version: 20170527012229) do
 
   create_table "alert_settings", force: :cascade do |t|
     t.boolean "is_enable_sms_alert"
@@ -174,6 +174,7 @@ ActiveRecord::Schema.define(version: 20170526065947) do
   end
 
   add_index "reports", ["call_log_id", "verboice_sync_failed_count", "status"], name: "index_call_failed_status", using: :btree
+  add_index "reports", ["delete_status"], name: "index_reports_on_delete_status", using: :btree
   add_index "reports", ["place_id", "year", "week", "reviewed", "delete_status"], name: "index_reports_on_weekly_reviewed", using: :btree
   add_index "reports", ["place_id"], name: "index_reports_on_place_id", using: :btree
   add_index "reports", ["user_id"], name: "index_reports_on_user_id", using: :btree
