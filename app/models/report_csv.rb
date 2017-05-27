@@ -16,7 +16,7 @@ class ReportCsv
       csv << header
       reports = @user_context.reports.effective
                        .filter(options)
-                       .includes(:phd, :od, :user)
+                       .includes(:report_variables, :phd, :od, :user)
                        .order('id DESC')
 
       reports.each do |report|
