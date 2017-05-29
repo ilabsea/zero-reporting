@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170405024701) do
+ActiveRecord::Schema.define(version: 20170526065947) do
 
   create_table "alert_settings", force: :cascade do |t|
     t.boolean "is_enable_sms_alert"
@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(version: 20170405024701) do
     t.boolean  "is_enable",              default: false
     t.datetime "created_at",                             null: false
     t.datetime "updated_at",                             null: false
+    t.boolean  "is_default",             default: false
   end
 
   add_index "channels", ["user_id"], name: "index_channels_on_user_id", using: :btree

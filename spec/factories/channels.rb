@@ -10,6 +10,7 @@
 #  is_enable  :boolean          default(FALSE)
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  is_default :boolean          default(FALSE)
 #
 # Indexes
 #
