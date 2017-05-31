@@ -13,15 +13,8 @@ class ReportsController < ApplicationController
     reports = @user_context.reports.includes(:report_variables, :user, :phd, :od)
                      .effective
                      .filter(params)
-    reports = reports.where(place_id: params[:place_id]) if params[:place_id].present?
-    if params[:week].present?
-      week = Calendar::Week.parse(params[:week])
-      reports = reports.where(year: week.year.number, week: week.week_number)
-    end
-    
     reports = sort_column ? reports.order(sort_column + " " + sort_direction) : reports.order('id DESC')
-    @report_ids = reports.map(&:id)
-    @reports_by_page = reports.page(params[:page])
+    @reports = reports.page(params[:page])
     @variables = Variable.applied(Setting[:project])
 
     @events = Event.upcoming(1.week).order("from_date ASC").limit(Event::ANNOUNCEMENT_LISTING)

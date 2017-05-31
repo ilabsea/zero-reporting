@@ -17,8 +17,9 @@
 #
 # Indexes
 #
-#  index_report_variables_on_report_id    (report_id)
-#  index_report_variables_on_variable_id  (variable_id)
+#  index_report_variables_on_report_id                           (report_id)
+#  index_report_variables_on_report_id_and_variable_id_and_type  (report_id,variable_id,type)
+#  index_report_variables_on_variable_id                         (variable_id)
 #
 
 class ReportVariableAudio < ReportVariable
