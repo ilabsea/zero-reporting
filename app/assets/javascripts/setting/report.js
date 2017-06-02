@@ -1,4 +1,10 @@
 $(function() {
+  events = [
+    { 'source': '.sms-reminder-toggle', 'dest': '#sms-reminder-variables' },
+    { 'source': '.voice-reminder-toggle', 'dest': '#voice-reminder-variables' },
+    { 'source': '.toggle', 'dest': '#toggle-div' }
+  ]
+
   initilize();
 });
 
@@ -6,18 +12,17 @@ function initilize() {
   $('.time-select').timepicker({ minTime: '8:00am', maxTime: '8:00pm', 'timeFormat': 'H:i' });
 
   // For rendering at initiated
-  toggleChildElement('.sms-reminder-toggle', '#sms-reminder-variables');
-  toggleChildElement('.voice-reminder-toggle', '#voice-reminder-variables');
+  events.forEach(function(event) {
+    toggleChildElement(event['source'], event['dest']);
+  });
 
   initEventListenter();
 }
 
 function initEventListenter() {
-  $(document.body).delegate('.sms-reminder-toggle', 'click', function() {
-    toggleChildElement('.sms-reminder-toggle', '#sms-reminder-variables');
-  });
-
-  $(document.body).delegate('.voice-reminder-toggle', 'click', function() {
-    toggleChildElement('.voice-reminder-toggle', '#voice-reminder-variables');
+  events.forEach(function(event) {
+    $(document.body).delegate(event['source'], 'click', function() {
+      toggleChildElement(event['source'], event['dest']);
+    });
   });
 }

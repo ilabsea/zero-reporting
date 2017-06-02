@@ -62,6 +62,8 @@ Rails.application.routes.draw do
       put 'update_report'
     end
   end
+
+  put 'message_template' => 'settings#update_message_template'
   put 'update_settings' => 'settings#update_settings'
 
   put 'verboice' => 'settings#verboice'
@@ -102,6 +104,7 @@ Rails.application.routes.draw do
   resources :channels do
     member do
       put 'state'
+      put 'mark_as_default'
     end
   end
 

@@ -15,6 +15,8 @@ class ExternalSmsSetting < ActiveRecord::Base
   validates :message_template, presence: true
   serialize :recipients, Array
 
+  VARIABLES = %w(caller_phone call_log_id)
+
   def enabled?
     self.is_enable
   end

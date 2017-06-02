@@ -27,10 +27,11 @@ class Variable < ActiveRecord::Base
   has_many :report_variable_audios
   has_many :report_variable_values
 
-  ALERT_METHODS = { none: 'None',
-                   formula: "If the value is greater than the threshold, <b>#{ENV['THRESHOLD_FORMULA']}</b>",
-                   case_base: 'If the value is greater than 0'
-                 }
+  ALERT_METHODS = { 
+    none: 'None',
+    formula: "If the value is greater than the threshold, <b>#{ENV['THRESHOLD_FORMULA']}</b>",
+    case_base: 'If the value is greater than 0'
+  }
 
   VALID_ALERT_METHOD = ['formula', 'case_base']
 
@@ -39,10 +40,7 @@ class Variable < ActiveRecord::Base
   end
 
   def total_report_value(report_ids)
-    if !report_variable_values.empty?
-      return report_variable_values.where(report_id: report_ids).sum(:value).to_i
-    end
-    return 0
+    report_variable_values.where(report_id: report_ids).sum(:value).to_i
   end
 
   def total_report_value_by_week(week)

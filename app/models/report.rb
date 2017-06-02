@@ -36,6 +36,7 @@
 # Indexes
 #
 #  index_call_failed_status          (call_log_id,verboice_sync_failed_count,status)
+#  index_reports_on_delete_status    (delete_status)
 #  index_reports_on_place_id         (place_id)
 #  index_reports_on_user_id          (user_id)
 #  index_reports_on_weekly_reviewed  (place_id,year,week,reviewed,delete_status)
@@ -43,7 +44,8 @@
 #
 
 class Report < ActiveRecord::Base
-  include Reports::Filterable, Reports::AlertObservable
+  include Reports::Filterable
+  include Reports::Observer
 
   serialize :recorded_audios, Array
   serialize :call_log_answers, Array
@@ -203,7 +205,7 @@ class Report < ActiveRecord::Base
     color = r + g + b
   end
 
-  def alert_week
+  def camewarn_week
     week = Calendar.week(self.called_at.to_date)
 
     # shift 1 week back if the report is on sunday or after wednesday

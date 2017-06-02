@@ -9,21 +9,6 @@ RSpec.describe SmsBroadcastsController, type: :controller do
   end
 
   describe "create" do
-    context "raise exception" do
-      before(:each) do
-        allow(Place).to receive(:level).with('PHD').and_return(Place)
-        allow(Place).to receive(:in).with(["1", "2"]).and_return([1])
-        allow(User).to receive(:members_of).with([1]).and_return(['1000'])
-      end
-
-      it "should has error message" do
-        post :create, sms_broadcast: { message: 'Testing', level: 'PHD', locations: ["1", "2"] }
-
-        expect(response).to redirect_to(sms_broadcasts_path)
-        expect(flash[:alert]).to be_present
-      end
-    end
-
     context "without locations" do
       it "should has status redirect" do
         post :create, sms_broadcast: { message: 'Testing' }

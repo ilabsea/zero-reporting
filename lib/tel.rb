@@ -23,9 +23,8 @@ class Tel
   end
 
   def carrier
-    number_without_prefix = without_prefix
-    header = number_without_prefix.slice(0,AREA_CODE_LENGTH)
-    Tel::CHANNELS.each do |key,value|
+    header = without_prefix.slice(0, AREA_CODE_LENGTH)
+    Tel::CHANNELS.each do |key, value|
       return key if value.include? header
     end
     nil

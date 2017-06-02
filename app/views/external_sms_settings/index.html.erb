@@ -58,7 +58,7 @@
             <div class='form-group'>
               <label class="control-label">&nbsp;</label>
               <div class="col-sm-9">
-                <%= external_message_template_params_for(:external_sms_setting_message_template) %>
+                <%= template_params_for(:external_sms_setting_message_template, ExternalSmsSetting::VARIABLES) %>
               </div>
             </div>
 

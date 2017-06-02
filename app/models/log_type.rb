@@ -41,6 +41,10 @@ class LogType < ActiveRecord::Base
     where(name: :reminder_call).first
   end
 
+  def self.report_confirmation
+    where(name: :report_confirmation).first
+  end
+
   def self.by_kind kind
     where(kind: kind)
   end

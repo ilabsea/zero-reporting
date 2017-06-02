@@ -84,16 +84,6 @@ module ApplicationHelper
     end
   end
 
-  def email_template_params_for selector
-    template_params = %w(url keyword member_name date)
-    template_params_selector template_params, selector
-  end
-
-  def sms_template_params_for selector
-    template_params = %w(url keyword member_name date)
-    template_params_selector template_params, selector
-  end
-
   def boolean_text state
     if state
       text = "Yes"
@@ -103,12 +93,6 @@ module ApplicationHelper
       klass = "label-danger"
     end
     content_tag :span, text, class: "bool-text label #{klass}"
-  end
-
-  def template_params_selector template_params, selector
-    template_params.map do |anchor|
-      link_to("{{#{anchor}}}", 'javascript:void(0)', data: {selector: selector}, class: 'param-link')
-    end.join(", ").html_safe
   end
 
   def link_destroy value , url, options={}, &block
@@ -179,27 +163,10 @@ module ApplicationHelper
     end
   end
 
-  def message_template_params_for selector
-    template_params = %w(place_name week_year reported_cases)
-    template_params_selector template_params, selector
-  end
-
-  def external_message_template_params_for selector
-    template_params = %w(caller_phone call_log_id)
-    template_params_selector template_params, selector
-  end
-
-  def message_template_reporter_params_for selector
-    template_params_selector Setting::ReportSetting::REPORTER_VARIABLES, selector
-  end
-
-  def message_template_supervisor_params_for selector
-    template_params_selector Setting::ReportSetting::SUPERVISOR_VARIABLES, selector
-  end
-
-  def template_params_selector template_params, selector
+  def template_params_for selector, template_params = []
     template_params.map do |anchor|
       link_to("{{#{anchor}}}", 'javascript:void(0)', data: {selector: selector}, class: 'param-link')
     end.join(", ").html_safe
   end
+
 end

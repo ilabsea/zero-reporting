@@ -12,7 +12,18 @@
   </td>
 
   <td>
-    <% if channel.is_connected? %>
+    <% if channel.default? %>
+      <span class='glyphicon glyphicon-ok green'></span>
+      <span style='background-color: green; color: white;'>Default</span>
+    <% else %>
+      <%= link_to 'Mark as default', mark_as_default_channel_path(channel),
+        method: :put,
+        data: { confirm: "Are you sure to want to mark channel #{channel.name} as default?" } %>
+    <% end -%>
+  </td>
+    
+  <td>
+    <% if channel.connected? %>
       <div class="circle" style="border: 1px solid #f3f3f3; background-color: green"></div>
     <% else %>
       <div class="circle" style="border: 1px solid #f3f3f3; background-color: red"></div>

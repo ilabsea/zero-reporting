@@ -7,7 +7,7 @@
         <div>
           <% Calendar.weekdays.each do |k, v| %>
             <%= check_box_tag 'report[days][]', k, @report_setting.has_day?(k) %>
-            <%= v %>
+            <%= v[:short_name] %>
           <% end %>
         </div>
       </div>
@@ -54,7 +54,7 @@
 
         <div class='form-group clearfix'>
           <label class='control-label'>&nbsp;</label>
-          <%= message_template_supervisor_params_for(:report_templates_sms_supervisor_template) %>
+          <%= template_params_for(:report_templates_sms_supervisor_template, Setting::ReportSetting::SUPERVISOR_VARIABLES) %>
         </div>
 
         <div class='form-group clearfix'>
@@ -64,7 +64,7 @@
 
         <div class='form-group clearfix'>
           <label class='control-label'>&nbsp;</label>
-          <%= message_template_reporter_params_for(:report_templates_sms_reporter_template) %>
+          <%= template_params_for(:report_templates_sms_reporter_template, Setting::ReportSetting::REPORTER_VARIABLES) %>
         </div>
       </div>
 
@@ -72,7 +72,7 @@
       <div class='form-group clearfix'>
         <label class='control-label left'>Voice</label>
         <div class='horizontal-form-control'>
-          <%= check_box_tag 'report[enables][]', Alert::TYPES[:voice], @report_setting.try(:voice_enabled?), class: 'form-control ace ace-switch ace-switch-4 btn-empty voice-reminder-toggle' %>
+          <%= check_box_tag 'report[enables][]', Alert::TYPES[:voice], @report_setting.try(:voice_enabled?), class: 'form-control ace ace-switch ace-switch-4 btn-empty voice-reminder-toggle toggle' %>
           <span class='lbl' style='vertical-align:bottom'></span>
         </div>
       </div>

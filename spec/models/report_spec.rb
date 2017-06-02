@@ -36,6 +36,7 @@
 # Indexes
 #
 #  index_call_failed_status          (call_log_id,verboice_sync_failed_count,status)
+#  index_reports_on_delete_status    (delete_status)
 #  index_reports_on_place_id         (place_id)
 #  index_reports_on_user_id          (user_id)
 #  index_reports_on_weekly_reviewed  (place_id,year,week,reviewed,delete_status)
@@ -45,13 +46,13 @@
 require 'rails_helper'
 
 RSpec.describe Report, type: :model do
-  describe "#alert_week" do
+  describe "#camewarn_week" do
     context "when report is on sunday" do
       let(:report) {create(:report, called_at: "2016-03-20 11:39:45")}
 
       it "return the week previous" do
         week = Calendar.week(report.called_at.to_date)
-        expect(report.alert_week.week_number).to eq week.previous.week_number
+        expect(report.camewarn_week.week_number).to eq week.previous.week_number
       end
     end
 
@@ -60,7 +61,7 @@ RSpec.describe Report, type: :model do
 
       it "return the week previous" do
         week = Calendar.week(report.called_at.to_date)
-        expect(report.alert_week.week_number).to eq week.previous.week_number
+        expect(report.camewarn_week.week_number).to eq week.previous.week_number
       end
     end
 
@@ -69,7 +70,7 @@ RSpec.describe Report, type: :model do
 
       it "return the current report week" do
         week = Calendar.week(report.called_at.to_date)
-        expect(report.alert_week.week_number).to eq week.week_number
+        expect(report.camewarn_week.week_number).to eq week.week_number
       end
     end
   end
@@ -213,6 +214,10 @@ RSpec.describe Report, type: :model do
 
     context 'when call is finished' do
       let(:report) { build(:report, status: Report::VERBOICE_CALL_STATUS_COMPLETED, verboice_sync_failed_count: 0) }
+
+      before(:each) do
+        allow(AlertSetting).to receive(:has_alert?).with(report.verboice_project_id).and_return(true)
+      end
 
       it {
         expect(report).to receive(:alert_checking).once

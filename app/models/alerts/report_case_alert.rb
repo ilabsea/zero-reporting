@@ -31,7 +31,7 @@ module Alerts
       reported_cases = alerted_variables.map { |alerted_variable| MessageTemplate.instance.set_source!(ENV['REPORTED_CASE_ALERT_TEMPLATE']).interpolate(alerted_variable) }
 
       {
-        week_year: @report.alert_week.display(Calendar::Week::DISPLAY_NORMAL_MODE, "ww-yyyy"),
+        week_year: @report.camewarn_week.display(Calendar::Week::DISPLAY_NORMAL_MODE, "ww-yyyy"),
         reported_cases: reported_cases.join(" , "),
         place_name: @report.place.name
       }

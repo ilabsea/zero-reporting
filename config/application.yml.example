@@ -42,6 +42,12 @@ default: &default
   CONFIG_PATH_TO_BACKUP: ''
   ASSET_PATH_TO_BACKUP: ''
 
+  # Setting
+  NUM_OF_REVISE_WEEK: '3'
+
+  EXCEPTIONAL_YEAR: '2012,2016'
+  WKST: '3' # sunday:0, monday:1, ...
+
 development:
   <<: *default
 
