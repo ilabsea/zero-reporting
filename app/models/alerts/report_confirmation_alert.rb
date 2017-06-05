@@ -28,14 +28,14 @@ module Alerts
     def variables
       {
         week_year: @report.camewarn_week.display(Calendar::Week::DISPLAY_NORMAL_MODE, "ww-yyyy"),
-        reported_cases: reported_cases
+        reported_cases: reported_cases.join(", ")
       }
     end
 
     private
 
     def reported_cases
-      @report.report_variables.map { |rv| "#{rv.variable.try(:name)}(#{rv.value})" } .join(", ")
+      @report.report_variables.map { |rv| "#{rv.variable.try(:name)}(#{rv.value})" }
     end
 
   end

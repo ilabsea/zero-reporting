@@ -49,6 +49,7 @@ RSpec.describe Reports::Observer, type: :model do
 
   describe '#notify_report_confirmation' do
     let!(:report) { create(:report, verboice_project_id: 1) }
+    let!(:report_variable) { create(:report_variable, value: 0, report_id: report.id) }
     let!(:message_template) { Setting::MessageTemplateSetting.new(enabled: true, report_confirmation: 'On {{week_year}} with diseases: {{reported_cases}}') }
     let(:alert) { :alert }
     let(:sms_alert_adapter) { Adapter::SmsAlertAdapter.new(alert) }
