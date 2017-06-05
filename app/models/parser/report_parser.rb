@@ -24,12 +24,12 @@ module Parser
         attrs[:audio_key] = recorded_audio[:key] if recorded_audio[:project_variable_id] == Setting[:project_variable].to_i
 
         variable = variables.select { |variable| variable.verboice_id == recorded_audio[:project_variable_id] }.first
-        report.report_variable_audios.build(value: recorded_audio[:key], variable_id: variable.id) if variable
+        report.report_variable_audios.build(value: recorded_audio[:key], variable_id: variable.id) if variable && recorded_audio[:key].present?
       end
 
       options[:call_log_answers].each do |call_log_answer|
         variable = variables.select { |variable| variable.verboice_id == call_log_answer[:project_variable_id] }.first
-        report.report_variable_values.build(value: call_log_answer[:value], variable_id: variable.id) if variable
+        report.report_variable_values.build(value: call_log_answer[:value], variable_id: variable.id) if variable && call_log_answer[:value].present?
       end
 
       report
