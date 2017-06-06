@@ -13,10 +13,12 @@ module Reports::Observer
     end
 
     def notify_report_confirmation
-      # TODO Refactoring to remove alert_setting dependency
-      if Setting.message_template.report_confirmation.present?
-        alert = Alerts::ReportConfirmationAlert.new(Setting.message_template, self)
-        AdapterType.for(alert).process
+      if self.has_report_variabled?
+        # TODO Refactoring to remove alert_setting dependency
+        if Setting.message_template.report_confirmation.present?
+          alert = Alerts::ReportConfirmationAlert.new(Setting.message_template, self)
+          AdapterType.for(alert).process
+        end
       end
     end
 
