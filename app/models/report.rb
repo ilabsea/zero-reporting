@@ -343,4 +343,8 @@ class Report < ActiveRecord::Base
     { color: 'green', text: 'Success' }
   end
 
+  def has_report_variabled?
+    report_variables.count > 0
+  end
+
 end
