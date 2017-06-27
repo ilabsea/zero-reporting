@@ -8,23 +8,17 @@ class StepsController < ApplicationController
   end
 
   def validate_hc_worker
-    result = User.hc_worker?(params[:address]) ? 1 : 0
-    if result == 1
-      phone_without_prefix = Tel.new(params[:address]).without_prefix
-      user = User.find_by(phone_without_prefix: phone_without_prefix)
-      if user.od.code == '810'
-        result = 1
-      else
-        result = 2
-      end
-    end
+    # 1 for voice reporting
+    # 2 for keypad reporting, keep keypad as 2 to be consistent with previous release version
+    result = User.hc_worker?(params[:address]) ? 2 : 0
+
     content = "{\"result\": \"#{result}\" }"
     render text: content
   end
 
   def notify_reporting_started
     report = Report.create_from_call_log_with_status(params['CallSid'], Report::VERBOICE_CALL_STATUS_IN_PROGRESS)
-    
+
     content = "{\"result\": \"#{report.in_progress? ? 1 : 0}\" }"
     render text: content
   end
@@ -38,7 +32,7 @@ class StepsController < ApplicationController
 
   def send_sms
     setting = ExternalSmsSetting.find_by(verboice_project_id: Setting[:project])
-    
+
     alert = Alerts::ExternalServiceAlert.new(setting, params[:address], params[:CallSid])
     adapter = Adapter::SmsAlertAdapter.new(alert)
     adapter.process
