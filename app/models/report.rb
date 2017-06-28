@@ -35,12 +35,14 @@
 #
 # Indexes
 #
-#  index_call_failed_status          (call_log_id,verboice_sync_failed_count,status)
-#  index_reports_on_delete_status    (delete_status)
-#  index_reports_on_place_id         (place_id)
-#  index_reports_on_user_id          (user_id)
-#  index_reports_on_weekly_reviewed  (place_id,year,week,reviewed,delete_status)
-#  index_reports_on_year_and_week    (year,week)
+#  index_call_failed_status                   (call_log_id,verboice_sync_failed_count,status)
+#  index_reports_on_delete_status             (delete_status)
+#  index_reports_on_od_id_and_delete_status   (od_id,delete_status)
+#  index_reports_on_phd_id_and_delete_status  (phd_id,delete_status)
+#  index_reports_on_place_id                  (place_id)
+#  index_reports_on_user_id                   (user_id)
+#  index_reports_on_weekly_reviewed           (place_id,year,week,reviewed,delete_status)
+#  index_reports_on_year_and_week             (year,week)
 #
 
 class Report < ActiveRecord::Base
