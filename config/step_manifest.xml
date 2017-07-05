@@ -23,6 +23,8 @@
       icon="medicalkit"
       type="callback"
       callback-url="/steps/send_sms">
+
+      <response type="none"/>
     </step>
 
     <step name="notify_report_started"
