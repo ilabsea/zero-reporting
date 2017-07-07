@@ -1,23 +1,36 @@
 default: &default
   TIME_ZONE: 'Bangkok'
-  APP_NAME: "CDC Zero Reporting System"
+  APP_NAME: "Zero Reporting"
   LOCAL_TZ: "Asia/Phnom_Penh"
 
-  VERBOICE_URL: 'http://localhost:3000'
+  # Verboice
+  VERBOICE_URL: 'http://localhost/api2'
 
-  CODECLIMATE_REPO_TOKEN: ""
+  VERBOICE_NOTIFY_STATUS_USER: 'test'
+  VERBOICE_NOTIFY_STATUS_PWD: '123456'
+  HOST: 'http://localhost:3000'
+
   CDC_DATABASE_PASSWORD: ""
   SECRET_KEY_BASE: ""
 
+  # code climate
+  CODECLIMATE_REPO_TOKEN: ""
+
+  # Nuntium
   NUNTIUM_HOST: 'http://nuntium.instedd.org'
   NUNTIUM_ACCOUNT: ''
   NUNTIUM_APP: ''
   NUNTIUM_APP_PWD: ''
 
+  # sidekiq
   SIDEKIQ_USERNAME: ''
   SIDEKIQ_PASSWORD: ''
   DELAY_DELIVER_IN_MINUTES: ''
 
+  HUB_QUEUE_NAME: 'hub'
+  DEFAULT_QUEUE_NAME: 'default'
+
+  # Alert threshold
   THRESHOLD_FORMULA: "(W<sub>n-3+W<sub>n-2</sub></sub>+W<sub>n-1</sub>)/3 * 1.5"
   THRESHOLD_WEEK_RANGE: '3'
 

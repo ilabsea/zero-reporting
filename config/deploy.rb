@@ -33,7 +33,7 @@ set :deploy_user, 'ilab'
 # set :pty, true
 
 # Default value for :linked_files is []
-set :linked_files, fetch(:linked_files, []).push('config/application.yml', 'config/secrets.yml', 'config/database.yml', 'config/step_manifest.xml', 'config/aws.yml', 'config/smtp.yml')
+set :linked_files, fetch(:linked_files, []).push('config/application.yml', 'config/secrets.yml', 'config/database.yml', 'config/step_manifest.xml', 'config/aws.yml', 'config/smtp.yml', 'config/sidekiq-main.yml')
 
 # Default value for linked_dirs is []
 set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system', 'public/audios', 'public/uploads')
