@@ -1,5 +1,5 @@
 class HubJob < ActiveJob::Base
-  queue_as :hub
+  queue_as ENV['HUB_QUEUE_NAME']
 
   def perform attributes
     url = Setting[:hub_url] || 'https://hub.instedd.org/'

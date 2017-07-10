@@ -1,5 +1,5 @@
 class VerboiceQueueJob < ActiveJob::Base
-  queue_as :default
+  queue_as ENV['DEFAULT_QUEUE_NAME']
 
   def perform(options)
     call = Call.from_hash(options)
