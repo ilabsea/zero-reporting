@@ -10,12 +10,13 @@ class Ability
       if user.admin?
         can :manage, :all
       else
+        can :download, EventAttachment
+        can :create, :hub_push_notification
+
         if user.place.od?
           can :manage, Report, od_id: user.place_id
-          can :create, :hub_push_notification
         elsif user.place.phd?
           can :manage, Report, phd_id: user.place_id
-          can :create, :hub_push_notification
         end
       end
     #
