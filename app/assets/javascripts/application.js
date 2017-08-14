@@ -75,3 +75,5 @@
 //= require lib/jquery.timepicker.min
 
 //= require events
+
+//= require users/form.js

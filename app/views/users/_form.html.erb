@@ -5,21 +5,33 @@
 
   <%=f.input :place_id, as: :hidden %>
   <%=f.input :username, label: 'Login', input_html: {class: 'form-control'} %>
-  <%=f.input :phone, label: 'Phone Number', required: @user.place.hc? ,input_html: {class: 'form-control'} %>
   <%=f.input :name, label: 'Full Name', input_html: {class: 'form-control'} %>
-  <%=f.input :email, input_html: {class: 'form-control'} %>
-
   <% if @user.new_record? %>
     <%=f.input :password, input_html: {class: 'form-control'} %>
     <%=f.input :password_confirmation, required: true, label: 'Confirm', input_html: {class: 'form-control'} %>
   <% end %>
 
+  <%=f.input :email, input_html: {class: 'form-control'} %>
+  <%=f.input :phone, label: 'Phone Number', required: @user.place.hc? ,input_html: {class: 'form-control'} %>
+
+
+  <div class="form-group">
+    <label class="control-label">SMS Alert</label>
+    <%=f.check_box :sms_alertable, class: 'form-control ace ace-switch ace-switch-4 btn-empty' %>
+    <span class="lbl" style="vertical-align:bottom"></span>
+  </div>
+
+  <div id='disable_alert_reason' class="<%= 'display-none' if @user.sms_alertable %>">
+    <%= f.input :disable_alert_reason, as: :text, class: "form-control" %>
+  </div>
+
+
   <div class='form-group form-action-group'>
     <label class='control-label'></label>
 
     <% if !@user.new_record? && @user != current_user  %>
-    <%= link_to "Reset password", reset_user_path(@user), 
-                :method => :put, 
+    <%= link_to "Reset password", reset_user_path(@user),
+                :method => :put,
                 :confirm => 'Are you sure to reset password for this user?' ,
                 :class => 'btn btn-danger' %>
     <%end %>
@@ -27,5 +39,6 @@
     <%=f.submit 'Save', class: 'btn btn-primary' %>
 
   </div>
+
 
 <% end %>
