@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170628061526) do
+ActiveRecord::Schema.define(version: 20170810071905) do
 
   create_table "alert_settings", force: :cascade do |t|
     t.boolean "is_enable_sms_alert"
@@ -198,8 +198,8 @@ ActiveRecord::Schema.define(version: 20170628061526) do
     t.string   "username",             limit: 255
     t.string   "name",                 limit: 255
     t.string   "password_digest",      limit: 255
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.datetime "created_at",                                      null: false
+    t.datetime "updated_at",                                      null: false
     t.string   "email",                limit: 255
     t.string   "phone",                limit: 255
     t.string   "role",                 limit: 255
@@ -209,6 +209,8 @@ ActiveRecord::Schema.define(version: 20170628061526) do
     t.integer  "phd_id",               limit: 4
     t.integer  "od_id",                limit: 4
     t.integer  "channels_count",       limit: 4
+    t.boolean  "sms_alertable",                    default: true
+    t.string   "disable_alert_reason", limit: 255
   end
 
   add_index "users", ["phd_id_id"], name: "index_users_on_phd_id_id", using: :btree

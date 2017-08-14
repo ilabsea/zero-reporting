@@ -100,7 +100,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       format.json  { render :json => result }
       format.csv {
-        content = "login,full_name,email,phone_number,password,password_confirmation,location_code \n" + 
+        content = "login,full_name,email,phone_number,password,password_confirmation,location_code \n" +
         "example,example user,example@sampledomain.org.kh,8551234432233,samplepassword,samplepassword,100 \n" +
         "example1,example user1,example1@sampledomain.org.kh,855123443332,samplepassword,samplepassword,100"
         render :text => content
@@ -127,6 +127,6 @@ class UsersController < ApplicationController
   end
 
   def filter_params
-    params.require(:user).permit(:username, :name, :email, :phone, :place_id  )
+    params.require(:user).permit(:username, :name, :email, :phone, :place_id, :sms_alertable, :disable_alert_reason  )
   end
 end
