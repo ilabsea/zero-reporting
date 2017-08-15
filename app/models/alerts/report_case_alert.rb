@@ -14,7 +14,9 @@ module Alerts
     end
 
     def recipients
-      @recipients ||= recipient_users.map { |user| user.phone if user.phone.present? }.compact
+      @recipients ||= recipient_users.map { |user|
+        user.phone if user.sms_alertable?
+      }.compact
     end
 
     def has_recipients?

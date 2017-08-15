@@ -12,7 +12,9 @@ module Alerts
     def message_template; end
 
     def recipients
-      @recipients ||= @place.users.pluck(:phone).reject(&:empty?)
+      @recipients ||= @place.users.map { |user|
+        user.phone if user.sms_alertable?
+      }.compact
     end
 
     def has_recipients?

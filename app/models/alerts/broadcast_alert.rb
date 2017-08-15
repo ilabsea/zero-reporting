@@ -12,9 +12,11 @@ module Alerts
     def message_template
       @message
     end
-    
+
     def recipients
-      @recipients ||= @users.map { |user| user.phone if user.phone.present? }.compact
+      @recipients ||= @users.map { |user|
+        user.phone if user.sms_alertable?
+      }.compact
     end
 
     def has_recipients?
