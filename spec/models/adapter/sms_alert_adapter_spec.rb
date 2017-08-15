@@ -27,7 +27,7 @@ RSpec.describe Adapter::SmsAlertAdapter, type: :model do
         expect(enqueued_jobs.first[:job]).to eq(SmsQueueJob)
         first_queued = enqueued_jobs.first[:args].first.delete_if { |k, v| k === '_aj_symbol_keys' }
         expect(first_queued).to eq({ 'to' => '1000', 'body' => '2020 has left voice message on call log 1', 'suggested_channel' => { "_aj_globalid" => "gid://#{ENV['APP_NAME'].split(' ').join("-").downcase}/Channel/#{channel.id}" }, 'type' => nil})
-        
+
         expect(enqueued_jobs.last[:job]).to eq(SmsQueueJob)
         last_queued = enqueued_jobs.last[:args].first.delete_if { |k, v| k === '_aj_symbol_keys' }
         expect(last_queued).to eq({ 'to' => '2000', 'body' => '2020 has left voice message on call log 1', 'suggested_channel' => { "_aj_globalid" => "gid://#{ENV['APP_NAME'].split(' ').join("-").downcase}/Channel/#{channel.id}" }, 'type' => nil})
@@ -36,10 +36,14 @@ RSpec.describe Adapter::SmsAlertAdapter, type: :model do
 
     context 'report case alert' do
       let(:hc) { create(:hc) }
-      let(:user) { create(:user, phone: '1000', place: hc) }
-      let(:report) { create(:report, user: user, phone: '2000') }
+      let(:user_1000) { create(:user, phone: '1000', place: hc, sms_alertable: true) }
+      let(:report) { create(:report, user: user_1000, phone: '1000') }
       let(:week) { Calendar::Year.new(2016).week(1) }
-      let!(:setting) { create(:alert_setting, is_enable_sms_alert: true, message_template: 'This is the alert on {{week_year}} for {{reported_cases}}', verboice_project_id: 24, recipient_type: ['OD', 'HC']) }
+      let!(:setting) { create(:alert_setting, is_enable_sms_alert: true,
+                                              message_template: 'This is the alert on {{week_year}} for {{reported_cases}}',
+                                              verboice_project_id: 24,
+                                              recipient_type: ['OD', 'HC'])
+                      }
       let(:alert) { Alerts::ReportCaseAlert.new(setting, report) }
 
       let(:adapter) { Adapter::SmsAlertAdapter.new(alert) }
@@ -60,9 +64,10 @@ RSpec.describe Adapter::SmsAlertAdapter, type: :model do
     end
 
     context 'broadcast alert' do
-      let(:user_1) { build(:user, phone: '1000') }
-      let(:user_2) { build(:user, phone: '2000') }
-      let(:alert) { Alerts::BroadcastAlert.new([user_1, user_2], 'Testing message') }
+      let(:user_1000) { build(:user, phone: '1000', sms_alertable: true) }
+      let(:user_2000) { build(:user, phone: '2000', sms_alertable: true) }
+      let(:user_3000) { build(:user, phone: '3000', sms_alertable: false) }
+      let(:alert) { Alerts::BroadcastAlert.new([user_1000, user_2000, user_3000], 'Testing message') }
 
       let(:adapter) { Adapter::SmsAlertAdapter.new(alert) }
 
@@ -74,7 +79,7 @@ RSpec.describe Adapter::SmsAlertAdapter, type: :model do
         expect(enqueued_jobs.first[:job]).to eq(SmsQueueJob)
         first_queued = enqueued_jobs.first[:args].first.delete_if { |k, v| k === '_aj_symbol_keys' }
         expect(first_queued).to eq({ 'to' => '1000', 'body' => 'Testing message', 'suggested_channel' => { '_aj_globalid' => "gid://#{ENV['APP_NAME'].split(' ').join("-").downcase}/Channel/#{channel.id}" }, 'type' => nil })
-        
+
         expect(enqueued_jobs.last[:job]).to eq(SmsQueueJob)
         last_queued = enqueued_jobs.last[:args].first.delete_if { |k, v| k === '_aj_symbol_keys' }
         expect(last_queued).to eq({ 'to' => '2000', 'body' => 'Testing message', 'suggested_channel' => { '_aj_globalid' => "gid://#{ENV['APP_NAME'].split(' ').join("-").downcase}/Channel/#{channel.id}" }, 'type' => nil })
