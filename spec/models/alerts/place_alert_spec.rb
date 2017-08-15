@@ -19,7 +19,8 @@ RSpec.describe Alerts::PlaceAlert, type: :model do
 
   context '#recipients' do
     let(:hc) { create(:hc) }
-    let!(:user) { create(:user, phone: '1000', place: hc) }
+    let!(:user_1000) { create(:user, phone: '1000', place: hc) }
+    let!(:user_2000) { create(:user, phone: '2000', place: hc, sms_alertable: false, disable_alert_reason: 'no longer use') }
 
     context 'list all user phone numbers those are belongs to place' do
       let(:report_setting) { Setting::ReportSetting.new({ enables: ['sms'], x_week: 2, recipient_types: ['HC'] }) }

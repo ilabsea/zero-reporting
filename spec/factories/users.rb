@@ -33,6 +33,7 @@ FactoryGirl.define do
     sequence(:name) {|n| "User_#{n}"}
     sequence(:phone) {|n| "100#{n}"}
     place { create(:phd)}
+    sms_alertable true
   end
 
 end
