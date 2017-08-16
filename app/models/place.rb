@@ -21,7 +21,7 @@ require 'csv'
 
 class Place < ActiveRecord::Base
   include Places::Auditable
-  
+
   has_ancestry(orphan_strategy: :destroy)
 
   self.inheritance_column = :kind_of
@@ -150,7 +150,7 @@ class Place < ActiveRecord::Base
     items = {}
     csv.each do |row|
       item = {}
-      if row[0] == 'ID'
+      if row[0] == 'code'
         next
       else
         i = i+1
@@ -163,11 +163,6 @@ class Place < ActiveRecord::Base
 
           #Check unique name
           name = row[2].strip
-          # if items.any?{|item| item.second[:name] == name}
-          #   item[:error] = "Invalid name."
-          #   item[:error_description] = "Hierarchy name should be unique"
-          #   error = true
-          # end
 
           #Check unique id
           id = row[0].strip

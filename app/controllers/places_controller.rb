@@ -101,7 +101,8 @@ class PlacesController < ApplicationController
     csv_string = File.read(params[:place].path, :encoding => 'utf-8')
     csv = CSV.parse(csv_string)
     num_rows = 0
-    csv.each do |col|
+    csv.each_with_index do |col, index|
+      next if index == 0
       unless col[1].present?
         parent = nil
       else
