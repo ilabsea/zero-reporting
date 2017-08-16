@@ -139,9 +139,8 @@ class User < ActiveRecord::Base
     csv = CSV.parse(string)
     errors = []
     datas = []
-    index = 0
     csv.slice!(0)
-    csv.each do |row|
+    csv.each_with_index do |row, index|
       valid = validate_row(index, row, csv)
       unless valid[:status]
         row.push(valid[:errors])
@@ -191,6 +190,7 @@ class User < ActiveRecord::Base
         elsif row[0].strip.empty?
           errors.push({:type => 'missing', :field => 'login'})
         end
+
         if row[3] == value[3]
           errors.push({:type => 'duplicate', :field => 'phone', :index => (i+1)})
         elsif row[3].strip.empty?
