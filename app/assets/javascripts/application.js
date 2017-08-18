@@ -61,7 +61,9 @@
 //= require report/form
 //= require report/list
 
-//= require locations/import_location
+//= require places/import
+
+//= require users/import
 
 //= require alerts/form
 

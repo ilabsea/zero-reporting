@@ -8,7 +8,7 @@
     </li>
 
     <li data-step="2">
-      <span class="step"><%= link_to "2", import_users_path() %></span>
+      <span class="step"><%= link_to "2", users_import_path() %></span>
       <span class="title">Import User</span>
     </li>
   </ul>
@@ -42,30 +42,28 @@
 
       <div class="widget-body">
         <div class="widget-main padding-6 no-padding-left no-padding-right">
-          <p> This tool allows you to import a bunch of locations to your system by using a <%= link_to raw("location form"), download_template_places_path + ".csv", :method => :get, :class => 'bold_link', :format => :csv %> as a template. </p>
+          <p> This tool allows you to import a bunch of locations to your system by using a <%= link_to raw("location form"), places_template_path + ".csv", :method => :get, :class => 'bold_link', :format => :csv %> as a template. </p>
         </div>
       </div>
       <div class="widget-main">
         <div class="form-group">
           <div class="col-xs-6">
-            <!-- #section:custom/file-input -->
             <label class="ace-file-input">
-              <form id="file-form" method="POST">
-                <input type="file" class="file-input" id="file-select" onchange="return handleUploadForm();" name="files[]" >
+              <form id="import-place" method="POST" target="uploadPlace" enctype="multipart/form-data">
+                <input type="file" class="file-input" id="place-file-select"  name="files[]" >
               </form>
             </label>
+
+            <iframe id="uploadPlace" name="uploadPlace" height="0" width="0" frameborder="0" scrolling="yes"></iframe>
           </div>
         </div>
 
-        <!-- /section:custom/file-input.filter -->
       </div>
-      <div class='tmp-wrapper' id="myTmpTree">
-        
+      <div class='hierarchy-list' id="hierarchy-place">
+
       </div>
-      <br />
-      <button class="btn btn-success" id="btn-import" onclick="handleConfirmImport()" style="display:none;"> Confirm Import</button>
-        <!-- /section:custom/widget-box.options.transparent -->
-      </div>
+
+      <button class="btn btn-success" id="btn-import-place" style="display:none;"> Confirm Import</button>
+
   </div>
 </div>
-
