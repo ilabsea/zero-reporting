@@ -19,6 +19,18 @@ Rails.application.routes.draw do
   get 'sign_in' => 'sessions#new'
   delete 'sign_out' => 'sessions#destroy'
 
+  # TO DO refactor
+  get 'places/import' => 'import_places#new'
+  post 'places/import' => 'import_places#create'
+  post 'places/decode' => 'import_places#decode'
+  get 'places/template' => 'import_places#template'
+
+  get 'users/import' => 'import_users#new'
+  post 'users/import' => 'import_users#create'
+  post 'users/decode' => 'import_users#decode'
+  get 'users/template' => 'import_users#template'
+
+
   resources :sessions, only: [:index, :create, :destroy]
   resources :verboice_callbacks, only: [:index]
   resources :dashboards, only: [:index]
@@ -29,9 +41,6 @@ Rails.application.routes.draw do
     collection do
       get 'ods_list'
       get 'download_template'
-      post 'confirm_upload_location'
-      post 'upload_location'
-      get 'import'
       get 'download'
       get 'download_users'
     end
@@ -44,12 +53,8 @@ Rails.application.routes.draw do
     collection do
       get 'profile'
       put 'change_profile'
-      get 'download_template'
-      post 'confirmed_upload_users'
-      post 'upload_users'
       get 'by_place'
       get 'search'
-      get 'import'
     end
 
     member do

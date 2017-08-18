@@ -29,7 +29,6 @@ class PlacesController < ApplicationController
 
   def edit
     @place = Place.find(params[:id])
-    # @available_parents = @place.phd.children.where.not(id: @place.parent_id)
     @available_parents = @place.parent_siblings
     @moving_state = params[:state] === Place::MODE_MOVING
   end
@@ -83,38 +82,6 @@ class PlacesController < ApplicationController
     render json: UserContext.for(current_user).ods_list(params[:phd_id]), root: false
   end
 
-  def download_template
-    respond_to do |format|
-      format.json  { render :json => result }
-      format.csv { send_file 'public/sample/location_template.csv', type: 'text/csv' }
-    end
-  end
-
-  def upload_location
-    csv_string = File.read(params[:place].path, :encoding => 'utf-8')
-    @hierarchy = Place.decode_hierarchy_csv(csv_string)
-    @hierarchy_errors = Place.generate_error_description_list(@hierarchy)
-    render :json => {:error => @hierarchy_errors, :data => @hierarchy}, :root => false
-  end
-
-  def confirm_upload_location
-    csv_string = File.read(params[:place].path, :encoding => 'utf-8')
-    csv = CSV.parse(csv_string)
-    num_rows = 0
-    csv.each_with_index do |col, index|
-      next if index == 0
-      unless col[1].present?
-        parent = nil
-      else
-        parent = Place.generate_ancestry(col[1].strip)
-      end
-      Place.create!(:name => col[2].strip, :code => col[0].strip, :kind_of => col[3].strip, :ancestry => parent)
-      num_rows = num_rows + 1
-    end
-
-    render :json => {:data => csv_string, :row_imported => num_rows}, :root => false
-  end
-
   private
 
   def places_with_ref_path place_id
@@ -125,10 +92,10 @@ class PlacesController < ApplicationController
     params.require(:place).permit(:name, :code, :dhis2_organisation_unit_uuid, :parent_id, :kind_of, :auditable)
   end
 
-  def csv_settings
-    @output_encoding = 'UTF-8'
-    @csv_options = { :force_quotes => true, :col_sep => ',' }
-    @streaming = true
-  end
+  # def csv_settings
+  #   @output_encoding = 'UTF-8'
+  #   @csv_options = { :force_quotes => true, :col_sep => ',' }
+  #   @streaming = true
+  # end
 
 end
