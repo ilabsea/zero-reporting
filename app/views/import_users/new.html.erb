@@ -9,7 +9,7 @@
 
     <li data-step="2" class="active">
       <span class="step">
-        <%= link_to "2", import_users_path() %>
+        <%= link_to "2", users_import_path() %>
       </span>
       <span class="title">Import User</span>
     </li>
@@ -44,18 +44,21 @@
 
       <div class="widget-body">
         <div class="widget-main padding-10 no-padding-left no-padding-right">
-          <p> This tool allows you to import a bunch of users to your system by using a <%= link_to raw("user form"), download_template_users_path + ".csv", :method => :get, :class => 'bold_link', :format => :csv %> as a template. </p>
+          <p> This tool allows you to import a bunch of users to your system by using a <%= link_to raw("user form"), users_template_path + ".csv", :method => :get, :class => 'bold_link', :format => :csv %> as a template. </p>
         </div>
       </div>
       <div class="widget-main">
         <div class="form-group">
           <div class="col-xs-6">
-            <!-- #section:custom/file-input -->
+
             <label class="ace-file-input">
-              <form id="file-form" method="POST">
-                <input type="file" class="file-input" id="file-select" onchange="return handleUploadUserForm();" name="files[]" >
+              <form id="import-user" method="POST" target="uploadUser" enctype="multipart/form-data">
+                <input type="file" class="file-input" id="user-file-select"  name="files[]" >
               </form>
             </label>
+
+            <iframe id="uploadUser" name="uploadUser" height="0" width="0" frameborder="0" scrolling="yes"></iframe>
+
           </div>
         </div>
 
@@ -86,7 +89,7 @@
             </tbody>
           </table>
         </div>
-        <button class="btn btn-success" id="btn-import" onclick="handleConfirmImportUser()"> Confirm Import</button>
+        <button class="btn btn-success" id="btn-import-user"> Confirm Import</button>
       </div>
         <!-- /section:custom/widget-box.options.transparent -->
     </div>
