@@ -1,7 +1,7 @@
 <% clazz = variable.disabled ? 'grey' : '' %>
 
 <div class="panel panel-default panel-variable <%= clazz %>" style="width: 600px;">
-  
+
   <div class="panel-body variable-form" style='border-top: 1px solid #eee; border-bottom: 1px solid #eee; display:none;'>
     <%= simple_form_for variable do |f| %>
       <div class='alert alert-danger error-message' style="display:none;"> ffff</div>
@@ -22,10 +22,11 @@
                      {include_blank: 'Select variable'},
                      {class: 'form-control s-width verboice-variable-id' } %>
         </div>
-
-        <div class="pull-left" style='width: 30%; padding: 10px;'>
-          <%= f.input :dhis2_data_element_uuid, label: "CamEwarn's UUID", class: 'form-control s-width' %>
-        </div>
+        <% if Setting.hub_enabled? %>
+          <div class="pull-left" style='width: 30%; padding: 10px;'>
+            <%= f.input :dhis2_data_element_uuid, label: "CamEwarn's UUID", class: 'form-control s-width' %>
+          </div>
+        <% end %>
       </div>
 
       <div class="clearfix">
