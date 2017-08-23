@@ -18,10 +18,14 @@ function handleSaveVariable() {
 
     var name = $form.find("#variable_name").val();
     var verboice_id   = $form.find("#variable_verboice_id").val();
-
     if(name == "" || verboice_id == "") {
       setNotification("alert", "Please enter variable name and verboice variable")
       return
+    }
+
+    var threshold_value = $form.find("#variable_threshold_value").val()
+    if(threshold_value.length == 0){
+      threshold_value = 0
     }
 
     var url = $form.attr('action');
@@ -35,7 +39,7 @@ function handleSaveVariable() {
       alert_method: $form.find('input[class=alert_method]:checked').val(),
       dhis2_data_element_uuid: $form.find("#variable_dhis2_data_element_uuid").val(),
       disabled: $form.find("#variable_disabled").is(':checked'),
-      threshold_value: $form.find("#variable_threshold_value").val(),
+      threshold_value: threshold_value,
       _method: $form.find("input[name=_method]").val()
     }
 
