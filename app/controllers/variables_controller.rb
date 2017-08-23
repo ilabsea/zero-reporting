@@ -32,7 +32,8 @@ class VariablesController < ApplicationController
 
 
   def filter_params
-    params.permit(:name, :verboice_name, :verboice_id, :background_color, :text_color, :alert_method, :dhis2_data_element_uuid, :disabled)
+    params.permit(:name, :verboice_name, :verboice_id, :background_color, :text_color,
+                  :alert_method, :dhis2_data_element_uuid, :disabled, :threshold_value)
   end
 
 end
