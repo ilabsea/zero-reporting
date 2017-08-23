@@ -12,11 +12,12 @@
 #  updated_at              :datetime         not null
 #  background_color        :string(255)
 #  text_color              :string(255)
+#  dhis2_data_element_uuid :string(255)
 #  is_alerted_by_threshold :boolean          default(TRUE)
 #  is_alerted_by_report    :boolean          default(FALSE)
-#  dhis2_data_element_uuid :string(255)
 #  disabled                :boolean          default(FALSE)
 #  alert_method            :string(255)      default("none")
+#  threshold_value         :integer          default(0)
 #
 
 class Variable < ActiveRecord::Base
@@ -27,10 +28,10 @@ class Variable < ActiveRecord::Base
   has_many :report_variable_audios
   has_many :report_variable_values
 
-  ALERT_METHODS = { 
+  ALERT_METHODS = {
     none: 'None',
     formula: "If the value is greater than the threshold, <b>#{ENV['THRESHOLD_FORMULA']}</b>",
-    case_base: 'If the value is greater than 0'
+    case_base: 'If the value is greater than'
   }
 
   VALID_ALERT_METHOD = ['formula', 'case_base']

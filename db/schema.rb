@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170810071905) do
+ActiveRecord::Schema.define(version: 20170822093843) do
 
   create_table "alert_settings", force: :cascade do |t|
     t.boolean "is_enable_sms_alert"
@@ -231,6 +231,7 @@ ActiveRecord::Schema.define(version: 20170810071905) do
     t.boolean  "is_alerted_by_report",                default: false
     t.boolean  "disabled",                            default: false
     t.string   "alert_method",            limit: 255, default: "none"
+    t.integer  "threshold_value",         limit: 4,   default: 0
   end
 
   create_table "verboice_sync_states", force: :cascade do |t|

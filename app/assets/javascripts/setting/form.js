@@ -35,6 +35,7 @@ function handleSaveVariable() {
       alert_method: $form.find('input[class=alert_method]:checked').val(),
       dhis2_data_element_uuid: $form.find("#variable_dhis2_data_element_uuid").val(),
       disabled: $form.find("#variable_disabled").is(':checked'),
+      threshold_value: $form.find("#variable_threshold_value").val(),
       _method: $form.find("input[name=_method]").val()
     }
 
