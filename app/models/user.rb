@@ -19,6 +19,7 @@
 #  channels_count       :integer
 #  sms_alertable        :boolean          default(TRUE)
 #  disable_alert_reason :string(255)
+#  reportable           :boolean
 #
 # Indexes
 #
@@ -133,6 +134,12 @@ class User < ActiveRecord::Base
 
   def hc_worker?
     !place.nil? && place.hc?
+  end
+
+  def self.reportable?(address)
+    return nil if address.nil? || address.empty?
+    user = User.find_by(phone_without_prefix: Tel.new(address).without_prefix, reportable: true)
+    return user ? true : false
   end
 
   def self.members_of(places = [])
