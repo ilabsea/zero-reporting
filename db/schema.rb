@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170822093843) do
+ActiveRecord::Schema.define(version: 20170824023842) do
 
   create_table "alert_settings", force: :cascade do |t|
     t.boolean "is_enable_sms_alert"
@@ -211,6 +211,7 @@ ActiveRecord::Schema.define(version: 20170822093843) do
     t.integer  "channels_count",       limit: 4
     t.boolean  "sms_alertable",                    default: true
     t.string   "disable_alert_reason", limit: 255
+    t.boolean  "reportable"
   end
 
   add_index "users", ["phd_id_id"], name: "index_users_on_phd_id_id", using: :btree
