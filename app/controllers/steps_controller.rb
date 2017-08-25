@@ -10,8 +10,7 @@ class StepsController < ApplicationController
   def validate_hc_worker
     # 1 for voice reporting
     # 2 for keypad reporting, keep keypad as 2 to be consistent with previous release version
-    result = User.hc_worker?(params[:address]) ? 2 : 0
-
+    result = User.reportable?(params[:address]) ? 2 : 0
     render json: { result: result.to_s }
   end
 

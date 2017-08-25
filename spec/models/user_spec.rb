@@ -19,6 +19,7 @@
 #  channels_count       :integer
 #  sms_alertable        :boolean          default(TRUE)
 #  disable_alert_reason :string(255)
+#  reportable           :boolean
 #
 # Indexes
 #
