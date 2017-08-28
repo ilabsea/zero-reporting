@@ -11,10 +11,14 @@
     <%=f.input :password_confirmation, required: true, label: 'Confirm', input_html: {class: 'form-control'} %>
   <% end %>
 
-<<<<<<< HEAD
   <%=f.input :email, input_html: {class: 'form-control'} %>
   <%=f.input :phone, label: 'Phone Number', required: @user.place.hc? ,input_html: {class: 'form-control'} %>
 
+  <div class="form-group">
+    <label class="control-label">Reportable</label>
+    <%= reportable_state_for(@user.place.kind_of).html_safe %>
+    <span class="lbl" style="vertical-align:bottom"></span>
+  </div>
 
   <div class="form-group">
     <label class="control-label">SMS Alert</label>
@@ -26,15 +30,6 @@
     <%= f.input :disable_alert_reason, as: :text, class: "form-control" %>
   </div>
 
-
-=======
-  <div class="form-group">
-    <label class="control-label">Reportable</label>
-    <%= reportable_state_for(@user.place.kind_of).html_safe %>
-    <span class="lbl" style="vertical-align:bottom"></span>
-  </div>
-
->>>>>>> finish #80 on/off reportable on user phone number
   <div class='form-group form-action-group'>
     <label class='control-label'></label>
 
