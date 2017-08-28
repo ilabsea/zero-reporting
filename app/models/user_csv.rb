@@ -4,6 +4,14 @@ class UserCSV
     @users = {}
   end
 
+  def self.sample
+    content = "login,full_name,email,phone_number,password,password_confirmation,location_code \n"
+    2.times.each do |i|
+      content = content + "example_#{i},example user_#{i},example_#{i}@sampledomain.org.kh,85512344323#{i},samplepassword,samplepassword,100#{i} \n"
+    end
+    content
+  end
+
   def import
     data = []
     @csv_string.each_with_index do |item, index|
