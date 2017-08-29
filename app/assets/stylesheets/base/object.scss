@@ -438,3 +438,7 @@ td:last-child{
   width: 200px;
   display: inline-block;
 }
+
+.disabled{
+  pointer-events: none;
+}

@@ -16,7 +16,7 @@
 
   <div class="form-group">
     <label class="control-label">Reportable</label>
-    <%= reportable_state_for(@user.place.kind_of).html_safe %>
+    <%= f.check_box :reportable, class: 'form-control ace ace-switch ace-switch-4 btn-empty disabled', checked: @user.reportable? %>
     <span class="lbl" style="vertical-align:bottom"></span>
   </div>
 
