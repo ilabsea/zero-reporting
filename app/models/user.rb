@@ -142,6 +142,10 @@ class User < ActiveRecord::Base
     return user ? true : false
   end
 
+  def reportable?
+    return (place.kind_of == 'HC') ? true : false
+  end
+
   def self.members_of(places = [])
     members = []
     places.each do |place|

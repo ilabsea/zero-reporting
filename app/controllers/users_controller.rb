@@ -91,6 +91,7 @@ class UsersController < ApplicationController
   end
 
   def profile
+
   end
 
   private
@@ -100,7 +101,6 @@ class UsersController < ApplicationController
   end
 
   def filter_params
-    params.require(:user).permit(:username, :name, :email, :phone, :place_id, :sms_alertable, :disable_alert_reason  )
-    params.require(:user).permit(:username, :name, :email, :phone, :place_id  )
+    params.require(:user).permit(:username, :name, :email, :phone, :place_id, :sms_alertable, :disable_alert_reason, :reportable  )
   end
 end
