@@ -49,8 +49,6 @@ class User < ActiveRecord::Base
   validates :email, email: true, if: ->(u) { u.email.present? }
   validates :email, uniqueness: true, if: ->(u) { u.email.present? }
 
-  validates :phone, uniqueness: true, if: ->(u) { u.phone.present? }
-
   validates :phone, presence: {message: "Health Center user must has a phone number"}, if: ->(u) { u.place && u.place.hc?}
 
   validates :name, presence: true
@@ -58,10 +56,16 @@ class User < ActiveRecord::Base
   validates :username, presence: true
   validates :username, uniqueness: true
 
+  # validate :custom_validate_phone_uniqueness, if: ->(u) { u.phone.present? }
+  validates :phone_without_prefix, uniqueness: true, if: ->(u) { u.phone.present? }
+
   ROLE_ADMIN  = 'Admin'
   ROLE_NORMAL = 'Normal'
 
-  before_save :normalize_attrs
+  before_validation :normalize_attrs
+
+  after_validation :custom_phone_message_validation
+
   before_save :set_place_tree
 
   attr_accessor :old_password
@@ -84,7 +88,7 @@ class User < ActiveRecord::Base
 
   def normalize_attrs
     self.role = User::ROLE_NORMAL unless self.role.present?
-    self.username.downcase!
+    self.username.downcase! if self.username
     self.phone_without_prefix = self.phone.present? ? Tel.new(self.phone).without_prefix : nil
   end
 
@@ -154,6 +158,18 @@ class User < ActiveRecord::Base
       place.children ? members.concat(members_of(place.children)) : members
     end
     members
+  end
+
+  private
+  def custom_validate_phone_uniqueness
+    self.phone_without_prefix = self.phone.present? ? Tel.new(self.phone).without_prefix : nil
+    errors.add(:phone, "has already been taken") if User.exists?(phone_without_prefix: self.phone_without_prefix)
+  end
+
+  def custom_phone_message_validation
+    if self.errors.messages.key?(:phone_without_prefix)
+      self.errors.messages[:phone]=  self.errors.messages[:phone_without_prefix]
+    end
   end
 
 end
