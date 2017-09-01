@@ -1,9 +1,7 @@
 $(function(){
   $('#user-file-select').on('change', function(){
-    console.log('upload user');
     uploadUserFile('/users/decode', function(data){
       buildUserList(data);
-      console.log('data', data);
     });
   });
 
@@ -58,11 +56,12 @@ function buildUserList(users){
     var cellPlace = row.insertCell(4);
     var cellError = row.insertCell(5);
 
-    cellLogin.innerHTML = user["login_name"];
-    cellFullname.innerHTML = user["full_name"];
+    cellLogin.innerHTML = user["username"];
+    cellFullname.innerHTML = user["name"];
     cellEmail.innerHTML = user["email"];
-    cellPhoneNumber.innerHTML = user["phone_number"];
+    cellPhoneNumber.innerHTML = user["phone"];
     cellPlace.innerHTML = user["location_code"];
+
     if(user['errors'].length > 0){
       cellError.innerHTML = generateErrorList(user['errors']);
       errorStat = true ;
@@ -76,9 +75,12 @@ function buildUserList(users){
 
 function generateErrorList(errors){
   html = '<div class="red inline left"><ul>'
-  for(var i=0; i< errors.length; i++){
-    html = html + "<li>" + errors[i]['field']+" "+ errors[i]['type'] + "</li>";
-  }
+  $.each( errors, function( i, error ) {
+    $.each( error, function( key, message ) {
+      html = html + "<li>" + key +" "+ message[0] + "</li>";
+    });
+
+  });
   html = html + "</ul></div>"
   return html;
 }

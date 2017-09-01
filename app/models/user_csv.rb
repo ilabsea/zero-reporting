@@ -14,10 +14,11 @@ class UserCSV
 
   def import
     data = []
+    row_imported = 0
     @csv_string.each_with_index do |item, index|
       next if index == 0
       place = Place.find_by_code(item[6].strip)
-      user = User.create!(
+      user = User.new(
           username: item[0],
           name: item[1],
           email: item[2],
@@ -27,80 +28,46 @@ class UserCSV
           password: item[4],
           password_confirmation: item[5]
       )
-      data.push(user)
+      if(user.save)
+        data.push(user)
+        row_imported = row_imported + 1
+      end
     end
-    return {data: data, row_imported: data.length}
+    return {data: data, row_imported: row_imported}
   end
 
   def decode
     parse_with_validation
   end
 
-  def validate_password_confirmation(password, password_confirmation)
-    return (password == password_confirmation) ? true : false
-  end
-
+  private
   def parse_with_validation
     @csv_string.each_with_index do |row, index|
       next if index == 0
       item = {}
       item[:ord] = index
       item[:errors] = []
+      valid = false
 
       if(valid_csv_column?(row))
-        login_name = row[0].strip if row[0].present?
-        full_name = row[1].strip if row[1].present?
-        email = row[2].strip if row[2].present?
-        phone_number = row[3].strip if row[3].present?
-        password = row[4].strip if row[4].present?
-        password_confirmation = row[5].strip if row[5].present?
-        item[:email] = email
+        user = {}
+        user[:username] = row[0].strip if row[0].present?
+        user[:name] = row[1].strip if row[1].present?
+        user[:email] = row[2].strip if row[2].present?
+        user[:phone] = row[3].strip if row[3].present?
+        user[:password] = row[4].strip if row[4].present?
+        user[:password_confirmation] = row[5].strip if row[5].present?
+        user[:place_id] = row[6].strip if row[6].present?
 
-        if(login_name.present?)
-          item[:login_name] = login_name
-        else
-          item[:errors].push({:type => 'missing', :field => 'login_name'})
-        end
+        new_user = User.new(user)
+        place = Place.find_by_code(user[:place_id])
+        item[:location_code] = place ? "#{place.name}(#{place.code}) - #{place.kind_of}" : ''
+        item[:errors].push(new_user.errors.messages) if !new_user.valid?
+        item = item.merge(user)
 
-        if(full_name.present?)
-          item[:full_name] = full_name
-        else
-          item[:errors].push({:type => 'missing', :field => 'full_name'})
-        end
-
-        if(phone_number.present?)
-          item[:phone_number] = phone_number
-        else
-          item[:errors].push({:type => 'missing', :field => 'phone_number'})
-        end
-
-        if(password.present? && password_confirmation.present?)
-          if(validate_password_confirmation(password, password_confirmation))
-            item[:password] = password
-            item[:password_confirmation] = password
-          else
-            item[:errors].push({:type => 'not_match', :field => 'password'})
-          end
-        else
-          item[:errors].push({:type => 'missing', :field => 'password'})
-        end
-
-        location_code = row[6].strip if row[6].present?
-        if(location_code.present?)
-          place = Place.find_by_code(location_code)
-          if place
-            item[:location_code] = "#{place.name}(#{place.code}) - #{place.kind_of}"
-          else
-            item[:location_code] = ''
-            item[:errors].push({:type => 'unknown', :field => 'place'})
-          end
-        else
-          item[:errors].push({:type => 'missing', :field => 'place'})
-        end
       else
         item[:errors].push({:type => 'invalid column number', :field => 'format'})
       end
-
       @users[item[:ord]] = item
     end
 
