@@ -56,7 +56,6 @@ class User < ActiveRecord::Base
   validates :username, presence: true
   validates :username, uniqueness: true
 
-  # validate :custom_validate_phone_uniqueness, if: ->(u) { u.phone.present? }
   validates :phone_without_prefix, uniqueness: true, if: ->(u) { u.phone.present? }
 
   ROLE_ADMIN  = 'Admin'
@@ -168,7 +167,8 @@ class User < ActiveRecord::Base
 
   def custom_phone_message_validation
     if self.errors.messages.key?(:phone_without_prefix)
-      self.errors.messages[:phone]=  self.errors.messages[:phone_without_prefix]
+      self.errors.messages[:phone] = self.errors.messages[:phone_without_prefix]
+      self.errors.messages.delete(:phone_without_prefix)
     end
   end
 
