@@ -8,7 +8,7 @@ addons:
   code_climate:
     repo_token: 'ff44355d041f6826c54189f18c7dac2a99c82e8efcf45d5650a29fd6f965feb5'
 rvm:
-  - "2.2.1"
+  - "2.4.1"
 
 # uncomment this line if your project needs to run something other than `rake`:
 script:
