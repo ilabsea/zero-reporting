@@ -54,7 +54,8 @@ function buildUserList(users){
     var cellEmail = row.insertCell(2);
     var cellPhoneNumber = row.insertCell(3);
     var cellPlace = row.insertCell(4);
-    var cellError = row.insertCell(5);
+    var cellStatus = row.insertCell(5);
+    var cellDetail = row.insertCell(6);
 
     cellLogin.innerHTML = user["username"];
     cellFullname.innerHTML = user["name"];
@@ -63,11 +64,12 @@ function buildUserList(users){
     cellPlace.innerHTML = user["location_code"];
 
     if(user['errors'].length > 0){
-      cellError.innerHTML = generateErrorList(user['errors']);
+      cellStatus.innerHTML = '<span class="label label-sm label-danger left" style="margin-left: 13px;">Ignored</span>';
+      cellDetail.innerHTML = generateErrorList(user['errors']);
       errorStat = true ;
     }
     else{
-      cellError.innerHTML = '<span class="label label-sm label-success left" style="margin-left: 13px;">Accepted</span>'
+      cellStatus.innerHTML = '<span class="label label-sm label-success left" style="margin-left: 13px;">Accepted</span>'
     }
   });
 }

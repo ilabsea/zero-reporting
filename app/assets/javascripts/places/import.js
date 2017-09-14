@@ -77,14 +77,32 @@ function buildTree(places){
   if(places.length > 0){
     ul_div = ul_div + '<ul style="display: block;">';
     for(var i=0; i< places.length; i++){
-      ul_div = ul_div + '<li class="tree-node-wrapper active">'
+      ul_div = ul_div + '<li class="tree-node-wrapper active">';
+      error_div = '';
+      if(places[i]['errors'].length > 0){
+        error_div = '<span class="label label-sm label-danger" style="margin-left: 13px;">Ignored</span>';
+        $.each( places[i]['errors'], function( j, error ) {
+          $.each( error, function( key, message ) {
+            error_div = error_div + "<span class='red'> "+ key +' '+ message[0] + ",</span> ";
+          });
+
+        });
+
+      }else {
+        error_div = '<span class="label label-sm label-primary" style="margin-left: 13px;">Accepted</span>'
+      }
+
       if(places[i]["sub"]){
         ul_div = ul_div + buildArrowTree();
-        ul_div = ul_div + '<a class="tree-node " href="javascript:void(0)" data-id="' + places[i]["id"] + '">' + places[i]["level"] + " - " + places[i]["name"] + " (" + places[i]["id"] + ')</a>'
-        ul_div = ul_div + buildTree(places[i]["sub"])
+        ul_div = ul_div + '<a class="tree-node " href="javascript:void(0)" data-id="' +
+                  places[i]["id"] + '">' + places[i]["level"] + " - " + places[i]["name"] +
+                  " (" + places[i]["id"] + ')</a>' + error_div
+        ul_div = ul_div +  buildTree(places[i]["sub"])
       }
       else{
-        ul_div = ul_div + '<a class="tree-node " href="javascript:void(0)" data-id="' + places[i]["id"] + '">' + places[i]["level"] + " - " + places[i]["name"] + ' (' + places[i]["id"] + ')</a>'
+        ul_div = ul_div + '<a class="tree-node " href="javascript:void(0)" data-id="' +
+                places[i]["id"] + '">' + places[i]["level"] + " - " + places[i]["name"] +
+                ' (' + places[i]["id"] + ')</a>' + error_div
       }
       ul_div = ul_div + "</li>"
     }
