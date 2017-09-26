@@ -1,8 +1,8 @@
 <%=simple_form_for(@event, html: { class: 'form-inline form'}) do |f| %>
   <%= f.input :id, as: :hidden %>
   <%= f.input :description, as: :text, input_html: {class: 'form-control'} %>
-  <%= f.input :from_date, as: :date, required: true, order: [:day, :month, :year] %>
-  <%= f.input :to_date, as: :date, order: [:day, :month, :year] %>
+  <%= f.input :display_from, as: :date, required: true, order: [:day, :month, :year] %>
+  <%= f.input :display_till, as: :date, order: [:day, :month, :year] %>
   <%= f.input :url_ref, as: :url %>
 
   <div class="form-group text optional event_attachments">

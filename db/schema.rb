@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170824023842) do
+ActiveRecord::Schema.define(version: 20170926064841) do
 
   create_table "alert_settings", force: :cascade do |t|
     t.boolean "is_enable_sms_alert"
@@ -67,12 +67,12 @@ ActiveRecord::Schema.define(version: 20170824023842) do
   add_index "event_attachments", ["event_id"], name: "index_event_attachments_on_event_id", using: :btree
 
   create_table "events", force: :cascade do |t|
-    t.text     "description", limit: 65535
-    t.date     "from_date"
-    t.date     "to_date"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
-    t.string   "url_ref",     limit: 255
+    t.text     "description",  limit: 65535
+    t.date     "display_from"
+    t.date     "display_till"
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.string   "url_ref",      limit: 255
   end
 
   create_table "external_sms_settings", force: :cascade do |t|
