@@ -6,10 +6,10 @@ class EventDecorator < Draper::Decorator
   end
 
   def due_date
-		if object.from_date === object.to_date or !object.to_date.present?
-			object.from_date.to_s
+		if object.display_from === object.display_till or !object.display_till.present?
+			object.display_from.to_s
 		else
-			object.from_date.to_s + " to " + object.to_date.to_s
+			object.display_from.to_s + " to " + object.display_till.to_s
 		end
 	end
 

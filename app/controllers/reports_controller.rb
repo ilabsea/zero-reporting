@@ -17,7 +17,7 @@ class ReportsController < ApplicationController
     @reports = reports.page(params[:page])
     @variables = Variable.applied(Setting[:project])
 
-    @events = Event.upcoming(1.week).order("from_date ASC").limit(Event::ANNOUNCEMENT_LISTING)
+    @events = Event.upcoming(1.week).order("display_from ASC").limit(Event::ANNOUNCEMENT_LISTING)
     @events = EventDecorator.decorate_collection(@events)
   end
 

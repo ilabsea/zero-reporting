@@ -2,13 +2,13 @@
 #
 # Table name: events
 #
-#  id          :integer          not null, primary key
-#  description :text(65535)
-#  from_date   :date
-#  to_date     :date
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  url_ref     :string(255)
+#  id           :integer          not null, primary key
+#  description  :text(65535)
+#  display_from :date
+#  display_till :date
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  url_ref      :string(255)
 #
 
 class Event < ActiveRecord::Base
@@ -27,8 +27,8 @@ class Event < ActiveRecord::Base
 	end
 
 	def over?
-		return to_date < Date.today if to_date
-		return from_date < Date.today
+		return display_till < Date.today if display_till
+		return display_from < Date.today
 	end
 
 end
