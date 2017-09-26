@@ -6,9 +6,9 @@ RSpec.describe EventsController, type: :controller do
 
   let(:valid_attributes) {
     {
-      description: "1", 
-      from_date: Date.today, 
-      to_date: Date.today, 
+      description: "1",
+      display_from: Date.today,
+      display_till: Date.today, 
       attachments_attributes: {
         "0" => {
          file: File.open(File.join(Rails.root, 'spec', 'fixtures', 'test.pdf'))
