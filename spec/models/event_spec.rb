@@ -9,6 +9,8 @@
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #  url_ref      :string(255)
+#  ord          :integer
+#  is_enabled   :boolean          default(FALSE)
 #
 
 require 'rails_helper'
