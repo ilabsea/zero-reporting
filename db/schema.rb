@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170926064841) do
+ActiveRecord::Schema.define(version: 20170927042434) do
 
   create_table "alert_settings", force: :cascade do |t|
     t.boolean "is_enable_sms_alert"
@@ -70,9 +70,11 @@ ActiveRecord::Schema.define(version: 20170926064841) do
     t.text     "description",  limit: 65535
     t.date     "display_from"
     t.date     "display_till"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
     t.string   "url_ref",      limit: 255
+    t.integer  "ord",          limit: 4
+    t.boolean  "is_enabled",                 default: false
   end
 
   create_table "external_sms_settings", force: :cascade do |t|

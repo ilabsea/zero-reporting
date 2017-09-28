@@ -3,6 +3,12 @@
   <%= f.input :description, as: :text, input_html: {class: 'form-control'} %>
   <%= f.input :display_from, as: :date, required: true, order: [:day, :month, :year] %>
   <%= f.input :display_till, as: :date, order: [:day, :month, :year] %>
+  <%= f.input :ord %>
+  <div class="form-group">
+    <label class="control-label">Is Enabled</label>
+    <%= f.check_box :is_enabled, class: 'form-control ace ace-switch ace-switch-4 btn-empty' %>
+    <span class="lbl" style="vertical-align:bottom"></span>
+  </div>
   <%= f.input :url_ref, as: :url %>
 
   <div class="form-group text optional event_attachments">

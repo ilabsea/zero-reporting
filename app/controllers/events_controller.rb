@@ -4,9 +4,8 @@ class EventsController < ApplicationController
   before_action :set_event, only: [:destroy]
 
   def index
-    @events = Event.all
-    @events = @events.of_type(params[:type]) if params[:type].present?
-    @events = @events.order('display_from DESC').includes(:attachments).page(params[:page])
+    @events = params[:type].presence ? Event.of_type(params[:type]) : Event.all
+    @events = @events.includes(:attachments).page(params[:page])
     @events = EventDecorator.decorate_collection(@events)
   end
 
@@ -45,7 +44,7 @@ class EventsController < ApplicationController
   end
 
   def event_params
-    params.require(:event).permit(:description, :display_from, :display_till, :url_ref, attachments_attributes: [:id, :event_id, :file])
+    params.require(:event).permit(:description, :display_from, :display_till, :ord, :is_enabled, :url_ref, attachments_attributes: [:id, :event_id, :file])
   end
 
   def attachment_error_messages

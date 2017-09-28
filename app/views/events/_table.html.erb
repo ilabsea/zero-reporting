@@ -4,6 +4,8 @@
       <tr style="color: black">
         <td>Event Date</td>
         <td>Description</td>
+        <td>Order</td>
+        <td>Status</td>
         <td>Url Reference</td>
         <td>Attachment</td>
         <td>Action</td>
@@ -17,6 +19,9 @@
           <tr style="<%= color %>">
             <td><%= event.due_date %></td>
             <td><%= event.description %></td>
+            <td><%= event.ord %></td>
+            <td><%= status_for(event.is_enabled).html_safe %>
+            </td>
             <td><%= link_to event.url_ref, event.url_ref %></td>
             <td>
               <% event.attachments.each do |attachment| %>
@@ -27,6 +32,9 @@
             </td>
             <td>
               <div>
+                <% if event.announcing? %>
+                  <span><i class='glyphicon glyphicon-eye-open'> </i></span>
+                <% end %>
                 <%= link_to event_path(event), method: :delete, data: {confirm: 'Are you sure to delete ?'} do %>
                     <i class='glyphicon glyphicon-trash red'> </i>
                 <% end %>
@@ -35,7 +43,7 @@
           </tr>
         <% end %>
       <% else %>
-        <td colspan="5">
+        <td colspan="7">
           <div class="alert alert-danger center" style="margin-bottom: 0px">
             There is no record.
             <br>
