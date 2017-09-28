@@ -5,7 +5,7 @@
 #  id                  :integer          not null, primary key
 #  from                :string(255)
 #  to                  :text(65535)
-#  body                :string(255)
+#  body                :text(65535)
 #  suggested_channel   :string(255)
 #  verboice_project_id :integer
 #  created_at          :datetime         not null
