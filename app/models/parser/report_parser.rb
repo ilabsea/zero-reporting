@@ -29,7 +29,8 @@ module Parser
 
       options[:call_log_answers].each do |call_log_answer|
         variable = variables.select { |variable| variable.verboice_id == call_log_answer[:project_variable_id] }.first
-        report.report_variable_values.build(value: call_log_answer[:value], variable_id: variable.id) if variable && call_log_answer[:value].present?
+        value = Parser::ValueParser.new(call_log_answer[:value]).parse
+        report.report_variable_values.build(value: value, original_value: call_log_answer[:value], variable_id: variable.id) if variable && call_log_answer[:value].present?
       end
 
       report
