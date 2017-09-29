@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170928042238) do
+ActiveRecord::Schema.define(version: 20170928084226) do
 
   create_table "alert_settings", force: :cascade do |t|
     t.boolean "is_enable_sms_alert"
@@ -127,17 +127,18 @@ ActiveRecord::Schema.define(version: 20170928042238) do
   add_index "places", ["ancestry"], name: "index_places_on_ancestry", using: :btree
 
   create_table "report_variables", force: :cascade do |t|
-    t.integer  "report_id",    limit: 4
-    t.integer  "variable_id",  limit: 4
-    t.string   "type",         limit: 255
-    t.string   "value",        limit: 255
-    t.datetime "created_at",                               null: false
-    t.datetime "updated_at",                               null: false
-    t.boolean  "has_audio",                default: false
-    t.boolean  "listened",                 default: false
-    t.string   "token",        limit: 255
-    t.boolean  "is_alerted",               default: false
-    t.string   "exceed_value", limit: 255
+    t.integer  "report_id",      limit: 4
+    t.integer  "variable_id",    limit: 4
+    t.string   "type",           limit: 255
+    t.string   "value",          limit: 255
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
+    t.boolean  "has_audio",                  default: false
+    t.boolean  "listened",                   default: false
+    t.string   "token",          limit: 255
+    t.boolean  "is_alerted",                 default: false
+    t.string   "exceed_value",   limit: 255
+    t.string   "original_value", limit: 255
   end
 
   add_index "report_variables", ["report_id", "variable_id", "type"], name: "index_report_variables_on_report_id_and_variable_id_and_type", using: :btree
