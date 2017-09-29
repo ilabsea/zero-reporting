@@ -2,18 +2,19 @@
 #
 # Table name: report_variables
 #
-#  id           :integer          not null, primary key
-#  report_id    :integer
-#  variable_id  :integer
-#  type         :string(255)
-#  value        :string(255)
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  has_audio    :boolean          default(FALSE)
-#  listened     :boolean          default(FALSE)
-#  token        :string(255)
-#  is_alerted   :boolean          default(FALSE)
-#  exceed_value :string(255)
+#  id             :integer          not null, primary key
+#  report_id      :integer
+#  variable_id    :integer
+#  type           :string(255)
+#  value          :string(255)
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  has_audio      :boolean          default(FALSE)
+#  listened       :boolean          default(FALSE)
+#  token          :string(255)
+#  is_alerted     :boolean          default(FALSE)
+#  exceed_value   :string(255)
+#  original_value :string(255)
 #
 # Indexes
 #
@@ -23,7 +24,9 @@
 #
 
 class ReportVariableValue < ReportVariable
+
   def has_value?
     value.to_i > 0
   end
+
 end
