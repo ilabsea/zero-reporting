@@ -6,20 +6,11 @@ module Parser
     end
 
     def parse
-      return is_integer? ? @value.to_i : decode_value.to_i
-    end
-
-    private
-    def decode_value
-      value = 0
-      @value.gsub(/\A(\D+)(\d+)\z/) do
-        value = $2
+      value = '0'
+      @value.gsub(/\A([*+0]*)(\d+)\z/) do
+        return $2.to_i
       end
-      return value
-    end
-
-    def is_integer?
-      @value =~ /\A\d+\z/ ? true : false
+      return value.to_i
     end
   end
 end

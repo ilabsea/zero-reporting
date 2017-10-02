@@ -8,7 +8,9 @@ RSpec.describe Parser::ValueParser, type: :model do
     end
     context 'with invalid value' do
       it { expect(Parser::ValueParser.new('*1').parse).to eq(1) }
-      it { expect(Parser::ValueParser.new('*1*10').parse).to eq(0) }
+      it { expect(Parser::ValueParser.new('+20').parse).to eq(20) }
+      it { expect(Parser::ValueParser.new('01*33').parse).to eq(0) }
+      it { expect(Parser::ValueParser.new('**1**10').parse).to eq(0) }
     end
   end
 end
