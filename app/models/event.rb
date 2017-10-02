@@ -53,6 +53,10 @@ class Event < ActiveRecord::Base
     end
 	end
 
+	def enabled?
+		self.is_enabled
+	end
+
 	def over?
 		return display_till < Date.today if display_till
 		return display_from < Date.today

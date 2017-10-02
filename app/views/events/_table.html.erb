@@ -20,7 +20,12 @@
             <td><%= event.due_date %></td>
             <td><%= event.description %></td>
             <td><%= event.ord %></td>
-            <td><%= status_for(event.is_enabled).html_safe %>
+            <td>
+              <% if event.enabled? %>
+                <%= status_for_enabled.html_safe %>
+              <% else %>
+                <%= status_for_disabled.html_safe %>
+              <% end %>
             </td>
             <td><%= link_to event.url_ref, event.url_ref %></td>
             <td>
