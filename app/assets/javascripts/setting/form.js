@@ -139,13 +139,13 @@ function update_select(selector, resultSets) {
 
 function caseBaseState(){
   $(document).on("change","input[type=radio]",function(){
-    console.log('change');
+
     var alertMethod = $('[name="variable[alert_method]"]:checked').val();
     if(alertMethod == 'case_base'){
       $('#variable_threshold_value').removeAttr('disabled');
     }else{
       $('#variable_threshold_value').disabled = true;
     }
-    console.log('alertMethod : ', alertMethod);
+
   });
 }
