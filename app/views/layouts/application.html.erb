@@ -18,13 +18,11 @@
       <div class="flash" data-hide-timeout="1000"></div>
       <div id="toolbar"></div>
       <div id="header"></div>
-      <%#= flash_messages %>
       <%= yield %>
     </div>
 
     <%= javascript_include_tag "application" %>
     <%= render "layouts/shared/config" %>
-    <!--  <%= render "layouts/shared/notification" %> -->
 
     <script type="text/javascript" charset="utf-8">
       var rootUrl = '<%= root_url %>';
