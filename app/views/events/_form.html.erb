@@ -13,8 +13,17 @@
 
   <div class="form-group text optional event_attachments">
     <label class='file required control-label left' for='event_attachments_attributes_0_file'>Attachment(s)</label>
+
 	  <%= f.simple_fields_for :attachments do |ff| %>
-	  	<%= ff.input :file, label: false, input_html: { style: 'display:inline;' }, as: :file  %>
+      <% if ff.object.new_record? %>
+        <div style="width: 300px; margin-left: 180px">
+          <%= ff.input :file, label: false, input_html: { style: 'display:inline;' }, as: :file  %>
+        </div>
+      <% else %>
+        <div class="img-attachment">
+          <%= image_tag(ff.object.file, width: 150, height: 150, alt: 'Attachment') %>
+        </div>
+      <% end %>
 	  <% end %>
   </div>
 

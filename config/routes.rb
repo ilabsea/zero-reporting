@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :events, only: [:index, :new, :create, :destroy]
+  resources :events
   resources :event_attachments, only: [] do
     member do
       get :download

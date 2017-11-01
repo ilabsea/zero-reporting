@@ -16,7 +16,6 @@ class EventsController < ApplicationController
 
   def create
     @event = Event.new(event_params)
-
     begin
       @event.save!
       redirect_to events_url(type: Event::UPCOMING), notice: 'Event was successfully created'
@@ -34,6 +33,21 @@ class EventsController < ApplicationController
       redirect_to events_url(type: params[:type]), notice: 'Event was successfully removed'
     rescue ActiveRecord::StatementInvalid
       redirect_to events_url, alert: "Failed to remove event. Make sure there is no attachments associate to this event"
+    end
+  end
+
+  def edit
+    @event = Event.find(params[:id])
+    @event.attachments.build
+  end
+
+  def update
+    @event = Event.find(params[:id])
+    if @event.update_attributes(event_params)
+      redirect_to events_path, notice: 'Event has been updated successfully'
+    else
+      flash.now[:alert] = 'Failed to update event'
+      render :edit
     end
   end
 

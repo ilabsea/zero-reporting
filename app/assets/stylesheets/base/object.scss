@@ -442,3 +442,10 @@ td:last-child{
 .disabled{
   pointer-events: none;
 }
+
+.img-attachment{
+  height: 150px;
+  width: 150px;
+  display: inline-block;
+  margin-left: 10px
+}

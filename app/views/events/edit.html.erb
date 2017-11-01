@@ -1,0 +1,7 @@
+<% content_for(:title) { "Edit Event"} %>
+<%= breadcrumb [ {"Events" => events_path}, {"Event Creation" => nil} ] %>
+<div class="inner-container">
+  <%= page_header "Edit Event" %>
+
+  <%= render 'form' %>
+</div>

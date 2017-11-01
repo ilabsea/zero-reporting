@@ -40,6 +40,9 @@
                 <% if event.announcing? %>
                   <span><i class='glyphicon glyphicon-eye-open'> </i></span>
                 <% end %>
+                <%= link_to edit_event_path(event) do %>
+                  <span><i class='glyphicon glyphicon-pencil' style='color: blue'> </i></span>
+                <% end %>
                 <%= link_to event_path(event), method: :delete, data: {confirm: 'Are you sure to delete ?'} do %>
                     <i class='glyphicon glyphicon-trash red'> </i>
                 <% end %>
