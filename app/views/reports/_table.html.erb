@@ -32,8 +32,8 @@
         <td>Reported date</td>
         <td>PHD</td>
         <td>OD</td>
-        <td>Phone</td>
         <td><%= sortable "user_id", "HC" %></td>
+        <td>Phone</td>
         <td>Duration<br/>(second)</td>
         <% @variables.each do |variable| %>
           <% unless variable.disabled %>
@@ -69,11 +69,14 @@
                <%= report.od.try(:name) if current_user.normal? %>
             </td>
             <td>
-              <a class='circle' style='border: 1px solid #f3f3f3; background-color: <%= report.status_info[:color] %>' data-toggle='tooltip' data-placement=right' title='<%= report.status_info[:text] %>'></a><%= report.phone %>
-            </td>
-            <td>
               <%= report.user.try(:name)%>
               <%= hidden_field_tag "place_report_#{report.id}", report.try(:place_id) %>
+            </td>
+            <td>
+              <a class='circle' style='border: 1px solid #f3f3f3;
+                background-color: <%= report.status_info[:color] %>' data-toggle='tooltip' data-placement=right' title='<%= report.status_info[:text] %>'>
+              </a>
+              <%= report.phone %>
             </td>
             <td> <%= report.duration%> </td>
             <% @variables.each do |variable| %>
