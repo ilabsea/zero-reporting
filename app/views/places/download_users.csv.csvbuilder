@@ -1,4 +1,8 @@
-csv << ['Level', 'Location Code', 'CamEwarn UUID', 'Location Name', 'Phone Number', 'Name']
+if Setting.hub_enabled?
+  csv << ['Level', 'Location Code', 'CamEwarn UUID', 'Location Name', 'Phone Number', 'Name']
+else
+  csv << ['Level', 'Location Code', 'Location Name', 'Phone Number', 'Name']
+end
 
 Place.level(Place::Type::PHD).order(:id).each do |place|
   user_hierarchy_to_csv place, csv

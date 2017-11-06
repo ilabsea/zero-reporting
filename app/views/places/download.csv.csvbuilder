@@ -1,4 +1,8 @@
-csv << ['code', 'parent_code', 'CamEwarn UUID', 'name', 'level']
+if Setting.hub_enabled?
+  csv << ['code', 'parent_code', 'CamEwarn UUID', 'name', 'level']
+else
+  csv << ['code', 'parent_code', 'name', 'level']
+end
 
 Place.level(Place::Type::PHD).each do |place|
   place_hierarchy_to_csv place, csv
