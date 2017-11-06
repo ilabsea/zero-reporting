@@ -1,7 +1,11 @@
 module PlacesHelper
   def user_hierarchy_to_csv place, csv
     place.users.each do |user|
-      csv << [place.kind_of, place.code, place.dhis2_organisation_unit_uuid, place.name, user.phone, user.name]
+      if Setting.hub_enabled?
+        csv << [place.kind_of, place.code, place.dhis2_organisation_unit_uuid, place.name, user.phone, user.name]
+      else
+        csv << [place.kind_of, place.code, place.name, user.phone, user.name]
+      end
     end
 
     place.children.each do |child_place|
@@ -10,7 +14,11 @@ module PlacesHelper
   end
 
   def place_hierarchy_to_csv place, csv
-    csv << [place.code, place.parent.try(:code), place.dhis2_organisation_unit_uuid, place.name, place.kind_of]
+    if Setting.hub_enabled?
+      csv << [place.code, place.parent.try(:code), place.dhis2_organisation_unit_uuid, place.name, place.kind_of]
+    else
+      csv << [place.code, place.parent.try(:code), place.name, place.kind_of]
+    end
 
     place.children.each do |child_place|
       place_hierarchy_to_csv child_place, csv
