@@ -138,14 +138,12 @@ function update_select(selector, resultSets) {
 }
 
 function caseBaseState(){
-  $(document).on("change","input[type=radio]",function(){
+  $(document).on('click', '#variable_alert_method_case_base', function(){
+    $('.variable_alert').removeAttr('disabled');
+  });
 
-    var alertMethod = $('[name="variable[alert_method]"]:checked').val();
-    if(alertMethod == 'case_base'){
-      $('#variable_threshold_value').removeAttr('disabled');
-    }else{
-      $('#variable_threshold_value').disabled = true;
-    }
-
+  $(document).on('click', '#variable_alert_method_none, #variable_alert_method_formula', function(){
+    $('.variable_alert').val('');
+    $('.variable_alert').attr({'disabled': 'disabled'});
   });
 }
