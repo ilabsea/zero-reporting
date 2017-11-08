@@ -67,6 +67,15 @@ class Event < ActiveRecord::Base
 		Event.announcing.any? {|event| event.id == self.id}
 	end
 
+	def upcoming?
+		return false if !self.is_enabled
+		Event.upcoming.any? {|event| event.id == self.id}
+	end
+
+	def past?
+		Event.past.any? {|event| event.id == self.id}
+	end
+
 	private
 	def set_default_ord
 		self.ord = 99 if self.ord.blank?
