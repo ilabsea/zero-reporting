@@ -56,7 +56,13 @@
               <%= f.radio_button :alert_method, key, class: 'alert_method' %>
               <span class="lbl"><%= method.html_safe %></span>
               <% if key == :case_base %>
-                <%= f.input :threshold_value, label: false, type: 'number', disabled: true, input_html: {style: 'width: 60px; display: inline-block'} %>
+                <% if variable.alert_method == 'case_base' %>
+                  <input style="width: 60px; display: inline-block" class="numeric integer variable_alert"
+                  type="number" step="1" value="<%= variable.threshold_value %>" name="variable[threshold_value]" id="variable_threshold_value">
+                <% else %>
+                  <input style="width: 60px; display: inline-block" class="numeric integer variable_alert"
+                type="number" step="1" name="variable[threshold_value]" id="variable_threshold_value" disabled='disabled'>
+                <% end %>
               <% end %>
             </div>
           <% end %>
