@@ -44,7 +44,8 @@ class EventsController < ApplicationController
   def update
     @event = Event.find(params[:id])
     if @event.update_attributes(event_params)
-      redirect_to events_path, notice: 'Event has been updated successfully'
+      redirect_path = @event.upcoming? ? events_path(type: Event::UPCOMING) : events_path(type: Event::PAST)
+      redirect_to redirect_path, notice: 'Event has been updated successfully'
     else
       flash.now[:alert] = 'Failed to update event'
       render :edit
