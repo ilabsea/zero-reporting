@@ -21,6 +21,7 @@ class Setting < RailsSettings::CachedSettings
   ALERT = :alert
   REPORT = :report
   TEMPLATE = :template
+  NOTIFY_REPORT_REVIEWED = :notify_report_reviewed
 
   def self.hub_enabled?
     ENV["HUB_ENABLED"] == '1'
@@ -37,7 +38,7 @@ class Setting < RailsSettings::CachedSettings
   def self.wkst
     ENV['WKST'].present? ? ENV['WKST'].to_i : 0
   end
-  
+
   def self.number_of_revise_week_available
     ENV["NUM_OF_REVISE_WEEK"].present? ? ENV["NUM_OF_REVISE_WEEK"].to_i : 1
   end
