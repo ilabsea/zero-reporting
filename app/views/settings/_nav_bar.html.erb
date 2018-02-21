@@ -20,4 +20,9 @@
   <li role="presentation" class="<%= tab_active_for(Setting::TEMPLATE) %>">
     <%= link_to Setting::TEMPLATE.to_s.camelcase, settings_path(tab: Setting::TEMPLATE) %>
   </li>
+
+  <li role="presentation" class="<%= tab_active_for(Setting::NOTIFY_REPORT_REVIEWED) %>">
+    <%= link_to Setting::NOTIFY_REPORT_REVIEWED.to_s.underscore.humanize, settings_path(tab: Setting::NOTIFY_REPORT_REVIEWED) %>
+  </li>
+
 </ul>

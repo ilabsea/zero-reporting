@@ -48,6 +48,8 @@
 require 'rails_helper'
 
 RSpec.describe Report, type: :model do
+  include ActiveJob::TestHelper
+
   describe "#camewarn_week" do
     context "when report is on sunday" do
       let(:report) {create(:report, called_at: "2016-03-20 11:39:45")}
@@ -259,6 +261,36 @@ RSpec.describe Report, type: :model do
     end
 
     it { expect(@report.alerted_variables.size).to eq 1 }
+
+  end
+
+  describe '#reviewed_as' do
+    let!(:report) { create(:report, verboice_project_id: 123) }
+    it 'reviewed report and notify to connected endpoint' do
+      expect(report).to  receive(:notify_report_reviewed).once
+      report.reviewed_as!(2017,30)
+      expect(report.year).to eq 2017
+      expect(report.week).to eq 30
+    end
+  end
+
+  describe '#notify_report_reviewed' do
+    let!(:report) { create(:report, verboice_project_id: 123) }
+    context 'when having report reviewed setting configured' do
+      let!(:setting){ create(:report_reviewed_setting, verboice_project_id: 123) }
+      it 'enqueue report reviewed queue' do
+        report.notify_report_reviewed
+        expect(enqueued_jobs.size).to eq 1
+        expect(enqueued_jobs.first[:job]).to eq(ReportReviewedQueueJob)
+      end
+    end
+
+    context 'when no report reviewed setting configured' do
+      it 'enqueue report reviewed queue' do
+        report.notify_report_reviewed
+        expect(enqueued_jobs.size).to eq 0
+      end
+    end
 
   end
 

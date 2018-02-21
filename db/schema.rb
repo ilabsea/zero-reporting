@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170928084226) do
+ActiveRecord::Schema.define(version: 20180213031556) do
 
   create_table "alert_settings", force: :cascade do |t|
     t.boolean "is_enable_sms_alert"
@@ -125,6 +125,15 @@ ActiveRecord::Schema.define(version: 20170928084226) do
   end
 
   add_index "places", ["ancestry"], name: "index_places_on_ancestry", using: :btree
+
+  create_table "report_reviewed_settings", force: :cascade do |t|
+    t.string   "endpoint",            limit: 255
+    t.string   "username",            limit: 255
+    t.string   "password",            limit: 255
+    t.integer  "verboice_project_id", limit: 4
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
 
   create_table "report_variables", force: :cascade do |t|
     t.integer  "report_id",      limit: 4
