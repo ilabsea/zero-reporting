@@ -117,6 +117,8 @@ Rails.application.routes.draw do
 
   resources :alert_settings
 
+  resources :report_reviewed_settings
+
   resources :external_sms_settings
   resources :hub_push_notifications, only: [:create]
 

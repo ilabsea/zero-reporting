@@ -1,0 +1,17 @@
+<div class="alert-section" style="width: 620px;">
+  <div class="panel-head clearfix" style="padding: 10px;">
+
+    <%= simple_form_for @report_reviewed_setting, html: { class: 'form-inline form alert-form'} do |f| %>
+      <%= f.input :endpoint, label: 'End point', class: 'form-control' %>
+      <%= f.input :username, label: 'Username', class: 'form-control' %>
+      <%= f.input :password, label: 'Password', class: 'form-control' %>
+
+      <div class='form-group'>
+        <label class="control-label">&nbsp;</label>
+        <%= f.submit 'Save', class: 'btn btn-primary' %>
+      </div>
+
+    <% end %>
+
+  </div>
+</div>

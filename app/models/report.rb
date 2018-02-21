@@ -169,6 +169,14 @@ class Report < ActiveRecord::Base
     self.year = year
     self.week = week
     self.save!
+
+    self.notify_report_reviewed
+  end
+
+  def notify_report_reviewed
+    setting = ReportReviewedSetting.find_by_verboice_project_id(self.verboice_project_id)
+    return if setting.nil?
+    ReportReviewedQueueJob.set(wait: ENV['DELAY_DELIVER_IN_MINUTES'].to_i).perform_later(self, setting)
   end
 
   def self.to_piechart_reviewed(reports)

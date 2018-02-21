@@ -8,6 +8,7 @@ class SettingsController < ApplicationController
     @parameters = verboice_parameters
     @variables  = Variable.where(verboice_project_id: Setting[:project])
     @alert_setting = AlertSetting.find_or_initialize_by(verboice_project_id: Setting[:project])
+    @report_reviewed_setting = ReportReviewedSetting.find_or_initialize_by(verboice_project_id: Setting[:project])
     @report_setting = Setting.report || Setting::ReportSetting.new {}
     @message_template = Setting.message_template || Setting::MessageTemplateSetting.new {}
   end
