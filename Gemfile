@@ -34,6 +34,8 @@ gem 'jquery-minicolors-rails'
 gem 'sinatra', :require => nil
 # Use Unicorn as the app server
 # gem 'unicorn'
+# Use Puma as the app server
+gem 'puma'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
@@ -95,7 +97,7 @@ end
 
 group :test do
   gem 'rake'
-  gem "codeclimate-test-reporter", require: nil
+  gem 'codeclimate-test-reporter', require: nil
 
   gem 'database_cleaner'
   gem 'shoulda-matchers'
