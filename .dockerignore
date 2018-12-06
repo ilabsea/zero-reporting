@@ -1,0 +1,9 @@
+.bundle
+.dockerignore
+.byebug_history
+log/*
+tmp/*
+spec/*
+coverage/*
+test/*
+*.csv
