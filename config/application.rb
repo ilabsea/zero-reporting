@@ -6,6 +6,8 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+Dotenv::Railtie.load unless Rails.env.production?
+
 ENV.update YAML.load_file('config/application.yml')[Rails.env] rescue {}
 
 module ZeroReporting
@@ -20,6 +22,8 @@ module ZeroReporting
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
     # config.time_zone = 'Central Time (US & Canada)'
+    config.time_zone = ENV['TIME_ZONE']
+
     config.autoload_paths += %W( #{config.root}/lib #{config.root}/app/presenters)
     config.autoload_paths += %W(#{Rails.root}/lib/backup)
 
@@ -29,13 +33,12 @@ module ZeroReporting
     config.active_job.queue_adapter = :sidekiq
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
-    config.time_zone = ENV['TIME_ZONE']
 
     config.default_url_options = { host: ENV['HOST'] }
     config.action_mailer.default_url_options = { :host => ENV['HOST'] }
     config.action_mailer.asset_host = ENV['HOST']
 
-    if Rails.env == 'production'
+    if Rails.env.production?
       # Sprockets
       initializer 'setup_asset_pipeline', :group => :all  do |app|
         # We don't want the default of everything that isn't js or css, because it pulls too many things in

@@ -68,6 +68,8 @@ gem 'whenever', :require => false
 
 gem 'aws-sdk-s3'
 
+gem 'dotenv-rails', groups: [:development, :test]
+
 group :development do
   gem 'bullet'
   gem 'brakeman', require: false

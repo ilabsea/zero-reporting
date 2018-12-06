@@ -33,3 +33,4 @@ spec/reports/*
 public/assets
 /public/audios/*
 /public/uploads/*
+.env

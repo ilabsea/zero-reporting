@@ -8,5 +8,5 @@ production:
   :concurrency: 10
 
 :queues:
-  - hub
-  - default
+  - <%= ENV.fetch('HUB_QUEUE_NAME') { 'hub' } %>
+  - <%= ENV.fetch('DEFAULT_QUEUE_NAME') { 'default' } %>

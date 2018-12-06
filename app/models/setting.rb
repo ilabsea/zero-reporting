@@ -23,7 +23,7 @@ class Setting < RailsSettings::CachedSettings
   TEMPLATE = :template
 
   def self.hub_enabled?
-    ENV["HUB_ENABLED"] == '1'
+    ENV['HUB_ENABLED'].present? && ENV['HUB_ENABLED'].to_i == 1
   end
 
   def self.hub_configured?
@@ -39,6 +39,6 @@ class Setting < RailsSettings::CachedSettings
   end
   
   def self.number_of_revise_week_available
-    ENV["NUM_OF_REVISE_WEEK"].present? ? ENV["NUM_OF_REVISE_WEEK"].to_i : 1
+    ENV['NUM_OF_REVISE_WEEK'].present? ? ENV['NUM_OF_REVISE_WEEK'].to_i : 1
   end
 end
