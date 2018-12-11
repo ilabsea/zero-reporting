@@ -1,2 +1,2 @@
 rvm_trust_rvmrcs_flag=1
-rvm use 2.4.1@zeroreporting --create
+rvm use 2.5.1@zeroreporting --create

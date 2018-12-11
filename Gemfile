@@ -66,6 +66,9 @@ gem 'whenever', :require => false
 
 gem 'aws-sdk-s3'
 
+gem 'elasticsearch-model', '~> 6.0.0'
+gem 'elasticsearch-rails', '~> 6.0.0'
+
 group :development do
   gem 'bullet'
   gem 'brakeman', require: false
