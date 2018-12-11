@@ -7,8 +7,8 @@ module Reports::Elasticsearch
     include Elasticsearch::Model
     include Elasticsearch::Model::Callbacks
 
-    index_name  "zero_reports"
-    document_type "report"
+    index_name    Settings.elasticsearch.index_name
+    document_type Settings.elasticsearch.document_type
 
     def as_indexed_json(options={})
       self.as_json(
