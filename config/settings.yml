@@ -1,0 +1,6 @@
+elasticsearch_enabled: true
+
+elasticsearch:
+  url: http://localhost:9200
+  index_name: zero_reports
+  document_type: report
