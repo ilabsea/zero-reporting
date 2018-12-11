@@ -8,8 +8,6 @@ Bundler.require(*Rails.groups)
 
 Dotenv::Railtie.load unless Rails.env.production?
 
-ENV.update YAML.load_file('config/application.yml')[Rails.env] rescue {}
-
 module ZeroReporting
   class Application < Rails::Application
 
