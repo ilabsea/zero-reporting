@@ -48,6 +48,7 @@
 class Report < ActiveRecord::Base
   include Reports::Filterable
   include Reports::Observer
+  include Reports::Elasticsearch
 
   serialize :recorded_audios, Array
   serialize :call_log_answers, Array
