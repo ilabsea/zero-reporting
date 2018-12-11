@@ -93,6 +93,7 @@ group :development, :test do
   gem 'pry-rails'
 
   gem 'rspec-rails', '~> 3.0'
+  gem 'rspec-json_expectations', '~> 2.1.0'
   gem 'spring-commands-rspec'
   gem 'annotate'
 end
