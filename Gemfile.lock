@@ -313,6 +313,7 @@ GEM
     rspec-expectations (3.2.1)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.2.0)
+    rspec-json_expectations (2.1.0)
     rspec-mocks (3.2.1)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.2.0)
@@ -438,6 +439,7 @@ DEPENDENCIES
   rails-settings-cached
   rails-timeago (~> 2.0)
   rake
+  rspec-json_expectations (~> 2.1.0)
   rspec-rails (~> 3.0)
   sass-rails (~> 5.0.3)
   shoulda-matchers
