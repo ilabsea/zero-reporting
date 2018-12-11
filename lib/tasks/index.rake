@@ -1,7 +1,7 @@
 namespace :index do
-  desc 'Migrate all reports to elasticsearch documents'
+  desc 'Index all reports to elasticsearch documents'
   task :recreate => :environment do
-    return unless Settings.elasticsearch_enabled
+    abort('Settings elasticsearch is disabled') unless Settings.elasticsearch_enabled
 
     Report.transaction do
       Report.find_each(batch_size: 100) do |report|
@@ -14,13 +14,11 @@ namespace :index do
     end
   end
 
-  desc 'Migrate report to elasticsearch document by [id]'
+  desc 'Index report to elasticsearch document by [id]'
   task :recreate_from, [:id] => :environment do |t, args|
-    return unless Settings.elasticsearch_enabled
+    abort('Settings elasticsearch is disabled') unless Settings.elasticsearch_enabled
 
-    report = Report.where(id: args[:id]).first
-    return if report.nil?
-
+    report = Report.find(args[:id])
     report.__elasticsearch__.index_document
 
     puts "index document for report #{args[:id]} successfully!"
