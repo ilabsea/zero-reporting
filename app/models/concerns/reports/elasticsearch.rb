@@ -19,4 +19,3 @@ module Reports::Elasticsearch
     end
   end
 end
-
