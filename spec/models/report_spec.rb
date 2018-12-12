@@ -291,7 +291,48 @@ RSpec.describe Report, type: :model do
         expect(enqueued_jobs.size).to eq 0
       end
     end
-
   end
 
+  describe '.create_from_call_log_with_status', :elasticsearch do
+    let(:user) { create(:user, phone_without_prefix: '789032') }
+    let(:report) { Report.create_from_call_log_with_status('789032', 'completed') }
+
+    before do
+      attrs = {
+        user: user,
+        verboice_project_id: 1,
+        phone: '789032',
+        duration: '0',
+        called_at: '2018-07-13 07:00:39',
+        started_at: '2018-07-13 07:00:39',
+        call_log_id: 1,
+        call_flow_id: 1,
+        recorded_audios: [],
+        call_log_answers: [],
+        reviewed: false
+      }
+
+      allow(Report).to receive(:new_from_call_log_id) do |call_log_id|
+        report = Report.where(call_log_id: attrs[:call_log_id]).first_or_initialize
+        report.attributes = attrs
+        report
+      end
+    end
+
+    it 'indexes document to elasticsearch' do
+      allow(Settings).to receive(:elasticsearch_enabled).and_return(true)
+      report
+      Report.__elasticsearch__.refresh_index!
+
+      expect(Report.search('789032').results.map(&:_id)).to include(report.id.to_s)
+    end
+
+    it 'does not index document to elasticsearch' do
+      allow(Settings).to receive(:elasticsearch_enabled).and_return(false)
+      report
+      Report.__elasticsearch__.refresh_index!
+
+      expect(Report.search('789032').results.map(&:_id)).not_to include(report.id.to_s)
+    end
+  end
 end

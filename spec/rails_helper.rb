@@ -49,6 +49,21 @@ RSpec.configure do |config|
   # The different available types are documented in the features, such as in
   # https://relishapp.com/rspec/rspec-rails/docs
   config.infer_spec_type_from_file_location!
+
+  SEARCHABLE_MODELS = [Report]
+  config.around :each, elasticsearch: true do |example|
+    SEARCHABLE_MODELS.each do |model|
+      model.__elasticsearch__.index_name = "#{model.__elasticsearch__.index_name}_test"
+      model.__elasticsearch__.create_index!(force: true)
+      model.__elasticsearch__.refresh_index!
+    end
+
+    example.run
+
+    SEARCHABLE_MODELS.each do |model|
+      model.__elasticsearch__.client.indices.delete index: model.__elasticsearch__.index_name
+    end
+  end
 end
 
 require "codeclimate-test-reporter"
