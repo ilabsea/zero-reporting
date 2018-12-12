@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: report_settings
+# Table name: report_reviewed_settings
 #
 #  id                  :integer          not null, primary key
 #  endpoint            :string(255)
