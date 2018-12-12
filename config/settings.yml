@@ -1,4 +1,4 @@
-elasticsearch_enabled: true
+elasticsearch_enabled: false
 
 elasticsearch:
   url: http://localhost:9200
