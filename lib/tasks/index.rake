@@ -4,13 +4,19 @@ namespace :index do
     abort('Settings elasticsearch is disabled') unless Settings.elasticsearch_enabled
 
     Report.transaction do
+      index = 0
+      count = Report.count
+
       Report.find_each(batch_size: 100) do |report|
         report.__elasticsearch__.index_document
-        print '.'
+
+        index += 1
+        percentage = (index / count.to_f * 100).round
+        recycle_console
+        print "\rIndex reports document, total #{count}, done #{percentage}%"
       end
 
       puts
-      puts 'Index document for all reports successfully!'
     end
   end
 
@@ -19,13 +25,23 @@ namespace :index do
     abort('Settings elasticsearch is disabled') unless Settings.elasticsearch_enabled
 
     Report.transaction do
+      index = 0
+      count = Report.where('id >= ?', args[:id]).count
+
       Report.find_each(start: args[:id], batch_size: 100) do |report|
         report.__elasticsearch__.index_document
-        print '.'
+
+        index += 1
+        percentage = (index / count.to_f * 100).round
+        recycle_console
+        print "\rIndex reports document start from id (#{args[:id]}), total #{count}, done #{percentage}%"
       end
 
       puts
-      puts "Index document start from report #{args[:id]} successfully!"
     end
+  end
+
+  def recycle_console
+    print "\r#{' ' * 120}"
   end
 end
