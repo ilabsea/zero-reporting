@@ -42,4 +42,8 @@ class Setting < RailsSettings::CachedSettings
   def self.number_of_revise_week_available
     ENV["NUM_OF_REVISE_WEEK"].present? ? ENV["NUM_OF_REVISE_WEEK"].to_i : 1
   end
+
+  def self.sync_fetch_size
+    ENV["SYNC_FETCH_SIZE"].present? ? ENV["SYNC_FETCH_SIZE"].to_i : 50
+  end
 end

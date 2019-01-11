@@ -6,7 +6,6 @@
 #  phone                      :string(255)
 #  user_id                    :integer
 #  audio_key                  :string(255)
-#  listened                   :boolean
 #  called_at                  :datetime
 #  call_log_id                :integer
 #  created_at                 :datetime         not null
@@ -73,7 +72,6 @@ class Report < ActiveRecord::Base
   VERBOICE_CALL_STATUS_IN_PROGRESS = 'in-progress'
 
   FAILED_ATTEMPT = 3
-  FETCH_SIZE = 1000
 
   STATUS_NEW = 0
   STATUS_REVIEWED = 1
@@ -294,7 +292,6 @@ class Report < ActiveRecord::Base
 
   def notify_sync_call_completed
     mark_as_completed
-    VerboiceSyncState.write(self.call_log_id)
   end
 
   def notify_sync_call_failed
@@ -308,7 +305,7 @@ class Report < ActiveRecord::Base
   end
 
   def self.fetches_verboice_calls
-    verboice_call_log_ids = after_last_sync.in_progress.limit(FETCH_SIZE).pluck(:call_log_id)
+    verboice_call_log_ids = after_last_sync.in_progress.limit(Setting.sync_fetch_size).pluck(:call_log_id)
     verboice_call_log_ids.empty? ? [] : Service::Verboice.connect(Setting).call_logs(verboice_call_log_ids)
   end
 
@@ -317,8 +314,8 @@ class Report < ActiveRecord::Base
   end
 
   def self.after_last_sync
-    state = VerboiceSyncState.last
-    where('call_log_id > ? AND verboice_sync_failed_count < ?', (state.nil? ? 0 : state.last_call_log_id), FAILED_ATTEMPT)
+    # include call_log_id to be used indexing
+    where('call_log_id > ? AND verboice_sync_failed_count < ?', 0, FAILED_ATTEMPT)
   end
 
   def fail_attempt_reached?
