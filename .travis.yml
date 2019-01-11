@@ -3,6 +3,7 @@ cache: bundler
 
 services:
   - redis-server
+  - elasticsearch
 
 addons:
   code_climate:
@@ -10,14 +11,14 @@ addons:
 rvm:
   - "2.4.1"
 
-# uncomment this line if your project needs to run something other than `rake`:
 script:
   - RAILS_ENV=test bundle exec rake db:migrate --trace
   - bundle exec rake db:test:prepare
   - bundle exec rspec spec
 
 before_script:
-# - rm Gemfile.lock
+  - sleep 10 # delay for Elasticsearch as it might take few seconds to start
+  
   - cp config/application.travis.yml config/application.yml
   - cp config/database.yml.example config/database.yml
   - mysql -e 'create database cdc_call_test'
