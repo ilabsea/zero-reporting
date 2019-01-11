@@ -6,7 +6,6 @@
 #  phone                      :string(255)
 #  user_id                    :integer
 #  audio_key                  :string(255)
-#  listened                   :boolean
 #  called_at                  :datetime
 #  call_log_id                :integer
 #  created_at                 :datetime         not null

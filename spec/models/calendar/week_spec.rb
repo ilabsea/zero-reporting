@@ -9,6 +9,9 @@ RSpec.describe Calendar::Week, type: :model do
     it { expect(Calendar::Year.new(2015).week(4).from_date).to eq(Date.new(2015, 1, 21)) }
     it { expect(Calendar::Year.new(2015).week(4).to_date).to eq(Date.new(2015, 1, 27)) }
 
+    it { expect(Calendar::Year.new(2015).week(52).from_date).to eq(Date.new(2015, 12, 23)) }
+    it { expect(Calendar::Year.new(2015).week(52).to_date).to eq(Date.new(2015, 12, 29)) }
+
     it { expect(Calendar::Year.new(2016).week(1).from_date).to eq(Date.new(2015, 12, 30)) }
     it { expect(Calendar::Year.new(2016).week(1).to_date).to eq(Date.new(2016, 1, 5)) }
 
