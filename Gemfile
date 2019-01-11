@@ -62,6 +62,7 @@ gem "validate_url"
 
 gem 'draper'
 
+# cron job in Ruby => required config/schedule.rb
 gem 'whenever', :require => false
 
 gem 'aws-sdk-s3'
