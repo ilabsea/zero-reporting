@@ -6,7 +6,6 @@
 #  phone                      :string(255)
 #  user_id                    :integer
 #  audio_key                  :string(255)
-#  listened                   :boolean
 #  called_at                  :datetime
 #  call_log_id                :integer
 #  created_at                 :datetime         not null
@@ -165,12 +164,6 @@ RSpec.describe Report, type: :model do
       report.notify_sync_call_completed
 
       expect(report.reload.status).to eq(Report::VERBOICE_CALL_STATUS_COMPLETED)
-    end
-
-    it 'write state of call log id synchronized' do
-      report.notify_sync_call_completed
-
-      expect(VerboiceSyncState.last.last_call_log_id).to eq(report.call_log_id)
     end
   end
 
