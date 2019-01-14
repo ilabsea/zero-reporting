@@ -8,14 +8,9 @@
       type="callback"
       callback-url="/steps/validate_hc_worker">
 
-      <settings>
-        <variable name="value" display-name="Variable" type="numeric"/>
-      </settings>
-
       <response type="variables">
         <variable name="result" display-name="Result" type="string"/>
       </response>
-
     </step>
 
     <step name="sms_sender"
@@ -33,9 +28,7 @@
       type="callback"
       callback-url="/steps/notify_reporting_started">
 
-      <response type="variables">
-        <variable name="result" display-name="Result" type="string"/>
-      </response>
+      <response type="none"/>
     </step>
 
     <step name="notify_report_ended"
@@ -44,9 +37,7 @@
       type="callback"
       callback-url="/steps/notify_reporting_ended">
 
-      <response type="variables">
-        <variable name="result" display-name="Result" type="string"/>
-      </response>
+      <response type="none"/>
     </step>
 
   </steps>

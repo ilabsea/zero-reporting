@@ -15,17 +15,15 @@ class StepsController < ApplicationController
   end
 
   def notify_reporting_started
-    report = Report.create_from_call_log_with_status(params['CallSid'], Report::VERBOICE_CALL_STATUS_IN_PROGRESS)
+    Report.create_from_call_log_with_status(params['CallSid'], Report::VERBOICE_CALL_STATUS_IN_PROGRESS)
 
-    content = { result: report.in_progress? ? '1' : '0' }
-    render json: content
+    render json: {}
   end
 
   def notify_reporting_ended
-    report = Report.create_from_call_log_with_status(params['CallSid'], Report::VERBOICE_CALL_STATUS_COMPLETED)
+    Report.create_from_call_log_with_status(params['CallSid'], Report::VERBOICE_CALL_STATUS_COMPLETED)
 
-    content = { result: report.success? ? '1' : '0' }
-    render json: content
+    render json: {}
   end
 
   def send_sms
