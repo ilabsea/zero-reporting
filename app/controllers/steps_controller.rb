@@ -21,7 +21,8 @@ class StepsController < ApplicationController
   end
 
   def notify_reporting_ended
-    Report.create_from_call_log_with_status(params['CallSid'], Report::VERBOICE_CALL_STATUS_COMPLETED)
+    # run as async to remove delay time to deliver next step
+    CallStatusJob.perform_later(params['CallSid'], Report::VERBOICE_CALL_STATUS_COMPLETED)
 
     render json: {}
   end
