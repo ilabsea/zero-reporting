@@ -7,8 +7,8 @@ module Reports::Elasticsearch
     include Elasticsearch::Model
     include Elasticsearch::Model::Callbacks
 
-    index_name    Settings.elasticsearch.index_name
-    document_type Settings.elasticsearch.document_type
+    index_name Rails.application.class.parent_name.underscore
+    document_type self.name.underscore
 
     def as_indexed_json(options={})
       option = self.as_json(
@@ -21,7 +21,7 @@ module Reports::Elasticsearch
       self.report_variables.includes(:variable).each do |report_variable|
         option['report_variables'].push(
           {
-            verboice_name: report_variable.variable.verboice_name,
+            verboice_name: report_variable.variable.try(:verboice_name),
             type: report_variable.type,
             value: report_variable.value
           }

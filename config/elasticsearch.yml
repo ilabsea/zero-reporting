@@ -1,0 +1,17 @@
+development: &default
+  host: 'http://localhost:9200/'
+  transport_options:
+    request:
+      timeout: 300
+
+test:
+  <<: *default
+
+staging:
+  <<: *default
+
+production:
+  host: 'YOUR_ELASTICSEARCH_PRODUCTION_URL'
+  transport_options:
+    request:
+      timeout: 300
