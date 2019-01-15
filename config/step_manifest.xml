@@ -40,5 +40,16 @@
       <response type="none"/>
     </step>
 
+    <step name="detect_blacklist_number"
+      display-name="Detect Blacklist Number"
+      icon="medicalkit"
+      type="callback"
+      callback-url="/steps/detect_blacklist_number">
+
+      <response type="variables">
+        <variable name="result" display-name="Result" type="string"/>
+      </response>
+    </step>
+
   </steps>
 </verboice-service>

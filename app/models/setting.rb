@@ -46,4 +46,8 @@ class Setting < RailsSettings::CachedSettings
   def self.sync_fetch_size
     ENV["SYNC_FETCH_SIZE"].present? ? ENV["SYNC_FETCH_SIZE"].to_i : 50
   end
+
+  def self.blacklist_numbers
+    ENV["BLACKLIST_NUMBERS"].present? ? ENV["BLACKLIST_NUMBERS"].split(',') : []
+  end
 end
