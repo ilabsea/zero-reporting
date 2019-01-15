@@ -83,6 +83,7 @@ Rails.application.routes.draw do
       post :send_sms
       post :notify_reporting_started
       post :notify_reporting_ended
+      post :detect_blacklist_number
     end
   end
 

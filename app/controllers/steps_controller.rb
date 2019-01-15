@@ -37,4 +37,10 @@ class StepsController < ApplicationController
     render json: {}
   end
 
+  def detect_blacklist_number
+    result = Setting.blacklist_numbers.include?(params[:address]) ? 1 : 0
+
+    render json: { result: result.to_s }
+  end
+
 end
