@@ -3,6 +3,10 @@ default: &default
   APP_NAME: "Zero Reporting"
   LOCAL_TZ: "Asia/Phnom_Penh"
 
+  # sync report progress status to fetch 50 for every internal 2 minute
+  # ENV doesn't support integer
+  SYNC_FETCH_SIZE: '50'
+
   # Verboice
   VERBOICE_URL: 'http://localhost/api2'
 
