@@ -1,7 +1,7 @@
 # config valid only for current version of Capistrano
-lock '3.4.0'
+lock '3.4.1'
 
-# set :rbenv_type, :user # or :system, depends on your rbenv setup
+set :rbenv_type, :user # or :system, depends on your rbenv setup
 
 # in case you want to set ruby version from the file:
 set :rbenv_ruby, File.read('.ruby-version').strip
@@ -11,8 +11,9 @@ set :rbenv_map_bins, %w{rake gem bundle ruby rails}
 set :rbenv_roles, :all # default value
 
 set :application, 'cdc-zero-reporting-system'
-set :branch, :develop
-set :repo_url, 'https://bitbucket.org/ilab/cdc-zero-reporting-system.git'
+set :branch, 'master'
+set :repo_url, 'https://github.com/ilabsea/zero-reporting.git'
+
 set :deploy_user, 'ilab'
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
