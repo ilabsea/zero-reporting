@@ -1,7 +1,7 @@
 namespace :index do
   desc 'Index all reports to elasticsearch documents'
   task :recreate => :environment do
-    abort('Settings elasticsearch is disabled') unless Settings.elasticsearch_enabled
+    abort('Settings elasticsearch is disabled') unless Setting.elasticsearch_enabled?
 
     Report.transaction do
       index = 0
@@ -22,7 +22,7 @@ namespace :index do
 
   desc 'Index reports to elasticsearch documents start from [current id]'
   task :recreate_from, [:id] => :environment do |t, args|
-    abort('Settings elasticsearch is disabled') unless Settings.elasticsearch_enabled
+    abort('Settings elasticsearch is disabled') unless Setting.elasticsearch_enabled?
 
     Report.transaction do
       index = 0

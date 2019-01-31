@@ -314,7 +314,7 @@ RSpec.describe Report, type: :model do
     end
 
     it 'indexes document to elasticsearch' do
-      allow(Settings).to receive(:elasticsearch_enabled).and_return(true)
+      allow(Setting).to receive(:elasticsearch_enabled?).and_return(true)
       report
       Report.__elasticsearch__.refresh_index!
 
@@ -322,7 +322,7 @@ RSpec.describe Report, type: :model do
     end
 
     it 'does not index document to elasticsearch' do
-      allow(Settings).to receive(:elasticsearch_enabled).and_return(false)
+      allow(Setting).to receive(:elasticsearch_enabled?).and_return(false)
       report
       Report.__elasticsearch__.refresh_index!
 

@@ -65,6 +65,9 @@ default: &default
   EXCEPTIONAL_YEAR: '2012,2016'
   WKST: '3' # sunday:0, monday:1, ...
 
+  # Elasticsearch '1' => enabled, '0' => disabled
+  ELASTICSEARCH_ENABLED: '0'
+
   # use comma separator
   BLACKLIST_NUMBERS: ''
 

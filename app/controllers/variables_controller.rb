@@ -1,8 +1,9 @@
 class VariablesController < ApplicationController
   authorize_resource
+  
   def create
     variable = Variable.new(filter_params)
-    variable.verboice_project_id = Settings[:project]
+    variable.verboice_project_id = Setting[:project]
     if variable.save
       flash[:notice] = 'Variable has been created'
       head :ok

@@ -65,11 +65,12 @@ gem 'draper'
 # cron job in Ruby => required config/schedule.rb
 gem 'whenever', :require => false
 
+# backup & restore to Amazon S3
 gem 'aws-sdk-s3'
+gem 'config',              '~> 1.7.0'
 
 gem 'elasticsearch-model', '~> 6.0.0'
 gem 'elasticsearch-rails', '~> 6.0.0'
-gem 'config',              '~> 1.7.0'
 
 group :development do
   gem 'bullet'

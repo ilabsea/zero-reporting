@@ -50,4 +50,8 @@ class Setting < RailsSettings::CachedSettings
   def self.blacklist_numbers
     ENV["BLACKLIST_NUMBERS"].present? ? ENV["BLACKLIST_NUMBERS"].split(',') : []
   end
+
+  def self.elasticsearch_enabled?
+    ENV['ELASTICSEARCH_ENABLED'].present? && ['1', 'yes', 'true', 'on'].include?(ENV['ELASTICSEARCH_ENABLED'])
+  end
 end

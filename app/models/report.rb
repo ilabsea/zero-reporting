@@ -137,7 +137,7 @@ class Report < ActiveRecord::Base
     return if report.nil?
 
     report.update_status! status
-    # report.__elasticsearch__.index_document if Settings.elasticsearch_enabled
+    #report.__elasticsearch__.index_document if Setting.elasticsearch_enabled?
 
     report
   end
