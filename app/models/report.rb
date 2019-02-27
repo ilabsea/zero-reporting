@@ -48,7 +48,7 @@
 class Report < ActiveRecord::Base
   include Reports::Filterable
   include Reports::Observer
-  include Reports::Elasticsearch
+  # include Reports::Elasticsearch
 
   serialize :recorded_audios, Array
   serialize :call_log_answers, Array
@@ -137,7 +137,7 @@ class Report < ActiveRecord::Base
     return if report.nil?
 
     report.update_status! status
-    report.__elasticsearch__.index_document if Settings.elasticsearch_enabled
+    # report.__elasticsearch__.index_document if Settings.elasticsearch_enabled
 
     report
   end
