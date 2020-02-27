@@ -68,9 +68,6 @@ default: &default
   # Elasticsearch '1' => enabled, '0' => disabled
   ELASTICSEARCH_ENABLED: '0'
 
-  # use comma separator
-  BLACKLIST_NUMBERS: ''
-
 development:
   <<: *default
 
