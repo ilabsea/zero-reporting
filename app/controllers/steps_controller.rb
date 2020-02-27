@@ -43,4 +43,21 @@ class StepsController < ApplicationController
     render json: { result: result.to_s }
   end
 
+  def random_number
+    begin
+      number = params[:numbers].gsub(/\s+/, '').split(separator_delimeter).sample
+      result = number ? number : ''
+    rescue
+      result = ''
+    end
+    
+    render json: { result: result }
+  end
+
+  private
+
+  def separator_delimeter
+    ','
+  end
+
 end
