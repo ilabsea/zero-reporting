@@ -30,4 +30,10 @@ class Tel
     nil
   end
 
+  def equal? tel = nil
+    return false if tel.nil?
+    
+    self.without_prefix == tel.without_prefix
+  end
+
 end
