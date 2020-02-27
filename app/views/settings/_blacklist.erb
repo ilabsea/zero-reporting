@@ -4,12 +4,12 @@
     <%= form_tag update_blacklist_numbers_settings_path, class: 'form form-inline alert-form', method: :put do %>
       <div class='form-group'>
         <label class='control-label left'>Numbers</label>
-        <%= text_field_tag 'blacklist_numbers', @blacklist_numbers, size: 56, placeholder: 'Number separated by comma(,)', onkeypress: "return isTelephoneFormat(event)" %>
+        <%= text_area_tag 'blacklist_numbers', @blacklist_numbers, rows: 8, cols: 60, placeholder: 'Number separated by comma(,)', onkeypress: "return isTelephoneFormat(event)" %>
       </div>
 
       <div class='form-group'>
         <label class="control-label">&nbsp;</label>
-        <div><i>These numbers won't be able to report to CDC staff in 115 hotline</i></div>
+        <div><i>These numbers won't be able to report to CDC staff in 115 hotline, Number separated by comma(,)</i></div>
       </div>
 
       <div class='form-group'>
