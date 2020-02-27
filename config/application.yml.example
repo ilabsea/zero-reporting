@@ -9,6 +9,7 @@ default: &default
 
   # Verboice
   VERBOICE_URL: 'http://localhost/api2'
+  VERBOICE_REQUEST_TIMEOUT: '15' # seconds
 
   VERBOICE_NOTIFY_STATUS_USER: 'test'
   VERBOICE_NOTIFY_STATUS_PWD: '123456'
