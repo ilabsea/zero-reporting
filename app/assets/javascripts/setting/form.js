@@ -1,13 +1,13 @@
 $(function() {
   connectToVerboice();
-  handleProjectChange()
-  handleVerboiceVariableChange()
-  handleSaveVariable()
+  handleProjectChange();
+  handleVerboiceVariableChange();
+  handleSaveVariable();
 
-  variableCollapsable()
-  cancelVariableForm()
+  variableCollapsable();
+  cancelVariableForm();
 
-  caseBaseState()
+  caseBaseState();
 });
 
 function handleSaveVariable() {
@@ -146,4 +146,12 @@ function caseBaseState(){
     $('.variable_alert').val('');
     $('.variable_alert').attr({'disabled': 'disabled'});
   });
+}
+
+function isTelephoneFormat(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode!= 44 && charCode != 43 && charCode > 31  && (charCode < 48 || charCode > 57))
+        return false;
+    return true;
 }

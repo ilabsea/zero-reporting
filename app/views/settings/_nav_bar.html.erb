@@ -25,4 +25,8 @@
     <%= link_to Setting::NOTIFY_REPORT_REVIEWED.to_s.underscore.humanize, settings_path(tab: Setting::NOTIFY_REPORT_REVIEWED) %>
   </li>
 
+  <li role="presentation" class="<%= tab_active_for(Setting::BLACKLIST) %>">
+    <%= link_to Setting::BLACKLIST.to_s.underscore.humanize, settings_path(tab: Setting::BLACKLIST) %>
+  </li>
+
 </ul>

@@ -22,6 +22,7 @@ class Setting < RailsSettings::CachedSettings
   REPORT = :report
   TEMPLATE = :template
   NOTIFY_REPORT_REVIEWED = :notify_report_reviewed
+  BLACKLIST = :blacklist
 
   def self.hub_enabled?
     ENV["HUB_ENABLED"] == '1'
