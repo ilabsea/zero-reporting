@@ -1,41 +1,45 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <verboice-service>
   <name>Reporting System</name>
+  <global-settings>
+    <variable name="service_domain" display-name="Service Domain" type="string"/>
+  </global-settings>
   <steps>
     <step name="validate_hc_worker"
       display-name="HC Worker"
       icon="medicalkit"
       type="callback"
-      callback-url="/steps/validate_hc_worker">
+      callback-url="http://{service_domain}/steps/validate_hc_worker">
 
       <response type="variables">
         <variable name="result" display-name="Result" type="string"/>
       </response>
+
     </step>
 
     <step name="sms_sender"
       display-name="Notify SMS"
       icon="medicalkit"
       type="callback"
-      callback-url="/steps/send_sms">
+      callback-url="http://{service_domain}/steps/send_sms">
 
       <response type="none"/>
     </step>
 
     <step name="notify_report_started"
-      display-name="Notify Reporter Started"
+      display-name="Notify Report Started"
       icon="medicalkit"
       type="callback"
-      callback-url="/steps/notify_reporting_started">
+      callback-url="http://{service_domain}/steps/notify_reporting_started">
 
       <response type="none"/>
     </step>
 
     <step name="notify_report_ended"
-      display-name="Notify Reporter Ended"
+      display-name="Notify Report Ended"
       icon="medicalkit"
       type="callback"
-      callback-url="/steps/notify_reporting_ended">
+      callback-url="http://{service_domain}/steps/notify_reporting_ended">
 
       <response type="none"/>
     </step>
@@ -44,10 +48,23 @@
       display-name="Detect Blacklist Number"
       icon="medicalkit"
       type="callback"
-      callback-url="/steps/detect_blacklist_number">
+      callback-url="http://{service_domain}/steps/detect_blacklist_number">
 
       <response type="variables">
         <variable name="result" display-name="Result" type="string"/>
+      </response>
+    </step>
+
+    <step name="random_number"
+      display-name="Random Number"
+      icon="medicalkit"
+      type="callback"
+      callback-url="http://{service_domain}/steps/random_number">
+      <settings>
+        <variable name="numbers" display-name="Numbers" type="string" required="true"/>
+      </settings>
+      <response type="variables">
+        <variable name="result" display-name="Result" type="numeric"/>
       </response>
     </step>
 
