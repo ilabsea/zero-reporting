@@ -65,6 +65,7 @@ Rails.application.routes.draw do
   resources :settings, only: [:index] do
     collection do
       put 'update_report'
+      put 'update_blacklist_numbers'
     end
   end
 

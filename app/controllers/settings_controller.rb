@@ -9,6 +9,7 @@ class SettingsController < ApplicationController
     @variables  = Variable.where(verboice_project_id: Setting[:project])
     @alert_setting = AlertSetting.find_or_initialize_by(verboice_project_id: Setting[:project])
     @report_reviewed_setting = ReportReviewedSetting.find_or_initialize_by(verboice_project_id: Setting[:project])
+    @blacklist_numbers = Setting[:blacklist_numbers]
     @report_setting = Setting.report || Setting::ReportSetting.new {}
     @message_template = Setting.message_template || Setting::MessageTemplateSetting.new {}
   end
@@ -72,6 +73,11 @@ class SettingsController < ApplicationController
     redirect_to settings_path(tab: Setting::TEMPLATE), notice: 'Report setting has been saved'
   end
 
+  def update_blacklist_numbers
+    Setting[:blacklist_numbers] = protected_blacklist_params.gsub(/\s+/, '').split(separator_delimeter)
+    redirect_to settings_path(tab: Setting::BLACKLIST), notice: 'Blacklist numbers has been saved'
+  end
+
   private
 
   def verboice_parameters
@@ -95,6 +101,14 @@ class SettingsController < ApplicationController
 
   def project_call_flows project_id
     project_id.present? ? Service::Verboice.connect(Setting).project_call_flows(project_id) : []
+  end
+
+  def protected_blacklist_params
+    params.require(:blacklist_numbers)
+  end
+
+  def separator_delimeter
+    ','
   end
 
 end
