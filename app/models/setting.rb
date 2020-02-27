@@ -51,4 +51,8 @@ class Setting < RailsSettings::CachedSettings
   def self.elasticsearch_enabled?
     ENV['ELASTICSEARCH_ENABLED'].present? && ['1', 'yes', 'true', 'on'].include?(ENV['ELASTICSEARCH_ENABLED'])
   end
+
+  def self.verboice_request_timeout
+    ENV['VERBOICE_REQUEST_TIMEOUT'].present? ? ENV['VERBOICE_REQUEST_TIMEOUT'].to_i : 15
+  end
 end

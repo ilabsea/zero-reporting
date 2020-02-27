@@ -2,7 +2,7 @@ class Service::Verboice
 
   def self.auth email, password
     auth_url = "#{ENV['VERBOICE_URL']}/auth"
-    response = Typhoeus.post(auth_url, body: { account: { email: email, password: password } })
+    response = Typhoeus.post(auth_url, body: { account: { email: email, password: password } }, timeout: Setting.verboice_request_timeout)
     response.success? ? JSON.parse(response.body) : nil
   end
 
