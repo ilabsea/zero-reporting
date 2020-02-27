@@ -236,7 +236,7 @@ class Report < ActiveRecord::Base
   end
 
   def notify_hub!
-    HubJob.perform_later(to_hub_parameters) if Setting.hub_enabled? && Setting.hub_configured?
+    HubJob.perform_later(to_dhis2_hub_parameters) if Setting.hub_enabled? && Setting.hub_configured?
   end
 
   def notify_alert
@@ -248,7 +248,7 @@ class Report < ActiveRecord::Base
     AdapterType.for(alert).process
   end
 
-  def to_hub_parameters
+  def to_dhis2_hub_parameters
     params = {
       period: "#{year}W#{format('%02d', week)}",
       completeDate: Date.today.to_s
@@ -257,7 +257,7 @@ class Report < ActiveRecord::Base
     params[:orgUnit] = user.place.hc.dhis2_organisation_unit_uuid if user.place.hc.dhis2_organisation_unit_uuid
 
     report_variables.each do |report_variable|
-      params.merge!(report_variable.to_hub_parameters) if report_variable.value
+      params.merge!(report_variable.to_dhis2_hub_parameters) if report_variable.value
     end
 
     params
