@@ -107,7 +107,7 @@ class Place < ActiveRecord::Base
   end
 
   def with_hierarchy_to_csv csv
-    csv << [phd.code, "", phd.name, phd.kind_of]
+    csv << [self.code, "", self.name, self.kind_of]
     children.each do |child|
       child.with_hierarchy_to_csv csv
     end
