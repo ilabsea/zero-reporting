@@ -84,10 +84,10 @@ class SettingsController < ApplicationController
     parameters = { projects: [], project_variables: [] }
 
     begin
-      # parameters[:projects] = Service::Verboice.connect(Setting).projects
-      # parameters[:project_variables] = project_variables(Setting[:project])
-      # parameters[:project_call_flows] = project_call_flows(Setting[:project])
-      # parameters[:channels] = Service::Verboice.connect(Setting).channels
+      parameters[:projects] = Service::Verboice.connect(Setting).projects
+      parameters[:project_variables] = project_variables(Setting[:project])
+      parameters[:project_call_flows] = project_call_flows(Setting[:project])
+      parameters[:channels] = Service::Verboice.connect(Setting).channels
     rescue JSON::ParserError
       flash.now.alert = " Failed to fetch some data from verboice"
     end
