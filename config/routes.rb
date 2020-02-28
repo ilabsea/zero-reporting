@@ -85,6 +85,7 @@ Rails.application.routes.draw do
       post :notify_reporting_started
       post :notify_reporting_ended
       post :detect_blacklist_number
+      post :random_number
     end
   end
 
