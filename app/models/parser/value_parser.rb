@@ -6,11 +6,13 @@ module Parser
     end
 
     def parse
-      value = '0'
+      return 0 if @value.nil?
+
       @value.gsub(/\A([*+0]*)(\d+)\z/) do
         return $2.to_i
       end
-      return value.to_i
+
+      return 0
     end
   end
 end
