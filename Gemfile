@@ -52,7 +52,7 @@ gem 'rack-attack', '~> 4.3.1'
 
 gem "audited-activerecord", "~> 4.0"
 gem 'nuntium_api', git: 'https://github.com/channainfo/nuntium-api-ruby', branch: 'encode_uri'
-gem 'sidekiq', '~> 4.0', '>= 4.0.2'
+gem 'sidekiq', '~> 5.2'
 
 gem 'csv_builder', :git => "https://github.com/lchanmann/csv_builder.git"
 
