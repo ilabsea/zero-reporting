@@ -16,6 +16,8 @@
 #  phd_id               :integer
 #  od_id                :integer
 #  channels_count       :integer
+#  telegram_chat_id     :string(255)
+#  telegram_username    :string(255)
 #
 # Indexes
 #

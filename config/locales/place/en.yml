@@ -1,0 +1,5 @@
+en:
+  place:
+    phd: "%{name} Provincial Health Department"
+    od: "%{name} Operational District"
+    hc: "%{name} Health Center"

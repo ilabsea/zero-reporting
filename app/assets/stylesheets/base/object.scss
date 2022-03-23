@@ -383,7 +383,7 @@ td:last-child{
 .alert-form .control-label{
   float: left;
   line-height: 25px;
-  width: 8em !important;
+  min-width: 8em !important;
   font-weight: normal;
 }
 
@@ -420,4 +420,20 @@ td:last-child{
 
 .no-margin {
   margin: none !important;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.flex-grow-1 {
+  flex-grow: 1;
+}
+
+.justify-content-end {
+  justify-content: flex-end;
 }

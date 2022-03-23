@@ -20,4 +20,8 @@
   <li role="presentation" class="<%= tab_active_for(Setting::TEMPLATE) %>">
     <%= link_to Setting::TEMPLATE.to_s.camelcase, settings_path(tab: Setting::TEMPLATE) %>
   </li>
+
+  <li role="presentation" class="<%= tab_active_for(Setting::TELEGRAM_BOT) %>">
+    <%= link_to Setting::TELEGRAM_BOT.to_s.camelcase, settings_path(tab: Setting::TELEGRAM_BOT) %>
+  </li>
 </ul>

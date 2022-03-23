@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170628061526) do
+ActiveRecord::Schema.define(version: 20220323023910) do
 
   create_table "alert_settings", force: :cascade do |t|
     t.boolean "is_enable_sms_alert"
@@ -195,6 +195,15 @@ ActiveRecord::Schema.define(version: 20170628061526) do
 
   add_index "settings", ["thing_type", "thing_id", "var"], name: "index_settings_on_thing_type_and_thing_id_and_var", unique: true, using: :btree
 
+  create_table "telegram_bots", force: :cascade do |t|
+    t.string   "token",      limit: 255
+    t.string   "username",   limit: 255
+    t.boolean  "enabled",                default: false
+    t.boolean  "actived",                default: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string   "username",             limit: 255
     t.string   "name",                 limit: 255
@@ -209,6 +218,8 @@ ActiveRecord::Schema.define(version: 20170628061526) do
     t.integer  "phd_id",               limit: 4
     t.integer  "od_id",                limit: 4
     t.integer  "channels_count",       limit: 4
+    t.string   "telegram_chat_id",     limit: 255
+    t.string   "telegram_username",    limit: 255
   end
 
   add_index "users", ["place_id"], name: "index_users_on_place_id", using: :btree

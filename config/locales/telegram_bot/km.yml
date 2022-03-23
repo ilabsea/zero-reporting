@@ -1,0 +1,31 @@
+km:
+  telegram_bot:
+    telegram_bot: 'Telegram Bot'
+    token: 'Token'
+    username: 'User name'
+    actived: 'Actived'
+    setup_instruction: 'Please setup your telegram bot'
+    valid_bot: 'Valid bot and turn on'
+    invalid_bot: 'Invalid or turn off bot'
+    enabled_notification: 'Enabled notification'
+    you_can_configure_your_bot: 'You can configure your bot to communicate with people using the Telegram notification.'
+    visit_bot_father_to_create_newbot: 'Visit the Bot Father to create a new Telegram bot'
+    create_new_bot: 'Create a new Telegram bot'
+    using_the_bot_father: 'using the Bot Father.'
+    to_create_a_newbot: 'To create a new Telegram bot'
+    send_command: 'send command'
+    specify_a_friendly_name: 'Specify a friendly name'
+    give_the_bot_a_friendly_name: 'Give the Telegram bot a friendly name for displaying in contact details and elsewhere.'
+    specify_a_username: 'Specify a username'
+    give_the_bot_a_unique_username: 'Give the Telegram bot a unique username.'
+    username_note: "Note: The Username is a short name, to be used in mentions and t.me links. Usernames are 5-32 characters long and are case insensitive, but may only include Latin characters, numbers, and underscores. Your bot's username must end in 'bot', e.g. 'tetris_bot' or 'TetrisBot'."
+    copy_the_access_token: 'Copy the access token'
+    copy_the_bot_access_token: "Copy the Telegram bot's access token."
+    token_note: "Note: The token is a string along the lines of <code>110201543:AAHdqTcvCH1vGWJxfSeofSAs0K5PALD</code> saw that is required to authorize the bot and send requests to the Bot API. Keep your token secure and store it safely, it can be used by anyone to control your bot."
+    enter_the_bot_token: "Enter the Telegram bot's access token"
+    go_to_setting: "Go to <b>Setting</b> and click the <b class='badge badge-info'>Telegram Bot</b> tab."
+    done: Done
+    welcome_message: "ជំរាបសួរ <strong>%{username}</strong>! សូមស្វាគមន៍មកកាន់ <strong>Zero reporting bot!</strong> ដើម្បីចុះឈ្មោះគណនីរបស់អ្នក សូមវាយ <code>/associate លេខទូរស័ព្ទ លេខកូដឬឈ្មោះស្ថាប័ណ្ណ</code> ឧទាហរណ៍៖ <code >/associate 011222333 120101</code> ឬ <code>/associate 011222333 Toul Sangke</code>"
+    invalid_info_message: "សូមអភ័យទោស <b>%{username}!</b> អ្នកកំពុងផ្តល់ព័ត៌មានគណនីមិនត្រឹមត្រូវ។ ចំណាំ៖ <code>/associate phone_number place_code_or_place_name</code>"
+    congratulation_message: "សូមអបអរសាទរ <b>%{username}!</b> អ្នកបានភ្ជាប់ <b> ប្រព័ន្ធ Zero Reporting</b>ដោយជោគជ័យជាមួយនឹងគណនី Telegram របស់អ្នក។ អ្នកនឹងទទួលបានការជូនដំណឹងទាំងអស់សម្រាប់របាយការណ៍របស់ <b>%{place}</b>។"
+    already_associated: ភ្ជាប់ជាមួយគណនី %{username} រួចហើយ!

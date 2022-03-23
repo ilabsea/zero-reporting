@@ -65,6 +65,7 @@ Rails.application.routes.draw do
 
   put 'message_template' => 'settings#update_message_template'
   put 'update_settings' => 'settings#update_settings'
+  put 'upsert_telegram_bot' => 'settings#upsert_telegram_bot'
 
   put 'verboice' => 'settings#verboice'
   put 'hub' => 'settings#hub'
@@ -125,4 +126,8 @@ Rails.application.routes.draw do
       resources :reports, only: [:index, :show]
     end
   end
+
+  # Telegram
+  telegram_webhook TelegramWebhooksController
+  resource :help, only: [:show]
 end

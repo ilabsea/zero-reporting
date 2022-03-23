@@ -16,6 +16,8 @@
 #  phd_id               :integer
 #  od_id                :integer
 #  channels_count       :integer
+#  telegram_chat_id     :string(255)
+#  telegram_username    :string(255)
 #
 # Indexes
 #
@@ -63,6 +65,12 @@ class User < ActiveRecord::Base
 
   def self.search phone
     phone.present? ? where(["phone LIKE ?", "%#{phone}%"]) : all
+  end
+
+  def self.find_by_phone_and_place(phone, place)
+    return nil if phone.blank? || place.blank?
+
+    joins(:place).where('phone = ? AND (places.code = ? OR places.name = ?)', phone, place, place).first
   end
 
   def self.by_place place_id
