@@ -1,0 +1,19 @@
+.telegram-help .image {
+  max-width: 600px;
+  margin: 20px 0;
+}
+
+@media (max-width: 576px) {
+  .telegram-help .image {
+    max-width: 100%;
+  }
+}
+
+.telegram-icon {
+  font-size: 18px !important;
+  margin-right: 4px;
+}
+
+.text-gray {
+  color: gray;
+}

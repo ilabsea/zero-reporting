@@ -21,6 +21,7 @@ class Setting < RailsSettings::CachedSettings
   ALERT = :alert
   REPORT = :report
   TEMPLATE = :template
+  TELEGRAM_BOT = :telegram_bot
 
   def self.hub_enabled?
     ENV['HUB_ENABLED'].present? && ENV['HUB_ENABLED'].to_i == 1

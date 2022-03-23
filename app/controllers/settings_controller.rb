@@ -10,6 +10,7 @@ class SettingsController < ApplicationController
     @alert_setting = AlertSetting.find_or_initialize_by(verboice_project_id: Setting[:project])
     @report_setting = Setting.report || Setting::ReportSetting.new {}
     @message_template = Setting.message_template || Setting::MessageTemplateSetting.new {}
+    @telegram_bot = TelegramBot.first || TelegramBot.new
   end
 
   def update_settings
@@ -71,6 +72,18 @@ class SettingsController < ApplicationController
     redirect_to settings_path(tab: Setting::TEMPLATE), notice: 'Report setting has been saved'
   end
 
+  # PUT /settings/upsert_telegram_bot
+  def upsert_telegram_bot
+    @telegram_bot = TelegramBot.first || TelegramBot.new
+
+    if @telegram_bot.update_attributes(telegram_bot_params)
+      redirect_to settings_path(tab: Setting::TELEGRAM_BOT), notice: 'Telegram bot is updated successfully!'
+    else
+      flash.now[:alert] = 'Fail to configure telegram bot!'
+      render :index
+    end
+  end
+
   private
 
   def verboice_parameters
@@ -96,4 +109,7 @@ class SettingsController < ApplicationController
     project_id.present? ? Service::Verboice.connect(Setting).project_call_flows(project_id) : []
   end
 
+  def telegram_bot_params
+    params.require(:telegram_bot).permit(:token, :username, :enabled)
+  end
 end

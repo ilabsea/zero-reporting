@@ -43,6 +43,10 @@ class Place < ActiveRecord::Base
     self.class.kind
   end
 
+  def display_name
+    I18n.t("place.#{kind.downcase}", name: name)
+  end
+
   def self.kind
     self.name.split('::').last
   end

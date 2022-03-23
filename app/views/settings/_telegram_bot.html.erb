@@ -1,0 +1,53 @@
+<div class="alert-section" style="width: 620px;">
+  <div class="panel-head clearfix" style="padding: 10px;">
+    <!-- Title -->
+    <div class='d-flex align-items-center'>
+      <h4 style="margin-right: 10px;">Telegram notification</h4>
+
+      <% if @telegram_bot.present? && @telegram_bot.enabled? && @telegram_bot.actived? %>
+        <i class="fa fa-check-circle text-success" data-toggle="tooltip" title='Valid bot and turn on'></i>
+      <% else %>
+        <i class="fa fa-times-circle text-danger" data-toggle="tooltip" title='Invalid or turn off bot'></i>
+      <% end %>
+
+      <%= link_to 'Need help?', help_path, class: 'btn btn-link' %>
+    </div>
+
+    <!-- Form -->
+    <%= simple_form_for @telegram_bot, url: 'upsert_telegram_bot', method: :put, html: { class: 'form-inline form alert-form'} do |f| %>
+
+      <!-- Enable Notification -->
+      <div class="form-group">
+        <label class="control-label">Enable notification?</label>
+        <div>
+            <%=f.check_box :enabled, class: 'form-control ace ace-switch ace-switch-4 btn-empty' %>
+            <span class="lbl" style="vertical-align:bottom"></span>
+        </div>
+      </div>
+
+
+
+      <!-- Token -->
+      <div class="form-group">
+        <label class="control-label">Token</label>
+        <div>
+          <%= f.input :token, label: false %>
+        </div>
+      </div>
+
+      <!-- Username -->
+      <div class="form-group">
+        <label class="control-label">User name</label>
+        <div>
+          <%= f.input :username, label: false %>
+        </div>
+      </div>
+
+      <!-- Action button -->
+      <div class='form-group'>
+        <label class="control-label">&nbsp;</label>
+        <%= f.submit 'Save', class: 'btn btn-primary' %>
+      </div>
+    <% end %>
+  </div>
+</div>

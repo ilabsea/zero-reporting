@@ -70,6 +70,8 @@ gem 'aws-sdk-s3'
 
 gem 'dotenv-rails', groups: [:development, :test]
 
+gem 'telegram-bot', '~> 0.15.6'
+
 group :development do
   gem 'bullet'
   gem 'brakeman', require: false

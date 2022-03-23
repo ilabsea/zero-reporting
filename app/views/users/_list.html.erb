@@ -18,11 +18,18 @@
           <td><%=user.email%></td>
           <td><%= highlight(user.phone, params[:phone]) %></td>
           <td><%=user.role%></td>
+
+          <!-- Action button -->
           <td class='td-last'>
-            <% if !user.admin? %>
-             <%= link_edit " ", edit_user_path(user)  %>
-             <%= link_destroy " ", user_path(user), method: :delete, data: { confirm: 'Are you sure to delete' } %>
-            <% end %>
+            <div class='d-flex align-items-center justify-content-end'>
+              <!-- Telegram status -->
+              <%= telegram_icon_status(user).html_safe %>
+
+              <% if !user.admin? %>
+               <%= link_edit " ", edit_user_path(user)  %>
+               <%= link_destroy " ", user_path(user), method: :delete, data: { confirm: 'Are you sure to delete' } %>
+              <% end %>
+            </div>
           </td>
         </tr>
       <% end %>

@@ -1,0 +1,79 @@
+<div class="flex-column telegram-help" id="content">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid d-flex align-items-center">
+      <h3 class="flex-grow-1">
+        <%= t('telegram_bot.telegram_bot') %>
+      </h3>
+      <%= link_to t('telegram_bot.done'), settings_path(tab: Setting::TELEGRAM_BOT) %>
+    </div>
+  </nav>
+  <div class="medium-width">
+    <p>
+      <%= t('telegram_bot.you_can_configure_your_bot') %>
+    </p>
+    <div>
+      <h5>
+        <%= t('telegram_bot.visit_bot_father_to_create_newbot') %>
+      </h5>
+      <div>
+        <%= link_to t('telegram_bot.create_new_bot'), 'https://telegram.me/botfather', class: 'btn btn-link' %>
+        <span>
+          <%= t('telegram_bot.using_the_bot_father') %>
+        </span>
+      </div>
+      <%= image_tag 'telegram_bot/bot_father.png', class: 'image' %>
+    </div>
+    <div>
+      <h5>
+        <%= t('telegram_bot.create_new_bot') %>
+      </h5>
+      <div>
+        <%= "#{t('telegram_bot.to_create_a_newbot')}, #{t('telegram_bot.send_command')} <code>\/newbot</code>.".html_safe %>
+      </div>
+      <%= image_tag 'telegram_bot/newbot.png', class: 'image' %>
+    </div>
+    <div>
+      <h5>
+        <%= t('telegram_bot.specify_a_friendly_name') %>
+      </h5>
+      <div>
+        <%= t('telegram_bot.give_the_bot_a_friendly_name') %>
+      </div>
+      <%= image_tag 'telegram_bot/bot_name.png', class: 'image' %>
+    </div>
+    <div>
+      <h5>
+        <%= t('telegram_bot.specify_a_username') %>
+      </h5>
+      <div>
+        <%= t('telegram_bot.give_the_bot_a_unique_username') %>
+      </div>
+      <div>
+        <%= t('telegram_bot.username_note') %>
+      </div>
+      <%= image_tag 'telegram_bot/bot_username.png', class: 'image' %>
+    </div>
+    <div>
+      <h5>
+        <%= t('telegram_bot.copy_the_access_token') %>
+      </h5>
+      <div>
+        <%= t('telegram_bot.copy_the_bot_access_token') %>
+      </div>
+      <div>
+        <%= t('telegram_bot.token_note').html_safe %>
+      </div>
+      <%= image_tag 'telegram_bot/bot_token.png', class: 'image' %>
+    </div>
+    <div>
+      <h5>
+        <%= t('telegram_bot.enter_the_bot_token') %>
+      </h5>
+      <div>
+        <%= t('telegram_bot.go_to_setting').html_safe %>
+      </div>
+      <%= image_tag 'telegram_bot/setting.png', class: 'image' %>
+    </div>
+  </div>
+</div>
+
