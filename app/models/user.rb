@@ -63,6 +63,8 @@ class User < ActiveRecord::Base
 
   attr_accessor :old_password
 
+  scope :telegrams, -> { where.not(telegram_chat_id: nil) }
+
   def self.search phone
     phone.present? ? where(["phone LIKE ?", "%#{phone}%"]) : all
   end

@@ -234,6 +234,7 @@ RSpec.describe Report, type: :model do
     let!(:alert_setting) { create(:alert_setting, is_enable_sms_alert: true, message_template: 'This is the alert on {{week_year}} for {{reported_cases}}.', verboice_project_id: 1, recipient_type: ['OD', 'HC']) }
     let(:alert) { :alert }
     let(:sms_alert_adapter) { Adapter::SmsAlertAdapter.new(alert) }
+    let(:telegram_alert_adapter) { Adapter::TelegramAlertAdapter.new(alert) }
 
     describe 'on weekly case report' do
       context 'process alert sms when sms option is enabled' do
@@ -243,8 +244,11 @@ RSpec.describe Report, type: :model do
         end
 
         it {
-          expect(AdapterType).to receive(:for).with(alert).and_return(sms_alert_adapter)
+          expect(AdapterType).to receive(:for).with(alert, :sms).ordered.and_return(sms_alert_adapter)
           expect(sms_alert_adapter).to receive(:process)
+
+          expect(AdapterType).to receive(:for).with(alert, :telegram).ordered.and_return(telegram_alert_adapter)
+          expect(telegram_alert_adapter).to receive(:process)
 
           report.notify_alert
         }

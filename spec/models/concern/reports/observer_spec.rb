@@ -53,6 +53,7 @@ RSpec.describe Reports::Observer, type: :model do
     let!(:message_template) { Setting::MessageTemplateSetting.new(enabled: true, report_confirmation: 'On {{week_year}} with diseases: {{reported_cases}}') }
     let(:alert) { :alert }
     let(:sms_alert_adapter) { Adapter::SmsAlertAdapter.new(alert) }
+    let(:telegram_alert_adapter) { Adapter::TelegramAlertAdapter.new(alert) }
 
     describe 'on weekly case report' do
       context 'process alert sms when template is set and enabled' do
@@ -63,8 +64,11 @@ RSpec.describe Reports::Observer, type: :model do
         end
 
         it {
-          expect(AdapterType).to receive(:for).with(alert).and_return(sms_alert_adapter)
+          expect(AdapterType).to receive(:for).with(alert, :sms).ordered.and_return(sms_alert_adapter)
           expect(sms_alert_adapter).to receive(:process)
+
+          expect(AdapterType).to receive(:for).with(alert, :telegram).ordered.and_return(telegram_alert_adapter)
+          expect(telegram_alert_adapter).to receive(:process)
 
           report.notify_report_confirmation
         }

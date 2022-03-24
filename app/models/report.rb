@@ -232,12 +232,18 @@ class Report < ActiveRecord::Base
   end
 
   def notify_alert
-    alert_setting = AlertSetting.get(self.verboice_project_id)
-    return if alert_setting.nil?
-
     # TODO Refactoring to remove alert_setting dependency
-    alert = Alerts::ReportCaseAlert.new(alert_setting, self)
-    AdapterType.for(alert).process
+    alert_setting = AlertSetting.get(self.verboice_project_id)
+
+    return unless alert_setting.present?
+
+    [:sms, :telegram].each do |type|
+      AdapterType.for(case_alert, type).process
+    end
+  end
+
+  def case_alert
+    @case_alert ||= Alerts::ReportCaseAlert.new(AlertSetting.get(self.verboice_project_id), self)
   end
 
   def to_hub_parameters
