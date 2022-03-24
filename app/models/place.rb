@@ -44,7 +44,7 @@ class Place < ActiveRecord::Base
   end
 
   def display_name
-    I18n.t("place.#{kind.downcase}", name: name)
+    I18n.t("place.#{kind_of.downcase}", name: name)
   end
 
   def self.kind

@@ -13,13 +13,16 @@ module Reports::Observer
     end
 
     def notify_report_confirmation
-      if self.has_report_variabled?
-        # TODO Refactoring to remove alert_setting dependency
-        if Setting.message_template.report_confirmation.present?
-          alert = Alerts::ReportConfirmationAlert.new(Setting.message_template, self)
-          AdapterType.for(alert).process
-        end
+      # TODO Refactoring to remove alert_setting dependency
+      return unless self.has_report_variabled? && Setting.message_template.report_confirmation.present?
+
+      [:sms, :telegram].each do |type|
+        AdapterType.for(confirm_alert, type).process
       end
+    end
+
+    def confirm_alert
+      @confirm_alert ||= Alerts::ReportConfirmationAlert.new(Setting.message_template, self)
     end
 
     def alert_checking
@@ -30,6 +33,5 @@ module Reports::Observer
 
       self.notify_alert if self.having_alerted_variable?
     end
-
   end
 end

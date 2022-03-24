@@ -41,4 +41,8 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
 
   config.cache_store = :null_store
+
+  # Make sure to run it before defining routes or accessing any bot in the app!
+  Telegram.reset_bots
+  Telegram::Bot::ClientStub.stub_all!
 end

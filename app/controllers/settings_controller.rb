@@ -10,7 +10,7 @@ class SettingsController < ApplicationController
     @alert_setting = AlertSetting.find_or_initialize_by(verboice_project_id: Setting[:project])
     @report_setting = Setting.report || Setting::ReportSetting.new {}
     @message_template = Setting.message_template || Setting::MessageTemplateSetting.new {}
-    @telegram_bot = TelegramBot.first || TelegramBot.new
+    @telegram_bot = TelegramBot.instance
   end
 
   def update_settings
@@ -74,7 +74,7 @@ class SettingsController < ApplicationController
 
   # PUT /settings/upsert_telegram_bot
   def upsert_telegram_bot
-    @telegram_bot = TelegramBot.first || TelegramBot.new
+    @telegram_bot = TelegramBot.instance
 
     if @telegram_bot.update_attributes(telegram_bot_params)
       redirect_to settings_path(tab: Setting::TELEGRAM_BOT), notice: 'Telegram bot is updated successfully!'

@@ -10,7 +10,6 @@ class SmsBroadcastsController < ApplicationController
 
     begin
       SmsBroadcast.new(protected_params[:message]).broadcast_to(User.members_of(places))
-      # TelegramBroadcast.new(protected_params[:message]).broadcast_to(User.members_of(places))
     rescue Nuntium::Exception => e
       redirect_to sms_broadcasts_path, alert: e.message
       return

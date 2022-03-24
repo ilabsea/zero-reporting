@@ -34,16 +34,9 @@ services:
       - 'redis:/data'
 
   sidekiq:
-    restart: unless-stopped
-    depends_on:
-      - db
-      - redis
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
-    command: bundle exec sidekiq -C config/sidekiq-main.yml
-    volumes:
-      - '.:/app'
+    <<: *rails
+    command: bundle exec sidekiq -C config/sidekiq.yml
+    ports: []
 
   ngrok:
     image: wernight/ngrok
