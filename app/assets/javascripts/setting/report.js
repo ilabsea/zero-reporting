@@ -1,6 +1,7 @@
 $(function() {
   events = [
     { 'source': '.sms-reminder-toggle', 'dest': '#sms-reminder-variables' },
+    { 'source': '.telegram-reminder-toggle', 'dest': '#telegram-reminder-variables' },
     { 'source': '.voice-reminder-toggle', 'dest': '#voice-reminder-variables' },
     { 'source': '.toggle', 'dest': '#toggle-div' }
   ]

@@ -19,11 +19,8 @@ class Setting::ReportSetting
     @templates = {}
 
     templates.each do |k, v|
-      if k === Alert::TYPES[:sms]
-        @templates[k] = Setting::SmsTemplateSetting.new v
-      else
-        @templates[k] = Setting::VoiceTemplateSetting.new v
-      end
+      # k can be sms, verboice, and telegram
+      @templates[k] = "Setting::#{k.titlecase}TemplateSetting".constantize.new(v) if Alert::TYPES.keys.include?(k.to_sym)
     end
   end
 
@@ -41,6 +38,10 @@ class Setting::ReportSetting
 
   def sms_enabled?
     @enables.include?(Alert::TYPES[:sms])
+  end
+
+  def telegram_enabled?
+    @enables.include?(Alert::TYPES[:telegram])
   end
 
   def has_week?

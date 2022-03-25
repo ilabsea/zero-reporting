@@ -1,0 +1,35 @@
+<!-- Voice -->
+<div class='form-group clearfix'>
+  <label class='control-label left'>Voice</label>
+  <div class='horizontal-form-control'>
+    <%= check_box_tag 'report[enables][]', Alert::TYPES[:voice], @report_setting.try(:voice_enabled?), class: 'form-control ace ace-switch ace-switch-4 btn-empty voice-reminder-toggle toggle' %>
+    <span class='lbl' style='vertical-align:bottom'></span>
+  </div>
+</div>
+
+<div id='voice-reminder-variables'>
+  <div class='form-group clearfix'>
+    <% channels = @parameters[:channels] || [] %>
+    <%= label_tag 'report[templates][voice][channel_id]', 'Using channel', class: 'control-label left' %>
+    <div class='horizontal-form-control'>
+      <%= select_tag 'report[templates][voice][channel_id]',
+           options_for_select(channels.map { |p| [ p['name'], p['id'] ] }, @report_setting.templates['voice'].try(:channel_id)),
+           include_blank: 'Select Verboice channel',
+           class: 'form-control s-width' %>
+    </div>
+  </div>
+
+  <div class='form-group clearfix'>
+    <% project_call_flows = @parameters[:project_call_flows] || [] %>
+    <%= label_tag 'report[templates][voice][call_flow_id]', 'With call flow', class: 'control-label left' %>
+    <%= select_tag 'report[templates][voice][call_flow_id]',
+         options_for_select(project_call_flows.map { |p| [ p['name'], p['id'] ] }, @report_setting.templates['voice'].try(:call_flow_id)),
+         include_blank: 'Select Verboice call flow',
+         class: 'form-control s-width' %>
+  </div>
+
+  <div class='form-group clearfix'>
+    <%= label_tag 'report[templates][voice][call_time]', 'Call time', class: 'control-label left' %>
+    <%= text_field_tag 'report[templates][voice][call_time]', @report_setting.templates['voice'].try(:call_time), class: 'time-select', style: 'width: 4em;' %>
+  </div>
+</div>

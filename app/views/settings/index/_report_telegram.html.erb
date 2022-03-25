@@ -1,0 +1,33 @@
+<!-- Telegram -->
+
+<!-- Checkbox -->
+<div class='form-group clearfix'>
+  <label class='control-label left'>Telegram</label>
+  <div class='horizontal-form-control'>
+      <%= check_box_tag 'report[enables][]', Alert::TYPES[:telegram], @report_setting.try(:telegram_enabled?), class: 'form-control ace ace-switch ace-switch-4 btn-empty telegram-reminder-toggle' %>
+      <span class='lbl' style='vertical-align:bottom'></span>
+  </div>
+</div>
+
+<!-- Hidden Controls -->
+<div id='telegram-reminder-variables'>
+  <div class='form-group clearfix'>
+    <label class='control-label left'>Message template for PHD & OD</label>
+    <%= text_area_tag 'report[templates][telegram][supervisor_template]', @report_setting.templates['telegram'].try(:supervisor), rows: 6, cols: 60 %>
+  </div>
+
+  <div class='form-group clearfix'>
+    <label class='control-label'>&nbsp;</label>
+    <%= template_params_for(:report_templates_telegram_supervisor_template, Setting::ReportSetting::SUPERVISOR_VARIABLES) %>
+  </div>
+
+  <div class='form-group clearfix'>
+    <label class='control-label left'>Message template for HC</label>
+    <%= text_area_tag 'report[templates][telegram][reporter_template]', @report_setting.try(:templates)['telegram'].try(:reporter), rows: 6, cols: 60 %>
+  </div>
+
+  <div class='form-group clearfix'>
+    <label class='control-label'>&nbsp;</label>
+    <%= template_params_for(:report_templates_telegram_reporter_template, Setting::ReportSetting::REPORTER_VARIABLES) %>
+  </div>
+</div>
